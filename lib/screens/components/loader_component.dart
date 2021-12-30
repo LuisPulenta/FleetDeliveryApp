@@ -15,13 +15,13 @@ class LoaderComponent extends StatelessWidget {
             color: Color(0xFFFFFFFF),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: Color(0xFF781f1e),
+              color: Color(0xff282886),
             )),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(
-              color: Color(0xFF781f1e),
+              color: Color(0xff282886),
             ),
             SizedBox(
               height: 20,

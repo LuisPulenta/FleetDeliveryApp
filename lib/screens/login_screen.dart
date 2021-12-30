@@ -1,8 +1,9 @@
-import 'dart:convert';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:fleetdeliveryapp/models/ruta.dart';
 import 'package:fleetdeliveryapp/screens/components/loader_component.dart';
 import 'package:fleetdeliveryapp/screens/helpers/api_helper.dart';
+import 'package:fleetdeliveryapp/screens/helpers/constants.dart';
 import 'package:fleetdeliveryapp/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -36,12 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
       orden: 0,
       centroDistribucion: 0);
 
-  String _email = 'arivas';
+  String _email = '*MARCHIONNE';
   String _emailError = '';
   bool _emailShowError = false;
   bool _hayInternet = false;
 
-  String _password = 'ari193';
+  String _password = 'FRANCO';
   String _passwordError = '';
   bool _passwordShowError = false;
 
@@ -74,10 +75,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   end: Alignment.bottomCenter,
                   colors: [
                     Color(
-                      (0xffe9dac2),
+                      (0xfff6faf8),
                     ),
                     Color(
-                      (0xffd3a735),
+                      (0xfff6faf8),
                     ),
                   ],
                 ),
@@ -85,35 +86,24 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Container(
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 20,
+                    ),
                     Image.asset(
-                      "assets/logo.png",
+                      "assets/logo2.png",
                       height: 100,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "PS",
-                          style: TextStyle(
-                              fontSize: 35,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.yellow),
-                        ),
-                        Text(
-                          "Energy",
-                          style: TextStyle(
-                              fontSize: 35,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                      ],
+                    SizedBox(
+                      height: 20,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "v.1.2.1",
-                          style: TextStyle(fontSize: 20),
+                          Constants.version,
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
                       ],
                     ),
@@ -150,6 +140,9 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Center(
               child: SingleChildScrollView(
                 child: Card(
+                  color: Color(
+                    (0xffb3b3b4),
+                  ),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   elevation: 15,
@@ -275,7 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFF9a6a2e),
+                primary: Color(0xFF282886),
                 minimumSize: Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
@@ -294,7 +287,14 @@ class _LoginScreenState extends State<LoginScreen> {
       _passwordShow = false;
     });
 
+    setState(() {
+      _showLoader = true;
+    });
+
     if (!validateFields()) {
+      setState(() {
+        _showLoader = false;
+      });
       return;
     }
 
@@ -308,6 +308,9 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (filteredUsuario.length == 0) {
+      setState(() {
+        _showLoader = true;
+      });
       setState(() {
         _passwordShowError = true;
         _passwordError = 'Usuario o contraseña incorrectos';
@@ -366,7 +369,8 @@ class _LoginScreenState extends State<LoginScreen> {
     await prefs.setString('date', DateTime.now().toString());
   }
 
-  Future<Null> _getUsuarios() async {
+//Future<Null>
+  _getUsuarios() async {
     setState(() {
       _showLoader = true;
     });
@@ -378,12 +382,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.isSuccess) {
         _usuariosApi = response.result;
-        _usuariosApi.sort((a, b) {
-          return a.apellidonombre
-              .toString()
-              .toLowerCase()
-              .compareTo(b.apellidonombre.toString().toLowerCase());
-        });
+        // _usuariosApi.sort((a, b) {
+        //   return a.apellidonombre
+        //       .toString()
+        //       .toLowerCase()
+        //       .compareTo(b.apellidonombre.toString().toLowerCase());
+        // });
         _hayInternet = true;
       }
     }

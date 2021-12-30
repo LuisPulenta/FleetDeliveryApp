@@ -18,10 +18,10 @@ class ContactoScreen extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Color(
-                  (0xffe9dac2),
+                  (0xffdadada),
                 ),
                 Color(
-                  (0xffd3a735),
+                  (0xffb3b3b4),
                 ),
               ],
             ),
