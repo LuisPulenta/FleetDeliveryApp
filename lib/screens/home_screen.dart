@@ -1,5 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:fleetdeliveryapp/helpers/dbrutas_helper.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/ruta.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
@@ -494,7 +495,14 @@ class _HomeScreenState extends State<HomeScreen>
                 )));
   }
 
+  //*****************************************************************
+  //*********************** RUTAS ***********************************
+  //*****************************************************************
+
   Future<Null> _getRutas() async {
+    setState(() {
+      _showLoader = true;
+    });
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
@@ -502,12 +510,12 @@ class _HomeScreenState extends State<HomeScreen>
 
       if (response.isSuccess) {
         _rutasApi = response.result;
-        // _rutasApi.sort((a, b) {
-        //   return a.fechaAlta
-        //       .toString()
-        //       .toLowerCase()
-        //       .compareTo(b.fechaAlta.toString().toLowerCase());
-        // });
+        _rutasApi.sort((a, b) {
+          return a.fechaAlta
+              .toString()
+              .toLowerCase()
+              .compareTo(b.fechaAlta.toString().toLowerCase());
+        });
         _hayInternet = true;
       }
     }
@@ -516,58 +524,34 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _getTablaRutas() async {
-    final Future<Database> database = openDatabase(
-      p.join(await getDatabasesPath(), 'rutas.db'),
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE rutas(id INTEGER PRIMARY KEY, idFletero INTEGER, fechaAlta TEXT, nombre TEXT, estado INTEGER)",
-        );
-      },
-      version: 1,
-    );
-
-    Future<void> insertRuta(Ruta ruta) async {
-      final Database db = await database;
-      await db.insert(
-        'rutas',
-        ruta.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
-
     void _insertRutas() async {
       if (_rutasApi.length > 0) {
+        DBRutas.delete();
         _rutasApi.forEach((element) {
-          insertRuta(element);
+          DBRutas.insertRuta(element);
         });
       }
-    }
-
-    Future<List<Ruta>> _getRutasSQLite() async {
-      final Database db = await database;
-      final List<Map<String, dynamic>> maps = await db.query('rutas');
-      return List.generate(
-        maps.length,
-        (i) {
-          return Ruta(
-            id: maps[i]['id'],
-            idFletero: maps[i]['idFletero'],
-            fechaAlta: maps[i]['fechaAlta'],
-            nombre: maps[i]['nombre'],
-            estado: maps[i]['estado'],
-          );
-        },
-      );
     }
 
     if (_hayInternet) {
       _insertRutas();
     }
 
-    _rutas = await _getRutasSQLite();
+    _rutas = await DBRutas.rutas();
 
     setState(() {
       _showLoader = false;
     });
+
+    if (_rutas.length == 0) {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso',
+          message: "No hay Rutas para este Usuario.",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
   }
 }
