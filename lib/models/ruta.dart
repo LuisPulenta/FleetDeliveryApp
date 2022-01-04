@@ -1,9 +1,9 @@
 class Ruta {
   int id = 0;
-  int idFletero = 0;
-  String fechaAlta = '';
-  String nombre = '';
-  int estado = 0;
+  int? idFletero = 0;
+  String? fechaAlta = '';
+  String? nombre = '';
+  int? estado = 0;
 
   Ruta(
       {required this.id,

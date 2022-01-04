@@ -17,7 +17,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.ruta.nombre),
+        title: Text(widget.ruta.nombre!),
       ),
       body: Container(
         width: double.infinity,
