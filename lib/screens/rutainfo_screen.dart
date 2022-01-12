@@ -1,10 +1,10 @@
-import 'package:fleetdeliveryapp/models/ruta.dart';
+import 'package:fleetdeliveryapp/models/rutacab.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:flutter/material.dart';
 
 class RutaInfoScreen extends StatefulWidget {
   final Usuario user;
-  final Ruta ruta;
+  final RutaCab ruta;
 
   RutaInfoScreen({required this.user, required this.ruta});
 

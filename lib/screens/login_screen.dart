@@ -2,7 +2,6 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/dbusuarios_helper.dart';
-import 'package:fleetdeliveryapp/models/ruta.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/helpers/constants.dart';
 import 'package:fleetdeliveryapp/screens/home_screen.dart';
@@ -331,22 +330,22 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _showLoader = true;
     });
-    // var connectivityResult = await Connectivity().checkConnectivity();
+    var connectivityResult = await Connectivity().checkConnectivity();
 
-    // if (connectivityResult != ConnectivityResult.none) {
-    //   Response response = await ApiHelper.getUsuarios();
+    if (connectivityResult != ConnectivityResult.none) {
+      Response response = await ApiHelper.getUsuarios();
 
-    //   if (response.isSuccess) {
-    //     _usuariosApi = response.result;
-    //     // _usuariosApi.sort((a, b) {
-    //     //   return a.idUser
-    //     //       .toString()
-    //     //       .toLowerCase()
-    //     //       .compareTo(b.idUser.toString().toLowerCase());
-    //     // });
-    //     _hayInternet = true;
-    //   }
-    // }
+      if (response.isSuccess) {
+        _usuariosApi = response.result;
+        // _usuariosApi.sort((a, b) {
+        //   return a.idUser
+        //       .toString()
+        //       .toLowerCase()
+        //       .compareTo(b.idUser.toString().toLowerCase());
+        // });
+        _hayInternet = true;
+      }
+    }
     _getTablaUsuarios();
     return;
   }

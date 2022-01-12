@@ -1,5 +1,5 @@
 class Parada {
-  int id = 0;
+  int idParada = 0;
   int? idRuta = 0;
   int? idEnvio = 0;
   int? tag = 0;
@@ -22,7 +22,7 @@ class Parada {
   String? turno = '';
 
   Parada(
-      {required this.id,
+      {required this.idParada,
       required this.idRuta,
       required this.idEnvio,
       required this.tag,
@@ -45,7 +45,7 @@ class Parada {
       required this.turno});
 
   Parada.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    idParada = json['idParada'];
     idRuta = json['idRuta'];
     idEnvio = json['idEnvio'];
     tag = json['tag'];
@@ -70,7 +70,7 @@ class Parada {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    data['idParada'] = this.idParada;
     data['idRuta'] = this.idRuta;
     data['idEnvio'] = this.idEnvio;
     data['tag'] = this.tag;
@@ -96,7 +96,7 @@ class Parada {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'idParada': idParada,
       'idRuta': idRuta,
       'idEnvio': idEnvio,
       'tag': tag,

@@ -89,7 +89,7 @@ class ApiHelper {
   }
 
   static Future<Response> getRutas(int codigo) async {
-    var url = Uri.parse('${Constants.apiUrl}/api/Rutas/GetRutas/$codigo');
+    var url = Uri.parse('${Constants.apiUrl}/api/Usuarios/GetRutas/$codigo');
     var response = await http.post(
       url,
       headers: {
@@ -111,55 +111,5 @@ class ApiHelper {
       }
     }
     return Response(isSuccess: true, result: list);
-  }
-
-  static Future<Response> getParadas(String codigo) async {
-    var url = Uri.parse('${Constants.apiUrl}/api/Paradas/GetParadas/$codigo');
-    var response = await http.post(
-      url,
-      headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json',
-      },
-    );
-    var body = response.body;
-
-    if (response.statusCode >= 400) {
-      return Response(isSuccess: false, message: body);
-    }
-
-    List<Parada> list = [];
-    var decodedJson = jsonDecode(body);
-    if (decodedJson != null) {
-      for (var item in decodedJson) {
-        list.add(Parada.fromJson(item));
-      }
-    }
-    return Response(isSuccess: true, result: list);
-  }
-
-  static Future<Response> getEnvios(String codigo2) async {
-    var url2 = Uri.parse('${Constants.apiUrl}/api/Envios/GetEnvios/$codigo2');
-    var response2 = await http.post(
-      url2,
-      headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json',
-      },
-    );
-    var body2 = response2.body;
-
-    if (response2.statusCode >= 400) {
-      return Response(isSuccess: false, message: body2);
-    }
-
-    List<Envio> list2 = [];
-    var decodedJson2 = jsonDecode(body2);
-    if (decodedJson2 != null) {
-      for (var item in decodedJson2) {
-        list2.add(Envio.fromJson(item));
-      }
-    }
-    return Response(isSuccess: true, result: list2);
   }
 }

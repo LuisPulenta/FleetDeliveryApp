@@ -7,7 +7,7 @@ class DBParadas {
     return openDatabase(join(await getDatabasesPath(), 'paradas.db'),
         onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE paradas(id INTEGER,idRuta INTEGER,idEnvio INTEGER,tag INTEGER,secuencia INTEGER,leyenda TEXT,latitud DOUBLE,longitud DOUBLE,iconoPropio TEXT,iDmapa TEXT,distancia INTEGER,tiempo INTEGER,estado INTEGER,fecha TEXT,hora TEXT,idMotivo INTEGER,notaChofer TEXT,nuevoOrden INTEGER,idCabCertificacion INTEGER,idLiquidacionFletero INTEGER,turno TEXT)",
+        "CREATE TABLE paradas(idParada INTEGER,idRuta INTEGER,idEnvio INTEGER,tag INTEGER,secuencia INTEGER,leyenda TEXT,latitud DOUBLE,longitud DOUBLE,iconoPropio TEXT,iDmapa TEXT,distancia INTEGER,tiempo INTEGER,estado INTEGER,fecha TEXT,hora TEXT,idMotivo INTEGER,notaChofer TEXT,nuevoOrden INTEGER,idCabCertificacion INTEGER,idLiquidacionFletero INTEGER,turno TEXT)",
       );
     }, version: 1);
   }
@@ -29,7 +29,7 @@ class DBParadas {
     return List.generate(
         paradasMap.length,
         (i) => Parada(
-              id: paradasMap[i]['id'],
+              idParada: paradasMap[i]['idParada'],
               idRuta: paradasMap[i]['idRuta'],
               idEnvio: paradasMap[i]['idEnvio'],
               tag: paradasMap[i]['tag'],

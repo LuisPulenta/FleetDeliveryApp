@@ -1,5 +1,5 @@
 class Envio {
-  int id = 0;
+  int idEnvio = 0;
   int? idproveedor = 0;
   int? agencianr = 0;
   int? estado = 0;
@@ -36,7 +36,7 @@ class Envio {
   String? scaneadoOut = '';
   int? ingresoDeposito = 0;
   int? salidaDistribucion = 0;
-  int? nroRuta = 0;
+  int? idRuta = 0;
   int? nroSecuencia = 0;
   String? fechaHoraOptimoCamino = '';
   int? bultos = 0;
@@ -74,7 +74,7 @@ class Envio {
   int? avonInformarInclusion = 0;
 
   Envio(
-      {required this.id,
+      {required this.idEnvio,
       required this.idproveedor,
       required this.agencianr,
       required this.estado,
@@ -111,7 +111,7 @@ class Envio {
       required this.scaneadoOut,
       required this.ingresoDeposito,
       required this.salidaDistribucion,
-      required this.nroRuta,
+      required this.idRuta,
       required this.nroSecuencia,
       required this.fechaHoraOptimoCamino,
       required this.bultos,
@@ -149,7 +149,7 @@ class Envio {
       required this.avonInformarInclusion});
 
   Envio.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    idEnvio = json['idEnvio'];
     idproveedor = json['idproveedor'];
     agencianr = json['agencianr'];
     estado = json['estado'];
@@ -186,7 +186,7 @@ class Envio {
     scaneadoOut = json['scaneadoOut'];
     ingresoDeposito = json['ingresoDeposito'];
     salidaDistribucion = json['salidaDistribucion'];
-    nroRuta = json['nroRuta'];
+    idRuta = json['idRuta'];
     nroSecuencia = json['nroSecuencia'];
     fechaHoraOptimoCamino = json['fechaHoraOptimoCamino'];
     bultos = json['bultos'];
@@ -226,7 +226,7 @@ class Envio {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    data['idEnvio'] = this.idEnvio;
     data['idproveedor'] = this.idproveedor;
     data['agencianr'] = this.agencianr;
     data['estado'] = this.estado;
@@ -263,7 +263,7 @@ class Envio {
     data['scaneadoOut'] = this.scaneadoOut;
     data['ingresoDeposito'] = this.ingresoDeposito;
     data['salidaDistribucion'] = this.salidaDistribucion;
-    data['nroRuta'] = this.nroRuta;
+    data['idRuta'] = this.idRuta;
     data['nroSecuencia'] = this.nroSecuencia;
     data['fechaHoraOptimoCamino'] = this.fechaHoraOptimoCamino;
     data['bultos'] = this.bultos;
@@ -304,7 +304,7 @@ class Envio {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'idEnvio': idEnvio,
       'idproveedor': idproveedor,
       'agencianr': agencianr,
       'estado': estado,
@@ -341,7 +341,7 @@ class Envio {
       'scaneadoOut': scaneadoOut,
       'ingresoDeposito': ingresoDeposito,
       'salidaDistribucion': salidaDistribucion,
-      'nroRuta': nroRuta,
+      'idRuta': idRuta,
       'nroSecuencia': nroSecuencia,
       'fechaHoraOptimoCamino': fechaHoraOptimoCamino,
       'bultos': bultos,
