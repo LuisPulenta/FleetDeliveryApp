@@ -44,6 +44,9 @@ dependencies:
   flutter_native_splash: ^1.2.4   # Para poner el splash
   sqflite: ^2.0.1                 # Para base de datos locales
   path_provider: ^2.0.5           # Para acceder a la cámara
+  geolocator: ^8.0.0              # Para latitud y longitud
+  geocoding: ^2.0.2
+  google_maps_flutter: ^2.1.1     # Para mapas
 
 
 flutter_icons:

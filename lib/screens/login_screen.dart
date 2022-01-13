@@ -38,11 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
       orden: 0,
       centroDistribucion: 0);
 
-  String _email = 'ARAIJOC';
+  String _email = 'GABRIEL';
   String _emailError = '';
   bool _emailShowError = false;
   bool _hayInternet = false;
-  String _password = 'ACR';
+  String _password = 'GABRIEL01';
   String _passwordError = '';
   bool _passwordShowError = false;
   bool _rememberme = true;
@@ -332,20 +332,20 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     var connectivityResult = await Connectivity().checkConnectivity();
 
-    if (connectivityResult != ConnectivityResult.none) {
-      Response response = await ApiHelper.getUsuarios();
+    // if (connectivityResult != ConnectivityResult.none) {
+    //   Response response = await ApiHelper.getUsuarios();
 
-      if (response.isSuccess) {
-        _usuariosApi = response.result;
-        // _usuariosApi.sort((a, b) {
-        //   return a.idUser
-        //       .toString()
-        //       .toLowerCase()
-        //       .compareTo(b.idUser.toString().toLowerCase());
-        // });
-        _hayInternet = true;
-      }
-    }
+    //   if (response.isSuccess) {
+    //     _usuariosApi = response.result;
+    //     // _usuariosApi.sort((a, b) {
+    //     //   return a.idUser
+    //     //       .toString()
+    //     //       .toLowerCase()
+    //     //       .compareTo(b.idUser.toString().toLowerCase());
+    //     // });
+    //     _hayInternet = true;
+    //   }
+    // }
     _getTablaUsuarios();
     return;
   }

@@ -1,9 +1,12 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
+import 'package:fleetdeliveryapp/helpers/dbenvios_helper.dart';
+import 'package:fleetdeliveryapp/helpers/dbparadas_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbrutascab_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/parada.dart';
+import 'package:fleetdeliveryapp/models/paradaenvio.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/ruta.dart';
 import 'package:fleetdeliveryapp/models/rutacab.dart';
@@ -16,6 +19,8 @@ import 'package:fleetdeliveryapp/screens/rutainfo_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +43,18 @@ class _HomeScreenState extends State<HomeScreen>
   List<RutaCab> _rutas = [];
   List<Parada> _paradas = [];
   List<Envio> _envios = [];
+  List<ParadaEnvio> _paradasenvios = [];
+
+  bool _habilitaPosicion = false;
+  Position _positionUser = Position(
+      longitude: 0,
+      latitude: 0,
+      timestamp: null,
+      accuracy: 0,
+      altitude: 0,
+      heading: 0,
+      speed: 0,
+      speedAccuracy: 0);
 
   bool _hayInternet = false;
   Usuario _user = Usuario(
@@ -71,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen>
     _tabController = TabController(length: 3, vsync: this);
     _getprefs();
     _getRutas();
+    _getPosition();
   }
 
   @override
@@ -488,7 +506,7 @@ class _HomeScreenState extends State<HomeScreen>
                                           fontWeight: FontWeight.bold,
                                         )),
                                     Expanded(
-                                      child: Text(e.idRuta.toString()!,
+                                      child: Text(e.idRuta.toString(),
                                           style: TextStyle(
                                             fontSize: 12,
                                           )),
@@ -519,6 +537,10 @@ class _HomeScreenState extends State<HomeScreen>
             builder: (context) => RutaInfoScreen(
                   user: widget.user,
                   ruta: ruta,
+                  paradas: _paradas,
+                  envios: _envios,
+                  paradasenvios: _paradasenvios,
+                  positionUser: _positionUser,
                 )));
   }
 
@@ -547,14 +569,31 @@ class _HomeScreenState extends State<HomeScreen>
     void _insertRutas() async {
       if (_rutasApi.length > 0) {
         DBRutasCab.delete();
-        _rutasApi.forEach((element) {
+        DBParadas.delete();
+        DBEnvios.delete();
+
+        _rutasApi.forEach((ruta) {
           RutaCab rutaCab = RutaCab(
-              idRuta: element.idRuta,
-              idUser: element.idUser,
-              fechaAlta: element.fechaAlta,
-              nombre: element.nombre,
-              estado: element.estado);
+              idRuta: ruta.idRuta,
+              idUser: ruta.idUser,
+              fechaAlta: ruta.fechaAlta,
+              nombre: ruta.nombre,
+              estado: ruta.estado);
           DBRutasCab.insertRuta(rutaCab);
+
+          if (ruta.paradas!.length > 0) {
+            ruta.paradas!.forEach((parada) {
+              if (parada.idEnvio != 0) {
+                DBParadas.insertParada(parada);
+              }
+            });
+          }
+
+          if (ruta.envios!.length > 0) {
+            ruta.envios!.forEach((envio) {
+              DBEnvios.insertEnvio(envio);
+            });
+          }
         });
       }
     }
@@ -564,6 +603,112 @@ class _HomeScreenState extends State<HomeScreen>
     }
 
     _rutas = await DBRutasCab.rutas();
+    _paradas = await DBParadas.paradas();
+    _envios = await DBEnvios.envios();
+
+    _paradas.forEach((parada) {
+      Envio filteredEnvio = new Envio(
+          idEnvio: 0,
+          idproveedor: 0,
+          agencianr: 0,
+          estado: 0,
+          envia: "",
+          ruta: "",
+          ordenid: "",
+          fecha: 0,
+          hora: "",
+          imei: "",
+          transporte: "",
+          contrato: "",
+          titular: "",
+          dni: "",
+          domicilio: "",
+          cp: "",
+          latitud: 0,
+          longitud: 0,
+          autorizado: "",
+          observaciones: "",
+          idCabCertificacion: 0,
+          idRemitoProveedor: 0,
+          idSubconUsrWeb: 0,
+          fechaAlta: "",
+          fechaEnvio: "",
+          fechaDistribucion: "",
+          entreCalles: "",
+          mail: "",
+          telefonos: "",
+          localidad: "",
+          tag: 0,
+          provincia: "",
+          fechaEntregaCliente: "",
+          scaneadoIn: "",
+          scaneadoOut: "",
+          ingresoDeposito: 0,
+          salidaDistribucion: 0,
+          idRuta: 0,
+          nroSecuencia: 0,
+          fechaHoraOptimoCamino: "",
+          bultos: 0,
+          peso: "",
+          alto: "",
+          ancho: "",
+          largo: "",
+          idComprobante: 0,
+          enviarMailSegunEstado: "",
+          fechaRuta: "",
+          ordenIDparaOC: "",
+          hashUnico: "",
+          bultosPikeados: 0,
+          centroDistribucion: "",
+          fechaUltimaActualizacion: "",
+          volumen: "",
+          avonZoneNumber: 0,
+          avonSectorNumber: 0,
+          avonAccountNumber: "",
+          avonCampaignNumber: 0,
+          avonCampaignYear: 0,
+          domicilioCorregido: "",
+          domicilioCorregidoUsando: 0,
+          urlFirma: "",
+          urlDNI: "",
+          ultimoIdMotivo: 0,
+          ultimaNotaFletero: "",
+          idComprobanteDevolucion: 0,
+          turno: "",
+          barrioEntrega: "",
+          partidoEntrega: "",
+          avonDayRoute: 0,
+          avonTravelRoute: 0,
+          avonSecuenceRoute: 0,
+          avonInformarInclusion: 0);
+      for (var envio in _envios) {
+        if (envio.idEnvio == parada.idEnvio) {
+          filteredEnvio = envio;
+        }
+      }
+      ;
+      ParadaEnvio paradaEnvio = ParadaEnvio(
+          idParada: parada.idParada,
+          idRuta: parada.idRuta,
+          idEnvio: parada.idEnvio,
+          secuencia: parada.secuencia,
+          leyenda: parada.leyenda,
+          latitud: parada.latitud,
+          longitud: parada.longitud,
+          idproveedor: filteredEnvio.idproveedor,
+          estado: filteredEnvio.estado,
+          ordenid: filteredEnvio.ordenid,
+          titular: filteredEnvio.titular,
+          dni: filteredEnvio.dni,
+          domicilio: filteredEnvio.domicilio,
+          cp: filteredEnvio.cp,
+          entreCalles: filteredEnvio.entreCalles,
+          telefonos: filteredEnvio.telefonos,
+          localidad: filteredEnvio.localidad,
+          bultos: filteredEnvio.bultos);
+
+      _paradasenvios.add(paradaEnvio);
+    });
 
     if (_rutas.length == 0) {
       setState(() {
@@ -584,5 +729,73 @@ class _HomeScreenState extends State<HomeScreen>
     setState(() {
       _showLoader = false;
     });
+  }
+
+  Future _getPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                title: Text('Aviso'),
+                content:
+                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  Text('El permiso de localización está negado.'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ]),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Ok')),
+                ],
+              );
+            });
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: Text('Aviso'),
+              content:
+                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                Text(
+                    'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
+                SizedBox(
+                  height: 10,
+                ),
+              ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('Ok')),
+              ],
+            );
+          });
+      return;
+    }
+
+    _habilitaPosicion = true;
+    _positionUser = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        _positionUser.latitude, _positionUser.longitude);
   }
 }
