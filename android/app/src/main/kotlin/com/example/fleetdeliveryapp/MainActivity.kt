@@ -1,4 +1,4 @@
-package com.example.fleetdeliveryapp
+package com.luisnu.fleetdeliveryapp
 
 import io.flutter.embedding.android.FlutterActivity
 
