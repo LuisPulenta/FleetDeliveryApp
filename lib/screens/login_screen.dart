@@ -337,12 +337,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.isSuccess) {
         _usuariosApi = response.result;
-        // _usuariosApi.sort((a, b) {
-        //   return a.idUser
-        //       .toString()
-        //       .toLowerCase()
-        //       .compareTo(b.idUser.toString().toLowerCase());
-        // });
         _hayInternet = true;
       }
     }

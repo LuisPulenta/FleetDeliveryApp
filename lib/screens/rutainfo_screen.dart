@@ -5,8 +5,10 @@ import 'package:fleetdeliveryapp/models/paradaenvio.dart';
 import 'package:fleetdeliveryapp/models/rutacab.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:fleetdeliveryapp/screens/paradamap_screen.dart';
+import 'package:fleetdeliveryapp/screens/paradainfo_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RutaInfoScreen extends StatefulWidget {
   final Usuario user;
@@ -30,6 +32,8 @@ class RutaInfoScreen extends StatefulWidget {
 
 class _RutaInfoScreenState extends State<RutaInfoScreen> {
   bool _showLoader = false;
+  LatLng _center = LatLng(0, 0);
+  final Set<Marker> _markers = {};
   ParadaEnvio paradaSelected = new ParadaEnvio(
       idParada: 0,
       idRuta: 0,
@@ -61,6 +65,14 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             ? LoaderComponent(text: 'Por favor espere...')
             : _getContent(),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _navegartodos(),
+        child: const Icon(
+          Icons.map,
+          size: 30,
+        ),
+        backgroundColor: Color(0xff282886),
+      ),
     );
   }
 
@@ -87,7 +99,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                 color: Color(0xff282886),
                 fontWeight: FontWeight.bold,
               )),
-          Text(widget.paradas.length.toString(),
+          Text(widget.paradasenvios.length.toString(),
               style: TextStyle(
                 fontSize: 14,
                 color: Color(0xff282886),
@@ -239,16 +251,63 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
-  void _goInfoParada(ParadaEnvio e) {}
+  void _goInfoParada(ParadaEnvio e) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ParadaInfoScreen(
+                  user: widget.user,
+                  paradaenvio: e,
+                )));
+  }
 
   _navegar(e) {
-    Navigator.pushReplacement(
+    _center = LatLng(e.latitud!.toDouble(), e.longitud!.toDouble());
+    _markers.clear();
+    _markers.add(Marker(
+      markerId: MarkerId(e.secuencia.toString()),
+      position: _center,
+      infoWindow: InfoWindow(
+        title: e.titular.toString(),
+        snippet: e.domicilio.toString(),
+      ),
+      icon: BitmapDescriptor.defaultMarker,
+    ));
+
+    Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ParadaMapScreen(
                   user: widget.user,
                   positionUser: widget.positionUser,
                   paradaenvio: e,
+                  markers: _markers,
+                )));
+  }
+
+  _navegartodos() {
+    _markers.clear();
+    widget.paradasenvios.forEach((element) {
+      _markers.add(Marker(
+        markerId: MarkerId(element.secuencia.toString()),
+        position:
+            LatLng(element.latitud!.toDouble(), element.longitud!.toDouble()),
+        infoWindow: InfoWindow(
+          title: element.titular.toString(),
+          snippet: element.domicilio.toString(),
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+    });
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ParadaMapScreen(
+                  user: widget.user,
+                  positionUser: widget.positionUser,
+                  paradaenvio: widget.paradasenvios[0],
+                  markers: _markers,
                 )));
   }
 }

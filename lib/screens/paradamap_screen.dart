@@ -11,11 +11,13 @@ class ParadaMapScreen extends StatefulWidget {
   final Usuario user;
   final Position positionUser;
   final ParadaEnvio paradaenvio;
+  final Set<Marker> markers;
 
   const ParadaMapScreen(
       {required this.user,
       required this.positionUser,
-      required this.paradaenvio});
+      required this.paradaenvio,
+      required this.markers});
 
   @override
   _ParadaMapScreenState createState() => _ParadaMapScreenState();
@@ -30,7 +32,7 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
   double latitud = 0;
   double longitud = 0;
   bool _showLoader = false;
-  final Set<Marker> _markers = {};
+  Set<Marker> _markers = {};
   MapType _defaultMapType = MapType.normal;
   String direccion = '';
   Position position = Position(
@@ -54,13 +56,28 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _initialPosition = CameraPosition(
-        target:
-            LatLng(widget.positionUser.latitude, widget.positionUser.longitude),
-        zoom: 16.0);
+    _initialPosition = (widget.markers.length == 1)
+        ? CameraPosition(
+            target: LatLng(widget.paradaenvio.latitud!.toDouble(),
+                widget.paradaenvio.longitud!.toDouble()),
+            zoom: 16.0)
+        : CameraPosition(
+            target: LatLng(widget.paradaenvio.latitud!.toDouble(),
+                widget.paradaenvio.longitud!.toDouble()),
+            zoom: 12.0);
     ubicOk = true;
-    _center =
-        LatLng(widget.positionUser.latitude, widget.positionUser.longitude);
+    _center = LatLng(widget.paradaenvio.latitud!.toDouble(),
+        widget.paradaenvio.longitud!.toDouble());
+    _markers = widget.markers;
+    // _markers.add(Marker(
+    //   markerId: MarkerId(widget.paradaenvio.secuencia.toString()),
+    //   position: _center,
+    //   infoWindow: InfoWindow(
+    //     title: widget.paradaenvio.titular.toString(),
+    //     snippet: widget.paradaenvio.domicilio.toString(),
+    //   ),
+    //   icon: BitmapDescriptor.defaultMarker,
+    // ));
   }
 
   Future _getPosition() async {
@@ -80,7 +97,9 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.paradaenvio.secuencia.toString()),
+        title: (widget.markers.length == 1)
+            ? Text(('Parada: ${widget.paradaenvio.secuencia.toString()}'))
+            : Text(('Ruta: ${widget.paradaenvio.idRuta.toString()}')),
         centerTitle: true,
       ),
       body: Stack(
@@ -108,13 +127,13 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
                             }),
                       ]),
                     ),
-                    Center(
-                      child: Icon(
-                        Icons.my_location,
-                        color: Color(0xFFfc6c0c),
-                        size: 50,
-                      ),
-                    ),
+                    // Center(
+                    //   child: Icon(
+                    //     Icons.location_on,
+                    //     color: Colors.red,
+                    //     size: 50,
+                    //   ),
+                    // ),
                   ]),
                 )
               : Container(),
@@ -130,30 +149,6 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
 
   void _onCameraMove(CameraPosition position) {
     _center = position.target;
-  }
-
-  void _marcar() async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(_center.latitude, _center.longitude);
-    latitud = _center.latitude;
-    longitud = _center.longitude;
-    direccion = placemarks[0].street.toString() +
-        " - " +
-        placemarks[0].locality.toString();
-    _direccionController.text = direccion;
-    _markers.clear();
-    _markers.add(Marker(
-// This marker id can be anything that uniquely identifies each marker.
-      markerId: MarkerId(_center.toString()),
-      position: _center,
-      infoWindow: InfoWindow(
-        title: direccion,
-        snippet: '',
-      ),
-      icon: BitmapDescriptor.defaultMarker,
-    ));
-    var a = placemarks[0];
-    setState(() {});
   }
 
   void _changeMapType() {

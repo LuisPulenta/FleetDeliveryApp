@@ -44,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen>
   List<Parada> _paradas = [];
   List<Envio> _envios = [];
   List<ParadaEnvio> _paradasenvios = [];
+  List<ParadaEnvio> _paradasenviosselected = [];
 
   bool _habilitaPosicion = false;
   Position _positionUser = Position(
@@ -531,6 +532,14 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _goInfoRuta(RutaCab ruta) async {
+    _paradasenviosselected = [];
+    _paradasenvios.forEach((element) {
+      if (element.idRuta == ruta.idRuta) {
+        _paradasenviosselected.add(element);
+      }
+      ;
+    });
+
     String? result = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -539,7 +548,7 @@ class _HomeScreenState extends State<HomeScreen>
                   ruta: ruta,
                   paradas: _paradas,
                   envios: _envios,
-                  paradasenvios: _paradasenvios,
+                  paradasenvios: _paradasenviosselected,
                   positionUser: _positionUser,
                 )));
   }
