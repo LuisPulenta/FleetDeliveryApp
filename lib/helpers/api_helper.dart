@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/parada.dart';
+import 'package:fleetdeliveryapp/models/proveedor.dart';
 import 'package:fleetdeliveryapp/models/ruta.dart';
 import 'package:http/http.dart' as http;
 import 'package:fleetdeliveryapp/models/response.dart';
@@ -108,6 +109,31 @@ class ApiHelper {
     if (decodedJson != null) {
       for (var item in decodedJson) {
         list.add(Ruta.fromJson(item));
+      }
+    }
+    return Response(isSuccess: true, result: list);
+  }
+
+  static Future<Response> getProveedores() async {
+    var url = Uri.parse('${Constants.apiUrl}/api/Proveedores');
+    var response = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    List<Proveedor> list = [];
+    var decodedJson = jsonDecode(body);
+    if (decodedJson != null) {
+      for (var item in decodedJson) {
+        list.add(Proveedor.fromJson(item));
       }
     }
     return Response(isSuccess: true, result: list);

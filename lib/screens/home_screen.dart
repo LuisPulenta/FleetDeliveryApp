@@ -3,10 +3,12 @@ import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/dbenvios_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbparadas_helper.dart';
+import 'package:fleetdeliveryapp/helpers/dbproveedores_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbrutascab_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/parada.dart';
 import 'package:fleetdeliveryapp/models/paradaenvio.dart';
+import 'package:fleetdeliveryapp/models/proveedor.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/ruta.dart';
 import 'package:fleetdeliveryapp/models/rutacab.dart';
@@ -45,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen>
   List<Envio> _envios = [];
   List<ParadaEnvio> _paradasenvios = [];
   List<ParadaEnvio> _paradasenviosselected = [];
+  List<Proveedor> _proveedoresApi = [];
+  List<Proveedor> _proveedores = [];
 
   bool _habilitaPosicion = false;
   Position _positionUser = Position(
@@ -74,6 +78,8 @@ class _HomeScreenState extends State<HomeScreen>
   RutaCab rutaSelected =
       new RutaCab(idRuta: 0, idUser: 0, fechaAlta: '', nombre: '', estado: 0);
 
+  String _proveedorselected = '';
+
   bool _showLoader = false;
   String _conectadodesde = '';
   String _validohasta = '';
@@ -88,7 +94,8 @@ class _HomeScreenState extends State<HomeScreen>
     _user = widget.user;
     _tabController = TabController(length: 3, vsync: this);
     _getprefs();
-    _getRutas();
+    _getProveedores();
+    //_getRutas();
     _getPosition();
   }
 
@@ -695,6 +702,12 @@ class _HomeScreenState extends State<HomeScreen>
           filteredEnvio = envio;
         }
       }
+
+      for (var proveedor in _proveedores) {
+        if (proveedor.id == filteredEnvio.idproveedor) {
+          _proveedorselected = proveedor.nombre.toString();
+        }
+      }
       ;
       ParadaEnvio paradaEnvio = ParadaEnvio(
           idParada: parada.idParada,
@@ -714,7 +727,8 @@ class _HomeScreenState extends State<HomeScreen>
           entreCalles: filteredEnvio.entreCalles,
           telefonos: filteredEnvio.telefonos,
           localidad: filteredEnvio.localidad,
-          bultos: filteredEnvio.bultos);
+          bultos: filteredEnvio.bultos,
+          proveedor: _proveedorselected);
 
       _paradasenvios.add(paradaEnvio);
     });
@@ -806,5 +820,47 @@ class _HomeScreenState extends State<HomeScreen>
 
     List<Placemark> placemarks = await placemarkFromCoordinates(
         _positionUser.latitude, _positionUser.longitude);
+  }
+
+//***************************************************************
+//************************* PROVEEDORES *************************
+//***************************************************************
+  Future<Null> _getProveedores() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      Response response = await ApiHelper.getProveedores();
+
+      if (response.isSuccess) {
+        _proveedoresApi = response.result;
+        _hayInternet = true;
+      }
+    }
+    _getTablaProveedores();
+    return;
+  }
+
+  void _getTablaProveedores() async {
+    void _insertProveedores() async {
+      if (_proveedoresApi.length > 0) {
+        DBProveedores.delete();
+        _proveedoresApi.forEach((element) {
+          DBProveedores.insertProveedor(element);
+        });
+      }
+    }
+
+    if (_hayInternet) {
+      _insertProveedores();
+    }
+    _proveedores = await DBProveedores.proveedores();
+
+    // if (_baterias.length > 0) {
+    //   setState(() {
+    //     _colorBaterias = Colors.green;
+    //   });
+    // }
+
+    _getRutas();
   }
 }

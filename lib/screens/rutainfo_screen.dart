@@ -52,7 +52,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       entreCalles: "",
       telefonos: "",
       localidad: "",
-      bultos: 0);
+      bultos: 0,
+      proveedor: "");
   @override
   Widget build(BuildContext context) {
     return Scaffold(

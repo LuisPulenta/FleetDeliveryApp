@@ -264,7 +264,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                            ('Observaciones: ${widget.paradaenvio.idproveedor.toString()}')),
+                            ('Observaciones: ${widget.paradaenvio.proveedor.toString()}')),
                       ],
                     ),
                   ),
@@ -272,7 +272,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
               ),
               color: Color(0xffdadada),
               width: double.infinity,
-              height: 40,
             ),
           ],
         ),

@@ -6,7 +6,6 @@ class ParadaEnvio {
   String? leyenda = '';
   double? latitud = 0.0;
   double? longitud = 0.0;
-
   int? idproveedor = 0;
   int? estado = 0;
   String? ordenid = '';
@@ -18,27 +17,28 @@ class ParadaEnvio {
   String? telefonos = '';
   String? localidad = '';
   int? bultos = 0;
+  String? proveedor = '';
 
-  ParadaEnvio({
-    required this.idParada,
-    required this.idRuta,
-    required this.idEnvio,
-    required this.secuencia,
-    required this.leyenda,
-    required this.latitud,
-    required this.longitud,
-    required this.idproveedor,
-    required this.estado,
-    required this.ordenid,
-    required this.titular,
-    required this.dni,
-    required this.domicilio,
-    required this.cp,
-    required this.entreCalles,
-    required this.telefonos,
-    required this.localidad,
-    required this.bultos,
-  });
+  ParadaEnvio(
+      {required this.idParada,
+      required this.idRuta,
+      required this.idEnvio,
+      required this.secuencia,
+      required this.leyenda,
+      required this.latitud,
+      required this.longitud,
+      required this.idproveedor,
+      required this.estado,
+      required this.ordenid,
+      required this.titular,
+      required this.dni,
+      required this.domicilio,
+      required this.cp,
+      required this.entreCalles,
+      required this.telefonos,
+      required this.localidad,
+      required this.bultos,
+      required this.proveedor});
 
   ParadaEnvio.fromJson(Map<String, dynamic> json) {
     idParada = json['idParada'];
@@ -60,6 +60,7 @@ class ParadaEnvio {
     telefonos = json['telefonos'];
     localidad = json['localidad'];
     bultos = json['bultos'];
+    proveedor = json['proveedor'];
   }
 
   Map<String, dynamic> toJson() {
@@ -83,6 +84,7 @@ class ParadaEnvio {
     data['telefonos'] = this.telefonos;
     data['localidad'] = this.localidad;
     data['bultos'] = this.bultos;
+    data['proveedor'] = this.proveedor;
 
     return data;
   }
@@ -107,6 +109,7 @@ class ParadaEnvio {
       'telefonos': telefonos,
       'localidad': localidad,
       'bultos': bultos,
+      'proveedor': proveedor,
     };
   }
 }
