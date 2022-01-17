@@ -38,6 +38,10 @@ dependencies:
   http: ^0.13.3                   # Para consumir APIs 
   intl: ^0.17.0                   # Para ver formato moneda
   adaptive_dialog: ^1.1.0         # Para cuadros de diálogo
+  camera: ^0.9.4                  # Para acceder a la cámara
+  path: ^1.8.0                    # Para acceder a la cámara
+  cached_network_image: ^3.1.0    # Para mejorar el rendimiento de imágenes
+  image_picker: ^0.8.4+2          # Para acceder a la galería de imágenes
   connectivity: ^3.0.6            # Para chequear conexión a Internet
   shared_preferences: ^2.0.8      # Para el rememberme
   flutter_launcher_icons: ^0.9.2  # Para poner el ícono a la app
@@ -47,6 +51,7 @@ dependencies:
   geolocator: ^8.0.0              # Para latitud y longitud
   geocoding: ^2.0.2
   google_maps_flutter: ^2.1.1     # Para mapas
+  url_launcher: ^6.0.12           # Para llamar por teléfono
 
 
 flutter_icons:

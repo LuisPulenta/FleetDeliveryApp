@@ -259,6 +259,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             builder: (context) => ParadaInfoScreen(
                   user: widget.user,
                   paradaenvio: e,
+                  positionUser: widget.positionUser,
                 )));
   }
 
