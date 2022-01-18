@@ -56,10 +56,14 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       telefonos: "",
       localidad: "",
       bultos: 0,
-      proveedor: "");
+      proveedor: "",
+      motivo: 0,
+      notas: '',
+      enviado: 0);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffdadada),
       appBar: AppBar(
         title: Text(widget.ruta.nombre!),
         centerTitle: true,
@@ -145,7 +149,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     return ListView(
       children: widget.paradasenvios.map((e) {
         return Card(
-          color: Color(0xFFC7C7C8),
+          color: Colors.white60,
           shadowColor: Colors.white,
           elevation: 10,
           margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -247,8 +251,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                     ),
                                   ],
                                 ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                Row(
                                   children: [
                                     Container(
                                       width: 135,
@@ -308,7 +311,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                 user: widget.user,
                 paradaenvio: e,
                 positionUser: widget.positionUser,
-                motivos: widget.motivos)));
+                motivos: widget.motivos,
+                paradas: widget.paradas,
+                envios: widget.envios)));
   }
 
   _navegar(e) {

@@ -4,6 +4,7 @@ import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/dbenvios_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbmotivos_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbparadas_helper.dart';
+import 'package:fleetdeliveryapp/helpers/dbparadasenvios_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbproveedores_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbrutascab_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
@@ -53,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen>
   List<Proveedor> _proveedores = [];
   List<Motivo> _motivosApi = [];
   List<Motivo> _motivos = [];
+  List<ParadaEnvio> _paradasenviosdb = [];
 
   bool _habilitaPosicion = false;
   Position _positionUser = Position(
@@ -731,7 +733,10 @@ class _HomeScreenState extends State<HomeScreen>
           telefonos: filteredEnvio.telefonos,
           localidad: filteredEnvio.localidad,
           bultos: filteredEnvio.bultos,
-          proveedor: _proveedorselected);
+          proveedor: _proveedorselected,
+          motivo: 0,
+          notas: '',
+          enviado: 0);
 
       _paradasenvios.add(paradaEnvio);
     });
@@ -900,6 +905,17 @@ class _HomeScreenState extends State<HomeScreen>
       _insertMotivos();
     }
     _motivos = await DBMotivos.motivos();
+
+    _getParadasEnvios();
+  }
+
+  Future<Null> _getParadasEnvios() async {
+    _getTablaMedicionesCab();
+    return;
+  }
+
+  void _getTablaMedicionesCab() async {
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
 
     setState(() {
       _showLoader = false;

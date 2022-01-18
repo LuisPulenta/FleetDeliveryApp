@@ -18,27 +18,34 @@ class ParadaEnvio {
   String? localidad = '';
   int? bultos = 0;
   String? proveedor = '';
+  int? motivo = 0;
+  String? notas = '';
+  int? enviado = 0;
 
-  ParadaEnvio(
-      {required this.idParada,
-      required this.idRuta,
-      required this.idEnvio,
-      required this.secuencia,
-      required this.leyenda,
-      required this.latitud,
-      required this.longitud,
-      required this.idproveedor,
-      required this.estado,
-      required this.ordenid,
-      required this.titular,
-      required this.dni,
-      required this.domicilio,
-      required this.cp,
-      required this.entreCalles,
-      required this.telefonos,
-      required this.localidad,
-      required this.bultos,
-      required this.proveedor});
+  ParadaEnvio({
+    required this.idParada,
+    required this.idRuta,
+    required this.idEnvio,
+    required this.secuencia,
+    required this.leyenda,
+    required this.latitud,
+    required this.longitud,
+    required this.idproveedor,
+    required this.estado,
+    required this.ordenid,
+    required this.titular,
+    required this.dni,
+    required this.domicilio,
+    required this.cp,
+    required this.entreCalles,
+    required this.telefonos,
+    required this.localidad,
+    required this.bultos,
+    required this.proveedor,
+    required this.motivo,
+    required this.notas,
+    required this.enviado,
+  });
 
   ParadaEnvio.fromJson(Map<String, dynamic> json) {
     idParada = json['idParada'];
@@ -61,6 +68,9 @@ class ParadaEnvio {
     localidad = json['localidad'];
     bultos = json['bultos'];
     proveedor = json['proveedor'];
+    motivo = json['motivo'];
+    notas = json['notas'];
+    enviado = json['enviado'];
   }
 
   Map<String, dynamic> toJson() {
@@ -85,6 +95,9 @@ class ParadaEnvio {
     data['localidad'] = this.localidad;
     data['bultos'] = this.bultos;
     data['proveedor'] = this.proveedor;
+    data['motivo'] = this.motivo;
+    data['notas'] = this.notas;
+    data['enviado'] = this.enviado;
 
     return data;
   }
@@ -110,6 +123,9 @@ class ParadaEnvio {
       'localidad': localidad,
       'bultos': bultos,
       'proveedor': proveedor,
+      'motivo': motivo,
+      'notas': notas,
+      'enviado': enviado,
     };
   }
 }
