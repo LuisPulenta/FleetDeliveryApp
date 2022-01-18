@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
+import 'package:fleetdeliveryapp/models/motivo.dart';
 import 'package:fleetdeliveryapp/models/paradaenvio.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
@@ -18,11 +19,13 @@ class ParadaInfoScreen extends StatefulWidget {
   final Usuario user;
   final ParadaEnvio paradaenvio;
   final Position positionUser;
+  final List<Motivo> motivos;
 
   const ParadaInfoScreen(
       {required this.user,
       required this.paradaenvio,
-      required this.positionUser});
+      required this.positionUser,
+      required this.motivos});
 
   @override
   _ParadaInfoScreenState createState() => _ParadaInfoScreenState();
@@ -33,7 +36,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   bool _photoChanged = false;
   late XFile _image;
 
-  int _optionId = -1;
+  int _optionEstado = -1;
+  int _optionMotivo = -1;
+  int _estado = 3;
   String _optionIdError = '';
   bool _optionIdShowError = false;
 
@@ -394,10 +399,19 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                       Container(
                         padding: EdgeInsets.all(10),
                         child: DropdownButtonFormField(
-                            value: _optionId,
+                            value: _optionEstado,
                             onChanged: (option) {
                               setState(() {
-                                _optionId = option as int;
+                                _optionEstado = option as int;
+                                (_optionEstado == 0)
+                                    ? _estado = 3
+                                    : (_optionEstado == 1)
+                                        ? _estado = 4
+                                        : (_optionEstado == 2)
+                                            ? _estado = 10
+                                            : (_optionEstado == 3)
+                                                ? _estado = 7
+                                                : _estado = 3;
                               });
                             },
                             items: _getOptions(),
@@ -420,6 +434,65 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
             color: Color(0xffdadada),
             width: double.infinity,
           ),
+          (_estado == 7 || _estado == 10)
+              ? Divider(
+                  height: 3,
+                )
+              : Container(),
+          (_estado == 7 || _estado == 10)
+              ? Container(
+                  padding: EdgeInsets.all(10),
+                  height: 140,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(Icons.fact_check),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Container(
+                        width: 300,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(('Motivo: ')),
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              child: DropdownButtonFormField(
+                                  value: _optionMotivo,
+                                  onChanged: (option) {
+                                    setState(() {
+                                      _optionMotivo = option as int;
+                                    });
+                                  },
+                                  items: _getOptions2(),
+                                  decoration: InputDecoration(
+                                    hintText: 'Seleccione un Motivo...',
+                                    labelText: '',
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    errorText: _optionIdShowError
+                                        ? _optionIdError
+                                        : null,
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  color: Color(0xffdadada),
+                  width: double.infinity,
+                )
+              : Container(),
           Divider(
             height: 3,
           ),
@@ -604,6 +677,23 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       list.add(DropdownMenuItem(
         child: Text(element),
         value: nro,
+      ));
+      nro++;
+    });
+    return list;
+  }
+
+  List<DropdownMenuItem<int>> _getOptions2() {
+    List<DropdownMenuItem<int>> list = [];
+    list.add(DropdownMenuItem(
+      child: Text('Seleccione un Motivo...'),
+      value: -1,
+    ));
+    int nro = 0;
+    widget.motivos.forEach((element) {
+      list.add(DropdownMenuItem(
+        child: Text(element.motivo.toString()),
+        value: element.id,
       ));
       nro++;
     });

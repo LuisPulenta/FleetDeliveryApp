@@ -2,10 +2,12 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/dbenvios_helper.dart';
+import 'package:fleetdeliveryapp/helpers/dbmotivos_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbparadas_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbproveedores_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbrutascab_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
+import 'package:fleetdeliveryapp/models/motivo.dart';
 import 'package:fleetdeliveryapp/models/parada.dart';
 import 'package:fleetdeliveryapp/models/paradaenvio.dart';
 import 'package:fleetdeliveryapp/models/proveedor.dart';
@@ -49,6 +51,8 @@ class _HomeScreenState extends State<HomeScreen>
   List<ParadaEnvio> _paradasenviosselected = [];
   List<Proveedor> _proveedoresApi = [];
   List<Proveedor> _proveedores = [];
+  List<Motivo> _motivosApi = [];
+  List<Motivo> _motivos = [];
 
   bool _habilitaPosicion = false;
   Position _positionUser = Position(
@@ -420,8 +424,6 @@ class _HomeScreenState extends State<HomeScreen>
     _conectadodesde = prefs.getString('conectadodesde').toString();
     _validohasta = prefs.getString('validohasta').toString();
     _ultimaactualizacion = prefs.getString('ultimaactualizacion').toString();
-    // var a = 123;
-    // setState(() {});
   }
 
   Widget _noContent() {
@@ -557,6 +559,7 @@ class _HomeScreenState extends State<HomeScreen>
                   envios: _envios,
                   paradasenvios: _paradasenviosselected,
                   positionUser: _positionUser,
+                  motivos: _motivos,
                 )));
   }
 
@@ -749,9 +752,7 @@ class _HomeScreenState extends State<HomeScreen>
       return;
     }
 
-    setState(() {
-      _showLoader = false;
-    });
+    _getMotivos();
   }
 
   Future _getPosition() async {
@@ -837,7 +838,7 @@ class _HomeScreenState extends State<HomeScreen>
       }
     }
     _getTablaProveedores();
-    return;
+    //return;
   }
 
   void _getTablaProveedores() async {
@@ -862,5 +863,46 @@ class _HomeScreenState extends State<HomeScreen>
     // }
 
     _getRutas();
+  }
+
+//***************************************************************
+//************************* MOTIVOS *****************************
+//***************************************************************
+  Future<Null> _getMotivos() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      Response response = await ApiHelper.getMotivos();
+
+      if (response.isSuccess) {
+        _motivosApi = response.result;
+        _hayInternet = true;
+      }
+    }
+    _getTablaMotivos();
+
+    return;
+  }
+
+  void _getTablaMotivos() async {
+    void _insertMotivos() async {
+      if (_motivosApi.length > 0) {
+        DBMotivos.delete();
+        _motivosApi.forEach((element) {
+          Motivo mot = Motivo(id: element.id, motivo: element.motivo);
+
+          DBMotivos.insertMotivo(mot);
+        });
+      }
+    }
+
+    if (_hayInternet) {
+      _insertMotivos();
+    }
+    _motivos = await DBMotivos.motivos();
+
+    setState(() {
+      _showLoader = false;
+    });
   }
 }

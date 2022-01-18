@@ -1,5 +1,6 @@
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
+import 'package:fleetdeliveryapp/models/motivo.dart';
 import 'package:fleetdeliveryapp/models/parada.dart';
 import 'package:fleetdeliveryapp/models/paradaenvio.dart';
 import 'package:fleetdeliveryapp/models/rutacab.dart';
@@ -17,6 +18,7 @@ class RutaInfoScreen extends StatefulWidget {
   final List<Envio> envios;
   final List<ParadaEnvio> paradasenvios;
   final Position positionUser;
+  final List<Motivo> motivos;
 
   RutaInfoScreen(
       {required this.user,
@@ -24,7 +26,8 @@ class RutaInfoScreen extends StatefulWidget {
       required this.paradas,
       required this.envios,
       required this.paradasenvios,
-      required this.positionUser});
+      required this.positionUser,
+      required this.motivos});
 
   @override
   _RutaInfoScreenState createState() => _RutaInfoScreenState();
@@ -89,6 +92,15 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   }
 
   Widget _showParadasCount() {
+    int pendientes = 0;
+    int cumplidas = 0;
+    widget.paradasenvios.forEach((element) {
+      if (element.estado == 3) {
+        pendientes++;
+      }
+    });
+    cumplidas = widget.paradasenvios.length - pendientes;
+
     return Container(
       padding: EdgeInsets.all(10),
       height: 40,
@@ -101,6 +113,12 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                 fontWeight: FontWeight.bold,
               )),
           Text(widget.paradasenvios.length.toString(),
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(0xff282886),
+                fontWeight: FontWeight.bold,
+              )),
+          Text((' (Pendientes: ${pendientes})'),
               style: TextStyle(
                 fontSize: 14,
                 color: Color(0xff282886),
@@ -159,6 +177,36 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                               color: Color(0xffbc2b51),
                                               fontWeight: FontWeight.bold)),
                                     ),
+                                    (e.estado == 4)
+                                        ? Text(
+                                            "ENTREGADO",
+                                            style: TextStyle(
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        : (e.estado == 10)
+                                            ? Text(
+                                                "NO ENTREGADO",
+                                                style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            : (e.estado == 7)
+                                                ? Text(
+                                                    "RECHAZADO",
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                                : Text(
+                                                    "PENDIENTE",
+                                                    style: TextStyle(
+                                                        color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
                                   ],
                                 ),
                                 SizedBox(
@@ -257,10 +305,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         context,
         MaterialPageRoute(
             builder: (context) => ParadaInfoScreen(
-                  user: widget.user,
-                  paradaenvio: e,
-                  positionUser: widget.positionUser,
-                )));
+                user: widget.user,
+                paradaenvio: e,
+                positionUser: widget.positionUser,
+                motivos: widget.motivos)));
   }
 
   _navegar(e) {
