@@ -19,8 +19,10 @@ class ParadaEnvio {
   int? bultos = 0;
   String? proveedor = '';
   int? motivo = 0;
+  String? motivodesc = '';
   String? notas = '';
   int? enviado = 0;
+  String? fecha = '';
 
   ParadaEnvio({
     required this.idParada,
@@ -43,8 +45,10 @@ class ParadaEnvio {
     required this.bultos,
     required this.proveedor,
     required this.motivo,
+    required this.motivodesc,
     required this.notas,
     required this.enviado,
+    required this.fecha,
   });
 
   ParadaEnvio.fromJson(Map<String, dynamic> json) {
@@ -69,8 +73,10 @@ class ParadaEnvio {
     bultos = json['bultos'];
     proveedor = json['proveedor'];
     motivo = json['motivo'];
+    motivodesc = json['motivodesc'];
     notas = json['notas'];
     enviado = json['enviado'];
+    fecha = json['fecha'];
   }
 
   Map<String, dynamic> toJson() {
@@ -96,8 +102,10 @@ class ParadaEnvio {
     data['bultos'] = this.bultos;
     data['proveedor'] = this.proveedor;
     data['motivo'] = this.motivo;
+    data['motivodesc'] = this.motivodesc;
     data['notas'] = this.notas;
     data['enviado'] = this.enviado;
+    data['fecha'] = this.fecha;
 
     return data;
   }
@@ -124,8 +132,10 @@ class ParadaEnvio {
       'bultos': bultos,
       'proveedor': proveedor,
       'motivo': motivo,
+      'motivodesc': motivodesc,
       'notas': notas,
       'enviado': enviado,
+      'fecha': fecha,
     };
   }
 }

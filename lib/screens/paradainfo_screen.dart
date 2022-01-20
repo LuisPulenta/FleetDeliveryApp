@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:fleetdeliveryapp/helpers/dbparadasenvios_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
+import 'package:fleetdeliveryapp/models/option.dart';
 import 'package:fleetdeliveryapp/models/parada.dart';
 import 'package:fleetdeliveryapp/models/paradaenvio.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
@@ -42,17 +45,26 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   bool _photoChanged = false;
   late XFile _image;
 
-  int _optionEstado = -1;
-  int _optionMotivo = -1;
-  int _estado = 0;
+  int _optionEstado = 0;
   String _optionEstadoError = '';
   bool _optionEstadoShowError = false;
+  List<Option> _listoptions = [];
+
+  int _optionMotivo = 0;
+  int _estado = 0;
+
   String _optionMotivoError = '';
   bool _optionMotivoShowError = false;
 
   String _observaciones = '';
   String _observacionesError = '';
   bool _observacionesShowError = false;
+  TextEditingController _observacionesController = TextEditingController();
+  String _motivodesc = '';
+
+  List<ParadaEnvio> _paradasenvios = [];
+
+  List<DropdownMenuItem<int>> _items = [];
 
   Parada paradaSelected = Parada(
       idParada: 0,
@@ -152,15 +164,15 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       avonSecuenceRoute: 0,
       avonInformarInclusion: 0);
 
-  List<String> _options = [
-    'Pendiente',
-    'Entregado',
-    'No entregado',
-    'Rechazado',
-  ];
-
   LatLng _center = LatLng(0, 0);
   final Set<Marker> _markers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _getlistOptions();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -505,22 +517,14 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                       Container(
                         padding: EdgeInsets.all(10),
                         child: DropdownButtonFormField(
+                            items: _items,
                             value: _optionEstado,
                             onChanged: (option) {
                               setState(() {
                                 _optionEstado = option as int;
-                                (_optionEstado == 0)
-                                    ? _estado = 3
-                                    : (_optionEstado == 1)
-                                        ? _estado = 4
-                                        : (_optionEstado == 2)
-                                            ? _estado = 10
-                                            : (_optionEstado == 3)
-                                                ? _estado = 7
-                                                : _estado = -1;
+                                _estado = option as int;
                               });
                             },
-                            items: _getOptions(),
                             decoration: InputDecoration(
                               hintText: 'Seleccione un Estado...',
                               labelText: '',
@@ -541,12 +545,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
             color: Color(0xffdadada),
             width: double.infinity,
           ),
-          (_estado == 7 || _estado == 10)
+          (_optionEstado == 10 || _optionEstado == 7)
               ? Divider(
                   height: 3,
                 )
               : Container(),
-          (_estado == 7 || _estado == 10)
+          (_optionEstado == 10 || _optionEstado == 7)
               ? Container(
                   padding: EdgeInsets.all(10),
                   height: 145,
@@ -575,6 +579,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                                   onChanged: (option) {
                                     setState(() {
                                       _optionMotivo = option as int;
+                                      widget.motivos.forEach((motivo) {
+                                        if (motivo.id == _optionMotivo) {
+                                          _motivodesc =
+                                              motivo.motivo.toString();
+                                        }
+                                      });
                                     });
                                   },
                                   items: _getOptions2(),
@@ -627,6 +637,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                         padding: EdgeInsets.all(10),
                         child: TextField(
                           maxLines: 3,
+                          controller: _observacionesController,
                           decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -739,9 +750,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
-                onPressed: () {
-                  _save();
-                },
+                onPressed: (widget.paradaenvio.estado == 3) ? _save : null,
               ),
             ),
           ],
@@ -773,28 +782,11 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 )));
   }
 
-  List<DropdownMenuItem<int>> _getOptions() {
-    List<DropdownMenuItem<int>> list = [];
-    list.add(DropdownMenuItem(
-      child: Text('Seleccione un Estado...'),
-      value: -1,
-    ));
-    int nro = 0;
-    _options.forEach((element) {
-      list.add(DropdownMenuItem(
-        child: Text(element),
-        value: nro,
-      ));
-      nro++;
-    });
-    return list;
-  }
-
   List<DropdownMenuItem<int>> _getOptions2() {
     List<DropdownMenuItem<int>> list = [];
     list.add(DropdownMenuItem(
       child: Text('Seleccione un Motivo...'),
-      value: -1,
+      value: 0,
     ));
     int nro = 0;
     widget.motivos.forEach((element) {
@@ -900,7 +892,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     }
 
     if (_estado == 7 || _estado == 10) {
-      if (_optionMotivo == -1) {
+      if (_optionMotivo == 0) {
         isValid = false;
         _optionMotivoShowError = true;
         _optionMotivoError = 'Debes seleccionar un Motivo';
@@ -914,125 +906,141 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     return isValid;
   }
 
-  void _saveRecord() {
-    //***************************************************************
-    //******************** Armamos modelo PARADA ********************
-    //***************************************************************
+  void _saveRecord() async {
+    _guardaParadaEnBDLocal();
 
+    _paradasenvios = await DBParadasEnvios.paradasenvios();
+
+    _paradasenvios.forEach((paradaenvio) {
+      if (DateTime.parse(paradaenvio.fecha!)
+              .isBefore(DateTime.now().add(Duration(days: -7))) &&
+          paradaenvio.enviado != 0) {
+        DBParadasEnvios.delete(paradaenvio);
+      }
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      _paradasenvios.forEach((paradaenvio) {
+        if (paradaenvio.enviado == 0) {
+          _putParada();
+          _putEnvio();
+          _postSeguimiento();
+          _ponerEnviado1();
+        }
+      });
+    }
+
+    Navigator.pop(context, 'yes');
+  }
+
+  void _guardaParadaEnBDLocal() {
     widget.paradas.forEach((element) {
       if (element.idParada == widget.paradaenvio.idParada) {
         paradaSelected = element;
       }
     });
 
-    Map<String, dynamic> requestParada = {
-      'idParada': paradaSelected.idParada,
-      'idRuta': paradaSelected.idRuta,
-      'idEnvio': paradaSelected.idEnvio,
-      'tag': paradaSelected.tag,
-      'secuencia': paradaSelected.secuencia,
-      'leyenda': paradaSelected.leyenda,
-      'latitud': paradaSelected.latitud,
-      'longitud': paradaSelected.longitud,
-      'iconoPropio': paradaSelected.iconoPropio,
-      'iDmapa': paradaSelected.iDmapa,
-      'distancia': paradaSelected.distancia,
-      'tiempo': paradaSelected.tiempo,
-      'estado': paradaSelected.estado,
-      'fecha': paradaSelected.fecha,
-      'hora': paradaSelected.hora,
-      'idMotivo': paradaSelected.idMotivo,
-      'notaChofer': paradaSelected.notaChofer,
-      'nuevoOrden': paradaSelected.nuevoOrden,
-      'idCabCertificacion': paradaSelected.idCabCertificacion,
-      'idLiquidacionFletero': paradaSelected.idLiquidacionFletero,
-      'turno': paradaSelected.turno,
-    };
+    ParadaEnvio requestParadaEnvio = ParadaEnvio(
+        idParada: widget.paradaenvio.idParada,
+        idRuta: widget.paradaenvio.idRuta,
+        idEnvio: widget.paradaenvio.idEnvio,
+        secuencia: widget.paradaenvio.secuencia,
+        leyenda: widget.paradaenvio.leyenda,
+        latitud: widget.paradaenvio.latitud,
+        longitud: widget.paradaenvio.longitud,
+        idproveedor: widget.paradaenvio.idproveedor,
+        estado: _estado,
+        ordenid: widget.paradaenvio.ordenid,
+        titular: widget.paradaenvio.titular,
+        dni: widget.paradaenvio.dni,
+        domicilio: widget.paradaenvio.domicilio,
+        cp: widget.paradaenvio.cp,
+        entreCalles: widget.paradaenvio.entreCalles,
+        telefonos: widget.paradaenvio.telefonos,
+        localidad: widget.paradaenvio.localidad,
+        bultos: widget.paradaenvio.bultos,
+        proveedor: widget.paradaenvio.proveedor,
+        motivo: _optionMotivo,
+        motivodesc: _motivodesc,
+        notas: _observaciones,
+        enviado: 0,
+        fecha: DateTime.now().toString());
 
-    //***************************************************************
-    //******************** Armamos modelo ENVIO ********************
-    //***************************************************************
+    DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
+  }
 
-    widget.envios.forEach((element) {
-      if (element.idEnvio == widget.paradaenvio.idEnvio) {
-        envioSelected = element;
-      }
+  void _putParada() {}
+
+  void _putEnvio() {}
+
+  void _postSeguimiento() {}
+
+  void _ponerEnviado1() {}
+
+  void _getlistOptions() {
+    setState(() {
+      _showLoader = true;
     });
 
-    Map<String, dynamic> requestEnvio = {
-      'idEnvio': envioSelected.idEnvio,
-      'idproveedor': envioSelected.idproveedor,
-      'agencianr': envioSelected.agencianr,
-      'estado': envioSelected.estado,
-      'envia': envioSelected.envia,
-      'ruta': envioSelected.ruta,
-      'ordenid': envioSelected.ordenid,
-      'fecha': envioSelected.fecha,
-      'hora': envioSelected.hora,
-      'imei': envioSelected.imei,
-      'transporte': envioSelected.transporte,
-      'contrato': envioSelected.contrato,
-      'titular': envioSelected.titular,
-      'dni': envioSelected.dni,
-      'domicilio': envioSelected.domicilio,
-      'cp': envioSelected.cp,
-      'latitud': envioSelected.latitud,
-      'longitud': envioSelected.longitud,
-      'autorizado': envioSelected.autorizado,
-      'observaciones': envioSelected.observaciones,
-      'idCabCertificacion': envioSelected.idCabCertificacion,
-      'idRemitoProveedor': envioSelected.idRemitoProveedor,
-      'idSubconUsrWeb': envioSelected.idSubconUsrWeb,
-      'fechaAlta': envioSelected.fechaAlta,
-      'fechaEnvio': envioSelected.fechaEnvio,
-      'fechaDistribucion': envioSelected.fechaDistribucion,
-      'entreCalles': envioSelected.entreCalles,
-      'mail': envioSelected.mail,
-      'telefonos': envioSelected.telefonos,
-      'localidad': envioSelected.localidad,
-      'tag': envioSelected.tag,
-      'provincia': envioSelected.provincia,
-      'fechaEntregaCliente': envioSelected.fechaEntregaCliente,
-      'scaneadoIn': envioSelected.scaneadoIn,
-      'scaneadoOut': envioSelected.scaneadoOut,
-      'ingresoDeposito': envioSelected.ingresoDeposito,
-      'salidaDistribucion': envioSelected.salidaDistribucion,
-      'idRuta': envioSelected.idRuta,
-      'nroSecuencia': envioSelected.nroSecuencia,
-      'fechaHoraOptimoCamino': envioSelected.fechaHoraOptimoCamino,
-      'bultos': envioSelected.bultos,
-      'peso': envioSelected.peso,
-      'alto': envioSelected.alto,
-      'ancho': envioSelected.ancho,
-      'largo': envioSelected.largo,
-      'idComprobante': envioSelected.idComprobante,
-      'enviarMailSegunEstado': envioSelected.enviarMailSegunEstado,
-      'fechaRuta': envioSelected.fechaRuta,
-      'ordenIDparaOC': envioSelected.ordenIDparaOC,
-      'hashUnico': envioSelected.hashUnico,
-      'bultosPikeados': envioSelected.bultosPikeados,
-      'centroDistribucion': envioSelected.centroDistribucion,
-      'fechaUltimaActualizacion': envioSelected.fechaUltimaActualizacion,
-      'volumen': envioSelected.volumen,
-      'avonZoneNumber': envioSelected.avonZoneNumber,
-      'avonSectorNumber': envioSelected.avonSectorNumber,
-      'avonAccountNumber': envioSelected.avonAccountNumber,
-      'avonCampaignNumber': envioSelected.avonCampaignNumber,
-      'avonCampaignYear': envioSelected.avonCampaignYear,
-      'domicilioCorregido': envioSelected.domicilioCorregido,
-      'domicilioCorregidoUsando': envioSelected.domicilioCorregidoUsando,
-      'urlFirma': envioSelected.urlFirma,
-      'urlDNI': envioSelected.urlDNI,
-      'ultimoIdMotivo': envioSelected.ultimoIdMotivo,
-      'ultimaNotaFletero': envioSelected.ultimaNotaFletero,
-      'idComprobanteDevolucion': envioSelected.idComprobanteDevolucion,
-      'turno': envioSelected.turno,
-      'barrioEntrega': envioSelected.barrioEntrega,
-      'partidoEntrega': envioSelected.partidoEntrega,
-      'avonDayRoute': envioSelected.avonDayRoute,
-      'avonTravelRoute': envioSelected.avonTravelRoute,
-      'avonSecuenceRoute': envioSelected.avonSecuenceRoute,
-      'avonInformarInclusion': envioSelected.avonInformarInclusion,
-    };
+    _items = [];
+    _listoptions = [];
+
+    Option opt1 = Option(id: 3, description: 'Pendiente');
+    Option opt2 = Option(id: 4, description: 'Entregado');
+    Option opt3 = Option(id: 10, description: 'No Entregado');
+    Option opt4 = Option(id: 7, description: 'Rechazado');
+    _listoptions.add(opt1);
+    _listoptions.add(opt2);
+    _listoptions.add(opt3);
+    _listoptions.add(opt4);
+
+    setState(() {
+      _showLoader = false;
+    });
+
+    _loadFieldValues();
+  }
+
+  void _loadFieldValues() {
+    _estado = widget.paradaenvio.estado!;
+    _optionMotivo = widget.paradaenvio.motivo!;
+    _observaciones = widget.paradaenvio.notas.toString();
+    _observacionesController.text = _observaciones;
+    _optionEstado = widget.paradaenvio.estado!;
+
+    // (_estado == 3)
+    //     ? _optionEstado = 1
+    //     : (_estado == 4)
+    //         ? _optionEstado = 2
+    //         : (_estado == 10)
+    //             ? _optionEstado = 3
+    //             : (_estado == 7)
+    //                 ? _optionEstado = 4
+    //                 : _optionEstado = -1;
+
+    _getComboEstados();
+  }
+
+  List<DropdownMenuItem<int>> _getComboEstados() {
+    _items = [];
+
+    List<DropdownMenuItem<int>> list = [];
+    list.add(DropdownMenuItem(
+      child: Text('Seleccione un Estado...'),
+      value: 0,
+    ));
+
+    _listoptions.forEach((_listoption) {
+      list.add(DropdownMenuItem(
+        child: Text(_listoption.description),
+        value: _listoption.id,
+      ));
+    });
+
+    _items = list;
+
+    return list;
   }
 }

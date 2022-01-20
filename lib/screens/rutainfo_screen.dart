@@ -1,4 +1,5 @@
 import 'package:fleetdeliveryapp/components/loader_component.dart';
+import 'package:fleetdeliveryapp/helpers/dbparadasenvios_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
 import 'package:fleetdeliveryapp/models/parada.dart';
@@ -42,24 +43,37 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       idRuta: 0,
       idEnvio: 0,
       secuencia: 0,
-      leyenda: "",
+      leyenda: '',
       latitud: 0,
       longitud: 0,
       idproveedor: 0,
       estado: 0,
-      ordenid: "",
-      titular: "",
-      dni: "",
-      domicilio: "",
-      cp: "",
-      entreCalles: "",
-      telefonos: "",
-      localidad: "",
+      ordenid: '',
+      titular: '',
+      dni: '',
+      domicilio: '',
+      cp: '',
+      entreCalles: '',
+      telefonos: '',
+      localidad: '',
       bultos: 0,
-      proveedor: "",
+      proveedor: '',
       motivo: 0,
+      motivodesc: '',
       notas: '',
-      enviado: 0);
+      enviado: 0,
+      fecha: '');
+
+  List<ParadaEnvio> _paradasenvios = [];
+  List<ParadaEnvio> _paradasenviosdb = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _llenarparadasenvios();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,12 +112,12 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   Widget _showParadasCount() {
     int pendientes = 0;
     int cumplidas = 0;
-    widget.paradasenvios.forEach((element) {
+    _paradasenvios.forEach((element) {
       if (element.estado == 3) {
         pendientes++;
       }
     });
-    cumplidas = widget.paradasenvios.length - pendientes;
+    cumplidas = _paradasenvios.length - pendientes;
 
     return Container(
       padding: EdgeInsets.all(10),
@@ -116,7 +130,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                 color: Color(0xff282886),
                 fontWeight: FontWeight.bold,
               )),
-          Text(widget.paradasenvios.length.toString(),
+          Text(_paradasenvios.length.toString(),
               style: TextStyle(
                 fontSize: 14,
                 color: Color(0xff282886),
@@ -147,7 +161,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   Widget _getListView() {
     return ListView(
-      children: widget.paradasenvios.map((e) {
+      children: _paradasenvios.map((e) {
         return Card(
           color: Colors.white60,
           shadowColor: Colors.white,
@@ -303,8 +317,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
-  void _goInfoParada(ParadaEnvio e) {
-    Navigator.push(
+  void _goInfoParada(ParadaEnvio e) async {
+    var result = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ParadaInfoScreen(
@@ -314,6 +328,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                 motivos: widget.motivos,
                 paradas: widget.paradas,
                 envios: widget.envios)));
+    if (result == 'yes' || result != 'yes') {
+      _llenarparadasenvios();
+    }
   }
 
   _navegar(e) {
@@ -342,7 +359,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   _navegartodos() {
     _markers.clear();
-    widget.paradasenvios.forEach((element) {
+    _paradasenvios.forEach((element) {
       _markers.add(Marker(
         markerId: MarkerId(element.secuencia.toString()),
         position:
@@ -361,8 +378,28 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             builder: (context) => ParadaMapScreen(
                   user: widget.user,
                   positionUser: widget.positionUser,
-                  paradaenvio: widget.paradasenvios[0],
+                  paradaenvio: _paradasenvios[0],
                   markers: _markers,
                 )));
+  }
+
+  void _llenarparadasenvios() async {
+    widget.paradasenvios.forEach((paradasenvio) {
+      _paradasenvios.add(paradasenvio);
+    });
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+
+    _paradasenvios.forEach((paradasenvio) {
+      _paradasenviosdb.forEach((paradasenviodb) {
+        if (paradasenvio.idParada == paradasenviodb.idParada) {
+          paradasenvio.estado = paradasenviodb.estado;
+          paradasenvio.motivo = paradasenviodb.motivo;
+          paradasenvio.motivodesc = paradasenviodb.motivodesc;
+          paradasenvio.notas = paradasenviodb.notas;
+          paradasenvio.fecha = paradasenviodb.fecha;
+        }
+      });
+    });
+    setState(() {});
   }
 }

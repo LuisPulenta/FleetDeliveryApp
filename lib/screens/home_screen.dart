@@ -56,6 +56,32 @@ class _HomeScreenState extends State<HomeScreen>
   List<Motivo> _motivos = [];
   List<ParadaEnvio> _paradasenviosdb = [];
 
+  ParadaEnvio paradaenvioSelected = ParadaEnvio(
+      idParada: 0,
+      idRuta: 0,
+      idEnvio: 0,
+      secuencia: 0,
+      leyenda: '',
+      latitud: 0,
+      longitud: 0,
+      idproveedor: 0,
+      estado: 0,
+      ordenid: '',
+      titular: '',
+      dni: '',
+      domicilio: '',
+      cp: '',
+      entreCalles: '',
+      telefonos: '',
+      localidad: '',
+      bultos: 0,
+      proveedor: '',
+      motivo: 0,
+      motivodesc: '',
+      notas: '',
+      enviado: 0,
+      fecha: '');
+
   bool _habilitaPosicion = false;
   Position _positionUser = Position(
       longitude: 0,
@@ -151,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen>
                       backgroundColor: Color(0xff282886),
                     ),
                     Center(
-                      child: Text("Hoja 2"),
+                      child: _getContent(),
                     ),
                   ],
                 ),
@@ -563,6 +589,15 @@ class _HomeScreenState extends State<HomeScreen>
                   positionUser: _positionUser,
                   motivos: _motivos,
                 )));
+    if (result == 'yes' || result != 'yes') {
+      setState(() {
+        _showLoader = true;
+      });
+      await _actualizaParadasEnvios();
+      setState(() {
+        _showLoader = false;
+      });
+    }
   }
 
 //***************************************************************
@@ -735,8 +770,10 @@ class _HomeScreenState extends State<HomeScreen>
           bultos: filteredEnvio.bultos,
           proveedor: _proveedorselected,
           motivo: 0,
+          motivodesc: '',
           notas: '',
-          enviado: 0);
+          enviado: 0,
+          fecha: '');
 
       _paradasenvios.add(paradaEnvio);
     });
@@ -919,6 +956,203 @@ class _HomeScreenState extends State<HomeScreen>
 
     setState(() {
       _showLoader = false;
+    });
+  }
+
+  Widget _getContent() {
+    return _paradasenviosdb.length == 0 ? _noContent2() : _getListView();
+  }
+
+  Widget _noContent2() {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.all(20),
+        child: Text(
+          'No hay paradas completadas',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _getListView() {
+    return Container(
+      height: 550,
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        children: _paradasenviosdb.map((e) {
+          return Card(
+            color: Colors.white,
+            shadowColor: Colors.white,
+            elevation: 10,
+            margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+            child: InkWell(
+              onTap: () {
+                paradaenvioSelected = e;
+              },
+              child: Container(
+                margin: EdgeInsets.all(0),
+                padding: EdgeInsets.all(0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            e.enviado == 1
+                                ? Icon(Icons.done_all, color: Colors.green)
+                                : e.enviado == 0
+                                    ? Icon(Icons.done, color: Colors.grey)
+                                    : Icon(Icons.done, color: Colors.red),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Ruta: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Text("Parada: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Text("Envío: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(e.idRuta.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                                Text(e.idParada.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                                Text(e.idEnvio.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Fecha: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Text("",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Text("",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                    '${DateFormat('dd/MM/yyyy').format(DateTime.parse(e.fecha!))}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                                Text("",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                (e.estado == 4)
+                                    ? Text(
+                                        "ENTREGADO",
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : (e.estado == 10)
+                                        ? Text(
+                                            "NO ENTREGADO",
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        : (e.estado == 7)
+                                            ? Text(
+                                                "RECHAZADO",
+                                                style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            : Text(
+                                                "PENDIENTE",
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Future<void> _actualizaParadasEnvios() async {
+    return Future.delayed(Duration(seconds: 1), () async {
+      _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+      _paradasenviosdb.forEach((paradaenvio) {
+        if (DateTime.parse(paradaenvio.fecha!)
+                .isBefore(DateTime.now().add(Duration(days: -7))) &&
+            paradaenvio.enviado != 0) {
+          DBParadasEnvios.delete(paradaenvio);
+        }
+      });
+
+      _paradasenviosdb = await DBParadasEnvios.paradasenvios();
     });
   }
 }

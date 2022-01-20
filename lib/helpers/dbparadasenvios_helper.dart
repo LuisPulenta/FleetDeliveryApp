@@ -4,10 +4,10 @@ import 'package:path/path.dart';
 
 class DBParadasEnvios {
   static Future<Database> _openDBParadasEnvios() async {
-    return openDatabase(join(await getDatabasesPath(), 'paradas.db'),
+    return openDatabase(join(await getDatabasesPath(), 'paradasenvios.db'),
         onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE paradas(idParada INTEGER,idRuta INTEGER,idEnvio INTEGER,secuencia INTEGER,leyenda TEXT,latitud DOUBLE,longitud DOUBLE,idproveedor INTEGER,estado INTEGER,ordenid TEXT,titular TEXT,dni TEXT,domicilio TEXT,cp TEXT,entreCalles TEXT,telefonos TEXT,localidad TEXT, bultos INTEGER, proveedor TEXT,motivo INTEGER,notas TEXT,enviado INTEGER)",
+        "CREATE TABLE paradasenvios(idParada INTEGER,idRuta INTEGER,idEnvio INTEGER,secuencia INTEGER,leyenda TEXT,latitud DOUBLE,longitud DOUBLE,idproveedor INTEGER,estado INTEGER,ordenid TEXT,titular TEXT,dni TEXT,domicilio TEXT,cp TEXT,entreCalles TEXT,telefonos TEXT,localidad TEXT, bultos INTEGER, proveedor TEXT,motivo INTEGER, motivodesc TEXT,notas TEXT,enviado INTEGER, fecha TEXT)",
       );
     }, version: 1);
   }
@@ -17,7 +17,13 @@ class DBParadasEnvios {
     return database.insert("paradasenvios", paradaenvio.toMap());
   }
 
-  static Future<int> delete() async {
+  static Future<int> delete(ParadaEnvio paradaenvio) async {
+    Database database = await _openDBParadasEnvios();
+    return database.delete("paradasenvios",
+        where: "idParada = ?", whereArgs: [paradaenvio.idParada]);
+  }
+
+  static Future<int> deleteall() async {
     Database database = await _openDBParadasEnvios();
     return database.delete("paradasenvios");
   }
@@ -49,8 +55,10 @@ class DBParadasEnvios {
               bultos: paradasenviosMap[i]['bultos'],
               proveedor: paradasenviosMap[i]['proveedor'],
               motivo: paradasenviosMap[i]['motivo'],
+              motivodesc: paradasenviosMap[i]['motivodesc'],
               notas: paradasenviosMap[i]['notas'],
               enviado: paradasenviosMap[i]['enviado'],
+              fecha: paradasenviosMap[i]['fecha'],
             ));
   }
 }
