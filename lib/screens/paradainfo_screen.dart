@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbparadasenvios_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
@@ -17,6 +18,7 @@ import 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
@@ -88,81 +90,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       idCabCertificacion: 0,
       idLiquidacionFletero: 0,
       turno: '');
-
-  Envio envioSelected = Envio(
-      idEnvio: 0,
-      idproveedor: 0,
-      agencianr: 0,
-      estado: 0,
-      envia: '',
-      ruta: '',
-      ordenid: '',
-      fecha: 0,
-      hora: '',
-      imei: '',
-      transporte: '',
-      contrato: '',
-      titular: '',
-      dni: '',
-      domicilio: '',
-      cp: '',
-      latitud: 0,
-      longitud: 0,
-      autorizado: '',
-      observaciones: '',
-      idCabCertificacion: 0,
-      idRemitoProveedor: 0,
-      idSubconUsrWeb: 0,
-      fechaAlta: '',
-      fechaEnvio: '',
-      fechaDistribucion: '',
-      entreCalles: '',
-      mail: '',
-      telefonos: '',
-      localidad: '',
-      tag: 0,
-      provincia: '',
-      fechaEntregaCliente: '',
-      scaneadoIn: '',
-      scaneadoOut: '',
-      ingresoDeposito: 0,
-      salidaDistribucion: 0,
-      idRuta: 0,
-      nroSecuencia: 0,
-      fechaHoraOptimoCamino: '',
-      bultos: 0,
-      peso: '',
-      alto: '',
-      ancho: '',
-      largo: '',
-      idComprobante: 0,
-      enviarMailSegunEstado: '',
-      fechaRuta: '',
-      ordenIDparaOC: '',
-      hashUnico: '',
-      bultosPikeados: 0,
-      centroDistribucion: '',
-      fechaUltimaActualizacion: '',
-      volumen: '',
-      avonZoneNumber: 0,
-      avonSectorNumber: 0,
-      avonAccountNumber: '',
-      avonCampaignNumber: 0,
-      avonCampaignYear: 0,
-      domicilioCorregido: '',
-      domicilioCorregidoUsando: 0,
-      urlFirma: '',
-      urlDNI: '',
-      ultimoIdMotivo: 0,
-      ultimaNotaFletero: '',
-      idComprobanteDevolucion: 0,
-      turno: '',
-      barrioEntrega: '',
-      partidoEntrega: '',
-      avonDayRoute: 0,
-      avonTravelRoute: 0,
-      avonSecuenceRoute: 0,
-      avonInformarInclusion: 0);
 
   LatLng _center = LatLng(0, 0);
   final Set<Marker> _markers = {};
@@ -908,30 +835,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
   void _saveRecord() async {
     _guardaParadaEnBDLocal();
-
-    _paradasenvios = await DBParadasEnvios.paradasenvios();
-
-    _paradasenvios.forEach((paradaenvio) {
-      if (DateTime.parse(paradaenvio.fecha!)
-              .isBefore(DateTime.now().add(Duration(days: -7))) &&
-          paradaenvio.enviado != 0) {
-        DBParadasEnvios.delete(paradaenvio);
-      }
-    });
-
-    var connectivityResult = await Connectivity().checkConnectivity();
-
-    if (connectivityResult != ConnectivityResult.none) {
-      _paradasenvios.forEach((paradaenvio) {
-        if (paradaenvio.enviado == 0) {
-          _putParada();
-          _putEnvio();
-          _postSeguimiento();
-          _ponerEnviado1();
-        }
-      });
-    }
-
     Navigator.pop(context, 'yes');
   }
 
@@ -971,14 +874,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
   }
 
-  void _putParada() {}
-
-  void _putEnvio() {}
-
-  void _postSeguimiento() {}
-
-  void _ponerEnviado1() {}
-
   void _getlistOptions() {
     setState(() {
       _showLoader = true;
@@ -1009,16 +904,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     _observaciones = widget.paradaenvio.notas.toString();
     _observacionesController.text = _observaciones;
     _optionEstado = widget.paradaenvio.estado!;
-
-    // (_estado == 3)
-    //     ? _optionEstado = 1
-    //     : (_estado == 4)
-    //         ? _optionEstado = 2
-    //         : (_estado == 10)
-    //             ? _optionEstado = 3
-    //             : (_estado == 7)
-    //                 ? _optionEstado = 4
-    //                 : _optionEstado = -1;
 
     _getComboEstados();
   }

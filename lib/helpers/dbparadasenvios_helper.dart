@@ -23,6 +23,12 @@ class DBParadasEnvios {
         where: "idParada = ?", whereArgs: [paradaenvio.idParada]);
   }
 
+  static Future<int> update(ParadaEnvio paradaenvio) async {
+    Database database = await _openDBParadasEnvios();
+    return database.update("paradasenvios", paradaenvio.toMap(),
+        where: "idParada = ?", whereArgs: [paradaenvio.idParada]);
+  }
+
   static Future<int> deleteall() async {
     Database database = await _openDBParadasEnvios();
     return database.delete("paradasenvios");

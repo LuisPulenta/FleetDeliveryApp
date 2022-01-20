@@ -82,6 +82,11 @@ class _HomeScreenState extends State<HomeScreen>
       enviado: 0,
       fecha: '');
 
+  String _password = '';
+  String _result2 = "no";
+  String _passwordError = '';
+  bool _passwordShowError = false;
+  bool _passwordShow = false;
   bool _habilitaPosicion = false;
   Position _positionUser = Position(
       longitude: 0,
@@ -315,6 +320,37 @@ class _HomeScreenState extends State<HomeScreen>
                               ),
                             ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        ElevatedButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.delete),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text('BORRAR MEDICIONES LOCALES'),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.red,
+                            minimumSize: Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          onPressed: () async {
+                            _password = '';
+                            _result2 = "no";
+                            await _borrarMedicionesLocales();
+                            if (_result2 == 'yes') {
+                              await _borrarMedicionesLocales();
+                            }
+                            setState(() {});
+                          },
                         ),
                         SizedBox(
                           height: 25,
@@ -1154,5 +1190,133 @@ class _HomeScreenState extends State<HomeScreen>
 
       _paradasenviosdb = await DBParadasEnvios.paradasenvios();
     });
+  }
+
+  _borrarMedicionesLocales() async {
+    await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      "Atención!!",
+                      style: TextStyle(color: Colors.red, fontSize: 20),
+                    ),
+                  ],
+                ),
+                content: SizedBox(
+                  height: 150,
+                  child: Column(
+                    children: [
+                      Text(
+                        "Para borrar las mediciones locales de su Usuario debe escribir su contraseña",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      Text(""),
+                      TextField(
+                        obscureText: !_passwordShow,
+                        decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: 'Contraseña...',
+                            labelText: 'Contraseña',
+                            errorText:
+                                _passwordShowError ? _passwordError : null,
+                            prefixIcon: Icon(Icons.lock),
+                            suffixIcon: IconButton(
+                              icon: _passwordShow
+                                  ? Icon(Icons.visibility)
+                                  : Icon(Icons.visibility_off),
+                              onPressed: () {
+                                setState(() {
+                                  _passwordShow = !_passwordShow;
+                                });
+                              },
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onChanged: (value) {
+                          _password = value;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  ElevatedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.delete),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('BORRAR'),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      minimumSize: Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {
+                      if (_password.toLowerCase() !=
+                          widget.user.usrcontrasena!.toLowerCase()) {
+                        _passwordShowError = true;
+                        _passwordError = 'Contraseña incorrecta';
+                        setState(() {});
+                      } else {
+                        _paradasenviosdb.forEach((element) {
+                          DBParadasEnvios.delete(element);
+                        });
+                        _paradasenviosdb = [];
+                        setState(() {});
+                        _result2 = "yes";
+                        Navigator.pop(context, 'yes');
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.cancel),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('CANCELAR'),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF9a6a2e),
+                      minimumSize: Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {
+                      _passwordShowError = false;
+                      setState(() {});
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+                shape: Border.all(
+                    color: Colors.red, width: 5, style: BorderStyle.solid),
+                backgroundColor: Colors.white,
+              );
+            },
+          );
+        });
   }
 }
