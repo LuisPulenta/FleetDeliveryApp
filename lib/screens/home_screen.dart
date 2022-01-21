@@ -131,9 +131,8 @@ class _HomeScreenState extends State<HomeScreen>
     _user = widget.user;
     _tabController = TabController(length: 3, vsync: this);
     _getprefs();
-    _getProveedores();
-    //_getRutas();
     _getPosition();
+    _getProveedores();
   }
 
   @override
@@ -640,9 +639,6 @@ class _HomeScreenState extends State<HomeScreen>
 //************************* RUTAS *******************************
 //***************************************************************
   Future<Null> _getRutas() async {
-    setState(() {
-      _showLoader = true;
-    });
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
@@ -905,6 +901,10 @@ class _HomeScreenState extends State<HomeScreen>
 //************************* PROVEEDORES *************************
 //***************************************************************
   Future<Null> _getProveedores() async {
+    setState(() {
+      _showLoader = true;
+    });
+
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
@@ -933,12 +933,6 @@ class _HomeScreenState extends State<HomeScreen>
       _insertProveedores();
     }
     _proveedores = await DBProveedores.proveedores();
-
-    // if (_baterias.length > 0) {
-    //   setState(() {
-    //     _colorBaterias = Colors.green;
-    //   });
-    // }
 
     _getRutas();
   }

@@ -5,6 +5,7 @@ import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbparadasenvios_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
+import 'package:fleetdeliveryapp/models/nroregmax.dart';
 import 'package:fleetdeliveryapp/models/parada.dart';
 import 'package:fleetdeliveryapp/models/paradaenvio.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
@@ -169,6 +170,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   List<ParadaEnvio> _paradasenvios = [];
   List<ParadaEnvio> _paradasenviosdb = [];
+
+  int _nroReg = 0;
 
   @override
   void initState() {
@@ -685,12 +688,20 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   }
 
   void _postSeguimiento(ParadaEnvio paradaenvio) async {
+    int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
+
+    Response response2 = await ApiHelper.getNroRegistroMax();
+    if (response2.isSuccess) {
+      _nroReg = int.parse(response2.result.toString()) + 1;
+    }
+
     Map<String, dynamic> requestSeguimiento = {
+      'id': _nroReg,
       'idenvio': paradaenvio.idEnvio,
       'idetapa': paradaenvio.estado,
       'estado': paradaenvio.estado,
       'idusuario': widget.user.idUser,
-      'fecha': 80000, //int.parse(DateTime.now().toString()) + 36161,
+      'fecha': fec,
       'hora': DateFormat('HH:mm').format(DateTime.now()),
       'observaciones': 'Informada x Ws App',
       'motivo': paradaenvio.motivodesc,

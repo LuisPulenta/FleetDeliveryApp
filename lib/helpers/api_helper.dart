@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
+import 'package:fleetdeliveryapp/models/nroregmax.dart';
 import 'package:fleetdeliveryapp/models/parada.dart';
 import 'package:fleetdeliveryapp/models/proveedor.dart';
 import 'package:fleetdeliveryapp/models/ruta.dart';
@@ -163,5 +164,26 @@ class ApiHelper {
       }
     }
     return Response(isSuccess: true, result: list);
+  }
+
+  static Future<Response> getNroRegistroMax() async {
+    var url =
+        Uri.parse('${Constants.apiUrl}/api/Seguimientos/GetNroRegistroMax');
+    var response = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    var decodedJson = jsonDecode(body);
+
+    return Response(isSuccess: true, result: decodedJson);
   }
 }

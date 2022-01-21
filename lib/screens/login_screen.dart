@@ -330,33 +330,33 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _showLoader = true;
     });
-    var connectivityResult = await Connectivity().checkConnectivity();
+    //   var connectivityResult = await Connectivity().checkConnectivity();
 
-    if (connectivityResult != ConnectivityResult.none) {
-      Response response = await ApiHelper.getUsuarios();
+    //   if (connectivityResult != ConnectivityResult.none) {
+    //     Response response = await ApiHelper.getUsuarios();
 
-      if (response.isSuccess) {
-        _usuariosApi = response.result;
-        _hayInternet = true;
-      }
-    }
-    _getTablaUsuarios();
-    return;
-  }
+    //     if (response.isSuccess) {
+    //       _usuariosApi = response.result;
+    //       _hayInternet = true;
+    //     }
+    //   }
+    //   _getTablaUsuarios();
+    //   return;
+    // }
 
-  void _getTablaUsuarios() async {
-    void _insertUsuarios() async {
-      if (_usuariosApi.length > 0) {
-        DBUsuarios.delete();
-        _usuariosApi.forEach((element) {
-          DBUsuarios.insertUsuario(element);
-        });
-      }
-    }
+    // void _getTablaUsuarios() async {
+    //   void _insertUsuarios() async {
+    //     if (_usuariosApi.length > 0) {
+    //       DBUsuarios.delete();
+    //       _usuariosApi.forEach((element) {
+    //         DBUsuarios.insertUsuario(element);
+    //       });
+    //     }
+    //   }
 
-    if (_hayInternet) {
-      _insertUsuarios();
-    }
+    //   if (_hayInternet) {
+    //     _insertUsuarios();
+    //   }
 
     _usuarios = await DBUsuarios.usuarios();
 
