@@ -27,9 +27,7 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
 
 class HomeScreen extends StatefulWidget {
   final Usuario user;
@@ -44,17 +42,61 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   @override
   TabController? _tabController;
+
+//*****************************************************************************
+//************************** DEFINICION DE VARIABLES **************************
+//*****************************************************************************
+
   List<Ruta> _rutasApi = [];
   List<RutaCab> _rutas = [];
+
   List<Parada> _paradas = [];
   List<Envio> _envios = [];
+
   List<ParadaEnvio> _paradasenvios = [];
   List<ParadaEnvio> _paradasenviosselected = [];
+
+  List<ParadaEnvio> _paradasenviosdb = [];
+
   List<Proveedor> _proveedoresApi = [];
   List<Proveedor> _proveedores = [];
+
   List<Motivo> _motivosApi = [];
   List<Motivo> _motivos = [];
-  List<ParadaEnvio> _paradasenviosdb = [];
+
+  int _nroReg = 0;
+
+  String _password = '';
+  String _passwordError = '';
+  bool _passwordShowError = false;
+  bool _passwordShow = false;
+
+  String _result2 = "no";
+
+  bool _hayInternet = false;
+  bool _showLoader = false;
+
+  String _proveedorselected = '';
+
+  String _conectadodesde = '';
+  String _validohasta = '';
+  String _ultimaactualizacion = '';
+
+  RutaCab rutaSelected =
+      RutaCab(idRuta: 0, idUser: 0, fechaAlta: '', nombre: '', estado: 0);
+
+  Usuario _user = Usuario(
+      idUser: 0,
+      codigo: '',
+      apellidonombre: '',
+      usrlogin: '',
+      usrcontrasena: '',
+      habilitadoWeb: 0,
+      vehiculo: '',
+      dominio: '',
+      celular: '',
+      orden: 0,
+      centroDistribucion: 0);
 
   ParadaEnvio paradaenvioSelected = ParadaEnvio(
       idParada: 0,
@@ -82,12 +124,104 @@ class _HomeScreenState extends State<HomeScreen>
       enviado: 0,
       fecha: '');
 
-  String _password = '';
-  String _result2 = "no";
-  String _passwordError = '';
-  bool _passwordShowError = false;
-  bool _passwordShow = false;
-  bool _habilitaPosicion = false;
+  Parada paradaSelected = Parada(
+      idParada: 0,
+      idRuta: 0,
+      idEnvio: 0,
+      tag: 0,
+      secuencia: 0,
+      leyenda: '',
+      latitud: 0,
+      longitud: 0,
+      iconoPropio: '',
+      iDmapa: '',
+      distancia: 0,
+      tiempo: 0,
+      estado: 0,
+      fecha: '',
+      hora: '',
+      idMotivo: 0,
+      notaChofer: '',
+      nuevoOrden: 0,
+      idCabCertificacion: 0,
+      idLiquidacionFletero: 0,
+      turno: '');
+
+  Envio envioSelected = Envio(
+      idEnvio: 0,
+      idproveedor: 0,
+      agencianr: 0,
+      estado: 0,
+      envia: '',
+      ruta: '',
+      ordenid: '',
+      fecha: 0,
+      hora: '',
+      imei: '',
+      transporte: '',
+      contrato: '',
+      titular: '',
+      dni: '',
+      domicilio: '',
+      cp: '',
+      latitud: 0,
+      longitud: 0,
+      autorizado: '',
+      observaciones: '',
+      idCabCertificacion: 0,
+      idRemitoProveedor: 0,
+      idSubconUsrWeb: 0,
+      fechaAlta: '',
+      fechaEnvio: '',
+      fechaDistribucion: '',
+      entreCalles: '',
+      mail: '',
+      telefonos: '',
+      localidad: '',
+      tag: 0,
+      provincia: '',
+      fechaEntregaCliente: '',
+      scaneadoIn: '',
+      scaneadoOut: '',
+      ingresoDeposito: 0,
+      salidaDistribucion: 0,
+      idRuta: 0,
+      nroSecuencia: 0,
+      fechaHoraOptimoCamino: '',
+      bultos: 0,
+      peso: '',
+      alto: '',
+      ancho: '',
+      largo: '',
+      idComprobante: 0,
+      enviarMailSegunEstado: '',
+      fechaRuta: '',
+      ordenIDparaOC: '',
+      hashUnico: '',
+      bultosPikeados: 0,
+      centroDistribucion: '',
+      fechaUltimaActualizacion: '',
+      volumen: '',
+      avonZoneNumber: 0,
+      avonSectorNumber: 0,
+      avonAccountNumber: '',
+      avonCampaignNumber: 0,
+      avonCampaignYear: 0,
+      domicilioCorregido: '',
+      domicilioCorregidoUsando: 0,
+      urlFirma: '',
+      urlDNI: '',
+      ultimoIdMotivo: 0,
+      ultimaNotaFletero: '',
+      idComprobanteDevolucion: 0,
+      turno: '',
+      barrioEntrega: '',
+      partidoEntrega: '',
+      avonDayRoute: 0,
+      avonTravelRoute: 0,
+      avonSecuenceRoute: 0,
+      avonInformarInclusion: 0);
+
   Position _positionUser = Position(
       longitude: 0,
       latitude: 0,
@@ -98,35 +232,12 @@ class _HomeScreenState extends State<HomeScreen>
       speed: 0,
       speedAccuracy: 0);
 
-  bool _hayInternet = false;
-  Usuario _user = Usuario(
-      idUser: 0,
-      codigo: '',
-      apellidonombre: '',
-      usrlogin: '',
-      usrcontrasena: '',
-      habilitadoWeb: 0,
-      vehiculo: '',
-      dominio: '',
-      celular: '',
-      orden: 0,
-      centroDistribucion: 0);
-
-  RutaCab rutaSelected =
-      new RutaCab(idRuta: 0, idUser: 0, fechaAlta: '', nombre: '', estado: 0);
-
-  String _proveedorselected = '';
-
-  bool _showLoader = false;
-  String _conectadodesde = '';
-  String _validohasta = '';
-  String _ultimaactualizacion = '';
-
-  String Titulo = "Delivery";
+//*****************************************************************************
+//************************** INIT STATE ***************************************
+//*****************************************************************************
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _user = widget.user;
     _tabController = TabController(length: 3, vsync: this);
@@ -134,6 +245,10 @@ class _HomeScreenState extends State<HomeScreen>
     _getPosition();
     _getProveedores();
   }
+
+//*****************************************************************************
+//************************** PANTALLA *****************************************
+//*****************************************************************************
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +276,9 @@ class _HomeScreenState extends State<HomeScreen>
               physics: AlwaysScrollableScrollPhysics(),
               dragStartBehavior: DragStartBehavior.start,
               children: <Widget>[
+//-------------------------------------------------------------------------
+//-------------------------- 1° TABBAR ------------------------------------
+//-------------------------------------------------------------------------
                 Column(
                   children: <Widget>[
                     AppBar(
@@ -173,6 +291,9 @@ class _HomeScreenState extends State<HomeScreen>
                     )
                   ],
                 ),
+//-------------------------------------------------------------------------
+//-------------------------- 2° TABBAR ------------------------------------
+//-------------------------------------------------------------------------
                 Column(
                   children: [
                     AppBar(
@@ -185,221 +306,230 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ],
                 ),
-                Column(
-                  children: [
-                    AppBar(
-                      title: (Text("Usuario")),
-                      centerTitle: true,
-                      backgroundColor: Color(0xff282886),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(children: [
-                        Center(
-                          child: Text(
-                            _user.usrlogin!.toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Center(
-                          child: Text(
-                            _user.apellidonombre!,
-                            style: TextStyle(
-                              fontSize: 25,
+//-------------------------------------------------------------------------
+//-------------------------- 3° TABBAR ------------------------------------
+//-------------------------------------------------------------------------
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      AppBar(
+                        title: (Text("Usuario")),
+                        centerTitle: true,
+                        backgroundColor: Color(0xff282886),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(children: [
+                          Center(
+                            child: Text(
+                              _user.usrlogin!.toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              child: Text(
-                                "Conectado desde:",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                          Center(
+                            child: Text(
+                              _user.apellidonombre!,
+                              style: TextStyle(
+                                fontSize: 25,
                               ),
                             ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              child: Text(
-                                _conectadodesde == ''
-                                    ? ''
-                                    : '${DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(_conectadodesde))}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              child: Text(
-                                "Válido hasta:",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              child: Text(
-                                _validohasta == ''
-                                    ? ''
-                                    : '${DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(_validohasta))}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              child: Text(
-                                "Ultima actualización de Usuarios:",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              child: Text(
-                                _ultimaactualizacion == ''
-                                    ? ''
-                                    : '${DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(_ultimaactualizacion))}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              child: Text(
-                                "Versión:",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              child: Text(
-                                Constants.version,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        ElevatedButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
                             children: [
-                              Icon(Icons.delete),
-                              SizedBox(
-                                width: 15,
+                              Container(
+                                child: Text(
+                                  "Conectado desde:",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
-                              Text('BORRAR MEDICIONES LOCALES'),
                             ],
                           ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                            minimumSize: Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
+                          Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                  _conectadodesde == ''
+                                      ? ''
+                                      : '${DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(_conectadodesde))}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          onPressed: () async {
-                            _password = '';
-                            _result2 = "no";
-                            await _borrarMedicionesLocales();
-                            if (_result2 == 'yes') {
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                  "Válido hasta:",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                  _validohasta == ''
+                                      ? ''
+                                      : '${DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(_validohasta))}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                  "Ultima actualización de Usuarios:",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                  _ultimaactualizacion == ''
+                                      ? ''
+                                      : '${DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(_ultimaactualizacion))}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                  "Versión:",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                  Constants.version,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 25,
+                          ),
+                          ElevatedButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.delete),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text('BORRAR MEDICIONES LOCALES'),
+                              ],
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              minimumSize: Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () async {
+                              _password = '';
+                              _result2 = "no";
                               await _borrarMedicionesLocales();
-                            }
-                            setState(() {});
-                          },
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        ElevatedButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.keyboard),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text('CONTACTO KEYPRESS'),
-                            ],
+                              if (_result2 == 'yes') {
+                                await _borrarMedicionesLocales();
+                              }
+                              setState(() {});
+                            },
                           ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xff282886),
-                            minimumSize: Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                          SizedBox(
+                            height: 25,
+                          ),
+                          ElevatedButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.keyboard),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text('CONTACTO KEYPRESS'),
+                              ],
                             ),
-                          ),
-                          onPressed: () => _contacto(),
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        ElevatedButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.exit_to_app),
-                              SizedBox(
-                                width: 15,
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xff282886),
+                              minimumSize: Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                              Text('CERRAR SESION'),
-                            ],
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xff282886),
-                            minimumSize: Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
                             ),
+                            onPressed: () => _contacto(),
                           ),
-                          onPressed: () => _logOut(),
-                        ),
-                      ]),
-                    ),
-                  ],
+                          SizedBox(
+                            height: 25,
+                          ),
+                          ElevatedButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.exit_to_app),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text('CERRAR SESION'),
+                              ],
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xff282886),
+                              minimumSize: Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () => _logOut(),
+                          ),
+                        ]),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -414,13 +544,9 @@ class _HomeScreenState extends State<HomeScreen>
       bottomNavigationBar: BottomAppBar(
         child: TabBar(
             controller: _tabController,
-            // indicator: BoxDecoration(
-            //     color: Colors.orange,
-            //     border: Border.all(width: 5, color: Colors.yellow)),
             indicatorColor: Color(0xff282886),
             indicatorSize: TabBarIndicatorSize.tab,
             indicatorWeight: 5,
-            // isScrollable: false,
             labelColor: Color(0xff282886),
             unselectedLabelColor: Colors.grey,
             labelPadding: EdgeInsets.all(10),
@@ -472,22 +598,9 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  void _logOut() async {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
-  }
-
-  void _contacto() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ContactoScreen()));
-  }
-
-  void _getprefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _conectadodesde = prefs.getString('conectadodesde').toString();
-    _validohasta = prefs.getString('validohasta').toString();
-    _ultimaactualizacion = prefs.getString('ultimaactualizacion').toString();
-  }
+//-------------------------------------------------------------------------
+//-------------------------- METODO NO CONTENT ----------------------------
+//-------------------------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -503,6 +616,10 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO SHOWRUTAS -----------------------------
+//-------------------------------------------------------------------------
 
   Widget _showRutas() {
     return ListView(
@@ -603,6 +720,216 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+//-------------------------------------------------------------------------
+//-------------------------- METODO GETCONTENT ----------------------------
+//-------------------------------------------------------------------------
+
+  Widget _getContent() {
+    return _paradasenviosdb.length == 0 ? _noContent2() : _getListView();
+  }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO NOCONTENT2 ----------------------------
+//-------------------------------------------------------------------------
+
+  Widget _noContent2() {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.all(20),
+        child: Text(
+          'No hay paradas completadas',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO GETLISTVIEW ---------------------------
+//-------------------------------------------------------------------------
+
+  Widget _getListView() {
+    return Container(
+      height: 550,
+      child: RefreshIndicator(
+        onRefresh: _llenarparadasenvios,
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: _paradasenviosdb.map((e) {
+            return Card(
+              color: Colors.white,
+              shadowColor: Colors.white,
+              elevation: 10,
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+              child: InkWell(
+                onTap: () {
+                  paradaenvioSelected = e;
+                },
+                child: Container(
+                  margin: EdgeInsets.all(0),
+                  padding: EdgeInsets.all(0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              e.enviado == 1
+                                  ? Icon(Icons.done_all, color: Colors.green)
+                                  : e.enviado == 0
+                                      ? Icon(Icons.done, color: Colors.grey)
+                                      : Icon(Icons.done, color: Colors.red),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text("Ruta: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  Text("Parada: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  Text("Envío: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(e.idRuta.toString(),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                  Text(e.idParada.toString(),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                  Text(e.idEnvio.toString(),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text("Fecha: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  Text("",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  Text("",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                      '${DateFormat('dd/MM/yyyy').format(DateTime.parse(e.fecha!))}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                  Text("",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  (e.estado == 4)
+                                      ? Text(
+                                          "ENTREGADO",
+                                          style: TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : (e.estado == 10)
+                                          ? Text(
+                                              "NO ENTREGADO",
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold),
+                                            )
+                                          : (e.estado == 7)
+                                              ? Text(
+                                                  "RECHAZADO",
+                                                  style: TextStyle(
+                                                      color: Colors.purple,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              : Text(
+                                                  "PENDIENTE",
+                                                  style: TextStyle(
+                                                      color: Colors.blue,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO CONTACTO ------------------------------
+//-------------------------------------------------------------------------
+
+  void _contacto() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ContactoScreen()));
+  }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO GOINFORUTA ----------------------------
+//-------------------------------------------------------------------------
+
   void _goInfoRuta(RutaCab ruta) async {
     _paradasenviosselected = [];
     _paradasenvios.forEach((element) {
@@ -629,15 +956,149 @@ class _HomeScreenState extends State<HomeScreen>
         _showLoader = true;
       });
       await _actualizaParadasEnvios();
+      await _llenarparadasenvios();
       setState(() {
         _showLoader = false;
       });
     }
   }
 
-//***************************************************************
-//************************* RUTAS *******************************
-//***************************************************************
+//*****************************************************************************
+//************************** METODO GETPREFS **********************************
+//*****************************************************************************
+
+  void _getprefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _conectadodesde = prefs.getString('conectadodesde').toString();
+    _validohasta = prefs.getString('validohasta').toString();
+    _ultimaactualizacion = prefs.getString('ultimaactualizacion').toString();
+  }
+
+//*****************************************************************************
+//************************** METODO GETPOSITION **********************************
+//*****************************************************************************
+
+  Future _getPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                title: Text('Aviso'),
+                content:
+                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  Text('El permiso de localización está negado.'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ]),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Ok')),
+                ],
+              );
+            });
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: Text('Aviso'),
+              content:
+                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                Text(
+                    'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
+                SizedBox(
+                  height: 10,
+                ),
+              ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('Ok')),
+              ],
+            );
+          });
+      return;
+    }
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      _positionUser = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+    }
+  }
+
+//*****************************************************************************
+//************************** METODO LOGOUT ************************************
+//*****************************************************************************
+
+  void _logOut() async {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
+//*****************************************************************************
+//************************* PROVEEDORES ***************************************
+//*****************************************************************************
+
+  Future<Null> _getProveedores() async {
+    setState(() {
+      _showLoader = true;
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      Response response = await ApiHelper.getProveedores();
+
+      if (response.isSuccess) {
+        _proveedoresApi = response.result;
+        _hayInternet = true;
+      }
+    }
+    _getTablaProveedores();
+    //return;
+  }
+
+  void _getTablaProveedores() async {
+    void _insertProveedores() async {
+      if (_proveedoresApi.length > 0) {
+        DBProveedores.delete();
+        _proveedoresApi.forEach((element) {
+          DBProveedores.insertProveedor(element);
+        });
+      }
+    }
+
+    if (_hayInternet) {
+      _insertProveedores();
+    }
+    _proveedores = await DBProveedores.proveedores();
+
+    _getRutas();
+  }
+
+//*****************************************************************************
+//************************* RUTAS *********************************************
+//*****************************************************************************
   Future<Null> _getRutas() async {
     var connectivityResult = await Connectivity().checkConnectivity();
 
@@ -829,117 +1290,10 @@ class _HomeScreenState extends State<HomeScreen>
     _getMotivos();
   }
 
-  Future _getPosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                title: Text('Aviso'),
-                content:
-                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  Text('El permiso de localización está negado.'),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ]),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text('Ok')),
-                ],
-              );
-            });
-        return;
-      }
-    }
+//*****************************************************************************
+//************************* MOTIVOS *******************************************
+//*****************************************************************************
 
-    if (permission == LocationPermission.deniedForever) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: Text('Aviso'),
-              content:
-                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                Text(
-                    'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
-                SizedBox(
-                  height: 10,
-                ),
-              ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text('Ok')),
-              ],
-            );
-          });
-      return;
-    }
-
-    _habilitaPosicion = true;
-    _positionUser = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-        _positionUser.latitude, _positionUser.longitude);
-  }
-
-//***************************************************************
-//************************* PROVEEDORES *************************
-//***************************************************************
-  Future<Null> _getProveedores() async {
-    setState(() {
-      _showLoader = true;
-    });
-
-    var connectivityResult = await Connectivity().checkConnectivity();
-
-    if (connectivityResult != ConnectivityResult.none) {
-      Response response = await ApiHelper.getProveedores();
-
-      if (response.isSuccess) {
-        _proveedoresApi = response.result;
-        _hayInternet = true;
-      }
-    }
-    _getTablaProveedores();
-    //return;
-  }
-
-  void _getTablaProveedores() async {
-    void _insertProveedores() async {
-      if (_proveedoresApi.length > 0) {
-        DBProveedores.delete();
-        _proveedoresApi.forEach((element) {
-          DBProveedores.insertProveedor(element);
-        });
-      }
-    }
-
-    if (_hayInternet) {
-      _insertProveedores();
-    }
-    _proveedores = await DBProveedores.proveedores();
-
-    _getRutas();
-  }
-
-//***************************************************************
-//************************* MOTIVOS *****************************
-//***************************************************************
   Future<Null> _getMotivos() async {
     var connectivityResult = await Connectivity().checkConnectivity();
 
@@ -989,187 +1343,9 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  Widget _getContent() {
-    return _paradasenviosdb.length == 0 ? _noContent2() : _getListView();
-  }
-
-  Widget _noContent2() {
-    return Center(
-      child: Container(
-        margin: EdgeInsets.all(20),
-        child: Text(
-          'No hay paradas completadas',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _getListView() {
-    return Container(
-      height: 550,
-      child: ListView(
-        scrollDirection: Axis.vertical,
-        children: _paradasenviosdb.map((e) {
-          return Card(
-            color: Colors.white,
-            shadowColor: Colors.white,
-            elevation: 10,
-            margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-            child: InkWell(
-              onTap: () {
-                paradaenvioSelected = e;
-              },
-              child: Container(
-                margin: EdgeInsets.all(0),
-                padding: EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            e.enviado == 1
-                                ? Icon(Icons.done_all, color: Colors.green)
-                                : e.enviado == 0
-                                    ? Icon(Icons.done, color: Colors.grey)
-                                    : Icon(Icons.done, color: Colors.red),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Ruta: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF781f1e),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Text("Parada: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF781f1e),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Text("Envío: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF781f1e),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(e.idRuta.toString(),
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    )),
-                                Text(e.idParada.toString(),
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    )),
-                                Text(e.idEnvio.toString(),
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    )),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Fecha: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF781f1e),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Text("",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF781f1e),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Text("",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF781f1e),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                    '${DateFormat('dd/MM/yyyy').format(DateTime.parse(e.fecha!))}',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    )),
-                                Text("",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF781f1e),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                (e.estado == 4)
-                                    ? Text(
-                                        "ENTREGADO",
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    : (e.estado == 10)
-                                        ? Text(
-                                            "NO ENTREGADO",
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        : (e.estado == 7)
-                                            ? Text(
-                                                "RECHAZADO",
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            : Text(
-                                                "PENDIENTE",
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
+//*****************************************************************************
+//************************* METODO ACTUALIZAPARADASENVIOS *********************
+//*****************************************************************************
 
   Future<void> _actualizaParadasEnvios() async {
     return Future.delayed(Duration(seconds: 1), () async {
@@ -1185,6 +1361,10 @@ class _HomeScreenState extends State<HomeScreen>
       _paradasenviosdb = await DBParadasEnvios.paradasenvios();
     });
   }
+
+//*****************************************************************************
+//************************* METODO BORRARMEDICIONESLOCALES ********************
+//*****************************************************************************
 
   _borrarMedicionesLocales() async {
     await showDialog(
@@ -1262,7 +1442,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     onPressed: () {
                       if (_password.toLowerCase() !=
-                          widget.user.usrcontrasena!.toLowerCase()) {
+                          widget.user.usrcontrasena.toLowerCase()) {
                         _passwordShowError = true;
                         _passwordError = 'Contraseña incorrecta';
                         setState(() {});
@@ -1312,5 +1492,262 @@ class _HomeScreenState extends State<HomeScreen>
             },
           );
         });
+  }
+
+//*****************************************************************************
+//************************* METODO LLENARPARADASENVIOS ************************
+//*****************************************************************************
+
+  Future<void> _llenarparadasenvios() async {
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+
+    _paradasenvios.forEach((paradasenvio) {
+      _paradasenviosdb.forEach((paradasenviodb) {
+        if (paradasenvio.idParada == paradasenviodb.idParada) {
+          paradasenvio.estado = paradasenviodb.estado;
+          paradasenvio.motivo = paradasenviodb.motivo;
+          paradasenvio.motivodesc = paradasenviodb.motivodesc;
+          paradasenvio.notas = paradasenviodb.notas;
+          paradasenvio.fecha = paradasenviodb.fecha;
+        }
+      });
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      setState(() {
+        _showLoader = true;
+      });
+
+      _paradasenviosdb.forEach((paradaenvio) {
+        if (paradaenvio.enviado == 0) {
+          _putParada(paradaenvio);
+        }
+      });
+
+      setState(() {
+        _showLoader = false;
+      });
+    }
+
+    setState(() {});
+  }
+
+//*****************************************************************************
+//******************** METODOS PARA GRABAR EN EL SERVIDOR *********************
+//*****************************************************************************
+
+  void _putParada(ParadaEnvio paradaenvio) async {
+    _paradas.forEach((element) {
+      if (element.idParada == paradaenvio.idParada) {
+        paradaSelected = element;
+      }
+    });
+
+    Map<String, dynamic> requestParada = {
+      'idParada': paradaSelected.idParada,
+      'idRuta': paradaSelected.idRuta,
+      'idEnvio': paradaSelected.idEnvio,
+      'tag': paradaSelected.tag,
+      'secuencia': paradaSelected.secuencia,
+      'leyenda': paradaSelected.leyenda,
+      'latitud': paradaSelected.latitud,
+      'longitud': paradaSelected.longitud,
+      'iconoPropio': paradaSelected.iconoPropio,
+      'iDmapa': paradaSelected.iDmapa,
+      'distancia': paradaSelected.distancia,
+      'tiempo': paradaSelected.tiempo,
+      'estado': paradaenvio.estado,
+      'fecha': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      'hora': DateFormat('HH:mm').format(DateTime.now()),
+      'idMotivo': paradaenvio.motivo,
+      'notaChofer': paradaenvio.notas,
+      'nuevoOrden': paradaSelected.nuevoOrden,
+      'idCabCertificacion': paradaSelected.idCabCertificacion,
+      'idLiquidacionFletero': paradaSelected.idLiquidacionFletero,
+      'turno': paradaSelected.turno,
+    };
+
+    Response response = await ApiHelper.put(
+        '/api/Paradas/', paradaSelected.idParada.toString(), requestParada);
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    _putEnvio(paradaenvio);
+  }
+
+//-------------------------------------------------------------------------
+
+  void _putEnvio(ParadaEnvio paradaenvio) async {
+    _envios.forEach((element) {
+      if (element.idEnvio == paradaenvio.idEnvio) {
+        envioSelected = element;
+      }
+    });
+
+    Map<String, dynamic> requestEnvio = {
+      'idEnvio': envioSelected.idEnvio,
+      'idproveedor': envioSelected.idproveedor,
+      'agencianr': envioSelected.agencianr,
+      'estado': paradaenvio.estado,
+      'envia': envioSelected.envia,
+      'ruta': envioSelected.ruta,
+      'ordenid': envioSelected.ordenid,
+      'fecha': envioSelected.fecha,
+      'hora': envioSelected.hora,
+      'imei': envioSelected.imei,
+      'transporte': envioSelected.transporte,
+      'contrato': envioSelected.contrato,
+      'titular': envioSelected.titular,
+      'dni': envioSelected.dni,
+      'domicilio': envioSelected.domicilio,
+      'cp': envioSelected.cp,
+      'latitud': envioSelected.latitud,
+      'longitud': envioSelected.longitud,
+      'autorizado': envioSelected.autorizado,
+      'observaciones': envioSelected.observaciones,
+      'idCabCertificacion': envioSelected.idCabCertificacion,
+      'idRemitoProveedor': envioSelected.idRemitoProveedor,
+      'idSubconUsrWeb': envioSelected.idSubconUsrWeb,
+      'fechaAlta': envioSelected.fechaAlta,
+      'fechaEnvio': envioSelected.fechaEnvio,
+      'fechaDistribucion': envioSelected.fechaDistribucion,
+      'entreCalles': envioSelected.entreCalles,
+      'mail': envioSelected.mail,
+      'telefonos': envioSelected.telefonos,
+      'localidad': envioSelected.localidad,
+      'tag': envioSelected.tag,
+      'provincia': envioSelected.provincia,
+      'fechaEntregaCliente': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      'scaneadoIn': envioSelected.scaneadoIn,
+      'scaneadoOut': envioSelected.scaneadoOut,
+      'ingresoDeposito': envioSelected.ingresoDeposito,
+      'salidaDistribucion': envioSelected.salidaDistribucion,
+      'idRuta': envioSelected.idRuta,
+      'nroSecuencia': envioSelected.nroSecuencia,
+      'fechaHoraOptimoCamino': envioSelected.fechaHoraOptimoCamino,
+      'bultos': envioSelected.bultos,
+      'peso': envioSelected.peso,
+      'alto': envioSelected.alto,
+      'ancho': envioSelected.ancho,
+      'largo': envioSelected.largo,
+      'idComprobante': envioSelected.idComprobante,
+      'enviarMailSegunEstado': envioSelected.enviarMailSegunEstado,
+      'fechaRuta': envioSelected.fechaRuta,
+      'ordenIDparaOC': envioSelected.ordenIDparaOC,
+      'hashUnico': envioSelected.hashUnico,
+      'bultosPikeados': envioSelected.bultosPikeados,
+      'centroDistribucion': envioSelected.centroDistribucion,
+      'fechaUltimaActualizacion':
+          DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      'volumen': envioSelected.volumen,
+      'avonZoneNumber': envioSelected.avonZoneNumber,
+      'avonSectorNumber': envioSelected.avonSectorNumber,
+      'avonAccountNumber': envioSelected.avonAccountNumber,
+      'avonCampaignNumber': envioSelected.avonCampaignNumber,
+      'avonCampaignYear': envioSelected.avonCampaignYear,
+      'domicilioCorregido': envioSelected.domicilioCorregido,
+      'domicilioCorregidoUsando': envioSelected.domicilioCorregidoUsando,
+      'urlFirma': envioSelected.urlFirma,
+      'urlDNI': envioSelected.urlDNI,
+      'ultimoIdMotivo': paradaenvio.motivo,
+      'ultimaNotaFletero': paradaenvio.notas,
+      'idComprobanteDevolucion': envioSelected.idComprobanteDevolucion,
+      'turno': envioSelected.turno,
+      'barrioEntrega': envioSelected.barrioEntrega,
+      'partidoEntrega': envioSelected.partidoEntrega,
+      'avonDayRoute': envioSelected.avonDayRoute,
+      'avonTravelRoute': envioSelected.avonTravelRoute,
+      'avonSecuenceRoute': envioSelected.avonSecuenceRoute,
+      'avonInformarInclusion': envioSelected.avonInformarInclusion,
+    };
+
+    Response response = await ApiHelper.put(
+        '/api/Envios/', envioSelected.idEnvio.toString(), requestEnvio);
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    _postSeguimiento(paradaenvio);
+  }
+
+  //-------------------------------------------------------------------------
+
+  void _postSeguimiento(ParadaEnvio paradaenvio) async {
+    int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
+
+    Response response2 = await ApiHelper.getNroRegistroMax();
+    if (response2.isSuccess) {
+      _nroReg = int.parse(response2.result.toString()) + 1;
+    }
+
+    Map<String, dynamic> requestSeguimiento = {
+      'id': _nroReg,
+      'idenvio': paradaenvio.idEnvio,
+      'idetapa': paradaenvio.estado,
+      'estado': paradaenvio.estado,
+      'idusuario': widget.user.idUser,
+      'fecha': fec,
+      'hora': DateFormat('HH:mm').format(DateTime.now()),
+      'observaciones': 'Informada x Ws App',
+      'motivo': paradaenvio.motivodesc,
+      'notachofer': paradaenvio.notas,
+    };
+
+    Response response = await ApiHelper.post(
+      '/api/Seguimientos',
+      requestSeguimiento,
+    );
+
+    _ponerEnviado1(paradaenvio);
+  }
+
+  //-------------------------------------------------------------------------
+
+  void _ponerEnviado1(ParadaEnvio paradaenvio) {
+    ParadaEnvio paradaenvionueva = ParadaEnvio(
+        idParada: paradaenvio.idParada,
+        idRuta: paradaenvio.idRuta,
+        idEnvio: paradaenvio.idEnvio,
+        secuencia: paradaenvio.secuencia,
+        leyenda: paradaenvio.leyenda,
+        latitud: paradaenvio.latitud,
+        longitud: paradaenvio.longitud,
+        idproveedor: paradaenvio.idproveedor,
+        estado: paradaenvio.estado,
+        ordenid: paradaenvio.ordenid,
+        titular: paradaenvio.titular,
+        dni: paradaenvio.dni,
+        domicilio: paradaenvio.domicilio,
+        cp: paradaenvio.cp,
+        entreCalles: paradaenvio.entreCalles,
+        telefonos: paradaenvio.telefonos,
+        localidad: paradaenvio.localidad,
+        bultos: paradaenvio.bultos,
+        proveedor: paradaenvio.proveedor,
+        motivo: paradaenvio.motivo,
+        motivodesc: paradaenvio.motivodesc,
+        notas: paradaenvio.notas,
+        enviado: 1,
+        fecha: paradaenvio.fecha);
+
+    DBParadasEnvios.update(paradaenvionueva);
   }
 }

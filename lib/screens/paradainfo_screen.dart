@@ -1,9 +1,6 @@
 import 'dart:io';
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
-import 'package:connectivity/connectivity.dart';
-import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbparadasenvios_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
@@ -12,13 +9,11 @@ import 'package:fleetdeliveryapp/models/parada.dart';
 import 'package:fleetdeliveryapp/models/paradaenvio.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
-import 'package:fleetdeliveryapp/screens/display_picture_screen.dart';
 import 'package:fleetdeliveryapp/screens/paradamap_screen.dart';
 import 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
@@ -43,6 +38,8 @@ class ParadaInfoScreen extends StatefulWidget {
 }
 
 class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
+  final _scaffKey = GlobalKey<ScaffoldState>();
+
   bool _showLoader = false;
   bool _photoChanged = false;
   late XFile _image;
@@ -872,6 +869,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
         fecha: DateTime.now().toString());
 
     DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
+    _showSnackbar();
   }
 
   void _getlistOptions() {
@@ -927,5 +925,15 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     _items = list;
 
     return list;
+  }
+
+  void _showSnackbar() {
+    SnackBar snackbar = SnackBar(
+      content: Text("Estado de Parada grabada con éxito"),
+      backgroundColor: Colors.lightGreen,
+      //duration: Duration(seconds: 3),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    //ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 }

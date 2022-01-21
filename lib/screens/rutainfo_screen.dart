@@ -266,160 +266,163 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   }
 
   Widget _getListView() {
-    return ListView(
-      children: _paradasenvios.map((e) {
-        return Card(
-          color: Colors.white60,
-          shadowColor: Colors.white,
-          elevation: 10,
-          margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-          child: InkWell(
-            onTap: () {
-              paradaenvioSelected = e;
-              _goInfoParada(e);
-            },
-            child: Container(
-              margin: EdgeInsets.all(0),
-              padding: EdgeInsets.all(5),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(e.secuencia.toString(),
-                                          style: TextStyle(
-                                              fontSize: 24,
-                                              color: Color(0xffbc2b51),
-                                              fontWeight: FontWeight.bold)),
-                                    ),
-                                    (e.estado == 4)
-                                        ? Text(
-                                            "ENTREGADO",
+    return RefreshIndicator(
+      onRefresh: _llenarparadasenvios,
+      child: ListView(
+        children: _paradasenvios.map((e) {
+          return Card(
+            color: Colors.white60,
+            shadowColor: Colors.white,
+            elevation: 10,
+            margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+            child: InkWell(
+              onTap: () {
+                paradaenvioSelected = e;
+                _goInfoParada(e);
+              },
+              child: Container(
+                margin: EdgeInsets.all(0),
+                padding: EdgeInsets.all(5),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(e.secuencia.toString(),
                                             style: TextStyle(
-                                                color: Colors.green,
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        : (e.estado == 10)
-                                            ? Text(
-                                                "NO ENTREGADO",
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            : (e.estado == 7)
-                                                ? Text(
-                                                    "RECHAZADO",
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                                : Text(
-                                                    "PENDIENTE",
-                                                    style: TextStyle(
-                                                        color: Colors.blue,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Text("Nombre: ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF781f1e),
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                    Expanded(
-                                      child: Text(e.titular.toString(),
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold)),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Text("Dirección: ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF781f1e),
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                    Expanded(
-                                      child: Text(e.leyenda.toString(),
+                                                fontSize: 24,
+                                                color: Color(0xffbc2b51),
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                      (e.estado == 4)
+                                          ? Text(
+                                              "ENTREGADO",
+                                              style: TextStyle(
+                                                  color: Colors.green,
+                                                  fontWeight: FontWeight.bold),
+                                            )
+                                          : (e.estado == 10)
+                                              ? Text(
+                                                  "NO ENTREGADO",
+                                                  style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              : (e.estado == 7)
+                                                  ? Text(
+                                                      "RECHAZADO",
+                                                      style: TextStyle(
+                                                          color: Colors.purple,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  : Text(
+                                                      "PENDIENTE",
+                                                      style: TextStyle(
+                                                          color: Colors.blue,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Nombre: ",
                                           style: TextStyle(
                                             fontSize: 12,
+                                            color: Color(0xFF781f1e),
+                                            fontWeight: FontWeight.bold,
                                           )),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 135,
-                                      child: ElevatedButton(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.map,
-                                                color: Color(0xff282886)),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Text(
-                                              'Navegar',
-                                              style: TextStyle(
-                                                  color: Color(0xff282886)),
-                                            ),
-                                          ],
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Color(0xFFb3b3b4),
-                                          minimumSize:
-                                              Size(double.infinity, 30),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                        ),
-                                        onPressed: () => _navegar(e),
+                                      Expanded(
+                                        child: Text(e.titular.toString(),
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold)),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Dirección: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF781f1e),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      Expanded(
+                                        child: Text(e.leyenda.toString(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 135,
+                                        child: ElevatedButton(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.map,
+                                                  color: Color(0xff282886)),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text(
+                                                'Navegar',
+                                                style: TextStyle(
+                                                    color: Color(0xff282886)),
+                                              ),
+                                            ],
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Color(0xFFb3b3b4),
+                                            minimumSize:
+                                                Size(double.infinity, 30),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                          ),
+                                          onPressed: () => _navegar(e),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Icon(Icons.arrow_forward_ios),
-                ],
+                    Icon(Icons.arrow_forward_ios),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 
@@ -439,7 +442,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-  _navegar(e) {
+  _navegar(e) async {
     _center = LatLng(e.latitud!.toDouble(), e.longitud!.toDouble());
     _markers.clear();
     _markers.add(Marker(
@@ -452,18 +455,32 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       icon: BitmapDescriptor.defaultMarker,
     ));
 
-    Navigator.push(
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ParadaMapScreen(
-                  user: widget.user,
-                  positionUser: widget.positionUser,
-                  paradaenvio: e,
-                  markers: _markers,
-                )));
+          builder: (context) => ParadaMapScreen(
+            user: widget.user,
+            positionUser: widget.positionUser,
+            paradaenvio: e,
+            markers: _markers,
+          ),
+        ),
+      );
+    } else {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso!',
+          message: "Necesita estar conectado a Internet para acceder al mapa",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+    }
   }
 
-  _navegartodos() {
+  _navegartodos() async {
     _markers.clear();
     _paradasenvios.forEach((element) {
       _markers.add(Marker(
@@ -478,15 +495,29 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       ));
     });
 
-    Navigator.push(
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ParadaMapScreen(
-                  user: widget.user,
-                  positionUser: widget.positionUser,
-                  paradaenvio: _paradasenvios[0],
-                  markers: _markers,
-                )));
+          builder: (context) => ParadaMapScreen(
+            user: widget.user,
+            positionUser: widget.positionUser,
+            paradaenvio: _paradasenvios[0],
+            markers: _markers,
+          ),
+        ),
+      );
+    } else {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso!',
+          message: "Necesita estar conectado a Internet para acceder al mapa",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+    }
   }
 
   Future<void> _llenarparadasenvios() async {

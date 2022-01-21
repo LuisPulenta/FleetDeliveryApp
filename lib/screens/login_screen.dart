@@ -22,6 +22,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+//*****************************************************************************
+//************************** DEFINICION DE VARIABLES **************************
+//*****************************************************************************
+
   List<Usuario> _usuariosApi = [];
   List<Usuario> _usuarios = [];
 
@@ -41,19 +45,28 @@ class _LoginScreenState extends State<LoginScreen> {
   String _email = '*jhollman';
   String _emailError = '';
   bool _emailShowError = false;
-  bool _hayInternet = false;
+
   String _password = 'jona';
   String _passwordError = '';
   bool _passwordShowError = false;
-  bool _rememberme = true;
+
+  bool _hayInternet = false;
   bool _passwordShow = false;
   bool _showLoader = false;
+
+//*****************************************************************************
+//************************** INIT STATE ***************************************
+//*****************************************************************************
 
   @override
   void initState() {
     super.initState();
     _getUsuarios();
   }
+
+//*****************************************************************************
+//************************** PANTALLA *****************************************
+//*****************************************************************************
 
   @override
   Widget build(BuildContext context) {
@@ -148,13 +161,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _showLogo() {
-    return Image(
-      image: AssetImage('assets/logo.png'),
-      width: 300,
-    );
-  }
-
   Widget _showEmail() {
     return Container(
       padding: EdgeInsets.all(10),
@@ -240,6 +246,10 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+//*****************************************************************************
+//************************** METODO LOGIN *************************************
+//*****************************************************************************
+
   void _login() async {
     setState(() {
       _passwordShow = false;
@@ -292,6 +302,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 )));
   }
 
+//*****************************************************************************
+//************************** METODO VALIDATEFIELDS ****************************
+//*****************************************************************************
+
   bool validateFields() {
     bool isValid = true;
 
@@ -316,47 +330,42 @@ class _LoginScreenState extends State<LoginScreen> {
     return isValid;
   }
 
-  void _storeUser(String body) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isRemembered', true);
-    await prefs.setString('userBody', body);
-    await prefs.setString('date', DateTime.now().toString());
-  }
-
-//***************************************************************
-//*********************** USUARIOS ******************************
-//***************************************************************
+//*****************************************************************************
+//*********************** METODO GETUSUARIOS **********************************
+//*****************************************************************************
   Future<Null> _getUsuarios() async {
     setState(() {
       _showLoader = true;
     });
-    //   var connectivityResult = await Connectivity().checkConnectivity();
+    var connectivityResult = await Connectivity().checkConnectivity();
 
-    //   if (connectivityResult != ConnectivityResult.none) {
-    //     Response response = await ApiHelper.getUsuarios();
+    if (connectivityResult != ConnectivityResult.none) {
+      Response response = await ApiHelper.getUsuarios();
 
-    //     if (response.isSuccess) {
-    //       _usuariosApi = response.result;
-    //       _hayInternet = true;
-    //     }
-    //   }
-    //   _getTablaUsuarios();
-    //   return;
-    // }
+      if (response.isSuccess) {
+        _usuariosApi = response.result;
+        _hayInternet = true;
+      }
+    }
+    _getTablaUsuarios();
+    return;
+  }
 
-    // void _getTablaUsuarios() async {
-    //   void _insertUsuarios() async {
-    //     if (_usuariosApi.length > 0) {
-    //       DBUsuarios.delete();
-    //       _usuariosApi.forEach((element) {
-    //         DBUsuarios.insertUsuario(element);
-    //       });
-    //     }
-    //   }
+  //-------------------------------------------------------------------------
 
-    //   if (_hayInternet) {
-    //     _insertUsuarios();
-    //   }
+  void _getTablaUsuarios() async {
+    void _insertUsuarios() async {
+      if (_usuariosApi.length > 0) {
+        DBUsuarios.delete();
+        _usuariosApi.forEach((element) {
+          DBUsuarios.insertUsuario(element);
+        });
+      }
+    }
+
+    if (_hayInternet) {
+      _insertUsuarios();
+    }
 
     _usuarios = await DBUsuarios.usuarios();
 
@@ -380,4 +389,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _showLoader = false;
     });
   }
+
+  //-------------------------------------------------------------------------
+
 }

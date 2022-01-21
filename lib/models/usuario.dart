@@ -2,8 +2,8 @@ class Usuario {
   int idUser = 0;
   String? codigo = '';
   String? apellidonombre = '';
-  String? usrlogin = '';
-  String? usrcontrasena = '';
+  String usrlogin = '';
+  String usrcontrasena = '';
   int? habilitadoWeb = 0;
   String? vehiculo = '';
   String? dominio = '';
