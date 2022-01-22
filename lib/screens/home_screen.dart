@@ -1359,6 +1359,12 @@ class _HomeScreenState extends State<HomeScreen>
       });
 
       _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+      _paradasenviosdb.sort((a, b) {
+        return b.fecha
+            .toString()
+            .toLowerCase()
+            .compareTo(a.fecha.toString().toLowerCase());
+      });
     });
   }
 
@@ -1500,6 +1506,12 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future<void> _llenarparadasenvios() async {
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+    _paradasenviosdb.sort((a, b) {
+      return b.fecha
+          .toString()
+          .toLowerCase()
+          .compareTo(a.fecha.toString().toLowerCase());
+    });
 
     _paradasenvios.forEach((paradasenvio) {
       _paradasenviosdb.forEach((paradasenviodb) {
@@ -1520,9 +1532,9 @@ class _HomeScreenState extends State<HomeScreen>
         _showLoader = true;
       });
 
-      _paradasenviosdb.forEach((paradaenvio) {
+      _paradasenviosdb.forEach((paradaenvio) async {
         if (paradaenvio.enviado == 0) {
-          _putParada(paradaenvio);
+          await _putParada(paradaenvio);
         }
       });
 
@@ -1538,190 +1550,193 @@ class _HomeScreenState extends State<HomeScreen>
 //******************** METODOS PARA GRABAR EN EL SERVIDOR *********************
 //*****************************************************************************
 
-  void _putParada(ParadaEnvio paradaenvio) async {
+  Future<void> _putParada(ParadaEnvio paradaenvio) async {
     _paradas.forEach((element) {
       if (element.idParada == paradaenvio.idParada) {
         paradaSelected = element;
       }
     });
 
-    Map<String, dynamic> requestParada = {
-      'idParada': paradaSelected.idParada,
-      'idRuta': paradaSelected.idRuta,
-      'idEnvio': paradaSelected.idEnvio,
-      'tag': paradaSelected.tag,
-      'secuencia': paradaSelected.secuencia,
-      'leyenda': paradaSelected.leyenda,
-      'latitud': paradaSelected.latitud,
-      'longitud': paradaSelected.longitud,
-      'iconoPropio': paradaSelected.iconoPropio,
-      'iDmapa': paradaSelected.iDmapa,
-      'distancia': paradaSelected.distancia,
-      'tiempo': paradaSelected.tiempo,
-      'estado': paradaenvio.estado,
-      'fecha': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      'hora': DateFormat('HH:mm').format(DateTime.now()),
-      'idMotivo': paradaenvio.motivo,
-      'notaChofer': paradaenvio.notas,
-      'nuevoOrden': paradaSelected.nuevoOrden,
-      'idCabCertificacion': paradaSelected.idCabCertificacion,
-      'idLiquidacionFletero': paradaSelected.idLiquidacionFletero,
-      'turno': paradaSelected.turno,
-    };
+    var hecho = false;
 
-    Response response = await ApiHelper.put(
-        '/api/Paradas/', paradaSelected.idParada.toString(), requestParada);
+    do {
+      Map<String, dynamic> requestParada = {
+        'idParada': paradaSelected.idParada,
+        'idRuta': paradaSelected.idRuta,
+        'idEnvio': paradaSelected.idEnvio,
+        'tag': paradaSelected.tag,
+        'secuencia': paradaSelected.secuencia,
+        'leyenda': paradaSelected.leyenda,
+        'latitud': paradaSelected.latitud,
+        'longitud': paradaSelected.longitud,
+        'iconoPropio': paradaSelected.iconoPropio,
+        'iDmapa': paradaSelected.iDmapa,
+        'distancia': paradaSelected.distancia,
+        'tiempo': paradaSelected.tiempo,
+        'estado': paradaenvio.estado,
+        'fecha': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'hora': DateFormat('HH:mm').format(DateTime.now()),
+        'idMotivo': paradaenvio.motivo,
+        'notaChofer': paradaenvio.notas,
+        'nuevoOrden': paradaSelected.nuevoOrden,
+        'idCabCertificacion': paradaSelected.idCabCertificacion,
+        'idLiquidacionFletero': paradaSelected.idLiquidacionFletero,
+        'turno': paradaSelected.turno,
+      };
 
-    if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
-      return;
-    }
-    _putEnvio(paradaenvio);
+      Response response = await ApiHelper.put(
+          '/api/Paradas/', paradaSelected.idParada.toString(), requestParada);
+
+      if (response.isSuccess) {
+        hecho = true;
+      }
+    } while (hecho == false);
+
+    await _putEnvio(paradaenvio);
   }
 
-//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-  void _putEnvio(ParadaEnvio paradaenvio) async {
+  Future<void> _putEnvio(ParadaEnvio paradaenvio) async {
     _envios.forEach((element) {
       if (element.idEnvio == paradaenvio.idEnvio) {
         envioSelected = element;
       }
     });
 
-    Map<String, dynamic> requestEnvio = {
-      'idEnvio': envioSelected.idEnvio,
-      'idproveedor': envioSelected.idproveedor,
-      'agencianr': envioSelected.agencianr,
-      'estado': paradaenvio.estado,
-      'envia': envioSelected.envia,
-      'ruta': envioSelected.ruta,
-      'ordenid': envioSelected.ordenid,
-      'fecha': envioSelected.fecha,
-      'hora': envioSelected.hora,
-      'imei': envioSelected.imei,
-      'transporte': envioSelected.transporte,
-      'contrato': envioSelected.contrato,
-      'titular': envioSelected.titular,
-      'dni': envioSelected.dni,
-      'domicilio': envioSelected.domicilio,
-      'cp': envioSelected.cp,
-      'latitud': envioSelected.latitud,
-      'longitud': envioSelected.longitud,
-      'autorizado': envioSelected.autorizado,
-      'observaciones': envioSelected.observaciones,
-      'idCabCertificacion': envioSelected.idCabCertificacion,
-      'idRemitoProveedor': envioSelected.idRemitoProveedor,
-      'idSubconUsrWeb': envioSelected.idSubconUsrWeb,
-      'fechaAlta': envioSelected.fechaAlta,
-      'fechaEnvio': envioSelected.fechaEnvio,
-      'fechaDistribucion': envioSelected.fechaDistribucion,
-      'entreCalles': envioSelected.entreCalles,
-      'mail': envioSelected.mail,
-      'telefonos': envioSelected.telefonos,
-      'localidad': envioSelected.localidad,
-      'tag': envioSelected.tag,
-      'provincia': envioSelected.provincia,
-      'fechaEntregaCliente': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      'scaneadoIn': envioSelected.scaneadoIn,
-      'scaneadoOut': envioSelected.scaneadoOut,
-      'ingresoDeposito': envioSelected.ingresoDeposito,
-      'salidaDistribucion': envioSelected.salidaDistribucion,
-      'idRuta': envioSelected.idRuta,
-      'nroSecuencia': envioSelected.nroSecuencia,
-      'fechaHoraOptimoCamino': envioSelected.fechaHoraOptimoCamino,
-      'bultos': envioSelected.bultos,
-      'peso': envioSelected.peso,
-      'alto': envioSelected.alto,
-      'ancho': envioSelected.ancho,
-      'largo': envioSelected.largo,
-      'idComprobante': envioSelected.idComprobante,
-      'enviarMailSegunEstado': envioSelected.enviarMailSegunEstado,
-      'fechaRuta': envioSelected.fechaRuta,
-      'ordenIDparaOC': envioSelected.ordenIDparaOC,
-      'hashUnico': envioSelected.hashUnico,
-      'bultosPikeados': envioSelected.bultosPikeados,
-      'centroDistribucion': envioSelected.centroDistribucion,
-      'fechaUltimaActualizacion':
-          DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      'volumen': envioSelected.volumen,
-      'avonZoneNumber': envioSelected.avonZoneNumber,
-      'avonSectorNumber': envioSelected.avonSectorNumber,
-      'avonAccountNumber': envioSelected.avonAccountNumber,
-      'avonCampaignNumber': envioSelected.avonCampaignNumber,
-      'avonCampaignYear': envioSelected.avonCampaignYear,
-      'domicilioCorregido': envioSelected.domicilioCorregido,
-      'domicilioCorregidoUsando': envioSelected.domicilioCorregidoUsando,
-      'urlFirma': envioSelected.urlFirma,
-      'urlDNI': envioSelected.urlDNI,
-      'ultimoIdMotivo': paradaenvio.motivo,
-      'ultimaNotaFletero': paradaenvio.notas,
-      'idComprobanteDevolucion': envioSelected.idComprobanteDevolucion,
-      'turno': envioSelected.turno,
-      'barrioEntrega': envioSelected.barrioEntrega,
-      'partidoEntrega': envioSelected.partidoEntrega,
-      'avonDayRoute': envioSelected.avonDayRoute,
-      'avonTravelRoute': envioSelected.avonTravelRoute,
-      'avonSecuenceRoute': envioSelected.avonSecuenceRoute,
-      'avonInformarInclusion': envioSelected.avonInformarInclusion,
-    };
+    var hecho = false;
 
-    Response response = await ApiHelper.put(
-        '/api/Envios/', envioSelected.idEnvio.toString(), requestEnvio);
+    do {
+      Map<String, dynamic> requestEnvio = {
+        'idEnvio': envioSelected.idEnvio,
+        'idproveedor': envioSelected.idproveedor,
+        'agencianr': envioSelected.agencianr,
+        'estado': paradaenvio.estado,
+        'envia': envioSelected.envia,
+        'ruta': envioSelected.ruta,
+        'ordenid': envioSelected.ordenid,
+        'fecha': envioSelected.fecha,
+        'hora': envioSelected.hora,
+        'imei': envioSelected.imei,
+        'transporte': envioSelected.transporte,
+        'contrato': envioSelected.contrato,
+        'titular': envioSelected.titular,
+        'dni': envioSelected.dni,
+        'domicilio': envioSelected.domicilio,
+        'cp': envioSelected.cp,
+        'latitud': envioSelected.latitud,
+        'longitud': envioSelected.longitud,
+        'autorizado': envioSelected.autorizado,
+        'observaciones': envioSelected.observaciones,
+        'idCabCertificacion': envioSelected.idCabCertificacion,
+        'idRemitoProveedor': envioSelected.idRemitoProveedor,
+        'idSubconUsrWeb': envioSelected.idSubconUsrWeb,
+        'fechaAlta': envioSelected.fechaAlta,
+        'fechaEnvio': envioSelected.fechaEnvio,
+        'fechaDistribucion': envioSelected.fechaDistribucion,
+        'entreCalles': envioSelected.entreCalles,
+        'mail': envioSelected.mail,
+        'telefonos': envioSelected.telefonos,
+        'localidad': envioSelected.localidad,
+        'tag': envioSelected.tag,
+        'provincia': envioSelected.provincia,
+        'fechaEntregaCliente': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'scaneadoIn': envioSelected.scaneadoIn,
+        'scaneadoOut': envioSelected.scaneadoOut,
+        'ingresoDeposito': envioSelected.ingresoDeposito,
+        'salidaDistribucion': envioSelected.salidaDistribucion,
+        'idRuta': envioSelected.idRuta,
+        'nroSecuencia': envioSelected.nroSecuencia,
+        'fechaHoraOptimoCamino': envioSelected.fechaHoraOptimoCamino,
+        'bultos': envioSelected.bultos,
+        'peso': envioSelected.peso,
+        'alto': envioSelected.alto,
+        'ancho': envioSelected.ancho,
+        'largo': envioSelected.largo,
+        'idComprobante': envioSelected.idComprobante,
+        'enviarMailSegunEstado': envioSelected.enviarMailSegunEstado,
+        'fechaRuta': envioSelected.fechaRuta,
+        'ordenIDparaOC': envioSelected.ordenIDparaOC,
+        'hashUnico': envioSelected.hashUnico,
+        'bultosPikeados': envioSelected.bultosPikeados,
+        'centroDistribucion': envioSelected.centroDistribucion,
+        'fechaUltimaActualizacion':
+            DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'volumen': envioSelected.volumen,
+        'avonZoneNumber': envioSelected.avonZoneNumber,
+        'avonSectorNumber': envioSelected.avonSectorNumber,
+        'avonAccountNumber': envioSelected.avonAccountNumber,
+        'avonCampaignNumber': envioSelected.avonCampaignNumber,
+        'avonCampaignYear': envioSelected.avonCampaignYear,
+        'domicilioCorregido': envioSelected.domicilioCorregido,
+        'domicilioCorregidoUsando': envioSelected.domicilioCorregidoUsando,
+        'urlFirma': envioSelected.urlFirma,
+        'urlDNI': envioSelected.urlDNI,
+        'ultimoIdMotivo': paradaenvio.motivo,
+        'ultimaNotaFletero': paradaenvio.notas,
+        'idComprobanteDevolucion': envioSelected.idComprobanteDevolucion,
+        'turno': envioSelected.turno,
+        'barrioEntrega': envioSelected.barrioEntrega,
+        'partidoEntrega': envioSelected.partidoEntrega,
+        'avonDayRoute': envioSelected.avonDayRoute,
+        'avonTravelRoute': envioSelected.avonTravelRoute,
+        'avonSecuenceRoute': envioSelected.avonSecuenceRoute,
+        'avonInformarInclusion': envioSelected.avonInformarInclusion,
+      };
 
-    if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
-      return;
-    }
+      Response response = await ApiHelper.put(
+          '/api/Envios/', envioSelected.idEnvio.toString(), requestEnvio);
+      if (response.isSuccess) {
+        hecho = true;
+      }
+    } while (hecho == false);
 
-    _postSeguimiento(paradaenvio);
+    //-------------------------------------------------------------------------
+
+    await _postSeguimiento(paradaenvio);
   }
 
-  //-------------------------------------------------------------------------
-
-  void _postSeguimiento(ParadaEnvio paradaenvio) async {
+  Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
+    var hecho = false;
 
     Response response2 = await ApiHelper.getNroRegistroMax();
     if (response2.isSuccess) {
       _nroReg = int.parse(response2.result.toString()) + 1;
     }
 
-    Map<String, dynamic> requestSeguimiento = {
-      'id': _nroReg,
-      'idenvio': paradaenvio.idEnvio,
-      'idetapa': paradaenvio.estado,
-      'estado': paradaenvio.estado,
-      'idusuario': widget.user.idUser,
-      'fecha': fec,
-      'hora': DateFormat('HH:mm').format(DateTime.now()),
-      'observaciones': 'Informada x Ws App',
-      'motivo': paradaenvio.motivodesc,
-      'notachofer': paradaenvio.notas,
-    };
+    do {
+      Map<String, dynamic> requestSeguimiento = {
+        'id': _nroReg,
+        'idenvio': paradaenvio.idEnvio,
+        'idetapa': paradaenvio.estado,
+        'estado': paradaenvio.estado,
+        'idusuario': widget.user.idUser,
+        'fecha': fec,
+        'hora': DateFormat('HH:mm').format(DateTime.now()),
+        'observaciones': 'Informada x Ws App',
+        'motivo': paradaenvio.motivodesc,
+        'notachofer': paradaenvio.notas,
+      };
 
-    Response response = await ApiHelper.post(
-      '/api/Seguimientos',
-      requestSeguimiento,
-    );
+      Response response = await ApiHelper.post(
+        '/api/Seguimientos',
+        requestSeguimiento,
+      );
 
-    _ponerEnviado1(paradaenvio);
+      if (response.isSuccess) {
+        hecho = true;
+      } else {
+        _nroReg++;
+      }
+    } while (hecho == false);
+
+    await _ponerEnviado1(paradaenvio);
   }
 
   //-------------------------------------------------------------------------
 
-  void _ponerEnviado1(ParadaEnvio paradaenvio) {
+  Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
         idParada: paradaenvio.idParada,
         idRuta: paradaenvio.idRuta,
