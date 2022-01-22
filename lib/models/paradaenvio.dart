@@ -23,33 +23,34 @@ class ParadaEnvio {
   String? notas = '';
   int? enviado = 0;
   String? fecha = '';
+  String? imageArray = '';
 
-  ParadaEnvio({
-    required this.idParada,
-    required this.idRuta,
-    required this.idEnvio,
-    required this.secuencia,
-    required this.leyenda,
-    required this.latitud,
-    required this.longitud,
-    required this.idproveedor,
-    required this.estado,
-    required this.ordenid,
-    required this.titular,
-    required this.dni,
-    required this.domicilio,
-    required this.cp,
-    required this.entreCalles,
-    required this.telefonos,
-    required this.localidad,
-    required this.bultos,
-    required this.proveedor,
-    required this.motivo,
-    required this.motivodesc,
-    required this.notas,
-    required this.enviado,
-    required this.fecha,
-  });
+  ParadaEnvio(
+      {required this.idParada,
+      required this.idRuta,
+      required this.idEnvio,
+      required this.secuencia,
+      required this.leyenda,
+      required this.latitud,
+      required this.longitud,
+      required this.idproveedor,
+      required this.estado,
+      required this.ordenid,
+      required this.titular,
+      required this.dni,
+      required this.domicilio,
+      required this.cp,
+      required this.entreCalles,
+      required this.telefonos,
+      required this.localidad,
+      required this.bultos,
+      required this.proveedor,
+      required this.motivo,
+      required this.motivodesc,
+      required this.notas,
+      required this.enviado,
+      required this.fecha,
+      required this.imageArray});
 
   ParadaEnvio.fromJson(Map<String, dynamic> json) {
     idParada = json['idParada'];
@@ -77,6 +78,7 @@ class ParadaEnvio {
     notas = json['notas'];
     enviado = json['enviado'];
     fecha = json['fecha'];
+    imageArray = json['imageArray'];
   }
 
   Map<String, dynamic> toJson() {
@@ -106,6 +108,7 @@ class ParadaEnvio {
     data['notas'] = this.notas;
     data['enviado'] = this.enviado;
     data['fecha'] = this.fecha;
+    data['imageArray'] = this.imageArray;
 
     return data;
   }
@@ -136,6 +139,7 @@ class ParadaEnvio {
       'notas': notas,
       'enviado': enviado,
       'fecha': fecha,
+      'imageArray': imageArray,
     };
   }
 }

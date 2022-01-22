@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
@@ -835,12 +836,18 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     Navigator.pop(context, 'yes');
   }
 
-  void _guardaParadaEnBDLocal() {
+  void _guardaParadaEnBDLocal() async {
     widget.paradas.forEach((element) {
       if (element.idParada == widget.paradaenvio.idParada) {
         paradaSelected = element;
       }
     });
+
+    String base64Image = '';
+    if (_photoChanged) {
+      List<int> imageBytes = await _image.readAsBytes();
+      base64Image = base64Encode(imageBytes);
+    }
 
     ParadaEnvio requestParadaEnvio = ParadaEnvio(
         idParada: widget.paradaenvio.idParada,
@@ -866,7 +873,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
         motivodesc: _motivodesc,
         notas: _observaciones,
         enviado: 0,
-        fecha: DateTime.now().toString());
+        fecha: DateTime.now().toString(),
+        imageArray: base64Image);
 
     DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
     _showSnackbar();

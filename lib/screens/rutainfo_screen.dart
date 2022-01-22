@@ -68,7 +68,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       motivodesc: '',
       notas: '',
       enviado: 0,
-      fecha: '');
+      fecha: '',
+      imageArray: '');
 
   Parada paradaSelected = Parada(
       idParada: 0,
@@ -166,7 +167,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       avonDayRoute: 0,
       avonTravelRoute: 0,
       avonSecuenceRoute: 0,
-      avonInformarInclusion: 0);
+      avonInformarInclusion: 0,
+      urlDNIFullPath: '');
 
   List<ParadaEnvio> _paradasenvios = [];
   List<ParadaEnvio> _paradasenviosdb = [];
@@ -545,6 +547,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           paradasenvio.motivodesc = paradasenviodb.motivodesc;
           paradasenvio.notas = paradasenviodb.notas;
           paradasenvio.fecha = paradasenviodb.fecha;
+          paradasenvio.imageArray = paradasenviodb.imageArray;
         }
       });
     });
@@ -702,6 +705,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         'avonTravelRoute': envioSelected.avonTravelRoute,
         'avonSecuenceRoute': envioSelected.avonSecuenceRoute,
         'avonInformarInclusion': envioSelected.avonInformarInclusion,
+        'imageArray': paradaenvio.imageArray
       };
 
       Response response = await ApiHelper.put(
@@ -781,7 +785,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         motivodesc: paradaenvio.motivodesc,
         notas: paradaenvio.notas,
         enviado: 1,
-        fecha: paradaenvio.fecha);
+        fecha: paradaenvio.fecha,
+        imageArray: paradaenvio.imageArray);
 
     DBParadasEnvios.update(paradaenvionueva);
   }

@@ -122,7 +122,8 @@ class _HomeScreenState extends State<HomeScreen>
       motivodesc: '',
       notas: '',
       enviado: 0,
-      fecha: '');
+      fecha: '',
+      imageArray: '');
 
   Parada paradaSelected = Parada(
       idParada: 0,
@@ -220,7 +221,8 @@ class _HomeScreenState extends State<HomeScreen>
       avonDayRoute: 0,
       avonTravelRoute: 0,
       avonSecuenceRoute: 0,
-      avonInformarInclusion: 0);
+      avonInformarInclusion: 0,
+      urlDNIFullPath: '');
 
   Position _positionUser = Position(
       longitude: 0,
@@ -322,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen>
                         child: Column(children: [
                           Center(
                             child: Text(
-                              _user.usrlogin!.toUpperCase(),
+                              _user.usrlogin.toUpperCase(),
                               style: TextStyle(
                                   fontSize: 30, fontWeight: FontWeight.bold),
                             ),
@@ -1229,7 +1231,8 @@ class _HomeScreenState extends State<HomeScreen>
           avonDayRoute: 0,
           avonTravelRoute: 0,
           avonSecuenceRoute: 0,
-          avonInformarInclusion: 0);
+          avonInformarInclusion: 0,
+          urlDNIFullPath: '');
       for (var envio in _envios) {
         if (envio.idEnvio == parada.idEnvio) {
           filteredEnvio = envio;
@@ -1266,7 +1269,8 @@ class _HomeScreenState extends State<HomeScreen>
           motivodesc: '',
           notas: '',
           enviado: 0,
-          fecha: '');
+          fecha: '',
+          imageArray: '');
 
       _paradasenvios.add(paradaEnvio);
     });
@@ -1682,6 +1686,7 @@ class _HomeScreenState extends State<HomeScreen>
         'avonTravelRoute': envioSelected.avonTravelRoute,
         'avonSecuenceRoute': envioSelected.avonSecuenceRoute,
         'avonInformarInclusion': envioSelected.avonInformarInclusion,
+        'imagen': paradaenvio.imageArray
       };
 
       Response response = await ApiHelper.put(
@@ -1761,7 +1766,8 @@ class _HomeScreenState extends State<HomeScreen>
         motivodesc: paradaenvio.motivodesc,
         notas: paradaenvio.notas,
         enviado: 1,
-        fecha: paradaenvio.fecha);
+        fecha: paradaenvio.fecha,
+        imageArray: paradaenvio.imageArray);
 
     DBParadasEnvios.update(paradaenvionueva);
   }

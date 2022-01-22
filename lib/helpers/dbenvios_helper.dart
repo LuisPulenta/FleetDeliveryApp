@@ -7,7 +7,7 @@ class DBEnvios {
     return openDatabase(join(await getDatabasesPath(), 'envios.db'),
         onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE envios(idEnvio INTEGER,idproveedor INTEGER,agencianr INTEGER,estado INTEGER,envia TEXT,ruta TEXT,ordenid TEXT,fecha INTEGER,hora TEXT,imei TEXT,transporte TEXT,contrato TEXT,titular TEXT,dni TEXT,domicilio TEXT,cp TEXT,latitud DOUBLE,longitud DOUBLE,autorizado TEXT,observaciones TEXT,idCabCertificacion INTEGER,idRemitoProveedor INTEGER,idSubconUsrWeb INTEGER,fechaAlta TEXT,fechaEnvio TEXT,fechaDistribucion TEXT,entreCalles TEXT,mail TEXT,telefonos TEXT,localidad TEXT,tag INTEGER,provincia TEXT,fechaEntregaCliente TEXT,scaneadoIn TEXT,scaneadoOut TEXT,ingresoDeposito INTEGER,salidaDistribucion INTEGER,idRuta INTEGER,nroSecuencia INTEGER,fechaHoraOptimoCamino TEXT,bultos INTEGER,peso TEXT,alto TEXT,ancho TEXT,largo TEXT,idComprobante INTEGER,enviarMailSegunEstado TEXT,fechaRuta TEXT,ordenIDparaOC TEXT,hashUnico TEXT,bultosPikeados INTEGER,centroDistribucion TEXT,fechaUltimaActualizacion TEXT,volumen TEXT,avonZoneNumber INTEGER,avonSectorNumber INTEGER,avonAccountNumber TEXT,avonCampaignNumber INTEGER,avonCampaignYear INTEGER,domicilioCorregido TEXT,domicilioCorregidoUsando INTEGER,urlFirma TEXT,urlDNI TEXT,ultimoIdMotivo INTEGER,ultimaNotaFletero TEXT,idComprobanteDevolucion INTEGER,turno TEXT,barrioEntrega TEXT,partidoEntrega TEXT,avonDayRoute INTEGER,avonTravelRoute INTEGER,avonSecuenceRoute INTEGER,avonInformarInclusion INTEGER)",
+        "CREATE TABLE envios(idEnvio INTEGER,idproveedor INTEGER,agencianr INTEGER,estado INTEGER,envia TEXT,ruta TEXT,ordenid TEXT,fecha INTEGER,hora TEXT,imei TEXT,transporte TEXT,contrato TEXT,titular TEXT,dni TEXT,domicilio TEXT,cp TEXT,latitud DOUBLE,longitud DOUBLE,autorizado TEXT,observaciones TEXT,idCabCertificacion INTEGER,idRemitoProveedor INTEGER,idSubconUsrWeb INTEGER,fechaAlta TEXT,fechaEnvio TEXT,fechaDistribucion TEXT,entreCalles TEXT,mail TEXT,telefonos TEXT,localidad TEXT,tag INTEGER,provincia TEXT,fechaEntregaCliente TEXT,scaneadoIn TEXT,scaneadoOut TEXT,ingresoDeposito INTEGER,salidaDistribucion INTEGER,idRuta INTEGER,nroSecuencia INTEGER,fechaHoraOptimoCamino TEXT,bultos INTEGER,peso TEXT,alto TEXT,ancho TEXT,largo TEXT,idComprobante INTEGER,enviarMailSegunEstado TEXT,fechaRuta TEXT,ordenIDparaOC TEXT,hashUnico TEXT,bultosPikeados INTEGER,centroDistribucion TEXT,fechaUltimaActualizacion TEXT,volumen TEXT,avonZoneNumber INTEGER,avonSectorNumber INTEGER,avonAccountNumber TEXT,avonCampaignNumber INTEGER,avonCampaignYear INTEGER,domicilioCorregido TEXT,domicilioCorregidoUsando INTEGER,urlFirma TEXT,urlDNI TEXT,ultimoIdMotivo INTEGER,ultimaNotaFletero TEXT,idComprobanteDevolucion INTEGER,turno TEXT,barrioEntrega TEXT,partidoEntrega TEXT,avonDayRoute INTEGER,avonTravelRoute INTEGER,avonSecuenceRoute INTEGER,avonInformarInclusion INTEGER, urlDNIFullPath TEXT)",
       );
     }, version: 1);
   }
@@ -103,6 +103,7 @@ class DBEnvios {
               avonTravelRoute: enviosMap[i]['avonTravelRoute'],
               avonSecuenceRoute: enviosMap[i]['avonSecuenceRoute'],
               avonInformarInclusion: enviosMap[i]['avonInformarInclusion'],
+              urlDNIFullPath: enviosMap[i]['urlDNIFullPath'],
             ));
   }
 }
