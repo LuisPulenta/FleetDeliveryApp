@@ -22,27 +22,27 @@ class Parada {
   String? turno = '';
 
   Parada(
-      {required this.idParada,
-      required this.idRuta,
-      required this.idEnvio,
-      required this.tag,
-      required this.secuencia,
-      required this.leyenda,
-      required this.latitud,
-      required this.longitud,
-      required this.iconoPropio,
-      required this.iDmapa,
-      required this.distancia,
-      required this.tiempo,
-      required this.estado,
-      required this.fecha,
-      required this.hora,
-      required this.idMotivo,
-      required this.notaChofer,
-      required this.nuevoOrden,
-      required this.idCabCertificacion,
-      required this.idLiquidacionFletero,
-      required this.turno});
+      {required idParada,
+      required idRuta,
+      required idEnvio,
+      required tag,
+      required secuencia,
+      required leyenda,
+      required latitud,
+      required longitud,
+      required iconoPropio,
+      required iDmapa,
+      required distancia,
+      required tiempo,
+      required estado,
+      required fecha,
+      required hora,
+      required idMotivo,
+      required notaChofer,
+      required nuevoOrden,
+      required idCabCertificacion,
+      required idLiquidacionFletero,
+      required turno});
 
   Parada.fromJson(Map<String, dynamic> json) {
     idParada = json['idParada'];
@@ -69,28 +69,28 @@ class Parada {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['idParada'] = this.idParada;
-    data['idRuta'] = this.idRuta;
-    data['idEnvio'] = this.idEnvio;
-    data['tag'] = this.tag;
-    data['secuencia'] = this.secuencia;
-    data['leyenda'] = this.leyenda;
-    data['latitud'] = this.latitud;
-    data['longitud'] = this.longitud;
-    data['iconoPropio'] = this.iconoPropio;
-    data['iDmapa'] = this.iDmapa;
-    data['distancia'] = this.distancia;
-    data['tiempo'] = this.tiempo;
-    data['estado'] = this.estado;
-    data['fecha'] = this.fecha;
-    data['hora'] = this.hora;
-    data['idMotivo'] = this.idMotivo;
-    data['notaChofer'] = this.notaChofer;
-    data['nuevoOrden'] = this.nuevoOrden;
-    data['idCabCertificacion'] = this.idCabCertificacion;
-    data['idLiquidacionFletero'] = this.idLiquidacionFletero;
-    data['turno'] = this.turno;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['idParada'] = idParada;
+    data['idRuta'] = idRuta;
+    data['idEnvio'] = idEnvio;
+    data['tag'] = tag;
+    data['secuencia'] = secuencia;
+    data['leyenda'] = leyenda;
+    data['latitud'] = latitud;
+    data['longitud'] = longitud;
+    data['iconoPropio'] = iconoPropio;
+    data['iDmapa'] = iDmapa;
+    data['distancia'] = distancia;
+    data['tiempo'] = tiempo;
+    data['estado'] = estado;
+    data['fecha'] = fecha;
+    data['hora'] = hora;
+    data['idMotivo'] = idMotivo;
+    data['notaChofer'] = notaChofer;
+    data['nuevoOrden'] = nuevoOrden;
+    data['idCabCertificacion'] = idCabCertificacion;
+    data['idLiquidacionFletero'] = idLiquidacionFletero;
+    data['turno'] = turno;
     return data;
   }
 

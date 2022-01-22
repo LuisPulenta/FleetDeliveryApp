@@ -5,7 +5,6 @@ import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbparadasenvios_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
-import 'package:fleetdeliveryapp/models/nroregmax.dart';
 import 'package:fleetdeliveryapp/models/parada.dart';
 import 'package:fleetdeliveryapp/models/paradaenvio.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
@@ -41,7 +40,14 @@ class RutaInfoScreen extends StatefulWidget {
 }
 
 class _RutaInfoScreenState extends State<RutaInfoScreen> {
+//*****************************************************************************
+//************************** DEFINICION DE VARIABLES **************************
+//*****************************************************************************
+
   bool _showLoader = false;
+  bool _paradaGrabada = false;
+  bool _envioGrabado = false;
+  bool _seguimientoGrabado = false;
   LatLng _center = LatLng(0, 0);
   final Set<Marker> _markers = {};
   ParadaEnvio paradaenvioSelected = new ParadaEnvio(
@@ -175,12 +181,20 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   int _nroReg = 0;
 
+//*****************************************************************************
+//************************** INIT STATE ***************************************
+//*****************************************************************************
+
   @override
   void initState() {
     super.initState();
     _llenarparadasenvios();
     setState(() {});
   }
+
+//*****************************************************************************
+//************************** PANTALLA *****************************************
+//*****************************************************************************
 
   @override
   Widget build(BuildContext context) {
@@ -206,6 +220,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
+//-------------------------------------------------------------------------
+//-------------------------- METODO GETCONTENT ----------------------------
+//-------------------------------------------------------------------------
+
   Widget _getContent() {
     return Column(
       children: <Widget>[
@@ -217,15 +235,18 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
+//-------------------------------------------------------------------------
+//-------------------------- METODO SHOWPARADASCOUNT ----------------------
+//-------------------------------------------------------------------------
+
   Widget _showParadasCount() {
     int pendientes = 0;
-    int cumplidas = 0;
+
     _paradasenvios.forEach((element) {
       if (element.estado == 3) {
         pendientes++;
       }
     });
-    cumplidas = _paradasenvios.length - pendientes;
 
     return Container(
       padding: EdgeInsets.all(10),
@@ -255,6 +276,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
+//-------------------------------------------------------------------------
+//-------------------------- METODO NOCONTENT -----------------------------
+//-------------------------------------------------------------------------
+
   Widget _noContent() {
     return Container(
       margin: EdgeInsets.all(20),
@@ -266,6 +291,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       ),
     );
   }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO GETLISTVIEW ---------------------------
+//-------------------------------------------------------------------------
 
   Widget _getListView() {
     return RefreshIndicator(
@@ -428,6 +457,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
+//-------------------------------------------------------------------------
+//-------------------------- METODO GOINFOPARADA --------------------------
+//-------------------------------------------------------------------------
+
   void _goInfoParada(ParadaEnvio e) async {
     var result = await Navigator.push(
         context,
@@ -443,6 +476,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       await _llenarparadasenvios();
     }
   }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO NAVEGAR -------------------------------
+//-------------------------------------------------------------------------
 
   _navegar(e) async {
     _center = LatLng(e.latitud!.toDouble(), e.longitud!.toDouble());
@@ -481,6 +518,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           ]);
     }
   }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO NAVEGARTODOS --------------------------
+//-------------------------------------------------------------------------
 
   _navegartodos() async {
     _markers.clear();
@@ -521,6 +562,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           ]);
     }
   }
+
+//*****************************************************************************
+//************************** METODO LLENARPARADASENVIOS ***********************
+//*****************************************************************************
 
   Future<void> _llenarparadasenvios() async {
     _paradasenvios = [];
@@ -573,6 +618,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     setState(() {});
   }
 
+//*****************************************************************************
+//************************** METODO PUTPARADA *********************************
+//*****************************************************************************
+
   Future<void> _putParada(ParadaEnvio paradaenvio) async {
     widget.paradas.forEach((element) {
       if (element.idParada == paradaenvio.idParada) {
@@ -580,7 +629,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       }
     });
 
-    var hecho = false;
+    _paradaGrabada = false;
 
     do {
       Map<String, dynamic> requestParada = {
@@ -611,9 +660,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           '/api/Paradas/', paradaSelected.idParada.toString(), requestParada);
 
       if (response.isSuccess) {
-        hecho = true;
+        _paradaGrabada = true;
       }
-    } while (hecho == false);
+    } while (_paradaGrabada == false);
 
     await _putEnvio(paradaenvio);
   }
@@ -627,7 +676,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       }
     });
 
-    var hecho = false;
+    _envioGrabado = false;
 
     do {
       Map<String, dynamic> requestEnvio = {
@@ -711,9 +760,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       Response response = await ApiHelper.put(
           '/api/Envios/', envioSelected.idEnvio.toString(), requestEnvio);
       if (response.isSuccess) {
-        hecho = true;
+        _envioGrabado = true;
       }
-    } while (hecho == false);
+    } while (_envioGrabado == false);
 
     //-------------------------------------------------------------------------
 
@@ -722,7 +771,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
-    var hecho = false;
+    _seguimientoGrabado = false;
 
     Response response2 = await ApiHelper.getNroRegistroMax();
     if (response2.isSuccess) {
@@ -749,11 +798,11 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       );
 
       if (response.isSuccess) {
-        hecho = true;
+        _seguimientoGrabado = true;
       } else {
         _nroReg++;
       }
-    } while (hecho == false);
+    } while (_seguimientoGrabado == false);
 
     await _ponerEnviado1(paradaenvio);
   }

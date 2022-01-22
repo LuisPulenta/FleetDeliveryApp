@@ -2,7 +2,7 @@ class Motivo {
   int? id = 0;
   String? motivo = '';
 
-  Motivo({required this.id, required this.motivo});
+  Motivo({required id, required motivo});
 
   Motivo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -10,9 +10,9 @@ class Motivo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['motivo'] = this.motivo;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['motivo'] = motivo;
     return data;
   }
 

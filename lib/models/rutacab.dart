@@ -6,11 +6,11 @@ class RutaCab {
   int? estado = 0;
 
   RutaCab(
-      {required this.idRuta,
-      required this.idUser,
-      required this.fechaAlta,
-      required this.nombre,
-      required this.estado});
+      {required idRuta,
+      required idUser,
+      required fechaAlta,
+      required nombre,
+      required estado});
 
   RutaCab.fromJson(Map<String, dynamic> json) {
     idRuta = json['idRuta'];
@@ -21,12 +21,12 @@ class RutaCab {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['idRuta'] = this.idRuta;
-    data['idUser'] = this.idUser;
-    data['fechaAlta'] = this.fechaAlta;
-    data['nombre'] = this.nombre;
-    data['estado'] = this.estado;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['idRuta'] = idRuta;
+    data['idUser'] = idUser;
+    data['fechaAlta'] = fechaAlta;
+    data['nombre'] = nombre;
+    data['estado'] = estado;
     return data;
   }
 

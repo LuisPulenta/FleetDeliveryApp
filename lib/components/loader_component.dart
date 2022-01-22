@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class LoaderComponent extends StatelessWidget {
   final String text;
 
-  LoaderComponent({this.text = ''});
+  const LoaderComponent({Key? key, this.text = ''}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

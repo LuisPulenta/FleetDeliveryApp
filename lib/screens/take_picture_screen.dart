@@ -65,9 +65,7 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
             if (response != null) {
               Navigator.pop(context, response);
             }
-          } catch (e) {
-            print(e);
-          }
+          } catch (e) {}
         },
       ),
     );

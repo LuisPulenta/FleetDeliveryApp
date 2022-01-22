@@ -11,13 +11,13 @@ class Ruta {
   List<Envio>? envios = [];
 
   Ruta(
-      {required this.idRuta,
-      required this.idUser,
-      required this.fechaAlta,
-      required this.nombre,
-      required this.estado,
-      required this.paradas,
-      required this.envios});
+      {required idRuta,
+      required idUser,
+      required fechaAlta,
+      required nombre,
+      required estado,
+      required paradas,
+      required envios});
 
   Ruta.fromJson(Map<String, dynamic> json) {
     idRuta = json['idRuta'];
@@ -29,29 +29,29 @@ class Ruta {
     if (json['paradas'] != null) {
       paradas = <Parada>[];
       json['paradas'].forEach((v) {
-        paradas!.add(new Parada.fromJson(v));
+        paradas!.add(Parada.fromJson(v));
       });
     }
     if (json['envios'] != null) {
       envios = <Envio>[];
       json['envios'].forEach((v) {
-        envios!.add(new Envio.fromJson(v));
+        envios!.add(Envio.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['idRuta'] = this.idRuta;
-    data['idUser'] = this.idUser;
-    data['fechaAlta'] = this.fechaAlta;
-    data['nombre'] = this.nombre;
-    data['estado'] = this.estado;
-    if (this.paradas != null) {
-      data['paradas'] = this.paradas!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['idRuta'] = idRuta;
+    data['idUser'] = idUser;
+    data['fechaAlta'] = fechaAlta;
+    data['nombre'] = nombre;
+    data['estado'] = estado;
+    if (paradas != null) {
+      data['paradas'] = paradas!.map((v) => v.toJson()).toList();
     }
-    if (this.envios != null) {
-      data['envios'] = this.envios!.map((v) => v.toJson()).toList();
+    if (envios != null) {
+      data['envios'] = envios!.map((v) => v.toJson()).toList();
     }
     return data;
   }

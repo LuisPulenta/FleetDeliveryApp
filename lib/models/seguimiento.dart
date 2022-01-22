@@ -11,16 +11,16 @@ class Seguimiento {
   String? notachofer = '';
 
   Seguimiento(
-      {required this.id,
-      required this.idenvio,
-      required this.idetapa,
-      required this.estado,
-      required this.idusuario,
-      required this.fecha,
-      required this.hora,
-      required this.observaciones,
-      required this.motivo,
-      required this.notachofer});
+      {required id,
+      required idenvio,
+      required idetapa,
+      required estado,
+      required idusuario,
+      required fecha,
+      required hora,
+      required observaciones,
+      required motivo,
+      required notachofer});
 
   Seguimiento.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -36,17 +36,17 @@ class Seguimiento {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['idenvio'] = this.idenvio;
-    data['idetapa'] = this.idetapa;
-    data['estado'] = this.estado;
-    data['idusuario'] = this.idusuario;
-    data['fecha'] = this.fecha;
-    data['hora'] = this.hora;
-    data['observaciones'] = this.observaciones;
-    data['motivo'] = this.motivo;
-    data['notachofer'] = this.notachofer;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['idenvio'] = idenvio;
+    data['idetapa'] = idetapa;
+    data['estado'] = estado;
+    data['idusuario'] = idusuario;
+    data['fecha'] = fecha;
+    data['hora'] = hora;
+    data['observaciones'] = observaciones;
+    data['motivo'] = motivo;
+    data['notachofer'] = notachofer;
     return data;
   }
 

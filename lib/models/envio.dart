@@ -75,80 +75,80 @@ class Envio {
   String? urlDNIFullPath = '';
 
   Envio(
-      {required this.idEnvio,
-      required this.idproveedor,
-      required this.agencianr,
-      required this.estado,
-      required this.envia,
-      required this.ruta,
-      required this.ordenid,
-      required this.fecha,
-      required this.hora,
-      required this.imei,
-      required this.transporte,
-      required this.contrato,
-      required this.titular,
-      required this.dni,
-      required this.domicilio,
-      required this.cp,
-      required this.latitud,
-      required this.longitud,
-      required this.autorizado,
-      required this.observaciones,
-      required this.idCabCertificacion,
-      required this.idRemitoProveedor,
-      required this.idSubconUsrWeb,
-      required this.fechaAlta,
-      required this.fechaEnvio,
-      required this.fechaDistribucion,
-      required this.entreCalles,
-      required this.mail,
-      required this.telefonos,
-      required this.localidad,
-      required this.tag,
-      required this.provincia,
-      required this.fechaEntregaCliente,
-      required this.scaneadoIn,
-      required this.scaneadoOut,
-      required this.ingresoDeposito,
-      required this.salidaDistribucion,
-      required this.idRuta,
-      required this.nroSecuencia,
-      required this.fechaHoraOptimoCamino,
-      required this.bultos,
-      required this.peso,
-      required this.alto,
-      required this.ancho,
-      required this.largo,
-      required this.idComprobante,
-      required this.enviarMailSegunEstado,
-      required this.fechaRuta,
-      required this.ordenIDparaOC,
-      required this.hashUnico,
-      required this.bultosPikeados,
-      required this.centroDistribucion,
-      required this.fechaUltimaActualizacion,
-      required this.volumen,
-      required this.avonZoneNumber,
-      required this.avonSectorNumber,
-      required this.avonAccountNumber,
-      required this.avonCampaignNumber,
-      required this.avonCampaignYear,
-      required this.domicilioCorregido,
-      required this.domicilioCorregidoUsando,
-      required this.urlFirma,
-      required this.urlDNI,
-      required this.ultimoIdMotivo,
-      required this.ultimaNotaFletero,
-      required this.idComprobanteDevolucion,
-      required this.turno,
-      required this.barrioEntrega,
-      required this.partidoEntrega,
-      required this.avonDayRoute,
-      required this.avonTravelRoute,
-      required this.avonSecuenceRoute,
-      required this.avonInformarInclusion,
-      required this.urlDNIFullPath});
+      {required idEnvio,
+      required idproveedor,
+      required agencianr,
+      required estado,
+      required envia,
+      required ruta,
+      required ordenid,
+      required fecha,
+      required hora,
+      required imei,
+      required transporte,
+      required contrato,
+      required titular,
+      required dni,
+      required domicilio,
+      required cp,
+      required latitud,
+      required longitud,
+      required autorizado,
+      required observaciones,
+      required idCabCertificacion,
+      required idRemitoProveedor,
+      required idSubconUsrWeb,
+      required fechaAlta,
+      required fechaEnvio,
+      required fechaDistribucion,
+      required entreCalles,
+      required mail,
+      required telefonos,
+      required localidad,
+      required tag,
+      required provincia,
+      required fechaEntregaCliente,
+      required scaneadoIn,
+      required scaneadoOut,
+      required ingresoDeposito,
+      required salidaDistribucion,
+      required idRuta,
+      required nroSecuencia,
+      required fechaHoraOptimoCamino,
+      required bultos,
+      required peso,
+      required alto,
+      required ancho,
+      required largo,
+      required idComprobante,
+      required enviarMailSegunEstado,
+      required fechaRuta,
+      required ordenIDparaOC,
+      required hashUnico,
+      required bultosPikeados,
+      required centroDistribucion,
+      required fechaUltimaActualizacion,
+      required volumen,
+      required avonZoneNumber,
+      required avonSectorNumber,
+      required avonAccountNumber,
+      required avonCampaignNumber,
+      required avonCampaignYear,
+      required domicilioCorregido,
+      required domicilioCorregidoUsando,
+      required urlFirma,
+      required urlDNI,
+      required ultimoIdMotivo,
+      required ultimaNotaFletero,
+      required idComprobanteDevolucion,
+      required turno,
+      required barrioEntrega,
+      required partidoEntrega,
+      required avonDayRoute,
+      required avonTravelRoute,
+      required avonSecuenceRoute,
+      required avonInformarInclusion,
+      required urlDNIFullPath});
 
   Envio.fromJson(Map<String, dynamic> json) {
     idEnvio = json['idEnvio'];
@@ -228,81 +228,81 @@ class Envio {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['idEnvio'] = this.idEnvio;
-    data['idproveedor'] = this.idproveedor;
-    data['agencianr'] = this.agencianr;
-    data['estado'] = this.estado;
-    data['envia'] = this.envia;
-    data['ruta'] = this.ruta;
-    data['ordenid'] = this.ordenid;
-    data['fecha'] = this.fecha;
-    data['hora'] = this.hora;
-    data['imei'] = this.imei;
-    data['transporte'] = this.transporte;
-    data['contrato'] = this.contrato;
-    data['titular'] = this.titular;
-    data['dni'] = this.dni;
-    data['domicilio'] = this.domicilio;
-    data['cp'] = this.cp;
-    data['latitud'] = this.latitud;
-    data['longitud'] = this.longitud;
-    data['autorizado'] = this.autorizado;
-    data['observaciones'] = this.observaciones;
-    data['idCabCertificacion'] = this.idCabCertificacion;
-    data['idRemitoProveedor'] = this.idRemitoProveedor;
-    data['idSubconUsrWeb'] = this.idSubconUsrWeb;
-    data['fechaAlta'] = this.fechaAlta;
-    data['fechaEnvio'] = this.fechaEnvio;
-    data['fechaDistribucion'] = this.fechaDistribucion;
-    data['entreCalles'] = this.entreCalles;
-    data['mail'] = this.mail;
-    data['telefonos'] = this.telefonos;
-    data['localidad'] = this.localidad;
-    data['tag'] = this.tag;
-    data['provincia'] = this.provincia;
-    data['fechaEntregaCliente'] = this.fechaEntregaCliente;
-    data['scaneadoIn'] = this.scaneadoIn;
-    data['scaneadoOut'] = this.scaneadoOut;
-    data['ingresoDeposito'] = this.ingresoDeposito;
-    data['salidaDistribucion'] = this.salidaDistribucion;
-    data['idRuta'] = this.idRuta;
-    data['nroSecuencia'] = this.nroSecuencia;
-    data['fechaHoraOptimoCamino'] = this.fechaHoraOptimoCamino;
-    data['bultos'] = this.bultos;
-    data['peso'] = this.peso;
-    data['alto'] = this.alto;
-    data['ancho'] = this.ancho;
-    data['largo'] = this.largo;
-    data['idComprobante'] = this.idComprobante;
-    data['enviarMailSegunEstado'] = this.enviarMailSegunEstado;
-    data['fechaRuta'] = this.fechaRuta;
-    data['ordenIDparaOC'] = this.ordenIDparaOC;
-    data['hashUnico'] = this.hashUnico;
-    data['bultosPikeados'] = this.bultosPikeados;
-    data['centroDistribucion'] = this.centroDistribucion;
-    data['fechaUltimaActualizacion'] = this.fechaUltimaActualizacion;
-    data['volumen'] = this.volumen;
-    data['avonZoneNumber'] = this.avonZoneNumber;
-    data['avonSectorNumber'] = this.avonSectorNumber;
-    data['avonAccountNumber'] = this.avonAccountNumber;
-    data['avonCampaignNumber'] = this.avonCampaignNumber;
-    data['avonCampaignYear'] = this.avonCampaignYear;
-    data['domicilioCorregido'] = this.domicilioCorregido;
-    data['domicilioCorregidoUsando'] = this.domicilioCorregidoUsando;
-    data['urlFirma'] = this.urlFirma;
-    data['urlDNI'] = this.urlDNI;
-    data['ultimoIdMotivo'] = this.ultimoIdMotivo;
-    data['ultimaNotaFletero'] = this.ultimaNotaFletero;
-    data['idComprobanteDevolucion'] = this.idComprobanteDevolucion;
-    data['turno'] = this.turno;
-    data['barrioEntrega'] = this.barrioEntrega;
-    data['partidoEntrega'] = this.partidoEntrega;
-    data['avonDayRoute'] = this.avonDayRoute;
-    data['avonTravelRoute'] = this.avonTravelRoute;
-    data['avonSecuenceRoute'] = this.avonSecuenceRoute;
-    data['avonInformarInclusion'] = this.avonInformarInclusion;
-    data['urlDNIFullPath'] = this.urlDNIFullPath;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['idEnvio'] = idEnvio;
+    data['idproveedor'] = idproveedor;
+    data['agencianr'] = agencianr;
+    data['estado'] = estado;
+    data['envia'] = envia;
+    data['ruta'] = ruta;
+    data['ordenid'] = ordenid;
+    data['fecha'] = fecha;
+    data['hora'] = hora;
+    data['imei'] = imei;
+    data['transporte'] = transporte;
+    data['contrato'] = contrato;
+    data['titular'] = titular;
+    data['dni'] = dni;
+    data['domicilio'] = domicilio;
+    data['cp'] = cp;
+    data['latitud'] = latitud;
+    data['longitud'] = longitud;
+    data['autorizado'] = autorizado;
+    data['observaciones'] = observaciones;
+    data['idCabCertificacion'] = idCabCertificacion;
+    data['idRemitoProveedor'] = idRemitoProveedor;
+    data['idSubconUsrWeb'] = idSubconUsrWeb;
+    data['fechaAlta'] = fechaAlta;
+    data['fechaEnvio'] = fechaEnvio;
+    data['fechaDistribucion'] = fechaDistribucion;
+    data['entreCalles'] = entreCalles;
+    data['mail'] = mail;
+    data['telefonos'] = telefonos;
+    data['localidad'] = localidad;
+    data['tag'] = tag;
+    data['provincia'] = provincia;
+    data['fechaEntregaCliente'] = fechaEntregaCliente;
+    data['scaneadoIn'] = scaneadoIn;
+    data['scaneadoOut'] = scaneadoOut;
+    data['ingresoDeposito'] = ingresoDeposito;
+    data['salidaDistribucion'] = salidaDistribucion;
+    data['idRuta'] = idRuta;
+    data['nroSecuencia'] = nroSecuencia;
+    data['fechaHoraOptimoCamino'] = fechaHoraOptimoCamino;
+    data['bultos'] = bultos;
+    data['peso'] = peso;
+    data['alto'] = alto;
+    data['ancho'] = ancho;
+    data['largo'] = largo;
+    data['idComprobante'] = idComprobante;
+    data['enviarMailSegunEstado'] = enviarMailSegunEstado;
+    data['fechaRuta'] = fechaRuta;
+    data['ordenIDparaOC'] = ordenIDparaOC;
+    data['hashUnico'] = hashUnico;
+    data['bultosPikeados'] = bultosPikeados;
+    data['centroDistribucion'] = centroDistribucion;
+    data['fechaUltimaActualizacion'] = fechaUltimaActualizacion;
+    data['volumen'] = volumen;
+    data['avonZoneNumber'] = avonZoneNumber;
+    data['avonSectorNumber'] = avonSectorNumber;
+    data['avonAccountNumber'] = avonAccountNumber;
+    data['avonCampaignNumber'] = avonCampaignNumber;
+    data['avonCampaignYear'] = avonCampaignYear;
+    data['domicilioCorregido'] = domicilioCorregido;
+    data['domicilioCorregidoUsando'] = domicilioCorregidoUsando;
+    data['urlFirma'] = urlFirma;
+    data['urlDNI'] = urlDNI;
+    data['ultimoIdMotivo'] = ultimoIdMotivo;
+    data['ultimaNotaFletero'] = ultimaNotaFletero;
+    data['idComprobanteDevolucion'] = idComprobanteDevolucion;
+    data['turno'] = turno;
+    data['barrioEntrega'] = barrioEntrega;
+    data['partidoEntrega'] = partidoEntrega;
+    data['avonDayRoute'] = avonDayRoute;
+    data['avonTravelRoute'] = avonTravelRoute;
+    data['avonSecuenceRoute'] = avonSecuenceRoute;
+    data['avonInformarInclusion'] = avonInformarInclusion;
+    data['urlDNIFullPath'] = urlDNIFullPath;
     return data;
   }
 

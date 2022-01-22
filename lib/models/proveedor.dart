@@ -30,35 +30,35 @@ class Proveedor {
   int? cantidadDeCajas = 0;
 
   Proveedor(
-      {required this.id,
-      required this.nombre,
-      required this.claveacceso,
-      required this.permiso,
-      required this.permiso2,
-      required this.email,
-      required this.iniciales,
-      required this.razonSocial,
-      required this.domicilio,
-      required this.mail,
-      required this.telefono,
-      required this.responsable,
-      required this.condicionesContrato,
-      required this.tag,
-      required this.estado,
-      required this.cuit,
-      required this.importacionGenerica,
-      required this.enviarNotifAdestinatario,
-      required this.enviarCopiaAcliente,
-      required this.enviarResumenNotifAcliente,
-      required this.pesoCaja,
-      required this.altoCaja,
-      required this.anchoCaja,
-      required this.largoCaja,
-      required this.pesoMaxPallet,
-      required this.altoMaxPallet,
-      required this.anchoMaxPallet,
-      required this.largoMaxPallet,
-      required this.cantidadDeCajas});
+      {required id,
+      required nombre,
+      required claveacceso,
+      required permiso,
+      required permiso2,
+      required email,
+      required iniciales,
+      required razonSocial,
+      required domicilio,
+      required mail,
+      required telefono,
+      required responsable,
+      required condicionesContrato,
+      required tag,
+      required estado,
+      required cuit,
+      required importacionGenerica,
+      required enviarNotifAdestinatario,
+      required enviarCopiaAcliente,
+      required enviarResumenNotifAcliente,
+      required pesoCaja,
+      required altoCaja,
+      required anchoCaja,
+      required largoCaja,
+      required pesoMaxPallet,
+      required altoMaxPallet,
+      required anchoMaxPallet,
+      required largoMaxPallet,
+      required cantidadDeCajas});
 
   Proveedor.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -93,36 +93,36 @@ class Proveedor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['nombre'] = this.nombre;
-    data['claveacceso'] = this.claveacceso;
-    data['permiso'] = this.permiso;
-    data['permiso2'] = this.permiso2;
-    data['email'] = this.email;
-    data['iniciales'] = this.iniciales;
-    data['razonSocial'] = this.razonSocial;
-    data['domicilio'] = this.domicilio;
-    data['mail'] = this.mail;
-    data['telefono'] = this.telefono;
-    data['responsable'] = this.responsable;
-    data['condicionesContrato'] = this.condicionesContrato;
-    data['tag'] = this.tag;
-    data['estado'] = this.estado;
-    data['cuit'] = this.cuit;
-    data['importacionGenerica'] = this.importacionGenerica;
-    data['enviarNotifAdestinatario'] = this.enviarNotifAdestinatario;
-    data['enviarCopiaAcliente'] = this.enviarCopiaAcliente;
-    data['enviarResumenNotifAcliente'] = this.enviarResumenNotifAcliente;
-    data['pesoCaja'] = this.pesoCaja;
-    data['altoCaja'] = this.altoCaja;
-    data['anchoCaja'] = this.anchoCaja;
-    data['largoCaja'] = this.largoCaja;
-    data['pesoMaxPallet'] = this.pesoMaxPallet;
-    data['altoMaxPallet'] = this.altoMaxPallet;
-    data['anchoMaxPallet'] = this.anchoMaxPallet;
-    data['largoMaxPallet'] = this.largoMaxPallet;
-    data['cantidadDeCajas'] = this.cantidadDeCajas;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['nombre'] = nombre;
+    data['claveacceso'] = claveacceso;
+    data['permiso'] = permiso;
+    data['permiso2'] = permiso2;
+    data['email'] = email;
+    data['iniciales'] = iniciales;
+    data['razonSocial'] = razonSocial;
+    data['domicilio'] = domicilio;
+    data['mail'] = mail;
+    data['telefono'] = telefono;
+    data['responsable'] = responsable;
+    data['condicionesContrato'] = condicionesContrato;
+    data['tag'] = tag;
+    data['estado'] = estado;
+    data['cuit'] = cuit;
+    data['importacionGenerica'] = importacionGenerica;
+    data['enviarNotifAdestinatario'] = enviarNotifAdestinatario;
+    data['enviarCopiaAcliente'] = enviarCopiaAcliente;
+    data['enviarResumenNotifAcliente'] = enviarResumenNotifAcliente;
+    data['pesoCaja'] = pesoCaja;
+    data['altoCaja'] = altoCaja;
+    data['anchoCaja'] = anchoCaja;
+    data['largoCaja'] = largoCaja;
+    data['pesoMaxPallet'] = pesoMaxPallet;
+    data['altoMaxPallet'] = altoMaxPallet;
+    data['anchoMaxPallet'] = anchoMaxPallet;
+    data['largoMaxPallet'] = largoMaxPallet;
+    data['cantidadDeCajas'] = cantidadDeCajas;
     return data;
   }
 

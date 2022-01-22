@@ -7,12 +7,9 @@ import 'package:fleetdeliveryapp/helpers/constants.dart';
 import 'package:fleetdeliveryapp/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
-import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -275,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
 
-    if (filteredUsuario.length == 0) {
+    if (filteredUsuario.isEmpty) {
       setState(() {
         _showLoader = true;
       });
@@ -291,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('conectadodesde', DateTime.now().toString());
     await prefs.setString(
-        'validohasta', DateTime.now().add(new Duration(hours: 12)).toString());
+        'validohasta', DateTime.now().add(Duration(hours: 12)).toString());
     await prefs.setString('ultimaactualizacion', DateTime.now().toString());
 
     Navigator.pushReplacement(
@@ -355,7 +352,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _getTablaUsuarios() async {
     void _insertUsuarios() async {
-      if (_usuariosApi.length > 0) {
+      if (_usuariosApi.isNotEmpty) {
         DBUsuarios.delete();
         _usuariosApi.forEach((element) {
           DBUsuarios.insertUsuario(element);
@@ -369,7 +366,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _usuarios = await DBUsuarios.usuarios();
 
-    if (_usuarios.length == 0) {
+    if (_usuarios.isEmpty) {
       setState(() {
         _showLoader = false;
       });

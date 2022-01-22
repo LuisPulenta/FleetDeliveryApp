@@ -26,31 +26,31 @@ class ParadaEnvio {
   String? imageArray = '';
 
   ParadaEnvio(
-      {required this.idParada,
-      required this.idRuta,
-      required this.idEnvio,
-      required this.secuencia,
-      required this.leyenda,
-      required this.latitud,
-      required this.longitud,
-      required this.idproveedor,
-      required this.estado,
-      required this.ordenid,
-      required this.titular,
-      required this.dni,
-      required this.domicilio,
-      required this.cp,
-      required this.entreCalles,
-      required this.telefonos,
-      required this.localidad,
-      required this.bultos,
-      required this.proveedor,
-      required this.motivo,
-      required this.motivodesc,
-      required this.notas,
-      required this.enviado,
-      required this.fecha,
-      required this.imageArray});
+      {required idParada,
+      required idRuta,
+      required idEnvio,
+      required secuencia,
+      required leyenda,
+      required latitud,
+      required longitud,
+      required idproveedor,
+      required estado,
+      required ordenid,
+      required titular,
+      required dni,
+      required domicilio,
+      required cp,
+      required entreCalles,
+      required telefonos,
+      required localidad,
+      required bultos,
+      required proveedor,
+      required motivo,
+      required motivodesc,
+      required notas,
+      required enviado,
+      required fecha,
+      required imageArray});
 
   ParadaEnvio.fromJson(Map<String, dynamic> json) {
     idParada = json['idParada'];
@@ -83,32 +83,32 @@ class ParadaEnvio {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['idParada'] = this.idParada;
-    data['idRuta'] = this.idRuta;
-    data['idEnvio'] = this.idEnvio;
-    data['secuencia'] = this.secuencia;
-    data['leyenda'] = this.leyenda;
-    data['latitud'] = this.latitud;
-    data['longitud'] = this.longitud;
+    data['idParada'] = idParada;
+    data['idRuta'] = idRuta;
+    data['idEnvio'] = idEnvio;
+    data['secuencia'] = secuencia;
+    data['leyenda'] = leyenda;
+    data['latitud'] = latitud;
+    data['longitud'] = longitud;
 
-    data['idproveedor'] = this.idproveedor;
-    data['estado'] = this.estado;
-    data['ordenid'] = this.ordenid;
-    data['titular'] = this.titular;
-    data['dni'] = this.dni;
-    data['domicilio'] = this.domicilio;
-    data['cp'] = this.cp;
-    data['entreCalles'] = this.entreCalles;
-    data['telefonos'] = this.telefonos;
-    data['localidad'] = this.localidad;
-    data['bultos'] = this.bultos;
-    data['proveedor'] = this.proveedor;
-    data['motivo'] = this.motivo;
-    data['motivodesc'] = this.motivodesc;
-    data['notas'] = this.notas;
-    data['enviado'] = this.enviado;
-    data['fecha'] = this.fecha;
-    data['imageArray'] = this.imageArray;
+    data['idproveedor'] = idproveedor;
+    data['estado'] = estado;
+    data['ordenid'] = ordenid;
+    data['titular'] = titular;
+    data['dni'] = dni;
+    data['domicilio'] = domicilio;
+    data['cp'] = cp;
+    data['entreCalles'] = entreCalles;
+    data['telefonos'] = telefonos;
+    data['localidad'] = localidad;
+    data['bultos'] = bultos;
+    data['proveedor'] = proveedor;
+    data['motivo'] = motivo;
+    data['motivodesc'] = motivodesc;
+    data['notas'] = notas;
+    data['enviado'] = enviado;
+    data['fecha'] = fecha;
+    data['imageArray'] = imageArray;
 
     return data;
   }

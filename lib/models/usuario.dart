@@ -12,17 +12,17 @@ class Usuario {
   int? centroDistribucion = 0;
 
   Usuario(
-      {required this.idUser,
-      required this.codigo,
-      required this.apellidonombre,
-      required this.usrlogin,
-      required this.usrcontrasena,
-      required this.habilitadoWeb,
-      required this.vehiculo,
-      required this.dominio,
-      required this.celular,
-      required this.orden,
-      required this.centroDistribucion});
+      {required idUser,
+      required codigo,
+      required apellidonombre,
+      required usrlogin,
+      required usrcontrasena,
+      required habilitadoWeb,
+      required vehiculo,
+      required dominio,
+      required celular,
+      required orden,
+      required centroDistribucion});
 
   Usuario.fromJson(Map<String, dynamic> json) {
     idUser = json['idUser'];
@@ -39,18 +39,18 @@ class Usuario {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['idUser'] = this.idUser;
-    data['codigo'] = this.codigo;
-    data['apellidonombre'] = this.apellidonombre;
-    data['usrlogin'] = this.usrlogin;
-    data['usrcontrasena'] = this.usrcontrasena;
-    data['habilitadoWeb'] = this.habilitadoWeb;
-    data['vehiculo'] = this.vehiculo;
-    data['dominio'] = this.dominio;
-    data['celular'] = this.celular;
-    data['orden'] = this.orden;
-    data['centroDistribucion'] = this.centroDistribucion;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['idUser'] = idUser;
+    data['codigo'] = codigo;
+    data['apellidonombre'] = apellidonombre;
+    data['usrlogin'] = usrlogin;
+    data['usrcontrasena'] = usrcontrasena;
+    data['habilitadoWeb'] = habilitadoWeb;
+    data['vehiculo'] = vehiculo;
+    data['dominio'] = dominio;
+    data['celular'] = celular;
+    data['orden'] = orden;
+    data['centroDistribucion'] = centroDistribucion;
     return data;
   }
 

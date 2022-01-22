@@ -24,7 +24,6 @@ import 'package:fleetdeliveryapp/screens/rutainfo_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -938,7 +937,6 @@ class _HomeScreenState extends State<HomeScreen>
       if (element.idRuta == ruta.idRuta) {
         _paradasenviosselected.add(element);
       }
-      ;
     });
 
     String? result = await Navigator.push(
@@ -1158,7 +1156,7 @@ class _HomeScreenState extends State<HomeScreen>
     _envios = await DBEnvios.envios();
 
     _paradas.forEach((parada) {
-      Envio filteredEnvio = new Envio(
+      Envio filteredEnvio = Envio(
           idEnvio: 0,
           idproveedor: 0,
           agencianr: 0,
@@ -1244,7 +1242,7 @@ class _HomeScreenState extends State<HomeScreen>
           _proveedorselected = proveedor.nombre.toString();
         }
       }
-      ;
+
       ParadaEnvio paradaEnvio = ParadaEnvio(
           idParada: parada.idParada,
           idRuta: parada.idRuta,

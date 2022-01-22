@@ -39,9 +39,10 @@ class ParadaInfoScreen extends StatefulWidget {
 }
 
 class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
-  final _scaffKey = GlobalKey<ScaffoldState>();
+//*****************************************************************************
+//************************** DEFINICION DE VARIABLES **************************
+//*****************************************************************************
 
-  bool _showLoader = false;
   bool _photoChanged = false;
   late XFile _image;
 
@@ -61,8 +62,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   bool _observacionesShowError = false;
   TextEditingController _observacionesController = TextEditingController();
   String _motivodesc = '';
-
-  List<ParadaEnvio> _paradasenvios = [];
 
   List<DropdownMenuItem<int>> _items = [];
 
@@ -92,12 +91,20 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   LatLng _center = LatLng(0, 0);
   final Set<Marker> _markers = {};
 
+//*****************************************************************************
+//************************** INIT STATE ***************************************
+//*****************************************************************************
+
   @override
   void initState() {
     super.initState();
     _getlistOptions();
     setState(() {});
   }
+
+//*****************************************************************************
+//************************** PANTALLA *****************************************
+//*****************************************************************************
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +128,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       ),
     );
   }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO SHOWCLIENTE ---------------------------
+//-------------------------------------------------------------------------
 
   Widget _showCliente() {
     return Column(children: [
@@ -277,6 +288,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     ]);
   }
 
+//-------------------------------------------------------------------------
+//-------------------------- METODO SHOWPAQUETE ---------------------------
+//-------------------------------------------------------------------------
   _showPaquete() {
     return //************ PAQUETE *********
         Card(
@@ -397,6 +411,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     );
   }
 
+//-------------------------------------------------------------------------
+//-------------------------- METODO SHOWDELIVERY --------------------------
+//-------------------------------------------------------------------------
+
   _showDelivery() {
     return //************ DELIVERY *********
         Card(
@@ -447,7 +465,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                             onChanged: (option) {
                               setState(() {
                                 _optionEstado = option as int;
-                                _estado = option as int;
+                                _estado = option;
                               });
                             },
                             decoration: InputDecoration(
@@ -660,6 +678,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     );
   }
 
+//-------------------------------------------------------------------------
+//-------------------------- METODO SHOWBUTTON ----------------------------
+//-------------------------------------------------------------------------
+
   Widget _showButton() {
     return Container(
         margin: EdgeInsets.all(10),
@@ -681,6 +703,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           ],
         ));
   }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO NAVEGAR -------------------------------
+//-------------------------------------------------------------------------
 
   _navegar(ParadaEnvio paradaenvio) {
     _center = LatLng(
@@ -707,22 +733,29 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 )));
   }
 
+//*****************************************************************************
+//************************** METODO GETOPTIONS2 *******************************
+//*****************************************************************************
+
   List<DropdownMenuItem<int>> _getOptions2() {
     List<DropdownMenuItem<int>> list = [];
     list.add(DropdownMenuItem(
       child: Text('Seleccione un Motivo...'),
       value: 0,
     ));
-    int nro = 0;
+
     widget.motivos.forEach((element) {
       list.add(DropdownMenuItem(
         child: Text(element.motivo.toString()),
         value: element.id,
       ));
-      nro++;
     });
     return list;
   }
+
+//*****************************************************************************
+//************************** METODO TAKEPICTURE *******************************
+//*****************************************************************************
 
   Future _takePicture() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -760,6 +793,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     }
   }
 
+//*****************************************************************************
+//************************** METODO GOADDFOTO *********************************
+//*****************************************************************************
+
   void _goAddPhoto() async {
     var response = await showAlertDialog(
         context: context,
@@ -786,6 +823,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     }
   }
 
+//*****************************************************************************
+//************************** METODO SELECTPICTURE *****************************
+//*****************************************************************************
+
   Future<Null> _selectPicture() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? _image2 = await _picker.pickImage(source: ImageSource.gallery);
@@ -798,12 +839,20 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     }
   }
 
+//*****************************************************************************
+//************************** METODO SAVE **************************************
+//*****************************************************************************
+
   _save() {
     if (!validateFields()) {
       return;
     }
     _saveRecord();
   }
+
+//*****************************************************************************
+//************************** METODO VALIDATEFIELDS ****************************
+//*****************************************************************************
 
   bool validateFields() {
     bool isValid = true;
@@ -831,10 +880,18 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     return isValid;
   }
 
+//*****************************************************************************
+//************************** METODO SAVERECORD ********************************
+//*****************************************************************************
+
   void _saveRecord() async {
     _guardaParadaEnBDLocal();
     Navigator.pop(context, 'yes');
   }
+
+//*****************************************************************************
+//************************** METODO FUARDARPARADAENBDLOCAL ********************
+//*****************************************************************************
 
   void _guardaParadaEnBDLocal() async {
     widget.paradas.forEach((element) {
@@ -880,11 +937,11 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     _showSnackbar();
   }
 
-  void _getlistOptions() {
-    setState(() {
-      _showLoader = true;
-    });
+//*****************************************************************************
+//************************** METODO GETLISTOPTIONS ****************************
+//*****************************************************************************
 
+  void _getlistOptions() {
     _items = [];
     _listoptions = [];
 
@@ -897,12 +954,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     _listoptions.add(opt3);
     _listoptions.add(opt4);
 
-    setState(() {
-      _showLoader = false;
-    });
-
     _loadFieldValues();
   }
+
+//*****************************************************************************
+//************************** METODO LOADFIELDVALUES ***************************
+//*****************************************************************************
 
   void _loadFieldValues() {
     _estado = widget.paradaenvio.estado!;
@@ -913,6 +970,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
     _getComboEstados();
   }
+
+//*****************************************************************************
+//************************** METODO GETCOMBOESTADOS ***************************
+//*****************************************************************************
 
   List<DropdownMenuItem<int>> _getComboEstados() {
     _items = [];
@@ -934,6 +995,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
     return list;
   }
+
+//*****************************************************************************
+//************************** METODO SHOWSNACKBAR ******************************
+//*****************************************************************************
 
   void _showSnackbar() {
     SnackBar snackbar = SnackBar(
