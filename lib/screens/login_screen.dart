@@ -25,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   List<Usuario> _usuariosApi = [];
   List<Usuario> _usuarios = [];
+  bool _usuariosConseguidos = false;
 
   Usuario _usuarioLogueado = Usuario(
       idUser: 0,
@@ -337,12 +338,17 @@ class _LoginScreenState extends State<LoginScreen> {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
-      Response response = await ApiHelper.getUsuarios();
+      _usuariosConseguidos = false;
 
-      if (response.isSuccess) {
-        _usuariosApi = response.result;
-        _hayInternet = true;
-      }
+      do {
+        Response response = await ApiHelper.getUsuarios();
+
+        if (response.isSuccess) {
+          _usuariosApi = response.result;
+          _hayInternet = true;
+          _usuariosConseguidos = true;
+        }
+      } while (_usuariosConseguidos == false);
     }
     _getTablaUsuarios();
     return;

@@ -22,27 +22,27 @@ class Parada {
   String? turno = '';
 
   Parada(
-      {required idParada,
-      required idRuta,
-      required idEnvio,
-      required tag,
-      required secuencia,
-      required leyenda,
-      required latitud,
-      required longitud,
-      required iconoPropio,
-      required iDmapa,
-      required distancia,
-      required tiempo,
-      required estado,
-      required fecha,
-      required hora,
-      required idMotivo,
-      required notaChofer,
-      required nuevoOrden,
-      required idCabCertificacion,
-      required idLiquidacionFletero,
-      required turno});
+      {required this.idParada,
+      required this.idRuta,
+      required this.idEnvio,
+      required this.tag,
+      required this.secuencia,
+      required this.leyenda,
+      required this.latitud,
+      required this.longitud,
+      required this.iconoPropio,
+      required this.iDmapa,
+      required this.distancia,
+      required this.tiempo,
+      required this.estado,
+      required this.fecha,
+      required this.hora,
+      required this.idMotivo,
+      required this.notaChofer,
+      required this.nuevoOrden,
+      required this.idCabCertificacion,
+      required this.idLiquidacionFletero,
+      required this.turno});
 
   Parada.fromJson(Map<String, dynamic> json) {
     idParada = json['idParada'];

@@ -843,11 +843,11 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //************************** METODO SAVE **************************************
 //*****************************************************************************
 
-  _save() {
+  _save() async {
     if (!validateFields()) {
       return;
     }
-    _saveRecord();
+    await _saveRecord();
   }
 
 //*****************************************************************************
@@ -884,16 +884,16 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //************************** METODO SAVERECORD ********************************
 //*****************************************************************************
 
-  void _saveRecord() async {
-    _guardaParadaEnBDLocal();
+  Future<void> _saveRecord() async {
+    await _guardaParadaEnBDLocal();
     Navigator.pop(context, 'yes');
   }
 
 //*****************************************************************************
-//************************** METODO FUARDARPARADAENBDLOCAL ********************
+//************************** METODO GUARDARPARADAENBDLOCAL ********************
 //*****************************************************************************
 
-  void _guardaParadaEnBDLocal() async {
+  Future<void> _guardaParadaEnBDLocal() async {
     widget.paradas.forEach((element) {
       if (element.idParada == widget.paradaenvio.idParada) {
         paradaSelected = element;
@@ -933,7 +933,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
         fecha: DateTime.now().toString(),
         imageArray: base64Image);
 
-    DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
+    await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
     _showSnackbar();
   }
 

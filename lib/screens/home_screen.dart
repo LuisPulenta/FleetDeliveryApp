@@ -70,6 +70,11 @@ class _HomeScreenState extends State<HomeScreen>
   bool _passwordShowError = false;
   bool _passwordShow = false;
 
+  bool _paradaGrabada = false;
+  bool _envioGrabado = false;
+  bool _seguimientoGrabado = false;
+  bool _puso1 = false;
+
   String _result2 = "no";
 
   bool _hayInternet = false;
@@ -1559,9 +1564,12 @@ class _HomeScreenState extends State<HomeScreen>
       }
     });
 
-    var hecho = false;
+    _paradaGrabada = false;
 
     do {
+      String fec = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      String hora = DateFormat('HH:mm').format(DateTime.now());
+
       Map<String, dynamic> requestParada = {
         'idParada': paradaSelected.idParada,
         'idRuta': paradaSelected.idRuta,
@@ -1576,8 +1584,8 @@ class _HomeScreenState extends State<HomeScreen>
         'distancia': paradaSelected.distancia,
         'tiempo': paradaSelected.tiempo,
         'estado': paradaenvio.estado,
-        'fecha': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-        'hora': DateFormat('HH:mm').format(DateTime.now()),
+        'fecha': fec,
+        'hora': hora,
         'idMotivo': paradaenvio.motivo,
         'notaChofer': paradaenvio.notas,
         'nuevoOrden': paradaSelected.nuevoOrden,
@@ -1590,9 +1598,9 @@ class _HomeScreenState extends State<HomeScreen>
           '/api/Paradas/', paradaSelected.idParada.toString(), requestParada);
 
       if (response.isSuccess) {
-        hecho = true;
+        _paradaGrabada = true;
       }
-    } while (hecho == false);
+    } while (_paradaGrabada == false);
 
     await _putEnvio(paradaenvio);
   }
@@ -1606,7 +1614,7 @@ class _HomeScreenState extends State<HomeScreen>
       }
     });
 
-    var hecho = false;
+    _envioGrabado = false;
 
     do {
       Map<String, dynamic> requestEnvio = {
@@ -1684,31 +1692,31 @@ class _HomeScreenState extends State<HomeScreen>
         'avonTravelRoute': envioSelected.avonTravelRoute,
         'avonSecuenceRoute': envioSelected.avonSecuenceRoute,
         'avonInformarInclusion': envioSelected.avonInformarInclusion,
-        'imagen': paradaenvio.imageArray
+        'imageArray': paradaenvio.imageArray
       };
 
       Response response = await ApiHelper.put(
           '/api/Envios/', envioSelected.idEnvio.toString(), requestEnvio);
       if (response.isSuccess) {
-        hecho = true;
+        _envioGrabado = true;
       }
-    } while (hecho == false);
-
-    //-------------------------------------------------------------------------
+    } while (_envioGrabado == false);
 
     await _postSeguimiento(paradaenvio);
   }
 
+  //-------------------------------------------------------------------------
+
   Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
-    var hecho = false;
-
-    Response response2 = await ApiHelper.getNroRegistroMax();
-    if (response2.isSuccess) {
-      _nroReg = int.parse(response2.result.toString()) + 1;
-    }
+    _seguimientoGrabado = false;
 
     do {
+      Response response2 = await ApiHelper.getNroRegistroMax();
+      if (response2.isSuccess) {
+        _nroReg = int.parse(response2.result.toString()) + 1;
+      }
+
       Map<String, dynamic> requestSeguimiento = {
         'id': _nroReg,
         'idenvio': paradaenvio.idEnvio,
@@ -1728,11 +1736,9 @@ class _HomeScreenState extends State<HomeScreen>
       );
 
       if (response.isSuccess) {
-        hecho = true;
-      } else {
-        _nroReg++;
+        _seguimientoGrabado = true;
       }
-    } while (hecho == false);
+    } while (_seguimientoGrabado == false);
 
     await _ponerEnviado1(paradaenvio);
   }
@@ -1740,33 +1746,45 @@ class _HomeScreenState extends State<HomeScreen>
   //-------------------------------------------------------------------------
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
-    ParadaEnvio paradaenvionueva = ParadaEnvio(
-        idParada: paradaenvio.idParada,
-        idRuta: paradaenvio.idRuta,
-        idEnvio: paradaenvio.idEnvio,
-        secuencia: paradaenvio.secuencia,
-        leyenda: paradaenvio.leyenda,
-        latitud: paradaenvio.latitud,
-        longitud: paradaenvio.longitud,
-        idproveedor: paradaenvio.idproveedor,
-        estado: paradaenvio.estado,
-        ordenid: paradaenvio.ordenid,
-        titular: paradaenvio.titular,
-        dni: paradaenvio.dni,
-        domicilio: paradaenvio.domicilio,
-        cp: paradaenvio.cp,
-        entreCalles: paradaenvio.entreCalles,
-        telefonos: paradaenvio.telefonos,
-        localidad: paradaenvio.localidad,
-        bultos: paradaenvio.bultos,
-        proveedor: paradaenvio.proveedor,
-        motivo: paradaenvio.motivo,
-        motivodesc: paradaenvio.motivodesc,
-        notas: paradaenvio.notas,
-        enviado: 1,
-        fecha: paradaenvio.fecha,
-        imageArray: paradaenvio.imageArray);
+    do {
+      ParadaEnvio paradaenvionueva = ParadaEnvio(
+          idParada: paradaenvio.idParada,
+          idRuta: paradaenvio.idRuta,
+          idEnvio: paradaenvio.idEnvio,
+          secuencia: paradaenvio.secuencia,
+          leyenda: paradaenvio.leyenda,
+          latitud: paradaenvio.latitud,
+          longitud: paradaenvio.longitud,
+          idproveedor: paradaenvio.idproveedor,
+          estado: paradaenvio.estado,
+          ordenid: paradaenvio.ordenid,
+          titular: paradaenvio.titular,
+          dni: paradaenvio.dni,
+          domicilio: paradaenvio.domicilio,
+          cp: paradaenvio.cp,
+          entreCalles: paradaenvio.entreCalles,
+          telefonos: paradaenvio.telefonos,
+          localidad: paradaenvio.localidad,
+          bultos: paradaenvio.bultos,
+          proveedor: paradaenvio.proveedor,
+          motivo: paradaenvio.motivo,
+          motivodesc: paradaenvio.motivodesc,
+          notas: paradaenvio.notas,
+          enviado: 1,
+          fecha: paradaenvio.fecha,
+          imageArray: paradaenvio.imageArray);
 
-    DBParadasEnvios.update(paradaenvionueva);
+      _puso1 = false;
+
+      await DBParadasEnvios.update(paradaenvionueva);
+      _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+      _paradasenviosdb.forEach((element) {
+        if (element.idParada == paradaenvionueva.idParada) {
+          if (element.enviado == 1) {
+            _puso1 == true;
+          }
+        }
+      });
+    } while (_puso1 == false);
   }
 }

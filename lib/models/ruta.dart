@@ -11,13 +11,13 @@ class Ruta {
   List<Envio>? envios = [];
 
   Ruta(
-      {required idRuta,
-      required idUser,
-      required fechaAlta,
-      required nombre,
-      required estado,
-      required paradas,
-      required envios});
+      {required this.idRuta,
+      required this.idUser,
+      required this.fechaAlta,
+      required this.nombre,
+      required this.estado,
+      required this.paradas,
+      required this.envios});
 
   Ruta.fromJson(Map<String, dynamic> json) {
     idRuta = json['idRuta'];

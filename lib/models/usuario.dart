@@ -12,17 +12,17 @@ class Usuario {
   int? centroDistribucion = 0;
 
   Usuario(
-      {required idUser,
-      required codigo,
-      required apellidonombre,
-      required usrlogin,
-      required usrcontrasena,
-      required habilitadoWeb,
-      required vehiculo,
-      required dominio,
-      required celular,
-      required orden,
-      required centroDistribucion});
+      {required this.idUser,
+      required this.codigo,
+      required this.apellidonombre,
+      required this.usrlogin,
+      required this.usrcontrasena,
+      required this.habilitadoWeb,
+      required this.vehiculo,
+      required this.dominio,
+      required this.celular,
+      required this.orden,
+      required this.centroDistribucion});
 
   Usuario.fromJson(Map<String, dynamic> json) {
     idUser = json['idUser'];

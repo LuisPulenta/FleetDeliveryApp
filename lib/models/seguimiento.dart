@@ -11,16 +11,16 @@ class Seguimiento {
   String? notachofer = '';
 
   Seguimiento(
-      {required id,
-      required idenvio,
-      required idetapa,
-      required estado,
-      required idusuario,
-      required fecha,
-      required hora,
-      required observaciones,
-      required motivo,
-      required notachofer});
+      {required this.id,
+      required this.idenvio,
+      required this.idetapa,
+      required this.estado,
+      required this.idusuario,
+      required this.fecha,
+      required this.hora,
+      required this.observaciones,
+      required this.motivo,
+      required this.notachofer});
 
   Seguimiento.fromJson(Map<String, dynamic> json) {
     id = json['id'];

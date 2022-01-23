@@ -1,7 +1,7 @@
 class NroRegMax {
   int id = 0;
 
-  NroRegMax({required id});
+  NroRegMax({required this.id});
 
   NroRegMax.fromJson(Map<String, dynamic> json) {
     id = json['id'];

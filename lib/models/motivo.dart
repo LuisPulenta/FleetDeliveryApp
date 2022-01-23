@@ -2,7 +2,7 @@ class Motivo {
   int? id = 0;
   String? motivo = '';
 
-  Motivo({required id, required motivo});
+  Motivo({required this.id, required this.motivo});
 
   Motivo.fromJson(Map<String, dynamic> json) {
     id = json['id'];

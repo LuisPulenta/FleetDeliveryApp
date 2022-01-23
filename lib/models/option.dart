@@ -2,7 +2,7 @@ class Option {
   int id = 0;
   String description = '';
 
-  Option({required id, required description});
+  Option({required this.id, required this.description});
 
   Option.fromJson(Map<String, dynamic> json) {
     id = json['id'];
