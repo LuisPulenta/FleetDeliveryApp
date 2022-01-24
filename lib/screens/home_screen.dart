@@ -305,6 +305,12 @@ class _HomeScreenState extends State<HomeScreen>
                     AppBar(
                       title: (Text("Completas")),
                       centerTitle: true,
+                      actions: <Widget>[
+                        IconButton(
+                          onPressed: _llenarparadasenvios,
+                          icon: Icon(Icons.refresh),
+                        )
+                      ],
                       backgroundColor: Color(0xff282886),
                     ),
                     Center(
@@ -760,165 +766,162 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _getListView() {
     return Container(
       height: 550,
-      child: RefreshIndicator(
-        onRefresh: _llenarparadasenvios,
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          children: _paradasenviosdb.map((e) {
-            return Card(
-              color: Colors.white,
-              shadowColor: Colors.white,
-              elevation: 10,
-              margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-              child: InkWell(
-                onTap: () {
-                  paradaenvioSelected = e;
-                },
-                child: Container(
-                  margin: EdgeInsets.all(0),
-                  padding: EdgeInsets.all(0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              e.enviado == 1
-                                  ? Icon(Icons.done_all, color: Colors.green)
-                                  : e.enviado == 0
-                                      ? Icon(Icons.done, color: Colors.grey)
-                                      : Icon(Icons.done, color: Colors.red),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text("Ruta: ",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  Text("Parada: ",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  Text("Envío: ",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(e.idRuta.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                  Text(e.idParada.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                  Text(e.idEnvio.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text("Fecha: ",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  Text("",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  Text("",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                      '${DateFormat('dd/MM/yyyy').format(DateTime.parse(e.fecha!))}',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                  Text("",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  (e.estado == 4)
-                                      ? Text(
-                                          "ENTREGADO",
-                                          style: TextStyle(
-                                              color: Colors.green,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      : (e.estado == 10)
-                                          ? Text(
-                                              "NO ENTREGADO",
-                                              style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.bold),
-                                            )
-                                          : (e.estado == 7)
-                                              ? Text(
-                                                  "RECHAZADO",
-                                                  style: TextStyle(
-                                                      color: Colors.purple,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              : Text(
-                                                  "PENDIENTE",
-                                                  style: TextStyle(
-                                                      color: Colors.blue,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                ],
-                              ),
-                            ],
-                          ),
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        children: _paradasenviosdb.map((e) {
+          return Card(
+            color: Colors.white,
+            shadowColor: Colors.white,
+            elevation: 10,
+            margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+            child: InkWell(
+              onTap: () {
+                paradaenvioSelected = e;
+              },
+              child: Container(
+                margin: EdgeInsets.all(0),
+                padding: EdgeInsets.all(0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            e.enviado == 1
+                                ? Icon(Icons.done_all, color: Colors.green)
+                                : e.enviado == 0
+                                    ? Icon(Icons.done, color: Colors.grey)
+                                    : Icon(Icons.done, color: Colors.red),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Ruta: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Text("Parada: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Text("Envío: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(e.idRuta.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                                Text(e.idParada.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                                Text(e.idEnvio.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Fecha: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Text("",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Text("",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                    '${DateFormat('dd/MM/yyyy').format(DateTime.parse(e.fecha!))}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                                Text("",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                (e.estado == 4)
+                                    ? Text(
+                                        "ENTREGADO",
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : (e.estado == 10)
+                                        ? Text(
+                                            "NO ENTREGADO",
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        : (e.estado == 7)
+                                            ? Text(
+                                                "RECHAZADO",
+                                                style: TextStyle(
+                                                    color: Colors.purple,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            : Text(
+                                                "PENDIENTE",
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
@@ -961,7 +964,7 @@ class _HomeScreenState extends State<HomeScreen>
         _showLoader = true;
       });
       await _actualizaParadasEnvios();
-      await _llenarparadasenvios();
+      //await _llenarparadasenvios();
       setState(() {
         _showLoader = false;
       });
@@ -1539,15 +1542,30 @@ class _HomeScreenState extends State<HomeScreen>
         _showLoader = true;
       });
 
-      _paradasenviosdb.forEach((paradaenvio) async {
+      for (ParadaEnvio paradaenvio in _paradasenviosdb) {
         if (paradaenvio.enviado == 0) {
           await _putParada(paradaenvio);
         }
-      });
+      }
+
+      // _paradasenviosdb.forEach((paradaenvio) async {
+      //   if (paradaenvio.enviado == 0) {
+      //     await _putParada(paradaenvio);
+      //   }
+      // });
 
       setState(() {
         _showLoader = false;
       });
+    } else {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso',
+          message:
+              "No está conectado a Internet para subir los datos al Servidor",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
     }
 
     setState(() {});
@@ -1601,6 +1619,20 @@ class _HomeScreenState extends State<HomeScreen>
         _paradaGrabada = true;
       }
     } while (_paradaGrabada == false);
+
+// //************* PARA BORRAR DESPUES ***************************
+//     await showAlertDialog(
+//         context: context,
+//         title: 'Parada Guardada Número...',
+//         message: paradaenvio.idParada.toString(),
+//         actions: <AlertDialogAction>[
+//           AlertDialogAction(key: null, label: 'Aceptar'),
+//         ]);
+// //************* PARA BORRAR DESPUES ***************************
+
+    // Future.delayed(Duration(seconds: 1), () async {
+    //   await _putEnvio(paradaenvio);
+    // });
 
     await _putEnvio(paradaenvio);
   }
@@ -1702,6 +1734,20 @@ class _HomeScreenState extends State<HomeScreen>
       }
     } while (_envioGrabado == false);
 
+// //************* PARA BORRAR DESPUES ***************************
+//     await showAlertDialog(
+//         context: context,
+//         title: 'Envio Guardado en Parada...',
+//         message: paradaenvio.idParada.toString(),
+//         actions: <AlertDialogAction>[
+//           AlertDialogAction(key: null, label: 'Aceptar'),
+//         ]);
+// //************* PARA BORRAR DESPUES ***************************
+
+    // Future.delayed(Duration(seconds: 1), () async {
+    //   await _postSeguimiento(paradaenvio);
+    // });
+
     await _postSeguimiento(paradaenvio);
   }
 
@@ -1740,12 +1786,27 @@ class _HomeScreenState extends State<HomeScreen>
       }
     } while (_seguimientoGrabado == false);
 
+// //************* PARA BORRAR DESPUES ***************************
+//     await showAlertDialog(
+//         context: context,
+//         title: 'Seguimiento Guardado en Parada...',
+//         message: paradaenvio.idParada.toString(),
+//         actions: <AlertDialogAction>[
+//           AlertDialogAction(key: null, label: 'Aceptar'),
+//         ]);
+// //************* PARA BORRAR DESPUES ***************************
+
+    // Future.delayed(Duration(seconds: 1), () async {
+    //   await _ponerEnviado1(paradaenvio);
+    // });
+
     await _ponerEnviado1(paradaenvio);
   }
 
   //-------------------------------------------------------------------------
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
+    _puso1 = false;
     do {
       ParadaEnvio paradaenvionueva = ParadaEnvio(
           idParada: paradaenvio.idParada,
@@ -1774,17 +1835,24 @@ class _HomeScreenState extends State<HomeScreen>
           fecha: paradaenvio.fecha,
           imageArray: paradaenvio.imageArray);
 
-      _puso1 = false;
-
       await DBParadasEnvios.update(paradaenvionueva);
       _paradasenviosdb = await DBParadasEnvios.paradasenvios();
       _paradasenviosdb.forEach((element) {
-        if (element.idParada == paradaenvionueva.idParada) {
-          if (element.enviado == 1) {
-            _puso1 == true;
-          }
+        if (element.idParada == paradaenvionueva.idParada &&
+            element.enviado == 1) {
+          _puso1 = true;
         }
       });
     } while (_puso1 == false);
+
+// //************* PARA BORRAR DESPUES ***************************
+//     await showAlertDialog(
+//         context: context,
+//         title: 'Enviado 1 en Parada...',
+//         message: paradaenvio.idParada.toString(),
+//         actions: <AlertDialogAction>[
+//           AlertDialogAction(key: null, label: 'Aceptar'),
+//         ]);
+// //************* PARA BORRAR DESPUES ***************************
   }
 }

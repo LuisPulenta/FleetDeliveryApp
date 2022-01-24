@@ -612,6 +612,12 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         _renovoState = true;
       } while (_renovoState == false);
 
+      // for (ParadaEnvio paradaenvio in _paradasenviosdb) {
+      //   if (paradaenvio.enviado == 0) {
+      //     await _putParada(paradaenvio);
+      //   }
+      // }
+
       _paradasenviosdb.forEach((paradaenvio) async {
         if (paradaenvio.enviado == 0) {
           await _putParada(paradaenvio);
@@ -677,6 +683,16 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         _paradaGrabada = true;
       }
     } while (_paradaGrabada == false);
+
+// //************* PARA BORRAR DESPUES ***************************
+//     await showAlertDialog(
+//         context: context,
+//         title: 'Parada Guardada Número...',
+//         message: paradaenvio.idParada.toString(),
+//         actions: <AlertDialogAction>[
+//           AlertDialogAction(key: null, label: 'Aceptar'),
+//         ]);
+// //************* PARA BORRAR DESPUES ***************************
 
     await _putEnvio(paradaenvio);
   }
@@ -778,6 +794,16 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       }
     } while (_envioGrabado == false);
 
+// //************* PARA BORRAR DESPUES ***************************
+//     await showAlertDialog(
+//         context: context,
+//         title: 'Envio Guardado en Parada...',
+//         message: paradaenvio.idParada.toString(),
+//         actions: <AlertDialogAction>[
+//           AlertDialogAction(key: null, label: 'Aceptar'),
+//         ]);
+// //************* PARA BORRAR DESPUES ***************************
+
     await _postSeguimiento(paradaenvio);
   }
 
@@ -816,12 +842,23 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       }
     } while (_seguimientoGrabado == false);
 
+// //************* PARA BORRAR DESPUES ***************************
+//     await showAlertDialog(
+//         context: context,
+//         title: 'Seguimiento Guardado en Parada...',
+//         message: paradaenvio.idParada.toString(),
+//         actions: <AlertDialogAction>[
+//           AlertDialogAction(key: null, label: 'Aceptar'),
+//         ]);
+// //************* PARA BORRAR DESPUES ***************************
+
     await _ponerEnviado1(paradaenvio);
   }
 
   //-------------------------------------------------------------------------
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
+    _puso1 = false;
     do {
       ParadaEnvio paradaenvionueva = ParadaEnvio(
           idParada: paradaenvio.idParada,
@@ -850,17 +887,24 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           fecha: paradaenvio.fecha,
           imageArray: paradaenvio.imageArray);
 
-      _puso1 = false;
-
       await DBParadasEnvios.update(paradaenvionueva);
       _paradasenviosdb = await DBParadasEnvios.paradasenvios();
       _paradasenviosdb.forEach((element) {
-        if (element.idParada == paradaenvionueva.idParada) {
-          if (element.enviado == 1) {
-            _puso1 == true;
-          }
+        if (element.idParada == paradaenvionueva.idParada &&
+            element.enviado == 1) {
+          _puso1 = true;
         }
       });
     } while (_puso1 == false);
+
+// //************* PARA BORRAR DESPUES ***************************
+//     await showAlertDialog(
+//         context: context,
+//         title: 'Enviado 1 en Parada...',
+//         message: paradaenvio.idParada.toString(),
+//         actions: <AlertDialogAction>[
+//           AlertDialogAction(key: null, label: 'Aceptar'),
+//         ]);
+// //************* PARA BORRAR DESPUES ***************************
   }
 }
