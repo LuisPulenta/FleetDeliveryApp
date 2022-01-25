@@ -7,7 +7,7 @@ class DBRutasCab {
     return openDatabase(join(await getDatabasesPath(), 'rutascab.db'),
         onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE rutascab(idRuta INTEGER, idUser INTEGER, fechaAlta TEXT, nombre TEXT, estado INTEGER)",
+        "CREATE TABLE rutascab(idRuta INTEGER, idUser INTEGER, fechaAlta TEXT, nombre TEXT, estado INTEGER, totalParadas INTEGER, pendientes INTEGER)",
       );
     }, version: 1);
   }
@@ -22,6 +22,12 @@ class DBRutasCab {
     return database.delete("rutascab");
   }
 
+  static Future<int> update(RutaCab ruta) async {
+    Database database = await _openDBRutas();
+    return database.update("rutascab", ruta.toMap(),
+        where: "idRuta = ?", whereArgs: [ruta.idRuta]);
+  }
+
   static Future<List<RutaCab>> rutas() async {
     Database database = await _openDBRutas();
     final List<Map<String, dynamic>> rutasMap =
@@ -34,6 +40,8 @@ class DBRutasCab {
               fechaAlta: rutasMap[i]['fechaAlta'],
               nombre: rutasMap[i]['nombre'],
               estado: rutasMap[i]['estado'],
+              totalParadas: rutasMap[i]['totalParadas'],
+              pendientes: rutasMap[i]['pendientes'],
             ));
   }
 }

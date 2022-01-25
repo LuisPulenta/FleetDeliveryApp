@@ -110,7 +110,20 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Parada: ${widget.paradaenvio.secuencia.toString()}'),
+        title: widget.paradaenvio.estado == 3
+            ? Text(
+                'Parada: ${widget.paradaenvio.secuencia.toString()} PENDIENTE')
+            : widget.paradaenvio.estado == 4
+                ? Text(
+                    'Parada: ${widget.paradaenvio.secuencia.toString()} ENTREGADO')
+                : widget.paradaenvio.estado == 10
+                    ? Text(
+                        'Parada: ${widget.paradaenvio.secuencia.toString()} NO ENTREGADO')
+                    : widget.paradaenvio.estado == 7
+                        ? Text(
+                            'Parada: ${widget.paradaenvio.secuencia.toString()} RECHAZADO')
+                        : Text(
+                            'Parada: ${widget.paradaenvio.secuencia.toString()} PENDIENTE'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

@@ -53,6 +53,7 @@ class Ruta {
     if (envios != null) {
       data['envios'] = envios!.map((v) => v.toJson()).toList();
     }
+
     return data;
   }
 

@@ -701,16 +701,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       }
     } while (_paradaGrabada == false);
 
-// //************* PARA BORRAR DESPUES ***************************
-//     await showAlertDialog(
-//         context: context,
-//         title: 'Parada Guardada Número...',
-//         message: paradaenvio.idParada.toString(),
-//         actions: <AlertDialogAction>[
-//           AlertDialogAction(key: null, label: 'Aceptar'),
-//         ]);
-// //************* PARA BORRAR DESPUES ***************************
-
     await _putEnvio(paradaenvio);
   }
 
@@ -811,16 +801,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       }
     } while (_envioGrabado == false);
 
-// //************* PARA BORRAR DESPUES ***************************
-//     await showAlertDialog(
-//         context: context,
-//         title: 'Envio Guardado en Parada...',
-//         message: paradaenvio.idParada.toString(),
-//         actions: <AlertDialogAction>[
-//           AlertDialogAction(key: null, label: 'Aceptar'),
-//         ]);
-// //************* PARA BORRAR DESPUES ***************************
-
     await _postSeguimiento(paradaenvio);
   }
 
@@ -858,16 +838,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         _seguimientoGrabado = true;
       }
     } while (_seguimientoGrabado == false);
-
-// //************* PARA BORRAR DESPUES ***************************
-//     await showAlertDialog(
-//         context: context,
-//         title: 'Seguimiento Guardado en Parada...',
-//         message: paradaenvio.idParada.toString(),
-//         actions: <AlertDialogAction>[
-//           AlertDialogAction(key: null, label: 'Aceptar'),
-//         ]);
-// //************* PARA BORRAR DESPUES ***************************
 
     await _ponerEnviado1(paradaenvio);
   }
@@ -913,16 +883,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         }
       });
     } while (_puso1 == false);
-
-// //************* PARA BORRAR DESPUES ***************************
-//     await showAlertDialog(
-//         context: context,
-//         title: 'Enviado 1 en Parada...',
-//         message: paradaenvio.idParada.toString(),
-//         actions: <AlertDialogAction>[
-//           AlertDialogAction(key: null, label: 'Aceptar'),
-//         ]);
-// //************* PARA BORRAR DESPUES ***************************
   }
 
   bool isNullOrEmpty(dynamic obj) =>

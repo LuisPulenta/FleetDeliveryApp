@@ -64,6 +64,9 @@ class _HomeScreenState extends State<HomeScreen>
   List<Motivo> _motivos = [];
 
   int _nroReg = 0;
+  int pendientes = 0;
+  int listas = 0;
+  int totParadas = 0;
 
   String _password = '';
   String _passwordError = '';
@@ -88,8 +91,14 @@ class _HomeScreenState extends State<HomeScreen>
 
   String _textComponent = '';
 
-  RutaCab rutaSelected =
-      RutaCab(idRuta: 0, idUser: 0, fechaAlta: '', nombre: '', estado: 0);
+  RutaCab rutaSelected = RutaCab(
+      idRuta: 0,
+      idUser: 0,
+      fechaAlta: '',
+      nombre: '',
+      estado: 0,
+      totalParadas: 0,
+      pendientes: 0);
 
   Usuario _user = Usuario(
       idUser: 0,
@@ -252,6 +261,12 @@ class _HomeScreenState extends State<HomeScreen>
     _getprefs();
     _getPosition();
     _getProveedores();
+
+    for (ParadaEnvio element in _paradasenvios) {
+      if (element.estado == 3) {
+        pendientes++;
+      }
+    }
   }
 
 //*****************************************************************************
@@ -724,6 +739,72 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                   ),
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    e.pendientes == 0
+                                        ? Text(('COMPLETADA'),
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold,
+                                            ))
+                                        : Text(' '),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    Text("Paradas: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF781f1e),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      child: Text(e.totalParadas.toString(),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    Text("Pendientes: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF781f1e),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      child: Text(e.pendientes.toString(),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   Icon(Icons.arrow_forward_ios),
                 ],
               ),
@@ -966,7 +1047,7 @@ class _HomeScreenState extends State<HomeScreen>
         _showLoader = true;
       });
       await _actualizaParadasEnvios();
-      //await _llenarparadasenvios();
+      await _actualizaRutas();
       setState(() {
         _showLoader = false;
       });
@@ -1147,7 +1228,9 @@ class _HomeScreenState extends State<HomeScreen>
               idUser: ruta.idUser,
               fechaAlta: ruta.fechaAlta,
               nombre: ruta.nombre,
-              estado: ruta.estado);
+              estado: ruta.estado,
+              totalParadas: 0,
+              pendientes: 0);
           DBRutasCab.insertRuta(rutaCab);
 
           if (ruta.paradas!.length > 0) {
@@ -1174,6 +1257,10 @@ class _HomeScreenState extends State<HomeScreen>
     _rutas = await DBRutasCab.rutas();
     _paradas = await DBParadas.paradas();
     _envios = await DBEnvios.envios();
+
+    await _actualizaRutas();
+
+    //_rutas = await DBRutasCab.rutas();
 
     _paradas.forEach((parada) {
       Envio filteredEnvio = Envio(
@@ -1821,5 +1908,67 @@ class _HomeScreenState extends State<HomeScreen>
         }
       });
     } while (_puso1 == false);
+  }
+
+  _actualizaRutas() async {
+    //---------------- LLENA CAMPO TOTAL PARADAS  ------------------
+    for (RutaCab _ruta in _rutas) {
+      totParadas = 0;
+      for (Parada _parada in _paradas) {
+        if (_ruta.idRuta == _parada.idRuta) {
+          totParadas++;
+        }
+      }
+
+      RutaCab rutaCabAux = RutaCab(
+          idRuta: _ruta.idRuta,
+          idUser: _ruta.idUser,
+          fechaAlta: _ruta.fechaAlta,
+          nombre: _ruta.nombre,
+          estado: _ruta.estado,
+          totalParadas: totParadas,
+          pendientes: _ruta.pendientes);
+
+      DBRutasCab.update(rutaCabAux);
+    }
+    _rutas = await DBRutasCab.rutas();
+
+    //---------------- LLENA CAMPO TOTAL PENDIENTES  ------------------
+
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+    for (RutaCab _ruta in _rutas) {
+      listas = 0;
+      for (Parada _parada in _paradas) {
+        if (_ruta.idRuta == _parada.idRuta) {
+          if ((_parada.estado == 4) ||
+              (_parada.estado == 7) ||
+              (_parada.estado == 10)) {
+            listas++;
+          } else {
+            for (ParadaEnvio _paradaenvio in _paradasenviosdb) {
+              if ((_ruta.idRuta == _paradaenvio.idRuta) &&
+                  (_parada.idParada == _paradaenvio.idParada) &&
+                  ((_paradaenvio.estado == 4) ||
+                      (_paradaenvio.estado == 7) ||
+                      (_paradaenvio.estado == 10))) {
+                listas++;
+              }
+            }
+          }
+        }
+      }
+
+      RutaCab rutaCabAux = RutaCab(
+          idRuta: _ruta.idRuta,
+          idUser: _ruta.idUser,
+          fechaAlta: _ruta.fechaAlta,
+          nombre: _ruta.nombre,
+          estado: _ruta.estado,
+          totalParadas: _ruta.totalParadas,
+          pendientes: _ruta.totalParadas! - listas);
+
+      DBRutasCab.update(rutaCabAux);
+    }
+    _rutas = await DBRutasCab.rutas();
   }
 }

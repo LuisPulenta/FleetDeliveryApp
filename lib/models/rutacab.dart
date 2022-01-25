@@ -4,13 +4,17 @@ class RutaCab {
   String? fechaAlta = '';
   String? nombre = '';
   int? estado = 0;
+  int? totalParadas = 0;
+  int? pendientes = 0;
 
   RutaCab(
       {required this.idRuta,
       required this.idUser,
       required this.fechaAlta,
       required this.nombre,
-      required this.estado});
+      required this.estado,
+      required this.totalParadas,
+      required this.pendientes});
 
   RutaCab.fromJson(Map<String, dynamic> json) {
     idRuta = json['idRuta'];
@@ -18,6 +22,8 @@ class RutaCab {
     fechaAlta = json['fechaAlta'];
     nombre = json['nombre'];
     estado = json['estado'];
+    totalParadas = json['totalParadas'];
+    pendientes = json['pendientes'];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +33,8 @@ class RutaCab {
     data['fechaAlta'] = fechaAlta;
     data['nombre'] = nombre;
     data['estado'] = estado;
+    data['totalParadas'] = totalParadas;
+    data['pendientes'] = pendientes;
     return data;
   }
 
@@ -37,6 +45,8 @@ class RutaCab {
       'fechaAlta': fechaAlta,
       'nombre': nombre,
       'estado': estado,
+      'totalParadas': totalParadas,
+      'pendientes': pendientes,
     };
   }
 }
