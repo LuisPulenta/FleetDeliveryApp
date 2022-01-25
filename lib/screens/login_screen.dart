@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Center(
             child: _showLoader
-                ? LoaderComponent(text: 'Por favor espere...')
+                ? LoaderComponent(text: 'Cargando USUARIOS.')
                 : Container(),
           )
         ],
@@ -251,10 +251,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() async {
     setState(() {
       _passwordShow = false;
-    });
-
-    setState(() {
-      _showLoader = true;
     });
 
     if (!validateFields()) {

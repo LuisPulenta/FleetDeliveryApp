@@ -485,6 +485,20 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 //-------------------------------------------------------------------------
 
   _navegar(e) async {
+    if (e.latitud == 0 ||
+        e.longitud == 0 ||
+        isNullOrEmpty(e.latitud) ||
+        isNullOrEmpty(e.longitud)) {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso',
+          message: "Esta parada no tiene coordenadas cargadas.",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
     _center = LatLng(e.latitud!.toDouble(), e.longitud!.toDouble());
     _markers.clear();
     _markers.add(Marker(
@@ -528,18 +542,21 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   _navegartodos() async {
     _markers.clear();
-    _paradasenvios.forEach((element) {
-      _markers.add(Marker(
-        markerId: MarkerId(element.secuencia.toString()),
-        position:
-            LatLng(element.latitud!.toDouble(), element.longitud!.toDouble()),
-        infoWindow: InfoWindow(
-          title: element.titular.toString(),
-          snippet: element.domicilio.toString(),
-        ),
-        icon: BitmapDescriptor.defaultMarker,
-      ));
-    });
+
+    for (ParadaEnvio element in _paradasenvios) {
+      if (!isNullOrEmpty(element.latitud) && !isNullOrEmpty(element.longitud)) {
+        _markers.add(Marker(
+          markerId: MarkerId(element.secuencia.toString()),
+          position:
+              LatLng(element.latitud!.toDouble(), element.longitud!.toDouble()),
+          infoWindow: InfoWindow(
+            title: element.titular.toString(),
+            snippet: element.domicilio.toString(),
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+        ));
+      }
+    }
 
     var connectivityResult = await Connectivity().checkConnectivity();
 
@@ -907,4 +924,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 //         ]);
 // //************* PARA BORRAR DESPUES ***************************
   }
+
+  bool isNullOrEmpty(dynamic obj) =>
+      obj == null ||
+      ((obj is String || obj is List || obj is Map) && obj.isEmpty);
 }

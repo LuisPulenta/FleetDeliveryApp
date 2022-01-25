@@ -193,7 +193,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
             ),
             Container(
               padding: EdgeInsets.all(10),
-              height: 100,
+              height: 130,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -708,7 +708,20 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //-------------------------- METODO NAVEGAR -------------------------------
 //-------------------------------------------------------------------------
 
-  _navegar(ParadaEnvio paradaenvio) {
+  _navegar(ParadaEnvio paradaenvio) async {
+    if (paradaenvio.latitud == 0 ||
+        paradaenvio.longitud == 0 ||
+        isNullOrEmpty(paradaenvio.latitud) ||
+        isNullOrEmpty(paradaenvio.longitud)) {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso',
+          message: "Esta parada no tiene coordenadas cargadas.",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
     _center = LatLng(
         paradaenvio.latitud!.toDouble(), paradaenvio.longitud!.toDouble());
     _markers.clear();
@@ -1009,4 +1022,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
     //ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
+
+  bool isNullOrEmpty(dynamic obj) =>
+      obj == null ||
+      ((obj is String || obj is List || obj is Map) && obj.isEmpty);
 }

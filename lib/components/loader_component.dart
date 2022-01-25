@@ -10,7 +10,7 @@ class LoaderComponent extends StatelessWidget {
     return Center(
       child: Container(
         width: 200,
-        height: 100,
+        height: 160,
         decoration: BoxDecoration(
             color: Color(0xFFFFFFFF),
             borderRadius: BorderRadius.circular(10),
@@ -27,6 +27,10 @@ class LoaderComponent extends StatelessWidget {
               height: 20,
             ),
             Text(text, style: TextStyle(fontSize: 15)),
+            SizedBox(
+              height: 20,
+            ),
+            Text("Por favor espere...", style: TextStyle(fontSize: 15)),
           ],
         ),
       ),

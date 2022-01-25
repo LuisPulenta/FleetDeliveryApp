@@ -86,6 +86,8 @@ class _HomeScreenState extends State<HomeScreen>
   String _validohasta = '';
   String _ultimaactualizacion = '';
 
+  String _textComponent = '';
+
   RutaCab rutaSelected =
       RutaCab(idRuta: 0, idUser: 0, fechaAlta: '', nombre: '', estado: 0);
 
@@ -472,7 +474,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 SizedBox(
                                   width: 15,
                                 ),
-                                Text('BORRAR MEDICIONES LOCALES'),
+                                Text('BORRAR PARADAS LOCALES'),
                               ],
                             ),
                             style: ElevatedButton.styleFrom(
@@ -548,7 +550,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           Center(
             child: _showLoader
-                ? LoaderComponent(text: 'Por favor espere...')
+                ? LoaderComponent(text: _textComponent)
                 : Container(),
           ),
         ],
@@ -1069,6 +1071,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future<Null> _getProveedores() async {
     setState(() {
+      _textComponent = "Cargando Proveedores.";
       _showLoader = true;
     });
 
@@ -1101,6 +1104,10 @@ class _HomeScreenState extends State<HomeScreen>
     }
     _proveedores = await DBProveedores.proveedores();
 
+    setState(() {
+      _showLoader = false;
+    });
+
     _getRutas();
   }
 
@@ -1108,6 +1115,11 @@ class _HomeScreenState extends State<HomeScreen>
 //************************* RUTAS *********************************************
 //*****************************************************************************
   Future<Null> _getRutas() async {
+    setState(() {
+      _textComponent = "Cargando Rutas.";
+      _showLoader = true;
+    });
+
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
@@ -1297,6 +1309,10 @@ class _HomeScreenState extends State<HomeScreen>
       return;
     }
 
+    setState(() {
+      _showLoader = false;
+    });
+
     _getMotivos();
   }
 
@@ -1305,6 +1321,11 @@ class _HomeScreenState extends State<HomeScreen>
 //*****************************************************************************
 
   Future<Null> _getMotivos() async {
+    setState(() {
+      _textComponent = "Cargando Motivos.";
+      _showLoader = true;
+    });
+
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
@@ -1336,6 +1357,10 @@ class _HomeScreenState extends State<HomeScreen>
       _insertMotivos();
     }
     _motivos = await DBMotivos.motivos();
+
+    setState(() {
+      _showLoader = false;
+    });
 
     _getParadasEnvios();
   }
@@ -1548,12 +1573,6 @@ class _HomeScreenState extends State<HomeScreen>
         }
       }
 
-      // _paradasenviosdb.forEach((paradaenvio) async {
-      //   if (paradaenvio.enviado == 0) {
-      //     await _putParada(paradaenvio);
-      //   }
-      // });
-
       setState(() {
         _showLoader = false;
       });
@@ -1619,20 +1638,6 @@ class _HomeScreenState extends State<HomeScreen>
         _paradaGrabada = true;
       }
     } while (_paradaGrabada == false);
-
-// //************* PARA BORRAR DESPUES ***************************
-//     await showAlertDialog(
-//         context: context,
-//         title: 'Parada Guardada Número...',
-//         message: paradaenvio.idParada.toString(),
-//         actions: <AlertDialogAction>[
-//           AlertDialogAction(key: null, label: 'Aceptar'),
-//         ]);
-// //************* PARA BORRAR DESPUES ***************************
-
-    // Future.delayed(Duration(seconds: 1), () async {
-    //   await _putEnvio(paradaenvio);
-    // });
 
     await _putEnvio(paradaenvio);
   }
@@ -1734,20 +1739,6 @@ class _HomeScreenState extends State<HomeScreen>
       }
     } while (_envioGrabado == false);
 
-// //************* PARA BORRAR DESPUES ***************************
-//     await showAlertDialog(
-//         context: context,
-//         title: 'Envio Guardado en Parada...',
-//         message: paradaenvio.idParada.toString(),
-//         actions: <AlertDialogAction>[
-//           AlertDialogAction(key: null, label: 'Aceptar'),
-//         ]);
-// //************* PARA BORRAR DESPUES ***************************
-
-    // Future.delayed(Duration(seconds: 1), () async {
-    //   await _postSeguimiento(paradaenvio);
-    // });
-
     await _postSeguimiento(paradaenvio);
   }
 
@@ -1785,20 +1776,6 @@ class _HomeScreenState extends State<HomeScreen>
         _seguimientoGrabado = true;
       }
     } while (_seguimientoGrabado == false);
-
-// //************* PARA BORRAR DESPUES ***************************
-//     await showAlertDialog(
-//         context: context,
-//         title: 'Seguimiento Guardado en Parada...',
-//         message: paradaenvio.idParada.toString(),
-//         actions: <AlertDialogAction>[
-//           AlertDialogAction(key: null, label: 'Aceptar'),
-//         ]);
-// //************* PARA BORRAR DESPUES ***************************
-
-    // Future.delayed(Duration(seconds: 1), () async {
-    //   await _ponerEnviado1(paradaenvio);
-    // });
 
     await _ponerEnviado1(paradaenvio);
   }
@@ -1844,15 +1821,5 @@ class _HomeScreenState extends State<HomeScreen>
         }
       });
     } while (_puso1 == false);
-
-// //************* PARA BORRAR DESPUES ***************************
-//     await showAlertDialog(
-//         context: context,
-//         title: 'Enviado 1 en Parada...',
-//         message: paradaenvio.idParada.toString(),
-//         actions: <AlertDialogAction>[
-//           AlertDialogAction(key: null, label: 'Aceptar'),
-//         ]);
-// //************* PARA BORRAR DESPUES ***************************
   }
 }
