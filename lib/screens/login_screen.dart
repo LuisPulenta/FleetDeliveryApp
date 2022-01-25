@@ -52,6 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _passwordShow = false;
   bool _showLoader = false;
 
+  String _ultimaactualizacion = '';
+
 //*****************************************************************************
 //************************** INIT STATE ***************************************
 //*****************************************************************************
@@ -59,7 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _getUsuarios();
+    _getprefs();
+    //_getUsuarios();
   }
 
 //*****************************************************************************
@@ -286,7 +289,6 @@ class _LoginScreenState extends State<LoginScreen> {
     await prefs.setString('conectadodesde', DateTime.now().toString());
     await prefs.setString(
         'validohasta', DateTime.now().add(Duration(hours: 12)).toString());
-    await prefs.setString('ultimaactualizacion', DateTime.now().toString());
 
     Navigator.pushReplacement(
         context,
@@ -328,24 +330,51 @@ class _LoginScreenState extends State<LoginScreen> {
 //*********************** METODO GETUSUARIOS **********************************
 //*****************************************************************************
   Future<Null> _getUsuarios() async {
-    setState(() {
-      _showLoader = true;
-    });
-    var connectivityResult = await Connectivity().checkConnectivity();
+    if ((_ultimaactualizacion == "null") ||
+        (DateTime.parse(_ultimaactualizacion)
+            .isBefore(DateTime.now().add(Duration(days: -5))))) {
+      setState(() {
+        _showLoader = true;
+      });
 
-    if (connectivityResult != ConnectivityResult.none) {
-      _usuariosConseguidos = false;
+      var connectivityResult = await Connectivity().checkConnectivity();
 
-      do {
-        Response response = await ApiHelper.getUsuarios();
+      if (connectivityResult != ConnectivityResult.none) {
+        _usuariosConseguidos = false;
 
-        if (response.isSuccess) {
-          _usuariosApi = response.result;
-          _hayInternet = true;
-          _usuariosConseguidos = true;
-        }
-      } while (_usuariosConseguidos == false);
+        do {
+          Response response = await ApiHelper.getUsuarios();
+
+          if (response.isSuccess) {
+            _usuariosApi = response.result;
+            _hayInternet = true;
+            _usuariosConseguidos = true;
+          }
+        } while (_usuariosConseguidos == false);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('ultimaactualizacion',
+            DateTime.now().add(Duration(days: 0)).toString());
+
+        var a = 1;
+      } else {
+        setState(() {
+          _showLoader = false;
+        });
+
+        await showAlertDialog(
+            context: context,
+            title: 'Error',
+            message:
+                "Debe actualizar la Tabla Usuarios. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.",
+            actions: <AlertDialogAction>[
+              AlertDialogAction(key: null, label: 'Aceptar'),
+            ]);
+
+        return;
+      }
     }
+
     _getTablaUsuarios();
     return;
   }
@@ -391,4 +420,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //-------------------------------------------------------------------------
 
+  //*****************************************************************************
+//************************** METODO GETPREFS **********************************
+//*****************************************************************************
+
+  void _getprefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _ultimaactualizacion = prefs.getString('ultimaactualizacion').toString();
+    _getUsuarios();
+  }
 }
