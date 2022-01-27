@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -217,30 +218,64 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _showButtons() {
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Expanded(
-            child: ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.login),
-                  SizedBox(
-                    width: 20,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Expanded(
+                child: ElevatedButton(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.login),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text('Iniciar Sesión'),
+                    ],
                   ),
-                  Text('Iniciar Sesión'),
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFF282886),
-                minimumSize: Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF282886),
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () => _login(),
                 ),
               ),
-              onPressed: () => _login(),
-            ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Expanded(
+                child: ElevatedButton(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.language),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text('Web Fleet'),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF637893),
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () => _launchURL(),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -428,5 +463,10 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _ultimaactualizacion = prefs.getString('ultimaactualizacion').toString();
     _getUsuarios();
+  }
+
+  void _launchURL() async {
+    if (!await launch('http://www.fleetsa.com.ar:99/LoginForm'))
+      throw 'No se puede conectar a la Web de Fleet';
   }
 }
