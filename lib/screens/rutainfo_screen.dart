@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RutaInfoScreen extends StatefulWidget {
   final Usuario user;
@@ -53,7 +54,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   LatLng _center = LatLng(0, 0);
   final Set<Marker> _markers = {};
-  ParadaEnvio paradaenvioSelected = new ParadaEnvio(
+  ParadaEnvio paradaenvioSelected = ParadaEnvio(
       idParada: 0,
       idRuta: 0,
       idEnvio: 0,
@@ -514,17 +515,25 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ParadaMapScreen(
-            user: widget.user,
-            positionUser: widget.positionUser,
-            paradaenvio: e,
-            markers: _markers,
-          ),
-        ),
-      );
+      var uri = Uri.parse(
+          "google.navigation:q=${e.latitud!.toDouble()},${e.longitud!.toDouble()}&mode=d");
+      if (await canLaunch(uri.toString())) {
+        await launch(uri.toString());
+      } else {
+        throw 'Could not launch ${uri.toString()}';
+      }
+
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => ParadaMapScreen(
+      //       user: widget.user,
+      //       positionUser: widget.positionUser,
+      //       paradaenvio: e,
+      //       markers: _markers,
+      //     ),
+      //   ),
+      // );
     } else {
       await showAlertDialog(
           context: context,
@@ -613,6 +622,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           paradasenvio.notas = paradasenviodb.notas;
           paradasenvio.fecha = paradasenviodb.fecha;
           paradasenvio.imageArray = paradasenviodb.imageArray;
+          paradasenvio.enviado = paradasenviodb.enviado;
         }
       });
     });

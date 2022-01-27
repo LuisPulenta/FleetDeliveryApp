@@ -64,6 +64,33 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   String _motivodesc = '';
 
   List<DropdownMenuItem<int>> _items = [];
+  List<ParadaEnvio> _paradasEnvios = [];
+  ParadaEnvio _paradaEnvioSelected = ParadaEnvio(
+      idParada: 0,
+      idRuta: 0,
+      idEnvio: 0,
+      secuencia: 0,
+      leyenda: '',
+      latitud: 0,
+      longitud: 0,
+      idproveedor: 0,
+      estado: 0,
+      ordenid: '',
+      titular: '',
+      dni: '',
+      domicilio: '',
+      cp: '',
+      entreCalles: '',
+      telefonos: '',
+      localidad: '',
+      bultos: 0,
+      proveedor: '',
+      motivo: 0,
+      motivodesc: '',
+      notas: '',
+      enviado: 0,
+      fecha: '',
+      imageArray: '');
 
   Parada paradaSelected = Parada(
       idParada: 0,
@@ -710,7 +737,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
-                onPressed: (widget.paradaenvio.estado == 3) ? _save : null,
+                onPressed: _save,
               ),
             ),
           ],
@@ -911,6 +938,14 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //*****************************************************************************
 
   Future<void> _saveRecord() async {
+    _paradasEnvios = await DBParadasEnvios.paradasenvios();
+    for (ParadaEnvio paradaenvio in _paradasEnvios) {
+      if (paradaenvio.idParada == widget.paradaenvio.idParada) {
+        _paradaEnvioSelected = paradaenvio;
+      }
+    }
+
+    await DBParadasEnvios.delete(_paradaEnvioSelected);
     await _guardaParadaEnBDLocal();
     Navigator.pop(context, 'yes');
   }
