@@ -1,0 +1,134 @@
+https://stackoverflow.com/questions/47046637/open-google-maps-app-if-available-with-flutter
+
+
+
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Plugins} from '@capacitor/core';
+import {NavController, Platform} from '@ionic/angular';
+import {Router} from '@angular/router';
+import {RouteStopsService} from '../../services/routeStops.service';
+import {RouteSopStateContract} from '../../contracts/models/RouteStopContract';
+
+const {Geolocation} = Plugins;
+declare var google;
+
+@Component({
+    selector: 'app-map',
+    templateUrl: './map.page.html',
+    styleUrls: ['./map.page.scss'],
+})
+export class MapPage implements OnInit {
+    @ViewChild('map') mapElement: ElementRef;
+    map: any;
+    markers: any = [];
+
+    infoWindows: any = [];
+
+    constructor(
+        private plt: Platform,
+        private router: Router,
+        private stopsService: RouteStopsService,
+        private navCtrl: NavController,
+    ) {
+    }
+
+    ngOnInit() {
+        this.plt.ready().then(() => {
+            const mapOptions = {
+                zoom: 1000,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                mapTypeControl: false,
+                fullScreenControl: false,
+            };
+
+            this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+
+            this.addUserToMap();
+            this.subscribeToStops();
+        });
+    }
+
+    subscribeToStops(): void {
+        this.stopsService.routeStops$.subscribe(stops => {
+            console.log('Map subscribed to stops: ', stops);
+            this.markers = stops
+                .filter((x) => x.state === RouteSopStateContract.Pending)
+                .map((x) => {
+                    return {
+                        lat: x.package?.client?.latitude,
+                        lng: x.package?.client?.longitude,
+                        title: 'Nro ' + x.order?.toString(),
+                        subtitle: x.package?.client?.name,
+                        id: x.id,
+                        routeId: x.routeId,
+                        char: x.order?.toString(),
+                    };
+                });
+            console.log('Markers: ', this.markers);
+            this.addMarkersToMap(this.markers);
+        });
+    }
+
+    addMarkersToMap(markers) {
+        for (const marker of markers) {
+            const position = new google.maps.LatLng(marker.lat, marker.lng);
+            const mapMarker = new google.maps.Marker({
+                assignmentId: marker.id,
+                routeId: marker.routeId,
+                position,
+                title: marker.title,
+                subtitle: marker.subtitle,
+                latitude: marker.lat,
+                longitude: marker.lng,
+                label: marker.char,
+            });
+
+            mapMarker.setMap(this.map);
+            this.addInfoWindowToMarker(mapMarker);
+        }
+    }
+
+    addInfoWindowToMarker(marker) {
+        const infoWindowContent =
+            '<div id="content">' +
+            '<p> ' +
+            marker.subtitle +
+            '</p>' +
+            '<h2 id="firstHeading" class"firstHeading">' +
+            marker.title +
+            '</h2>' +
+            '</div>' +
+            '<ion-button size="small" id="open">Abrir</ion-button>' +
+            '<ion-button size="small" id="navigate">Navegar</ion-button>';
+
+        const infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent,
+        });
+
+        marker.addListener('click', () => {
+            this.closeAllInfoWindows();
+            infoWindow.open(this.map, marker);
+            google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+                document.getElementById('navigate').addEventListener('click', () => {
+                    console.log('Navigating!');
+                    // code to navigate using google maps app
+                    window.open(
+                        'https://www.google.com/maps/dir/?api=1&destination=' +
+                        marker.latitude +
+                        ',' +
+                        marker.longitude
+                    );
+                });
+                document.getElementById('open').addEventListener('click', () => {
+                    console.log('Open recover!');
+                    this.navCtrl.pop().then(x => {
+                            this.router.navigate([
+                                '/tabs/tab1/details/' + marker.routeId + '/' + marker.assignmentId,
+                            ]);
+                        }
+                    );
+                    this.closeAllInfoWindows();
+                });
+            });
+        });
+        this.infoWindows.push(infoWindow);

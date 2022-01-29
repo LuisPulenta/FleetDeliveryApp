@@ -9,7 +9,7 @@ class LoaderComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 200,
+        width: 240,
         height: 160,
         decoration: BoxDecoration(
             color: Color(0xFFFFFFFF),

@@ -12,6 +12,8 @@ import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'home2_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -325,12 +327,23 @@ class _LoginScreenState extends State<LoginScreen> {
     await prefs.setString(
         'validohasta', DateTime.now().add(Duration(hours: 12)).toString());
 
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => HomeScreen(
-                  user: _usuarioLogueado,
-                )));
+    if (_usuarioLogueado.codigo == "PQ") {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomeScreen(
+                    user: _usuarioLogueado,
+                  )));
+    }
+
+    if (_usuarioLogueado.codigo == "TR") {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Home2Screen(
+                    user: _usuarioLogueado,
+                  )));
+    }
   }
 
 //*****************************************************************************
