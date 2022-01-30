@@ -6,8 +6,10 @@ import 'package:fleetdeliveryapp/models/asignacion.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/tipoasignacion.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
+import 'package:fleetdeliveryapp/screens/agendarcita_screen.dart';
 import 'package:fleetdeliveryapp/screens/asignacioninfo_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AsignacionesScreen extends StatefulWidget {
   final Usuario user;
@@ -23,9 +25,11 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //*****************************************************************************
   bool _showLoader = false;
   bool _isFiltered = false;
+  String _search = '';
 
   List<TipoAsignacion> _tiposasignacion = [];
   List<Asignacion> _asignaciones = [];
+  List<Asignacion> _asignaciones2 = [];
 
   String _tipoasignacion = 'Elija un Tipo de Asignación...';
   String _tipoasignacionError = '';
@@ -80,7 +84,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   void initState() {
     super.initState();
     _loadData();
-    setState(() {});
   }
 
 //*****************************************************************************
@@ -93,28 +96,25 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       appBar: AppBar(
         title: Text("Asignaciones"),
         backgroundColor: Color(0xFF0e4888),
+        //backgroundColor: Color(0xFF0e4888),
         centerTitle: true,
-      ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            child: Column(
-              children: <Widget>[
-                _showTipos(),
-                SizedBox(
-                  height: 10,
-                ),
-                _getContent(),
-              ],
-            ),
-          ),
-          _showLoader
-              ? LoaderComponent(
-                  text: 'Cargando Asignaciones.',
-                )
-              : Container(),
+        actions: <Widget>[
+          _isFiltered
+              ? IconButton(
+                  onPressed: _removeFilter, icon: Icon(Icons.filter_none))
+              : IconButton(onPressed: _showFilter, icon: Icon(Icons.filter_alt))
         ],
+      ),
+      body: Container(
+        padding: EdgeInsets.all(5),
+        color: Color(0xFFC7C7C8),
+        child: Center(
+          child: _showLoader
+              ? LoaderComponent(
+                  text: 'Cargando ASIGNACIONES.',
+                )
+              : _getContent(),
+        ),
       ),
     );
   }
@@ -130,10 +130,20 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           child: Container(
             padding: EdgeInsets.all(10),
             child: _tiposasignacion.length == 0
-                ? Text('Cargando Tipos de Asignación...')
+                ? Row(
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Cargando Tipos de Asignación...'),
+                    ],
+                  )
                 : DropdownButtonFormField(
                     value: _tipoasignacion,
                     decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
                       hintText: 'Elija un Tipo de Asignación...',
                       labelText: 'Tipo de Asignación',
                       errorText: _tipoasignacionShowError
@@ -144,9 +154,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                     ),
                     items: _getComboTiposAsignacion(),
                     onChanged: (value) {
-                      setState(() {
-                        _tipoasignacion = value.toString();
-                      });
+                      _tipoasignacion = value.toString();
                     },
                   ),
           ),
@@ -157,7 +165,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         ElevatedButton(
           child: Icon(Icons.search),
           style: ElevatedButton.styleFrom(
-            primary: Color(0xFF781f1e),
+            primary: Color(0xFF0e4888),
             minimumSize: Size(50, 50),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
@@ -193,9 +201,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   Widget _getContent() {
     return Column(
       children: <Widget>[
+        _showTipos(),
         _showAsignacionesCount(),
         Expanded(
-          child: _asignaciones.length == 0 ? _noContent() : _getListView(),
+          child: _asignaciones2.length == 0 ? _noContent() : _getListView(),
         )
       ],
     );
@@ -214,13 +223,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           Text("Cantidad de Asignaciones: ",
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white,
+                color: Color(0xFF0e4888),
                 fontWeight: FontWeight.bold,
               )),
-          Text(_asignaciones.length.toString(),
+          Text(_asignaciones2.length.toString(),
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
               )),
         ],
@@ -254,9 +263,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     return RefreshIndicator(
       onRefresh: _getObras,
       child: ListView(
-        children: _asignaciones.map((e) {
+        children: _asignaciones2.map((e) {
           return Card(
-            color: Color(0xFFC7C7C8),
+            color: Colors.white,
+            //color: Color(0xFFC7C7C8),
             shadowColor: Colors.white,
             elevation: 10,
             margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -281,33 +291,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text("N° Obra: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF781f1e),
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Expanded(
-                                        child: Text(e.recupidjobcard.toString(),
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                            )),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    children: [
                                       Text("Cliente: ",
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: Color(0xFF781f1e),
+                                            color: Color(0xFF0e4888),
                                             fontWeight: FontWeight.bold,
                                           )),
                                       Expanded(
-                                        child: Text(e.cliente.toString(),
+                                        child: Text(
+                                            '${e.cliente.toString()} - ${e.nombre.toString()}',
                                             style: TextStyle(
                                               fontSize: 12,
                                             )),
@@ -315,36 +307,265 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 5,
+                                    height: 1,
                                   ),
                                   Row(
                                     children: [
-                                      Text("OP/N° Fuga: ",
+                                      Text("Rec.Téc.: ",
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: Color(0xFF781f1e),
+                                            color: Color(0xFF0e4888),
                                             fontWeight: FontWeight.bold,
                                           )),
                                       Expanded(
                                         child:
-                                            Text(e.telefAlternativo1.toString(),
+                                            Text(e.reclamoTecnicoID.toString(),
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                 )),
                                       ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      Text("Domicilio: ",
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Dirección: ",
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: Color(0xFF781f1e),
+                                            color: Color(0xFF0e4888),
                                             fontWeight: FontWeight.bold,
                                           )),
-                                      Text(e.domicilio.toString(),
+                                      Expanded(
+                                        child: Text(e.domicilio.toString(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Localidad: ",
                                           style: TextStyle(
                                             fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
                                           )),
+                                      Expanded(
+                                        child: Text(e.localidad.toString(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Provincia: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      Expanded(
+                                        child: Text(e.provincia.toString(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Teléfono: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      Expanded(
+                                        child: Text(e.telefono.toString(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Cant. Eq.: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      Expanded(
+                                        child: Text(
+                                          e.cantAsign.toString(),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text("Est. Gaos: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      Expanded(
+                                        child: Text(
+                                          e.estadogaos.toString(),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Cód. Cierre: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      Expanded(
+                                        child: Text(e.codigoCierre.toString(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text("Estado: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF0e4888),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Expanded(
+                                                  child: Text(
+                                                      e.causantec.toString(),
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("Fec. Asig.: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF0e4888),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Expanded(
+                                                  child: e.fechaAsignada == null
+                                                      ? Text("")
+                                                      : Text(
+                                                          '${DateFormat('dd/MM/yyyy').format(DateTime.parse(e.fechaAsignada.toString()))}',
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                          )),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 1,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("Fec. Cita: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF0e4888),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Expanded(
+                                                  child: e.fechaCita == null
+                                                      ? Text("")
+                                                      : Text(
+                                                          e.fechaCita
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                          )),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            ElevatedButton(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.fact_check),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text('Agendar Cita'),
+                                                ],
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Color(0xFF282886),
+                                                minimumSize:
+                                                    Size(double.infinity, 50),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                              ),
+                                              onPressed: () => _agendarcita(e),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 1,
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -378,16 +599,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //*****************************************************************************
 
   Future<Null> _getTiposAsignaciones() async {
-    // setState(() {
-    //   _showLoader = true;
-    // });
-
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
-      setState(() {
-        _showLoader = false;
-      });
       await showAlertDialog(
           context: context,
           title: 'Error',
@@ -400,10 +614,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
     Response response = Response(isSuccess: false);
     response = await ApiHelper.getTipoAsignaciones(widget.user.idUser);
-
-    // setState(() {
-    //   _showLoader = false;
-    // });
 
     if (!response.isSuccess) {
       await showAlertDialog(
@@ -426,6 +636,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //*****************************************************************************
 
   Future<Null> _getObras() async {
+    if (_tipoasignacion == 'Elija un Tipo de Asignación...') {
+      _tipoasignacionShowError = true;
+      _tipoasignacionError = 'Elija un Tipo de Asignación...';
+      setState(() {});
+      return;
+    } else {
+      _tipoasignacionShowError = false;
+    }
+
     setState(() {
       _showLoader = true;
     });
@@ -473,6 +692,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
             .compareTo(b.cliente.toString().toLowerCase());
       });
     });
+    _asignaciones2 = _asignaciones;
 
     var a = 1;
   }
@@ -486,6 +706,107 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         context,
         MaterialPageRoute(
             builder: (context) => AsignacionInfoScreen(
+                  user: widget.user,
+                  asignacion: asignacion,
+                )));
+    if (result == 'yes' || result != 'yes') {
+      _getObras();
+      setState(() {});
+    }
+  }
+
+//*****************************************************************************
+//************************** METODO REMOVEFILTER ******************************
+//*****************************************************************************
+
+  void _removeFilter() {
+    setState(() {
+      _isFiltered = false;
+    });
+    _asignaciones2 = _asignaciones;
+  }
+
+//*****************************************************************************
+//************************** METODO SHOWFILTER ********************************
+//*****************************************************************************
+
+  void _showFilter() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: Text('Filtrar Asignaciones'),
+            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              Text(
+                  'Escriba texto a buscar en Cliente, Reclamo Técnico o Dirección'),
+              SizedBox(
+                height: 10,
+              ),
+              TextField(
+                autofocus: true,
+                decoration: InputDecoration(
+                    hintText: 'Criterio de búsqueda...',
+                    labelText: 'Buscar',
+                    suffixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                onChanged: (value) {
+                  _search = value;
+                },
+              ),
+            ]),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Cancelar')),
+              TextButton(onPressed: () => _filter(), child: Text('Filtrar')),
+            ],
+          );
+        });
+  }
+
+//*****************************************************************************
+//************************** METODO FILTER ************************************
+//*****************************************************************************
+
+  _filter() {
+    if (_search.isEmpty) {
+      return;
+    }
+    List<Asignacion> filteredList = [];
+    for (var asignacion in _asignaciones) {
+      if (asignacion.nombre
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.reclamoTecnicoID
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.domicilio
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase())) {
+        filteredList.add(asignacion);
+      }
+    }
+
+    setState(() {
+      _asignaciones2 = filteredList;
+      _isFiltered = true;
+    });
+
+    Navigator.of(context).pop();
+  }
+
+  void _agendarcita(Asignacion asignacion) async {
+    String? result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AgendarCitaScreen(
                   user: widget.user,
                   asignacion: asignacion,
                 )));
