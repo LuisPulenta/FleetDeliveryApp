@@ -2,7 +2,8 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
-import 'package:fleetdeliveryapp/models/asignacion.dart';
+import 'package:fleetdeliveryapp/models/asignacion2.dart';
+import 'package:fleetdeliveryapp/models/codigocierre.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/tipoasignacion.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
@@ -28,15 +29,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   String _search = '';
 
   List<TipoAsignacion> _tiposasignacion = [];
-  List<Asignacion> _asignaciones = [];
-  List<Asignacion> _asignaciones2 = [];
+  List<Asignacion2> _asignaciones = [];
+  List<Asignacion2> _asignaciones2 = [];
+
+  List<CodigoCierre> _codigoscierre = [];
 
   String _tipoasignacion = 'Elija un Tipo de Asignación...';
   String _tipoasignacionError = '';
   bool _tipoasignacionShowError = false;
   TextEditingController _tipoasignacionController = TextEditingController();
 
-  Asignacion asignacionSelected = Asignacion(
+  Asignacion2 asignacionSelected = Asignacion2(
       recupidjobcard: '',
       cliente: '',
       nombre: '',
@@ -55,6 +58,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       subcon: '',
       fechaAsignada: '',
       codigoCierre: 0,
+      descripcion: '',
+      cierraenapp: 0,
+      nomostrarapp: 0,
       novedades: '',
       provincia: '',
       reclamoTecnicoID: 0,
@@ -87,7 +93,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   }
 
 //*****************************************************************************
-//************************** METODO PANTALLA **********************************
+//************************** PANTALLA *****************************************
 //*****************************************************************************
 
   @override
@@ -452,7 +458,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             fontWeight: FontWeight.bold,
                                           )),
                                       Expanded(
-                                        child: Text(e.codigoCierre.toString(),
+                                        child: Text(e.descripcion.toString(),
                                             style: TextStyle(
                                               fontSize: 12,
                                             )),
@@ -683,31 +689,90 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       return;
     }
 
-    setState(() {
-      _asignaciones = response.result;
-      _asignaciones.sort((a, b) {
-        return a.cliente
-            .toString()
-            .toLowerCase()
-            .compareTo(b.cliente.toString().toLowerCase());
-      });
+    _asignaciones = response.result;
+    _asignaciones.sort((a, b) {
+      return a.cliente
+          .toString()
+          .toLowerCase()
+          .compareTo(b.cliente.toString().toLowerCase());
     });
+
     _asignaciones2 = _asignaciones;
 
-    var a = 1;
+    await _getCodigosCierre();
+  }
+
+//*****************************************************************************
+//************************** METODO LOADOBRAS *********************************
+//*****************************************************************************
+
+  Future<Null> _getCodigosCierre() async {
+    if (_tipoasignacion == 'Elija un Tipo de Asignación...') {
+      _tipoasignacionShowError = true;
+      _tipoasignacionError = 'Elija un Tipo de Asignación...';
+      setState(() {});
+      return;
+    } else {
+      _tipoasignacionShowError = false;
+    }
+
+    setState(() {
+      _showLoader = true;
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _showLoader = false;
+      });
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    Response response = Response(isSuccess: false);
+    response = await ApiHelper.getCodigosCierre(_tipoasignacion);
+    setState(() {
+      _showLoader = false;
+    });
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    _codigoscierre = response.result;
+    _codigoscierre.sort((a, b) {
+      return a.codigoCierre
+          .toString()
+          .toLowerCase()
+          .compareTo(b.codigoCierre.toString().toLowerCase());
+    });
   }
 
 //*****************************************************************************
 //************************** METODO GOINFOOBRA ********************************
 //*****************************************************************************
 
-  void _goInfoAsignacion(Asignacion asignacion) async {
+  void _goInfoAsignacion(Asignacion2 asignacion) async {
     String? result = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => AsignacionInfoScreen(
                   user: widget.user,
                   asignacion: asignacion,
+                  codigoscierre: _codigoscierre,
                 )));
     if (result == 'yes' || result != 'yes') {
       _getObras();
@@ -776,7 +841,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     if (_search.isEmpty) {
       return;
     }
-    List<Asignacion> filteredList = [];
+    List<Asignacion2> filteredList = [];
     for (var asignacion in _asignaciones) {
       if (asignacion.nombre
               .toString()
@@ -802,7 +867,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     Navigator.of(context).pop();
   }
 
-  void _agendarcita(Asignacion asignacion) async {
+  void _agendarcita(Asignacion2 asignacion) async {
     String? result = await Navigator.push(
         context,
         MaterialPageRoute(

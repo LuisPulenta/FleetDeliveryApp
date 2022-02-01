@@ -1,12 +1,17 @@
-import 'package:fleetdeliveryapp/models/asignacion.dart';
+import 'package:fleetdeliveryapp/models/asignacion2.dart';
+import 'package:fleetdeliveryapp/models/codigocierre.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:flutter/material.dart';
 
 class AsignacionInfoScreen extends StatefulWidget {
   final Usuario user;
-  final Asignacion asignacion;
+  final Asignacion2 asignacion;
+  final List<CodigoCierre> codigoscierre;
 
-  AsignacionInfoScreen({required this.user, required this.asignacion});
+  AsignacionInfoScreen(
+      {required this.user,
+      required this.asignacion,
+      required this.codigoscierre});
 
   @override
   _AsignacionInfoScreenState createState() => _AsignacionInfoScreenState();
