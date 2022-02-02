@@ -1,5 +1,5 @@
 class Asignacion {
-  String? recupidjobcard = '';
+  String recupidjobcard = '';
   String? cliente = '';
   String? nombre = '';
   String? domicilio = '';

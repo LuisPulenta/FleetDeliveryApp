@@ -26,6 +26,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //*****************************************************************************
   bool _showLoader = false;
   bool _isFiltered = false;
+  bool bandera = false;
   String _search = '';
 
   List<TipoAsignacion> _tiposasignacion = [];
@@ -618,23 +619,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       return;
     }
 
-    Response response = Response(isSuccess: false);
-    response = await ApiHelper.getTipoAsignaciones(widget.user.idUser);
+    bandera = false;
 
-    if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
-      return;
-    }
-
-    setState(() {
-      _tiposasignacion = response.result;
-    });
+    do {
+      Response response = Response(isSuccess: false);
+      response = await ApiHelper.getTipoAsignaciones(widget.user.idUser);
+      if (response.isSuccess) {
+        bandera = true;
+        _tiposasignacion = response.result;
+      }
+    } while (bandera == false);
+    setState(() {});
   }
 
 //*****************************************************************************
@@ -875,7 +870,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   user: widget.user,
                   asignacion: asignacion,
                 )));
-    if (result == 'yes' || result != 'yes') {
+    if (result == 'yes') {
       _getObras();
       setState(() {});
     }

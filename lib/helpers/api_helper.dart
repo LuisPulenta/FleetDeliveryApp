@@ -265,4 +265,31 @@ class ApiHelper {
     }
     return Response(isSuccess: true, result: list);
   }
+
+  static Future<Response> GetAutonumericos(Map<String, dynamic> request) async {
+    var url =
+        Uri.parse('${Constants.apiUrl}/api/AsignacionesOTs/GetAutonumericos');
+    var response = await http.post(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+      body: jsonEncode(request),
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    List<CodigoCierre> list = [];
+    var decodedJson = jsonDecode(body);
+    if (decodedJson != null) {
+      for (var item in decodedJson) {
+        list.add(CodigoCierre.fromJson(item));
+      }
+    }
+    return Response(isSuccess: true, result: list);
+  }
 }

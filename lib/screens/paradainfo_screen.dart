@@ -90,7 +90,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       notas: '',
       enviado: 0,
       fecha: '',
-      imageArray: '');
+      imageArray: '',
+      observaciones: '');
 
   Parada paradaSelected = Parada(
       idParada: 0,
@@ -343,7 +344,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Paquete",
+                  'Paquete - ${widget.paradaenvio.proveedor.toString()}',
                   style: TextStyle(fontSize: 20),
                 ),
               ],
@@ -419,14 +420,13 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           ),
           Container(
             padding: EdgeInsets.all(10),
-            height: 40,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.phone),
+                Icon(Icons.format_list_bulleted),
                 SizedBox(
                   width: 20,
                 ),
@@ -437,7 +437,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                          ('Observaciones: ${widget.paradaenvio.proveedor.toString()}')),
+                          ('Observaciones: ${widget.paradaenvio.observaciones.toString()}')),
                     ],
                   ),
                 ),
@@ -992,7 +992,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
         notas: _observaciones,
         enviado: 0,
         fecha: DateTime.now().toString(),
-        imageArray: base64Image);
+        imageArray: base64Image,
+        observaciones: widget.paradaenvio.observaciones);
 
     await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
     _showSnackbar();

@@ -79,7 +79,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       notas: '',
       enviado: 0,
       fecha: '',
-      imageArray: '');
+      imageArray: '',
+      observaciones: '');
 
   Parada paradaSelected = Parada(
       idParada: 0,
@@ -623,6 +624,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           paradasenvio.fecha = paradasenviodb.fecha;
           paradasenvio.imageArray = paradasenviodb.imageArray;
           paradasenvio.enviado = paradasenviodb.enviado;
+          paradasenvio.enviado = paradasenviodb.enviado;
+          paradasenvio.observaciones = paradasenviodb.observaciones;
         }
       });
     });
@@ -882,7 +885,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           notas: paradaenvio.notas,
           enviado: 1,
           fecha: paradaenvio.fecha,
-          imageArray: paradaenvio.imageArray);
+          imageArray: paradaenvio.imageArray,
+          observaciones: paradaenvio.observaciones);
 
       await DBParadasEnvios.update(paradaenvionueva);
       _paradasenviosdb = await DBParadasEnvios.paradasenvios();

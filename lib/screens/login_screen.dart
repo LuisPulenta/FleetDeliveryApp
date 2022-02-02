@@ -43,11 +43,13 @@ class _LoginScreenState extends State<LoginScreen> {
       orden: 0,
       centroDistribucion: 0);
 
-  String _email = '*jhollman';
+  //String _email = '*jhollman';
+  String _email = '';
   String _emailError = '';
   bool _emailShowError = false;
 
-  String _password = 'jona';
+  //String _password = 'jona';
+  String _password = '';
   String _passwordError = '';
   bool _passwordShowError = false;
 
