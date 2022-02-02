@@ -1,6 +1,8 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
+import 'package:fleetdeliveryapp/models/asign.dart';
 import 'package:fleetdeliveryapp/models/asignacion2.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
@@ -27,6 +29,8 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
   bool _showLoader = false;
+  bool bandera = false;
+  List<Asign> _asigns = [];
 
 //*****************************************************************************
 //************************** PANTALLA *****************************************
@@ -556,61 +560,146 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
 //*****************************************************************************
 
   void _save(Asignacion2 asignacion, context) async {
-    Map<String, dynamic> request2 = {
-      'recupidjobcard': asignacion.recupidjobcard,
-      'cliente': asignacion.cliente,
-      'nombre': asignacion.nombre,
-      'domicilio': asignacion.domicilio,
-      'cp': asignacion.cp,
-      'entrecallE1': asignacion.entrecallE1,
-      'entrecallE2': asignacion.entrecallE2,
-      'localidad': asignacion.localidad,
-      'telefono': asignacion.telefono,
-      'grxx': asignacion.grxx,
-      'gryy': asignacion.gryy,
-      'estadogaos': asignacion.estadogaos,
-      'proyectomodulo': asignacion.proyectomodulo,
-      'userID': asignacion.userID,
-      'causantec': asignacion.causantec,
-      'subcon': asignacion.subcon,
-      'fechaAsignada': asignacion.fechaAsignada,
-      'codigoCierre': asignacion.codigoCierre,
-      'novedades': asignacion.novedades,
-      'provincia': asignacion.provincia,
-      'reclamoTecnicoID': asignacion.reclamoTecnicoID,
-      'fechaCita': asignacion.fechaCita,
-      'medioCita': asignacion.medioCita,
-      'nroSeriesExtras': asignacion.nroSeriesExtras,
-      'evento1':
-          'Cita por ${_opseleccionada} para el ${selectedDate.day}/${selectedDate.month}/${selectedDate.year} ${selectedTime.hour}:${selectedTime.minute}',
-      'fechaEvento1': selectedDate.add(
-          Duration(hours: selectedTime.hour, minutes: selectedTime.minute)),
-      'evento2': asignacion.evento1,
-      'fechaEvento2': asignacion.fechaEvento1,
-      'evento3': asignacion.evento2,
-      'fechaEvento3': asignacion.fechaEvento2,
-      'evento4': asignacion.evento3,
-      'fechaEvento4': asignacion.fechaEvento3,
-      'observacion': asignacion.observacion,
-      'telefAlternativo1': asignacion.telefAlternativo1,
-      'telefAlternativo2': asignacion.telefAlternativo2,
-      'telefAlternativo3': asignacion.telefAlternativo3,
-      'telefAlternativo4': asignacion.telefAlternativo4,
-      'cantAsign': asignacion.cantAsign,
-    };
+    var connectivityResult = await Connectivity().checkConnectivity();
 
-    Response response = await ApiHelper.put('/api/AsignacionesOTs/',
-        widget.asignacion.recupidjobcard.toString(), request2);
-
-    if (!response.isSuccess) {
+    if (connectivityResult == ConnectivityResult.none) {
       await showAlertDialog(
           context: context,
           title: 'Error',
-          message: response.message,
+          message: 'Verifica que estés conectado a Internet',
           actions: <AlertDialogAction>[
             AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
+    }
+
+    bandera = false;
+
+    Map<String, dynamic> request1 = {
+      'reclamoTecnicoID': asignacion.reclamoTecnicoID,
+      'userID': asignacion.userID,
+    };
+
+    do {
+      Response response = Response(isSuccess: false);
+      response = await ApiHelper.GetAutonumericos(request1);
+      if (response.isSuccess) {
+        bandera = true;
+        _asigns = response.result;
+      }
+    } while (bandera == false);
+
+    for (Asign _asign in _asigns) {
+      Map<String, dynamic> request2 = {
+        'idregistro': _asign.idregistro,
+        'subagentemercado': _asign.subagentemercado,
+        'recupidjobcard': _asign.recupidjobcard,
+        'cliente': _asign.cliente,
+        'nombre': _asign.nombre,
+        'domicilio': _asign.domicilio,
+        'entrecallE1': _asign.entrecallE1,
+        'entrecallE2': _asign.entrecallE2,
+        'cp': _asign.cp,
+        'ztecnico': _asign.ztecnico,
+        'provincia': _asign.provincia,
+        'localidad': _asign.localidad,
+        'telefono': _asign.telefono,
+        'grxx': _asign.grxx,
+        'gryy': _asign.gryy,
+        'decO1': _asign.decO1,
+        'cmodeM1': _asign.cmodeM1,
+        'fechacarga': _asign.fechacarga,
+        'estado': _asign.estado,
+        'fechaent': _asign.fechaent,
+        'tecasig': _asign.tecasig,
+        'zona': _asign.zona,
+        'idr': _asign.idr,
+        'modelo': _asign.modelo,
+        'smartcard': _asign.smartcard,
+        'ruta': _asign.ruta,
+        'estadO2': _asign.estadO2,
+        'estadO3': _asign.estadO3,
+        'tarifa': _asign.tarifa,
+        'proyectomodulo': _asign.proyectomodulo,
+        'fechacaptura': _asign.fechacaptura,
+        'estadogaos': _asign.estadogaos,
+        'fechacumplida': _asign.fechacumplida,
+        'bajasistema': _asign.bajasistema,
+        'idcabeceracertif': _asign.idcabeceracertif,
+        'subcon': _asign.subcon,
+        'causantec': _asign.causantec,
+        'pasaDefinitiva': _asign.pasaDefinitiva,
+        'fechaAsignada': _asign.fechaAsignada,
+        'hsCaptura': _asign.hsCaptura,
+        'hsAsignada': _asign.hsAsignada,
+        'hsCumplida': _asign.hsCumplida,
+        'observacion': _asign.observacion,
+        'linkFoto': _asign.linkFoto,
+        'userID': _asign.userID,
+        'hsCumplidaTime': _asign.hsCumplidaTime,
+        'terminalAsigna': _asign.terminalAsigna,
+        'urlDni': _asign.urlDni,
+        'urlFirma': _asign.urlFirma,
+        'urlDni2': _asign.urlDni2,
+        'urlFirma2': _asign.urlFirma2,
+        'esCR': _asign.esCR,
+        'autonumerico': _asign.autonumerico,
+        'reclamoTecnicoID': _asign.reclamoTecnicoID,
+        'clienteTipoId': _asign.clienteTipoId,
+        'documento': _asign.documento,
+        'partido': _asign.partido,
+        'emailCliente': _asign.emailCliente,
+        'observacionCaptura': _asign.observacionCaptura,
+        'fechaInicio': _asign.fechaInicio,
+        'fechaEnvio': _asign.fechaEnvio,
+        'marcaModeloId': _asign.marcaModeloId,
+        'enviado': _asign.enviado,
+        'cancelado': _asign.cancelado,
+        'recupero': _asign.recupero,
+        'codigoCierre': _asign.codigoCierre,
+        'visitaTecnica': _asign.visitaTecnica,
+        'novedades': _asign.novedades,
+        'pdfGenerado': _asign.pdfGenerado,
+        'fechaCumplidaTecnico': _asign.fechaCumplidaTecnico,
+        'archivoOutGenerado': _asign.archivoOutGenerado,
+        'idSuscripcion': _asign.idSuscripcion,
+        'itemsID': _asign.itemsID,
+        'sectorOperativo': _asign.sectorOperativo,
+        'idTipoTrabajoRel': _asign.idTipoTrabajoRel,
+        'motivos': _asign.motivos,
+        'controlesEquivalencia': _asign.controlesEquivalencia,
+        'fechaCita': _asign.fechaCita,
+        'medioCita': _asign.medioCita,
+        'nroSeriesExtras': _asign.nroSeriesExtras,
+        'fechaEvento1': selectedDate.add(
+            Duration(hours: selectedTime.hour, minutes: selectedTime.minute)),
+        'fechaEvento2': asignacion.fechaEvento1,
+        'fechaEvento3': asignacion.fechaEvento2,
+        'fechaEvento4': asignacion.fechaEvento3,
+        'evento1':
+            'Cita por ${_opseleccionada} para el ${selectedDate.day}/${selectedDate.month}/${selectedDate.year} ${selectedTime.hour}:${selectedTime.minute}',
+        'evento2': asignacion.evento1,
+        'evento3': asignacion.evento2,
+        'evento4': asignacion.evento3,
+        'telefAlternativo1': _asign.telefAlternativo1,
+        'telefAlternativo2': _asign.telefAlternativo2,
+        'telefAlternativo3': _asign.telefAlternativo3,
+        'telefAlternativo4': _asign.telefAlternativo4,
+      };
+
+      Response response = await ApiHelper.put(
+          '/api/AsignacionesOTs/', _asign.idregistro.toString(), request2);
+
+      if (!response.isSuccess) {
+        await showAlertDialog(
+            context: context,
+            title: 'Error',
+            message: response.message,
+            actions: <AlertDialogAction>[
+              AlertDialogAction(key: null, label: 'Aceptar'),
+            ]);
+        return;
+      }
     }
 
     Navigator.pop(context, 'yes');

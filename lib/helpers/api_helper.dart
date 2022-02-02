@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fleetdeliveryapp/models/asign.dart';
 import 'package:fleetdeliveryapp/models/asignacion2.dart';
 import 'package:fleetdeliveryapp/models/codigocierre.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
@@ -283,11 +284,11 @@ class ApiHelper {
       return Response(isSuccess: false, message: body);
     }
 
-    List<CodigoCierre> list = [];
+    List<Asign> list = [];
     var decodedJson = jsonDecode(body);
     if (decodedJson != null) {
       for (var item in decodedJson) {
-        list.add(CodigoCierre.fromJson(item));
+        list.add(Asign.fromJson(item));
       }
     }
     return Response(isSuccess: true, result: list);

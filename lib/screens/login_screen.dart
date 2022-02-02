@@ -44,12 +44,12 @@ class _LoginScreenState extends State<LoginScreen> {
       centroDistribucion: 0);
 
   //String _email = '*jhollman';
-  String _email = '';
+  String _email = 'TEST';
   String _emailError = '';
   bool _emailShowError = false;
 
   //String _password = 'jona';
-  String _password = '';
+  String _password = '123456';
   String _passwordError = '';
   bool _passwordShowError = false;
 
@@ -312,9 +312,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (filteredUsuario.isEmpty) {
-      setState(() {
-        _showLoader = true;
-      });
       setState(() {
         _passwordShowError = true;
         _passwordError = 'Usuario o contraseña incorrectos';
