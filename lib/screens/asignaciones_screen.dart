@@ -81,7 +81,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       telefAlternativo2: '',
       telefAlternativo3: '',
       telefAlternativo4: '',
-      cantAsign: 0);
+      cantAsign: 0,
+      codigoequivalencia: '',
+      deco1descripcion: '');
 
 //*****************************************************************************
 //************************** INIT STATE ***************************************
@@ -477,24 +479,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                           children: [
                                             Row(
                                               children: [
-                                                Text("Estado: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF0e4888),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                                Expanded(
-                                                  child: Text(
-                                                      e.causantec.toString(),
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                      )),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
                                                 Text("Fec. Asig.: ",
                                                     style: TextStyle(
                                                       fontSize: 12,
@@ -518,6 +502,27 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             ),
                                             Row(
                                               children: [
+                                                Text("Medio Cita: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF0e4888),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Expanded(
+                                                  child: Text(
+                                                      e.medioCita.toString(),
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 1,
+                                            ),
+                                            Row(
+                                              children: [
                                                 Text("Fec. Cita: ",
                                                     style: TextStyle(
                                                       fontSize: 12,
@@ -529,8 +534,30 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                   child: e.fechaCita == null
                                                       ? Text("")
                                                       : Text(
-                                                          e.fechaCita
-                                                              .toString(),
+                                                          '${DateFormat('dd/MM/yyyy').format(DateTime.parse(e.fechaCita.toString()))}',
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                          )),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 1,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("Hora Cita: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF0e4888),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Expanded(
+                                                  child: e.fechaCita == null
+                                                      ? Text("")
+                                                      : Text(
+                                                          '${DateFormat('hh:mm').format(DateTime.parse(e.fechaCita.toString()))}',
                                                           style: TextStyle(
                                                             fontSize: 12,
                                                           )),

@@ -75,7 +75,9 @@ class Asign {
   String? sectorOperativo = '';
   String? idTipoTrabajoRel = '';
   String? motivos = '';
-  String? controlesEquivalencia = '';
+  int? elegir = 0;
+  String? fc_inicio_base = '';
+  String? vc_fin_base = '';
   String? fechaCita = '';
   String? medioCita = '';
   String? nroSeriesExtras = '';
@@ -87,10 +89,28 @@ class Asign {
   String? evento2 = '';
   String? evento3 = '';
   String? evento4 = '';
+  int? escames = 0;
+  int? escaanio = 0;
+  String? estado4 = '';
+  int? loteNro = 0;
+  String? fechabaja = '';
+  String? tipocliente = '';
+  double? incentivo = 0.0;
+  double? desconexion = 0.0;
+  double? quincena = 0.0;
+  int? impreso = 0;
+  int? idusercambio = 0;
+  String? franjaentrega = '';
   String? telefAlternativo1 = '';
   String? telefAlternativo2 = '';
   String? telefAlternativo3 = '';
   String? telefAlternativo4 = '';
+  int? tag1 = 0;
+  String? tipotel1 = '';
+  String? tipotel2 = '';
+  String? tipotel3 = '';
+  String? tipotel4 = '';
+  String? valorunico = '';
   String? clienteCompleto = '';
   String? entreCalles = '';
 
@@ -171,7 +191,9 @@ class Asign {
       required this.sectorOperativo,
       required this.idTipoTrabajoRel,
       required this.motivos,
-      required this.controlesEquivalencia,
+      required this.elegir,
+      required this.fc_inicio_base,
+      required this.vc_fin_base,
       required this.fechaCita,
       required this.medioCita,
       required this.nroSeriesExtras,
@@ -183,10 +205,28 @@ class Asign {
       required this.evento2,
       required this.evento3,
       required this.evento4,
+      required this.escames,
+      required this.escaanio,
+      required this.estado4,
+      required this.loteNro,
+      required this.fechabaja,
+      required this.tipocliente,
+      required this.incentivo,
+      required this.desconexion,
+      required this.quincena,
+      required this.impreso,
+      required this.idusercambio,
+      required this.franjaentrega,
       required this.telefAlternativo1,
       required this.telefAlternativo2,
       required this.telefAlternativo3,
       required this.telefAlternativo4,
+      required this.tag1,
+      required this.tipotel1,
+      required this.tipotel2,
+      required this.tipotel3,
+      required this.tipotel4,
+      required this.valorunico,
       required this.clienteCompleto,
       required this.entreCalles});
 
@@ -267,7 +307,9 @@ class Asign {
     sectorOperativo = json['sectorOperativo'];
     idTipoTrabajoRel = json['idTipoTrabajoRel'];
     motivos = json['motivos'];
-    controlesEquivalencia = json['controlesEquivalencia'];
+    elegir = json['elegir'];
+    fc_inicio_base = json['fc_inicio_base'];
+    vc_fin_base = json['vc_fin_base'];
     fechaCita = json['fechaCita'];
     medioCita = json['medioCita'];
     nroSeriesExtras = json['nroSeriesExtras'];
@@ -279,10 +321,28 @@ class Asign {
     evento2 = json['evento2'];
     evento3 = json['evento3'];
     evento4 = json['evento4'];
+    escames = json['escames'];
+    escaanio = json['escaanio'];
+    estado4 = json['estado4'];
+    loteNro = json['loteNro'];
+    fechabaja = json['fechabaja'];
+    tipocliente = json['tipocliente'];
+    incentivo = json['incentivo'];
+    desconexion = json['desconexion'];
+    quincena = json['quincena'];
+    impreso = json['impreso'];
+    idusercambio = json['idusercambio'];
+    franjaentrega = json['franjaentrega'];
     telefAlternativo1 = json['telefAlternativo1'];
     telefAlternativo2 = json['telefAlternativo2'];
     telefAlternativo3 = json['telefAlternativo3'];
     telefAlternativo4 = json['telefAlternativo4'];
+    tag1 = json['tag1'];
+    tipotel1 = json['tipotel1'];
+    tipotel2 = json['tipotel2'];
+    tipotel3 = json['tipotel3'];
+    tipotel4 = json['tipotel4'];
+    valorunico = json['valorunico'];
     clienteCompleto = json['clienteCompleto'];
     entreCalles = json['entreCalles'];
   }
@@ -365,7 +425,9 @@ class Asign {
     data['sectorOperativo'] = this.sectorOperativo;
     data['idTipoTrabajoRel'] = this.idTipoTrabajoRel;
     data['motivos'] = this.motivos;
-    data['controlesEquivalencia'] = this.controlesEquivalencia;
+    data['elegir'] = this.elegir;
+    data['fc_inicio_base'] = this.fc_inicio_base;
+    data['vc_fin_base'] = this.vc_fin_base;
     data['fechaCita'] = this.fechaCita;
     data['medioCita'] = this.medioCita;
     data['nroSeriesExtras'] = this.nroSeriesExtras;
@@ -377,10 +439,28 @@ class Asign {
     data['evento2'] = this.evento2;
     data['evento3'] = this.evento3;
     data['evento4'] = this.evento4;
+    data['escames'] = this.escames;
+    data['escaanio'] = this.escaanio;
+    data['estado4'] = this.estado4;
+    data['loteNro'] = this.loteNro;
+    data['fechabaja'] = this.fechabaja;
+    data['tipocliente'] = this.tipocliente;
+    data['incentivo'] = this.incentivo;
+    data['desconexion'] = this.desconexion;
+    data['quincena'] = this.quincena;
+    data['impreso'] = this.impreso;
+    data['idusercambio'] = this.idusercambio;
+    data['franjaentrega'] = this.franjaentrega;
     data['telefAlternativo1'] = this.telefAlternativo1;
     data['telefAlternativo2'] = this.telefAlternativo2;
     data['telefAlternativo3'] = this.telefAlternativo3;
     data['telefAlternativo4'] = this.telefAlternativo4;
+    data['tag1'] = this.tag1;
+    data['tipotel1'] = this.tipotel1;
+    data['tipotel2'] = this.tipotel2;
+    data['tipotel3'] = this.tipotel3;
+    data['tipotel4'] = this.tipotel4;
+    data['valorunico'] = this.valorunico;
     data['clienteCompleto'] = this.clienteCompleto;
     data['entreCalles'] = this.entreCalles;
     return data;
@@ -464,7 +544,9 @@ class Asign {
       'sectorOperativo': sectorOperativo,
       'idTipoTrabajoRel': idTipoTrabajoRel,
       'motivos': motivos,
-      'controlesEquivalencia': controlesEquivalencia,
+      'elegir': elegir,
+      'fc_inicio_base': fc_inicio_base,
+      'vc_fin_base': vc_fin_base,
       'fechaCita': fechaCita,
       'medioCita': medioCita,
       'nroSeriesExtras': nroSeriesExtras,
@@ -476,10 +558,28 @@ class Asign {
       'evento2': evento2,
       'evento3': evento3,
       'evento4': evento4,
+      'escames': escames,
+      'escaanio': escaanio,
+      'estado4': estado4,
+      'loteNro': loteNro,
+      'fechabaja': fechabaja,
+      'tipocliente': tipocliente,
+      'incentivo': incentivo,
+      'desconexion': desconexion,
+      'quincena': quincena,
+      'impreso': impreso,
+      'idusercambio': idusercambio,
+      'franjaentrega': franjaentrega,
       'telefAlternativo1': telefAlternativo1,
       'telefAlternativo2': telefAlternativo2,
       'telefAlternativo3': telefAlternativo3,
       'telefAlternativo4': telefAlternativo4,
+      'tag1': tag1,
+      'tipotel1': tipotel1,
+      'tipotel2': tipotel2,
+      'tipotel3': tipotel3,
+      'tipotel4': tipotel4,
+      'valorunico': valorunico,
       'clienteCompleto': clienteCompleto,
       'entreCalles': entreCalles,
     };

@@ -39,8 +39,9 @@ class Asignacion2 {
   String? telefAlternativo2 = '';
   String? telefAlternativo3 = '';
   String? telefAlternativo4 = '';
-
   int? cantAsign = 0;
+  String? codigoequivalencia = '';
+  String? deco1descripcion = '';
 
   Asignacion2(
       {required this.recupidjobcard,
@@ -83,7 +84,9 @@ class Asignacion2 {
       required this.telefAlternativo2,
       required this.telefAlternativo3,
       required this.telefAlternativo4,
-      required this.cantAsign});
+      required this.cantAsign,
+      required this.codigoequivalencia,
+      required this.deco1descripcion});
 
   Asignacion2.fromJson(Map<String, dynamic> json) {
     recupidjobcard = json['recupidjobcard'];
@@ -127,6 +130,8 @@ class Asignacion2 {
     telefAlternativo3 = json['telefAlternativo3'];
     telefAlternativo4 = json['telefAlternativo4'];
     cantAsign = json['cantAsign'];
+    codigoequivalencia = json['codigoequivalencia'];
+    deco1descripcion = json['deco1descripcion'];
   }
 
   Map<String, dynamic> toJson() {
@@ -172,6 +177,8 @@ class Asignacion2 {
     data['telefAlternativo3'] = this.telefAlternativo3;
     data['telefAlternativo4'] = this.telefAlternativo4;
     data['cantAsign'] = this.cantAsign;
+    data['codigoequivalencia'] = this.codigoequivalencia;
+    data['deco1descripcion'] = this.deco1descripcion;
     return data;
   }
 
@@ -218,6 +225,8 @@ class Asignacion2 {
       'telefAlternativo3': telefAlternativo3,
       'telefAlternativo4': telefAlternativo4,
       'cantAsign': cantAsign,
+      'codigoequivalencia': codigoequivalencia,
+      'deco1descripcion': deco1descripcion,
     };
   }
 }
