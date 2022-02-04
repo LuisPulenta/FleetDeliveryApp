@@ -11,6 +11,7 @@ import 'package:fleetdeliveryapp/models/codigocierre.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,7 +30,8 @@ class AsignacionInfoScreen extends StatefulWidget {
   _AsignacionInfoScreenState createState() => _AsignacionInfoScreenState();
 }
 
-class _AsignacionInfoScreenState extends State<AsignacionInfoScreen> {
+class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
+    with SingleTickerProviderStateMixin {
 //*****************************************************************************
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
@@ -54,6 +56,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen> {
   bool _showLoader = false;
 
   bool bandera = false;
+
+  TabController? _tabController;
 
   Asignacion2 _asignacion = Asignacion2(
       recupidjobcard: '',
@@ -109,6 +113,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen> {
     super.initState();
     _asignacion = widget.asignacion;
     __codigoscierre = widget.codigoscierre;
+    _tabController = TabController(length: 3, vsync: this);
     _getAsigns();
   }
 
@@ -119,22 +124,149 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFC7C7C8),
-      appBar: AppBar(
-        title: Text('Asignación Info'),
-        backgroundColor: Color(0xFF0e4888),
-      ),
+      backgroundColor: Color(0xffe9dac2),
       body: Stack(
-        children: <Widget>[
-          Center(
-            child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(
+                    (0xffdadada),
+                  ),
+                  Color(
+                    (0xffb3b3b4),
+                  ),
+                ],
+              ),
+            ),
+            child: TabBarView(
+              controller: _tabController,
+              physics: AlwaysScrollableScrollPhysics(),
+              dragStartBehavior: DragStartBehavior.start,
               children: <Widget>[
-                _showAsignacion(),
-                Expanded(child: _showAutonumericos()),
+//-------------------------------------------------------------------------
+//-------------------------- 1° TABBAR ------------------------------------
+//-------------------------------------------------------------------------
+                Column(
+                  children: <Widget>[
+                    AppBar(
+                      title: (Text("Asignación")),
+                      centerTitle: true,
+                      backgroundColor: Color(0xff282886),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Column(
+                          children: <Widget>[
+                            _showAsignacion(),
+                            Expanded(child: _showAutonumericos()),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+//-------------------------------------------------------------------------
+//-------------------------- 2° TABBAR ------------------------------------
+//-------------------------------------------------------------------------
+                Column(
+                  children: [
+                    AppBar(
+                      title: (Text("Teléfonos")),
+                      centerTitle: true,
+                      backgroundColor: Color(0xff282886),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Column(
+                          children: <Widget>[
+                            _showTelefonos(),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+//-------------------------------------------------------------------------
+//-------------------------- 3° TABBAR ------------------------------------
+//-------------------------------------------------------------------------
+                Column(
+                  children: [
+                    AppBar(
+                      title: (Text("Mapa")),
+                      centerTitle: true,
+                      backgroundColor: Color(0xff282886),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Column(
+                          children: <Widget>[],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
-          )
+          ),
         ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: TabBar(
+            controller: _tabController,
+            indicatorColor: Color(0xff282886),
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorWeight: 5,
+            labelColor: Color(0xff282886),
+            unselectedLabelColor: Colors.grey,
+            labelPadding: EdgeInsets.all(10),
+            tabs: <Widget>[
+              Tab(
+                child: Column(
+                  children: [
+                    Icon(Icons.local_shipping),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Asignación",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+              Tab(
+                child: Column(
+                  children: [
+                    Icon(Icons.done_all),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Teléfonos",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+              Tab(
+                child: Column(
+                  children: [
+                    Icon(Icons.person),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Mapa",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+            ]),
       ),
     );
   }
@@ -256,124 +388,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen> {
                                       style: TextStyle(
                                         fontSize: 12,
                                       )),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                            Row(
-                              children: [
-                                Text("Teléfono: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text(_asignacion.telefono.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.phone),
-                                  color: Color(0xFF484848),
-                                  onPressed: () =>
-                                      launch(_asignacion.telefono!),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                            Row(
-                              children: [
-                                Text("Tel.Alt.1: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text(
-                                      _asignacion.telefAlternativo1.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.phone),
-                                  color: Color(0xFF484848),
-                                  onPressed: () =>
-                                      launch(_asignacion.telefAlternativo1!),
-                                ),
-                                Text("Tel.Alt.2: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text(
-                                      _asignacion.telefAlternativo2.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.phone),
-                                  color: Color(0xFF484848),
-                                  onPressed: () =>
-                                      launch(_asignacion.telefAlternativo2!),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                            Row(
-                              children: [
-                                Text("Tel.Alt.3: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text(
-                                      _asignacion.telefAlternativo3.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.phone),
-                                  color: Color(0xFF484848),
-                                  onPressed: () =>
-                                      launch(_asignacion.telefAlternativo3!),
-                                ),
-                                Text("Tel.Alt.4: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text(
-                                      _asignacion.telefAlternativo4.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.phone),
-                                  color: Color(0xFF484848),
-                                  onPressed: () =>
-                                      launch(_asignacion.telefAlternativo4!),
                                 ),
                               ],
                             ),
@@ -914,5 +928,236 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen> {
     });
 
     var a = 1;
+  }
+
+  Widget _showTelefonos() {
+    return Card(
+      color: Colors.white,
+      //color: Color(0xFFC7C7C8),
+      shadowColor: Colors.white,
+      elevation: 10,
+      margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+      child: Container(
+        margin: EdgeInsets.all(0),
+        padding: EdgeInsets.all(5),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text("Cliente: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(
+                                    '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              Text("Dirección: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(_asignacion.domicilio.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              Text("Localidad: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(_asignacion.localidad.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              Text("Provincia: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(_asignacion.provincia.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              Text("Teléfono: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(_asignacion.telefono.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.phone),
+                                color: Color(0xFF484848),
+                                onPressed: () => launch(_asignacion.telefono!),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              Text("Tel.Alt.1: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(
+                                    _asignacion.telefAlternativo1.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.phone),
+                                color: Color(0xFF484848),
+                                onPressed: () =>
+                                    launch(_asignacion.telefAlternativo1!),
+                              ),
+                              Text("Tel.Alt.2: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(
+                                    _asignacion.telefAlternativo2.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.phone),
+                                color: Color(0xFF484848),
+                                onPressed: () =>
+                                    launch(_asignacion.telefAlternativo2!),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              Text("Tel.Alt.3: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(
+                                    _asignacion.telefAlternativo3.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.phone),
+                                color: Color(0xFF484848),
+                                onPressed: () =>
+                                    launch(_asignacion.telefAlternativo3!),
+                              ),
+                              Text("Tel.Alt.4: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(
+                                    _asignacion.telefAlternativo4.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.phone),
+                                color: Color(0xFF484848),
+                                onPressed: () =>
+                                    launch(_asignacion.telefAlternativo4!),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Divider(
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
