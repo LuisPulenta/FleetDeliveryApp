@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/models/asign.dart';
 import 'package:fleetdeliveryapp/models/asignacion.dart';
@@ -61,7 +62,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   bool bandera = false;
 
+  bool ubicOk = false;
+
   TabController? _tabController;
+
+  MapType _defaultMapType = MapType.normal;
+
+  CameraPosition _initialPosition =
+      CameraPosition(target: LatLng(31, 64), zoom: 16.0);
+
+  final Set<Marker> _markers = {};
 
   Asignacion2 _asignacion = Asignacion2(
       recupidjobcard: '',
@@ -110,8 +120,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   LatLng _center = LatLng(0, 0);
 
-  final Set<Marker> _markers = {};
-
 //*****************************************************************************
 //************************** INIT STATE ***************************************
 //*****************************************************************************
@@ -122,6 +130,30 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     _asignacion = widget.asignacion;
     __codigoscierre = widget.codigoscierre;
     _tabController = TabController(length: 3, vsync: this);
+    _initialPosition = (_asignacion.grxx != "" && _asignacion.gryy != "")
+        ? CameraPosition(
+            target: LatLng(double.parse(_asignacion.grxx!),
+                double.parse(_asignacion.gryy!)),
+            zoom: 16.0)
+        : CameraPosition(target: LatLng(0, 0), zoom: 16.0);
+
+    ubicOk = true;
+    _center = (_asignacion.grxx != "" && _asignacion.gryy != "")
+        ? LatLng(
+            double.parse(_asignacion.grxx!), double.parse(_asignacion.gryy!))
+        : LatLng(0, 0);
+
+    _markers.clear();
+    _markers.add(Marker(
+      markerId: MarkerId(_asignacion.reclamoTecnicoID.toString()),
+      position: _center,
+      infoWindow: InfoWindow(
+        title: _asignacion.nombre.toString(),
+        snippet: _asignacion.domicilio.toString(),
+      ),
+      icon: BitmapDescriptor.defaultMarker,
+    ));
+
     _getAsigns();
   }
 
@@ -212,12 +244,38 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       backgroundColor: Color(0xff282886),
                     ),
                     Expanded(
-                      child: Center(
-                        child: Column(
-                          children: <Widget>[],
-                        ),
+                      child: Container(
+                        child: (_asignacion.grxx != "" &&
+                                _asignacion.gryy != "")
+                            ? Stack(
+                                children: [
+                                  GoogleMap(
+                                    myLocationEnabled: false,
+                                    initialCameraPosition: _initialPosition,
+                                    onCameraMove: _onCameraMove,
+                                    markers: _markers,
+                                    mapType: _defaultMapType,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 80, right: 10),
+                                    alignment: Alignment.topRight,
+                                    child: Column(children: <Widget>[
+                                      FloatingActionButton(
+                                          child: Icon(Icons.layers),
+                                          elevation: 5,
+                                          backgroundColor: Color(0xfff4ab04),
+                                          onPressed: () {
+                                            _changeMapType();
+                                          }),
+                                    ]),
+                                  ),
+                                ],
+                              )
+                            : Center(
+                                child: Text(
+                                    "Este Cliente no tiene coordenadas cargadas")),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -957,7 +1015,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
-      margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+      margin: EdgeInsets.fromLTRB(8, 8, 8, 8),
       child: Container(
         margin: EdgeInsets.all(0),
         padding: EdgeInsets.all(5),
@@ -1046,8 +1104,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 1,
+                          Divider(
+                            color: Colors.black,
                           ),
                           Row(
                             children: [
@@ -1064,18 +1122,22 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     )),
                               ),
                               IconButton(
-                                icon: Icon(Icons.phone),
-                                color: Color(0xFF484848),
-                                onPressed: () => launch(_asignacion.telefono!),
+                                icon: Icon(
+                                  Icons.phone_forwarded,
+                                  size: 34,
+                                ),
+                                color: Colors.green,
+                                onPressed: () => launch(
+                                    'tel://${_asignacion.telefono.toString()}'),
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 1,
+                          Divider(
+                            color: Colors.black,
                           ),
                           Row(
                             children: [
-                              Text("Tel.Alt.1: ",
+                              Text("Tel. Alt. 1: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -1089,12 +1151,22 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     )),
                               ),
                               IconButton(
-                                icon: Icon(Icons.phone),
-                                color: Color(0xFF484848),
-                                onPressed: () =>
-                                    launch(_asignacion.telefAlternativo1!),
+                                icon: Icon(
+                                  Icons.phone_forwarded,
+                                  size: 34,
+                                ),
+                                color: Colors.green,
+                                onPressed: () => launch(
+                                    'tel://${_asignacion.telefAlternativo1.toString()}'),
                               ),
-                              Text("Tel.Alt.2: ",
+                            ],
+                          ),
+                          Divider(
+                            color: Colors.black,
+                          ),
+                          Row(
+                            children: [
+                              Text("Tel. Alt. 2: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -1108,22 +1180,22 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     )),
                               ),
                               IconButton(
-                                icon: Icon(Icons.phone),
-                                color: Color(0xFF484848),
-                                onPressed: () =>
-                                    launch(_asignacion.telefAlternativo2!),
+                                icon: Icon(
+                                  Icons.phone_forwarded,
+                                  size: 34,
+                                ),
+                                color: Colors.green,
+                                onPressed: () => launch(
+                                    'tel://${_asignacion.telefAlternativo2.toString()}'),
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 1,
-                          ),
-                          SizedBox(
-                            height: 1,
+                          Divider(
+                            color: Colors.black,
                           ),
                           Row(
                             children: [
-                              Text("Tel.Alt.3: ",
+                              Text("Tel. Alt. 3: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -1137,12 +1209,22 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     )),
                               ),
                               IconButton(
-                                icon: Icon(Icons.phone),
-                                color: Color(0xFF484848),
-                                onPressed: () =>
-                                    launch(_asignacion.telefAlternativo3!),
+                                icon: Icon(
+                                  Icons.phone_forwarded,
+                                  size: 34,
+                                ),
+                                color: Colors.green,
+                                onPressed: () => launch(
+                                    'tel://${_asignacion.telefAlternativo3.toString()}'),
                               ),
-                              Text("Tel.Alt.4: ",
+                            ],
+                          ),
+                          Divider(
+                            color: Colors.black,
+                          ),
+                          Row(
+                            children: [
+                              Text("Tel. Alt. 4: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -1156,15 +1238,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     )),
                               ),
                               IconButton(
-                                icon: Icon(Icons.phone),
-                                color: Color(0xFF484848),
-                                onPressed: () =>
-                                    launch(_asignacion.telefAlternativo4!),
+                                icon: Icon(
+                                  Icons.phone_forwarded,
+                                  size: 34,
+                                ),
+                                color: Colors.green,
+                                onPressed: () => launch(
+                                    'tel://${_asignacion.telefAlternativo4.toString()}'),
                               ),
                             ],
-                          ),
-                          SizedBox(
-                            height: 1,
                           ),
                           Divider(
                             color: Colors.black,
@@ -1238,4 +1320,17 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
+
+  void _onCameraMove(CameraPosition position) {
+    _center = position.target;
+  }
+
+  void _changeMapType() {
+    _defaultMapType = _defaultMapType == MapType.normal
+        ? MapType.satellite
+        : _defaultMapType == MapType.satellite
+            ? MapType.hybrid
+            : MapType.normal;
+    setState(() {});
+  }
 }
