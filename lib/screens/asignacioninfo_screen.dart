@@ -416,10 +416,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                 color: Color(0xFF0e4888),
                                                 fontWeight: FontWeight.bold,
                                               )),
-                                          Text(_asignacion.domicilio.toString(),
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              )),
+                                          Expanded(
+                                            child: Text(
+                                                _asignacion.domicilio
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                )),
+                                          ),
                                         ],
                                       ),
                                       SizedBox(
@@ -842,7 +846,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     return ListView(
       children: _asigns.map((e) {
         return Card(
-            color: Color(0xFFFFFFCC),
+            color: Color(0xFFbfd4e7),
             shadowColor: Color(0xFF0000FF),
             elevation: 10,
             margin: EdgeInsets.all(5),
@@ -858,38 +862,177 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       children: <Widget>[
                         Row(
                           children: [
-                            Text(
-                              e.marcaModeloId.toString(),
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            Text("Autonumérico: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.autonumerico.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 1,
                             ),
                           ],
                         ),
                         Row(
                           children: [
-                            Text(
-                              e.decO1.toString(),
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              e.documento.toString(),
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
+                            Text("Cód. Cierre: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.codigoCierre.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
                             ),
                           ],
                         ),
+                        SizedBox(
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
+                            Text("Cód. Equiv.: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.decO1.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
+                            Text("Deco1: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.decO1.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
+                            Text("Estado3: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.estadO3.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
+                            Text("CModem1: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.cmodeM1.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
+                            Text("IDSuscripcion: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.idSuscripcion.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
+                            Text("MarcaModeloId: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.marcaModeloId.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
+                            Text("Observacion: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.observacion.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1,
+                        ),
                       ],
                     )),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 40,
-                    )
                   ],
                 ),
               ),
