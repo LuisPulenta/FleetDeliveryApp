@@ -40,11 +40,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   @override
-  TabController? _tabController;
 
 //*****************************************************************************
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
+
+  TabController? _tabController;
 
   List<Ruta> _rutasApi = [];
   List<RutaCab> _rutas = [];

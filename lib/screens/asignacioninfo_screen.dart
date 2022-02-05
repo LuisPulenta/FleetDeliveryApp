@@ -13,6 +13,8 @@ import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,11 +22,13 @@ class AsignacionInfoScreen extends StatefulWidget {
   final Usuario user;
   final Asignacion2 asignacion;
   final List<CodigoCierre> codigoscierre;
+  final Position positionUser;
 
   AsignacionInfoScreen(
       {required this.user,
       required this.asignacion,
-      required this.codigoscierre});
+      required this.codigoscierre,
+      required this.positionUser});
 
   @override
   _AsignacionInfoScreenState createState() => _AsignacionInfoScreenState();
@@ -104,6 +108,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       codigoequivalencia: '',
       deco1descripcion: '');
 
+  LatLng _center = LatLng(0, 0);
+
+  final Set<Marker> _markers = {};
+
 //*****************************************************************************
 //************************** INIT STATE ***************************************
 //*****************************************************************************
@@ -161,8 +169,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       child: Center(
                         child: Column(
                           children: <Widget>[
-                            _showAsignacion(),
-                            Expanded(child: _showAutonumericos()),
+                            Expanded(
+                              child: _showAsignacion(),
+                              flex: 2,
+                            ),
+                            Expanded(child: _showAutonumericos(), flex: 1),
                           ],
                         ),
                       ),
@@ -219,17 +230,17 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             controller: _tabController,
             indicatorColor: Color(0xff282886),
             indicatorSize: TabBarIndicatorSize.tab,
-            indicatorWeight: 5,
+            indicatorWeight: 2,
             labelColor: Color(0xff282886),
             unselectedLabelColor: Colors.grey,
-            labelPadding: EdgeInsets.all(10),
+            labelPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
             tabs: <Widget>[
               Tab(
-                child: Column(
+                child: Row(
                   children: [
                     Icon(Icons.local_shipping),
                     SizedBox(
-                      width: 5,
+                      width: 2,
                     ),
                     Text(
                       "Asignación",
@@ -239,11 +250,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 ),
               ),
               Tab(
-                child: Column(
+                child: Row(
                   children: [
-                    Icon(Icons.done_all),
+                    Icon(Icons.phone),
                     SizedBox(
-                      width: 5,
+                      width: 2,
                     ),
                     Text(
                       "Teléfonos",
@@ -253,11 +264,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 ),
               ),
               Tab(
-                child: Column(
+                child: Row(
                   children: [
-                    Icon(Icons.person),
+                    Icon(Icons.map),
                     SizedBox(
-                      width: 5,
+                      width: 2,
                     ),
                     Text(
                       "Mapa",
@@ -282,15 +293,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         //color: Color(0xFFC7C7C8),
         shadowColor: Colors.white,
         elevation: 10,
-        margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+        margin: EdgeInsets.fromLTRB(8, 8, 8, 8),
         child: Container(
           margin: EdgeInsets.all(0),
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(0),
           child: Row(
             children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  margin: EdgeInsets.symmetric(horizontal: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -334,60 +345,69 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: 1,
-                            ),
                             Row(
                               children: [
-                                Text("Dirección: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
                                 Expanded(
-                                  child: Text(_asignacion.domicilio.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text("Dirección: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF0e4888),
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          Text(_asignacion.domicilio.toString(),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              )),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 1,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text("Localidad: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF0e4888),
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          Text(_asignacion.localidad.toString(),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              )),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 1,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text("Provincia: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF0e4888),
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          Text(_asignacion.provincia.toString(),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                            Row(
-                              children: [
-                                Text("Localidad: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text(_asignacion.localidad.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                            Row(
-                              children: [
-                                Text("Provincia: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text(_asignacion.provincia.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.map,
+                                    color: Color(0xff282886),
+                                    size: 34,
+                                  ),
+                                  onPressed: () => _navegar(_asignacion),
                                 ),
                               ],
                             ),
@@ -433,13 +453,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             child: InkWell(
               child: Stack(children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(top: 10),
                   child: !_photoChanged
                       ? Image(
                           image: AssetImage('assets/dni.png'),
                           width: 80,
                           height: 60,
-                          fit: BoxFit.cover)
+                          fit: BoxFit.contain)
                       : Image.file(
                           File(_image.path),
                           width: 80,
@@ -455,7 +474,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
-                          color: Color(0xFF0e4888),
+                          color: Color(0xFF282886),
                           width: 50,
                           height: 50,
                           child: Icon(
@@ -476,20 +495,19 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             child: InkWell(
               child: Stack(children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(top: 10),
                   child: !_signChanged
                       ? Image(
                           image: AssetImage('assets/firma.png'),
                           width: 80,
-                          height: 70,
-                          fit: BoxFit.cover)
+                          height: 60,
+                          fit: BoxFit.contain)
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(80),
                           child: Image.file(
                             File(_image.path),
-                            height: 80,
-                            width: 70,
-                            fit: BoxFit.cover,
+                            width: 80,
+                            height: 60,
+                            fit: BoxFit.contain,
                           )),
                 ),
                 Positioned(
@@ -500,7 +518,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
-                          color: Color(0xFF0e4888),
+                          color: Color(0xFF282886),
                           width: 50,
                           height: 50,
                           child: Icon(
@@ -553,26 +571,26 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           ],
         ),
         SizedBox(
-          height: 5,
+          height: 1,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Expanded(
               child: ElevatedButton(
-                  child: Column(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.done),
                       SizedBox(
-                        height: 5,
+                        width: 2,
                       ),
-                      Text('SI A TODO'),
+                      Text('Si a todo'),
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF0e4888),
-                    minimumSize: Size(double.infinity, 50),
+                    primary: Color(0xFF282886),
+                    minimumSize: Size(double.infinity, 40),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -584,19 +602,19 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             ),
             Expanded(
               child: ElevatedButton(
-                child: Column(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.cancel),
                     SizedBox(
-                      height: 5,
+                      width: 2,
                     ),
-                    Text('NO A TODO'),
+                    Text('No a todo'),
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xffdf281e),
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: Size(double.infinity, 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -607,28 +625,30 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             SizedBox(
               width: 5,
             ),
-            Expanded(
-              child: ElevatedButton(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.star_half),
-                    SizedBox(
-                      height: 5,
+            _asignacion.cantAsign! > 1
+                ? Expanded(
+                    child: ElevatedButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.star_half),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text('Parcial'),
+                        ],
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFc41c9c),
+                        minimumSize: Size(double.infinity, 40),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      onPressed: () {},
                     ),
-                    Text('PARCIAL'),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFc41c9c),
-                  minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                onPressed: () {},
-              ),
-            ),
+                  )
+                : Container(),
           ],
         ),
       ],
@@ -661,6 +681,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           height: 5,
         ),
         TextField(
+          style: TextStyle(fontSize: 14.0, height: 1.0, color: Colors.black),
           controller: _observacionesController,
           decoration: InputDecoration(
               hintText: 'Ingresa observaciones...',
@@ -674,26 +695,26 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           },
         ),
         SizedBox(
-          height: 5,
+          height: 1,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Expanded(
               child: ElevatedButton(
-                  child: Column(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.save),
                       SizedBox(
-                        height: 5,
+                        width: 2,
                       ),
                       Text('Guardar', style: TextStyle(fontSize: 12)),
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF0e4888),
-                    minimumSize: Size(double.infinity, 50),
+                    primary: Color(0xFF282886),
+                    minimumSize: Size(double.infinity, 40),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -705,19 +726,19 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             ),
             Expanded(
               child: ElevatedButton(
-                child: Column(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.cancel),
                     SizedBox(
-                      height: 5,
+                      width: 2,
                     ),
                     Text('Cancelar', style: TextStyle(fontSize: 12)),
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xffdf281e),
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: Size(double.infinity, 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -730,22 +751,22 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             ),
             Expanded(
               child: ElevatedButton(
-                child: Column(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.star_half),
                     SizedBox(
-                      height: 5,
+                      width: 2,
                     ),
                     Text(
-                      'Otro recupero',
+                      'Otro recup.',
                       style: TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xFFc41c9c),
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: Size(double.infinity, 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -766,12 +787,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             color: Color(0xFFFFFFCC),
             shadowColor: Color(0xFF0000FF),
             elevation: 10,
-            margin: EdgeInsets.all(10),
+            margin: EdgeInsets.all(5),
             child: InkWell(
               onTap: () {}, //=> _goHistory(e),
               child: Container(
                 margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.all(0),
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -1160,4 +1181,61 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       ),
     );
   }
+
+  //-------------------------------------------------------------------------
+//-------------------------- METODO NAVEGAR -------------------------------
+//-------------------------------------------------------------------------
+
+  _navegar(Asignacion2 asignacion) async {
+    if (asignacion.grxx == 0 ||
+        asignacion.gryy == 0 ||
+        isNullOrEmpty(asignacion.grxx) ||
+        isNullOrEmpty(asignacion.gryy)) {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso',
+          message: "Esta asignación no tiene coordenadas cargadas.",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    _center =
+        LatLng(double.parse(_asignacion.grxx!), double.parse(asignacion.gryy!));
+    _markers.clear();
+    _markers.add(Marker(
+      markerId: MarkerId(asignacion.reclamoTecnicoID.toString()),
+      position: _center,
+      infoWindow: InfoWindow(
+        title: asignacion.nombre.toString(),
+        snippet: asignacion.domicilio.toString(),
+      ),
+      icon: BitmapDescriptor.defaultMarker,
+    ));
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      var uri = Uri.parse(
+          "google.navigation:q=${double.parse(asignacion.grxx!)},${double.parse(asignacion.gryy!)}&mode=d");
+      if (await canLaunch(uri.toString())) {
+        await launch(uri.toString());
+      } else {
+        throw 'Could not launch ${uri.toString()}';
+      }
+    } else {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso!',
+          message: "Necesita estar conectado a Internet para acceder al mapa",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+    }
+  }
+
+  bool isNullOrEmpty(dynamic obj) =>
+      obj == null ||
+      ((obj is String || obj is List || obj is Map) && obj.isEmpty);
 }

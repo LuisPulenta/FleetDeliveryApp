@@ -10,11 +10,13 @@ import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:fleetdeliveryapp/screens/agendarcita_screen.dart';
 import 'package:fleetdeliveryapp/screens/asignacioninfo_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 
 class AsignacionesScreen extends StatefulWidget {
   final Usuario user;
-  const AsignacionesScreen({required this.user});
+  final Position positionUser;
+  const AsignacionesScreen({required this.user, required this.positionUser});
 
   @override
   _AsignacionesScreenState createState() => _AsignacionesScreenState();
@@ -104,7 +106,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Asignaciones"),
-        backgroundColor: Color(0xFF0e4888),
+        backgroundColor: Color(0xFF282886),
         //backgroundColor: Color(0xFF0e4888),
         centerTitle: true,
         actions: <Widget>[
@@ -174,7 +176,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         ElevatedButton(
           child: Icon(Icons.search),
           style: ElevatedButton.styleFrom(
-            primary: Color(0xFF0e4888),
+            primary: Color(0xFF282886),
             minimumSize: Size(50, 50),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
@@ -795,6 +797,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   user: widget.user,
                   asignacion: asignacion,
                   codigoscierre: _codigoscierre,
+                  positionUser: widget.positionUser,
                 )));
     if (result == 'yes' || result != 'yes') {
       _getObras();

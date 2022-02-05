@@ -1,8 +1,10 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/screens/asignaciones_screen.dart';
 import 'package:fleetdeliveryapp/screens/contacto_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:fleetdeliveryapp/screens/login_screen.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home2Screen extends StatefulWidget {
@@ -16,11 +18,59 @@ class Home2Screen extends StatefulWidget {
 
 class _Home2ScreenState extends State<Home2Screen> {
   @override
+
+//*****************************************************************************
+//************************** DEFINICION DE VARIABLES **************************
+//*****************************************************************************
+
+  Position _positionUser = Position(
+      longitude: 0,
+      latitude: 0,
+      timestamp: null,
+      accuracy: 0,
+      altitude: 0,
+      heading: 0,
+      speed: 0,
+      speedAccuracy: 0);
+
+  Usuario _user = Usuario(
+      idUser: 0,
+      codigo: '',
+      apellidonombre: '',
+      usrlogin: '',
+      usrcontrasena: '',
+      habilitadoWeb: 0,
+      vehiculo: '',
+      dominio: '',
+      celular: '',
+      orden: 0,
+      centroDistribucion: 0);
+
+  String _conectadodesde = '';
+  String _validohasta = '';
+  String _ultimaactualizacion = '';
+
+//*****************************************************************************
+//************************** INIT STATE ***************************************
+//*****************************************************************************
+
+  @override
+  void initState() {
+    super.initState();
+    _user = widget.user;
+    _getprefs();
+    _getPosition();
+  }
+
+//*****************************************************************************
+//************************** PANTALLA *****************************************
+//*****************************************************************************
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Fleet App'),
-        backgroundColor: Color(0xFF0e4888),
+        backgroundColor: Color(0xFF282886),
         centerTitle: true,
       ),
       body: _getBody(),
@@ -135,6 +185,7 @@ class _Home2ScreenState extends State<Home2Screen> {
                     MaterialPageRoute(
                         builder: (context) => AsignacionesScreen(
                               user: widget.user,
+                              positionUser: _positionUser,
                             )));
               },
             ),
@@ -218,5 +269,88 @@ class _Home2ScreenState extends State<Home2Screen> {
     await prefs.setString('date', '');
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
+//*****************************************************************************
+//************************** METODO GETPREFS **********************************
+//*****************************************************************************
+
+  void _getprefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _conectadodesde = prefs.getString('conectadodesde').toString();
+    _validohasta = prefs.getString('validohasta').toString();
+    _ultimaactualizacion = prefs.getString('ultimaactualizacion').toString();
+  }
+
+  //*****************************************************************************
+//************************** METODO GETPOSITION **********************************
+//*****************************************************************************
+
+  Future _getPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                title: Text('Aviso'),
+                content:
+                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  Text('El permiso de localización está negado.'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ]),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Ok')),
+                ],
+              );
+            });
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: Text('Aviso'),
+              content:
+                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                Text(
+                    'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
+                SizedBox(
+                  height: 10,
+                ),
+              ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('Ok')),
+              ],
+            );
+          });
+      return;
+    }
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      _positionUser = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+    }
   }
 }
