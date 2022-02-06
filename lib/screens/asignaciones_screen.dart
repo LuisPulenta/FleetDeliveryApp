@@ -830,7 +830,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   positionUser: widget.positionUser,
                 )));
     if (result == 'yes' || result != 'yes') {
-      _getObras();
+      //_getObras();
       setState(() {});
     }
   }

@@ -50,8 +50,6 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
 
   LatLng _center = LatLng(0, 0);
 
-  Completer<GoogleMapController> _controller = Completer();
-
   @override
   void initState() {
     // TODO: implement initState

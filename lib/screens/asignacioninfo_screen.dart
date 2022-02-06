@@ -279,7 +279,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               )
                             : Center(
                                 child: Text(
-                                    "Esta Adignación no tiene coordenadas cargadas")),
+                                    "Esta Asignación no tiene coordenadas cargadas")),
                       ),
                     ),
                   ],
@@ -726,6 +726,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         Container(
           padding: EdgeInsets.all(0),
           child: DropdownButtonFormField(
+            isExpanded: true,
             value: _codigocierre,
             decoration: InputDecoration(
               fillColor: Colors.white,
