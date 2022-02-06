@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
@@ -11,9 +12,11 @@ import 'package:fleetdeliveryapp/models/asignacion2.dart';
 import 'package:fleetdeliveryapp/models/codigocierre.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
+import 'package:fleetdeliveryapp/screens/firma_screen.dart';
 import 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -53,8 +56,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   List<CodigoCierre> __codigoscierre = [];
   bool _photoChanged = false;
-  bool _signChanged = false;
+  bool _signatureChanged = false;
   late XFile _image;
+  late ByteData _signature;
 
   List<Asign> _asigns = [];
 
@@ -246,7 +250,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     Expanded(
                       child: Container(
                         child: (_asignacion.grxx != "" &&
-                                _asignacion.gryy != "")
+                                _asignacion.gryy != "" &&
+                                _asignacion.grxx != "0" &&
+                                _asignacion.gryy != "0")
                             ? Stack(
                                 children: [
                                   GoogleMap(
@@ -273,7 +279,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               )
                             : Center(
                                 child: Text(
-                                    "Este Cliente no tiene coordenadas cargadas")),
+                                    "Esta Adignación no tiene coordenadas cargadas")),
                       ),
                     ),
                   ],
@@ -557,26 +563,23 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             child: InkWell(
               child: Stack(children: <Widget>[
                 Container(
-                  child: !_signChanged
+                  child: !_signatureChanged
                       ? Image(
                           image: AssetImage('assets/firma.png'),
                           width: 80,
                           height: 60,
                           fit: BoxFit.contain)
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(80),
-                          child: Image.file(
-                            File(_image.path),
-                            width: 80,
-                            height: 60,
-                            fit: BoxFit.contain,
-                          )),
+                      : Image.memory(
+                          _signature.buffer.asUint8List(),
+                          width: 80,
+                          height: 60,
+                        ),
                 ),
                 Positioned(
                     bottom: 0,
                     left: 90,
                     child: InkWell(
-                      onTap: () => _takePicture(),
+                      onTap: () => _takeSignature(),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
@@ -726,6 +729,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             value: _codigocierre,
             decoration: InputDecoration(
               fillColor: Colors.white,
+              hintMaxLines: 2,
               filled: true,
               hintText: 'Elija Código de Cierre',
               labelText: 'Código de Cierre',
@@ -907,7 +911,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   fontWeight: FontWeight.bold,
                                 )),
                             Expanded(
-                              child: Text(e.decO1.toString(),
+                              child: Text(e.deco1descripcion.toString(),
                                   style: TextStyle(
                                     fontSize: 12,
                                   )),
@@ -1091,6 +1095,17 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           _image = response.result;
         });
       }
+    }
+  }
+
+  void _takeSignature() async {
+    Response? response = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => FirmaScreen()));
+    if (response != null) {
+      setState(() {
+        _signatureChanged = true;
+        _signature = response.result;
+      });
     }
   }
 
@@ -1412,8 +1427,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //-------------------------------------------------------------------------
 
   _navegar(Asignacion2 asignacion) async {
-    if (asignacion.grxx == 0 ||
-        asignacion.gryy == 0 ||
+    if (asignacion.grxx == "0" ||
+        asignacion.gryy == "0" ||
         isNullOrEmpty(asignacion.grxx) ||
         isNullOrEmpty(asignacion.gryy)) {
       await showAlertDialog(

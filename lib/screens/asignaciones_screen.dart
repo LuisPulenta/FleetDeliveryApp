@@ -566,6 +566,36 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                 ),
                                               ],
                                             ),
+                                            Row(
+                                              children: [
+                                                Text("Latitud: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF0e4888),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Text(e.grxx.toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                    )),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("Longitud: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF0e4888),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Text(e.gryy.toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                    )),
+                                              ],
+                                            ),
                                           ],
                                         ),
                                       ),

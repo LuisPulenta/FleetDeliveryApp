@@ -111,6 +111,12 @@ class Asign {
   String? tipotel3 = '';
   String? tipotel4 = '';
   String? valorunico = '';
+  String? descripcion = '';
+  int? cierraenapp = 0;
+  int? nomostrarapp = 0;
+  String? codigoequivalencia = '';
+  String? deco1descripcion = '';
+
   String? clienteCompleto = '';
   String? entreCalles = '';
 
@@ -228,7 +234,12 @@ class Asign {
       required this.tipotel4,
       required this.valorunico,
       required this.clienteCompleto,
-      required this.entreCalles});
+      required this.entreCalles,
+      required this.descripcion,
+      required this.cierraenapp,
+      required this.nomostrarapp,
+      required this.codigoequivalencia,
+      required this.deco1descripcion});
 
   Asign.fromJson(Map<String, dynamic> json) {
     idregistro = json['idregistro'];
@@ -345,6 +356,11 @@ class Asign {
     valorunico = json['valorunico'];
     clienteCompleto = json['clienteCompleto'];
     entreCalles = json['entreCalles'];
+    descripcion = json['descripcion'];
+    cierraenapp = json['cierraenapp'];
+    nomostrarapp = json['nomostrarapp'];
+    codigoequivalencia = json['codigoequivalencia'];
+    deco1descripcion = json['deco1descripcion'];
   }
 
   Map<String, dynamic> toJson() {
@@ -463,6 +479,11 @@ class Asign {
     data['valorunico'] = this.valorunico;
     data['clienteCompleto'] = this.clienteCompleto;
     data['entreCalles'] = this.entreCalles;
+    data['descripcion'] = this.descripcion;
+    data['cierraenapp'] = this.cierraenapp;
+    data['nomostrarapp'] = this.nomostrarapp;
+    data['codigoequivalencia'] = this.codigoequivalencia;
+    data['deco1descripcion'] = this.deco1descripcion;
     return data;
   }
 
@@ -582,6 +603,11 @@ class Asign {
       'valorunico': valorunico,
       'clienteCompleto': clienteCompleto,
       'entreCalles': entreCalles,
+      'descripcion': descripcion,
+      'cierraenapp': cierraenapp,
+      'nomostrarapp': nomostrarapp,
+      'codigoequivalencia': codigoequivalencia,
+      'deco1descripcion': deco1descripcion,
     };
   }
 }
