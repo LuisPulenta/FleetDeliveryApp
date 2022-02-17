@@ -24,7 +24,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
 //************************** VARIABLES ****************************************
 //*****************************************************************************
 
-  List medios = ["Teléfono", "WhatsApp", "SMS", "Otro"];
+  List medios = ["Teléfono", "WhatsApp", "SMS", "Visita directa"];
   String _opseleccionada = "Teléfono";
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();

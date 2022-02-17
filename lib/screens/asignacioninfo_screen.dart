@@ -77,6 +77,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   final Set<Marker> _markers = {};
 
+  String estadogaos = "";
+
   Asignacion2 _asignacion = Asignacion2(
       recupidjobcard: '',
       cliente: '',
@@ -85,6 +87,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       cp: '',
       entrecallE1: '',
       entrecallE2: '',
+      partido: '',
       localidad: '',
       telefono: '',
       grxx: '',
@@ -120,7 +123,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       telefAlternativo4: '',
       cantAsign: 0,
       codigoequivalencia: '',
-      deco1descripcion: '');
+      deco1descripcion: '',
+      elegir: 0);
 
   LatLng _center = LatLng(0, 0);
 
@@ -132,6 +136,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     // TODO: implement initState
     super.initState();
     _asignacion = widget.asignacion;
+    estadogaos = _asignacion.estadogaos!;
+
     __codigoscierre = widget.codigoscierre;
     _tabController = TabController(length: 3, vsync: this);
     _initialPosition = (_asignacion.grxx != "" && _asignacion.gryy != "")
@@ -197,7 +203,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 Column(
                   children: <Widget>[
                     AppBar(
-                      title: (Text("Asignación")),
+                      title: (Text(
+                          'Asignación ${widget.asignacion.proyectomodulo}')),
                       centerTitle: true,
                       backgroundColor: Color(0xff282886),
                     ),
@@ -437,13 +444,43 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       ),
                                       Row(
                                         children: [
+                                          Text("Entre calles: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF0e4888),
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          Expanded(
+                                            child: (_asignacion.entrecallE1
+                                                            .toString()
+                                                            .length >
+                                                        1 &&
+                                                    _asignacion.entrecallE2
+                                                            .toString()
+                                                            .length >
+                                                        1)
+                                                ? Text(
+                                                    '${_asignacion.entrecallE1.toString()} y ${_asignacion.entrecallE2.toString()}',
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                    ))
+                                                : Text(""),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 1,
+                                      ),
+                                      Row(
+                                        children: [
                                           Text("Localidad: ",
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: Color(0xFF0e4888),
                                                 fontWeight: FontWeight.bold,
                                               )),
-                                          Text(_asignacion.localidad.toString(),
+                                          Text(
+                                              '${_asignacion.localidad.toString()}-${_asignacion.partido.toString()}',
                                               style: TextStyle(
                                                 fontSize: 12,
                                               )),
@@ -615,7 +652,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 )),
             Expanded(
               child: Text(
-                _asignacion.estadogaos.toString(),
+                estadogaos.toString(),
                 style: TextStyle(
                   fontSize: 12,
                 ),
@@ -660,7 +697,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  onPressed: () {}),
+                  onPressed: () {
+                    _elegirtodos();
+                  }),
             ),
             SizedBox(
               width: 5,
@@ -684,7 +723,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  _deselegirtodos();
+                },
               ),
             ),
             SizedBox(
@@ -710,7 +751,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        _elegiralgunos();
+                      },
                     ),
                   )
                 : Container(),
@@ -786,7 +829,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  onPressed: () {}),
+                  onPressed: () {
+                    _guardar();
+                  }),
             ),
             SizedBox(
               width: 5,
@@ -810,7 +855,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context, "No");
+                },
               ),
             ),
             SizedBox(
@@ -867,7 +914,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       children: <Widget>[
                         Row(
                           children: [
-                            Text("Autonumérico: ",
+                            Text("ID Gaos: ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
@@ -905,7 +952,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         ),
                         Row(
                           children: [
-                            Text("Cód. Equiv.: ",
+                            Text("Desc. Modelo: ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
@@ -943,7 +990,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         ),
                         Row(
                           children: [
-                            Text("Estado3: ",
+                            Text("Mac/Serie: ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
@@ -962,7 +1009,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         ),
                         Row(
                           children: [
-                            Text("CModem1: ",
+                            Text("Modem: ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
@@ -981,7 +1028,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         ),
                         Row(
                           children: [
-                            Text("IDSuscripcion: ",
+                            Text("Suscripción: ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
@@ -1000,7 +1047,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         ),
                         Row(
                           children: [
-                            Text("MarcaModeloId: ",
+                            Text("Modelo: ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
@@ -1019,7 +1066,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         ),
                         Row(
                           children: [
-                            Text("Observacion: ",
+                            Text("Obs./Activ.: ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
@@ -1315,8 +1362,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   size: 34,
                                 ),
                                 color: Colors.green,
-                                onPressed: () => launch(
-                                    'tel://${_asignacion.telefAlternativo1.toString()}'),
+                                onPressed: () {
+                                  if (_asignacion.telefAlternativo1
+                                          .toString() !=
+                                      "Sin Dato") {
+                                    launch(
+                                        'tel://${_asignacion.telefAlternativo1.toString()}');
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -1344,8 +1397,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   size: 34,
                                 ),
                                 color: Colors.green,
-                                onPressed: () => launch(
-                                    'tel://${_asignacion.telefAlternativo2.toString()}'),
+                                onPressed: () {
+                                  if (_asignacion.telefAlternativo2
+                                          .toString() !=
+                                      "Sin Dato") {
+                                    launch(
+                                        'tel://${_asignacion.telefAlternativo2.toString()}');
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -1373,8 +1432,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   size: 34,
                                 ),
                                 color: Colors.green,
-                                onPressed: () => launch(
-                                    'tel://${_asignacion.telefAlternativo3.toString()}'),
+                                onPressed: () {
+                                  if (_asignacion.telefAlternativo3
+                                          .toString() !=
+                                      "Sin Dato") {
+                                    launch(
+                                        'tel://${_asignacion.telefAlternativo3.toString()}');
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -1402,8 +1467,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   size: 34,
                                 ),
                                 color: Colors.green,
-                                onPressed: () => launch(
-                                    'tel://${_asignacion.telefAlternativo4.toString()}'),
+                                onPressed: () {
+                                  if (_asignacion.telefAlternativo4
+                                          .toString() !=
+                                      "Sin Dato") {
+                                    launch(
+                                        'tel://${_asignacion.telefAlternativo4.toString()}');
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -1490,6 +1561,75 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         : _defaultMapType == MapType.satellite
             ? MapType.hybrid
             : MapType.normal;
+    setState(() {});
+  }
+
+  void _elegirtodos() {
+    estadogaos = "EJB";
+    for (Asign asign in _asigns) {
+      asign.estadO2 = "SI";
+      asign.elegir = 1;
+      asign.activo = 1;
+    }
+    setState(() {});
+  }
+
+  void _deselegirtodos() {
+    estadogaos = "PEN";
+    for (Asign asign in _asigns) {
+      asign.estadO2 = "NO";
+      asign.elegir = 0;
+      asign.activo = 0;
+    }
+    setState(() {});
+  }
+
+  void _elegiralgunos() {
+    estadogaos = "PAR";
+    for (Asign asign in _asigns) {
+      asign.estadO2 = "NO";
+      asign.elegir = 0;
+      asign.activo = 1;
+    }
+    setState(() {});
+  }
+
+  void _guardar() async {
+    if (estadogaos == "PEN") {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'El Estado sigue "PEN". No tiene sentido guardar.',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+    }
+    ;
+
+    if (estadogaos == "INC" && _codigocierre == -1) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message:
+              'Si la Orden tiene un Estado "INC", hay que cargar el Código Cierre.',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+    }
+    ;
+
+    if (estadogaos == "PAR" && _codigocierre == -1) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message:
+              'Si la Orden tiene un Estado "PAR", hay que cargar el Código Cierre.',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+    }
+    ;
+
     setState(() {});
   }
 }

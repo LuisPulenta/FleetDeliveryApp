@@ -119,6 +119,7 @@ class Asign {
 
   String? clienteCompleto = '';
   String? entreCalles = '';
+  int? activo = 0;
 
   Asign(
       {required this.idregistro,
@@ -239,7 +240,8 @@ class Asign {
       required this.cierraenapp,
       required this.nomostrarapp,
       required this.codigoequivalencia,
-      required this.deco1descripcion});
+      required this.deco1descripcion,
+      required this.activo});
 
   Asign.fromJson(Map<String, dynamic> json) {
     idregistro = json['idregistro'];
@@ -361,6 +363,7 @@ class Asign {
     nomostrarapp = json['nomostrarapp'];
     codigoequivalencia = json['codigoequivalencia'];
     deco1descripcion = json['deco1descripcion'];
+    activo = json['activo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -484,6 +487,7 @@ class Asign {
     data['nomostrarapp'] = this.nomostrarapp;
     data['codigoequivalencia'] = this.codigoequivalencia;
     data['deco1descripcion'] = this.deco1descripcion;
+    data['activo'] = this.activo;
     return data;
   }
 
@@ -608,6 +612,7 @@ class Asign {
       'nomostrarapp': nomostrarapp,
       'codigoequivalencia': codigoequivalencia,
       'deco1descripcion': deco1descripcion,
+      'activo': activo,
     };
   }
 }

@@ -7,6 +7,7 @@ class Asignacion2 {
   String? entrecallE1 = '';
   String? entrecallE2 = '';
   String? localidad = '';
+  String? partido = '';
   String? telefono = '';
   String? grxx = '';
   String? gryy = '';
@@ -42,6 +43,7 @@ class Asignacion2 {
   int? cantAsign = 0;
   String? codigoequivalencia = '';
   String? deco1descripcion = '';
+  int? elegir = 0;
 
   Asignacion2(
       {required this.recupidjobcard,
@@ -51,6 +53,7 @@ class Asignacion2 {
       required this.cp,
       required this.entrecallE1,
       required this.entrecallE2,
+      required this.partido,
       required this.localidad,
       required this.telefono,
       required this.grxx,
@@ -86,7 +89,8 @@ class Asignacion2 {
       required this.telefAlternativo4,
       required this.cantAsign,
       required this.codigoequivalencia,
-      required this.deco1descripcion});
+      required this.deco1descripcion,
+      required this.elegir});
 
   Asignacion2.fromJson(Map<String, dynamic> json) {
     recupidjobcard = json['recupidjobcard'];
@@ -97,6 +101,7 @@ class Asignacion2 {
     entrecallE1 = json['entrecallE1'];
     entrecallE2 = json['entrecallE2'];
     localidad = json['localidad'];
+    partido = json['partido'];
     telefono = json['telefono'];
     grxx = json['grxx'];
     gryy = json['gryy'];
@@ -132,6 +137,7 @@ class Asignacion2 {
     cantAsign = json['cantAsign'];
     codigoequivalencia = json['codigoequivalencia'];
     deco1descripcion = json['deco1descripcion'];
+    elegir = json['elegir'];
   }
 
   Map<String, dynamic> toJson() {
@@ -144,6 +150,7 @@ class Asignacion2 {
     data['entrecallE1'] = this.entrecallE1;
     data['entrecallE2'] = this.entrecallE2;
     data['localidad'] = this.localidad;
+    data['partido'] = this.partido;
     data['telefono'] = this.telefono;
     data['grxx'] = this.grxx;
     data['gryy'] = this.gryy;
@@ -179,6 +186,7 @@ class Asignacion2 {
     data['cantAsign'] = this.cantAsign;
     data['codigoequivalencia'] = this.codigoequivalencia;
     data['deco1descripcion'] = this.deco1descripcion;
+    data['elegir'] = this.elegir;
     return data;
   }
 
@@ -192,6 +200,7 @@ class Asignacion2 {
       'entrecallE1': entrecallE1,
       'entrecallE2': entrecallE2,
       'localidad': localidad,
+      'partido': partido,
       'telefono': telefono,
       'grxx': grxx,
       'gryy': gryy,
@@ -227,6 +236,7 @@ class Asignacion2 {
       'cantAsign': cantAsign,
       'codigoequivalencia': codigoequivalencia,
       'deco1descripcion': deco1descripcion,
+      'elegir': elegir,
     };
   }
 }

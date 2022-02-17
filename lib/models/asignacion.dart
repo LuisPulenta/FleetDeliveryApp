@@ -6,6 +6,7 @@ class Asignacion {
   String? cp = '';
   String? entrecallE1 = '';
   String? entrecallE2 = '';
+  String? partido = '';
   String? localidad = '';
   String? telefono = '';
   String? grxx = '';
@@ -46,6 +47,7 @@ class Asignacion {
       required this.cp,
       required this.entrecallE1,
       required this.entrecallE2,
+      required this.partido,
       required this.localidad,
       required this.telefono,
       required this.grxx,
@@ -86,6 +88,7 @@ class Asignacion {
     cp = json['cp'];
     entrecallE1 = json['entrecallE1'];
     entrecallE2 = json['entrecallE2'];
+    partido = json['partido'];
     localidad = json['localidad'];
     telefono = json['telefono'];
     grxx = json['grxx'];
@@ -128,6 +131,7 @@ class Asignacion {
     data['cp'] = this.cp;
     data['entrecallE1'] = this.entrecallE1;
     data['entrecallE2'] = this.entrecallE2;
+    data['partido'] = this.partido;
     data['localidad'] = this.localidad;
     data['telefono'] = this.telefono;
     data['grxx'] = this.grxx;
@@ -171,6 +175,7 @@ class Asignacion {
       'cp': cp,
       'entrecallE1': entrecallE1,
       'entrecallE2': entrecallE2,
+      'partido': partido,
       'localidad': localidad,
       'telefono': telefono,
       'grxx': grxx,

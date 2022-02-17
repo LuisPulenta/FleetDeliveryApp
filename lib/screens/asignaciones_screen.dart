@@ -9,8 +9,10 @@ import 'package:fleetdeliveryapp/models/tipoasignacion.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:fleetdeliveryapp/screens/agendarcita_screen.dart';
 import 'package:fleetdeliveryapp/screens/asignacioninfo_screen.dart';
+import 'package:fleetdeliveryapp/screens/asignacionesmap_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 class AsignacionesScreen extends StatefulWidget {
@@ -41,6 +43,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   String _tipoasignacionError = '';
   bool _tipoasignacionShowError = false;
   TextEditingController _tipoasignacionController = TextEditingController();
+  int intentos = 0;
 
   Asignacion2 asignacionSelected = Asignacion2(
       recupidjobcard: '',
@@ -50,6 +53,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       cp: '',
       entrecallE1: '',
       entrecallE2: '',
+      partido: '',
       localidad: '',
       telefono: '',
       grxx: '',
@@ -85,7 +89,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       telefAlternativo4: '',
       cantAsign: 0,
       codigoequivalencia: '',
-      deco1descripcion: '');
+      deco1descripcion: '',
+      elegir: 0);
+
+  final Set<Marker> _markers = {};
 
 //*****************************************************************************
 //************************** INIT STATE ***************************************
@@ -110,10 +117,12 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         //backgroundColor: Color(0xFF0e4888),
         centerTitle: true,
         actions: <Widget>[
+          IconButton(onPressed: _showMap, icon: Icon(Icons.map)),
           _isFiltered
               ? IconButton(
                   onPressed: _removeFilter, icon: Icon(Icons.filter_none))
-              : IconButton(onPressed: _showFilter, icon: Icon(Icons.filter_alt))
+              : IconButton(
+                  onPressed: _showFilter, icon: Icon(Icons.filter_alt)),
         ],
       ),
       body: Container(
@@ -361,6 +370,35 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   ),
                                   Row(
                                     children: [
+                                      Text("Entre calles: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      Expanded(
+                                        child: (e.entrecallE1
+                                                        .toString()
+                                                        .length >
+                                                    1 &&
+                                                e.entrecallE2
+                                                        .toString()
+                                                        .length >
+                                                    1)
+                                            ? Text(
+                                                '${e.entrecallE1.toString()} y ${e.entrecallE2.toString()}',
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                ))
+                                            : Text(""),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
                                       Text("Localidad: ",
                                           style: TextStyle(
                                             fontSize: 12,
@@ -368,7 +406,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             fontWeight: FontWeight.bold,
                                           )),
                                       Expanded(
-                                        child: Text(e.localidad.toString(),
+                                        child: Text(
+                                            '${e.localidad.toString()}-${e.partido.toString()}',
                                             style: TextStyle(
                                               fontSize: 12,
                                             )),
@@ -566,36 +605,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                 ),
                                               ],
                                             ),
-                                            Row(
-                                              children: [
-                                                Text("Latitud: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF0e4888),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                                Text(e.grxx.toString(),
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                    )),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text("Longitud: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF0e4888),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                                Text(e.gryy.toString(),
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                    )),
-                                              ],
-                                            ),
                                           ],
                                         ),
                                       ),
@@ -679,15 +688,24 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     }
 
     bandera = false;
+    intentos = 0;
 
     do {
       Response response = Response(isSuccess: false);
       response = await ApiHelper.getTipoAsignaciones(widget.user.idUser);
+      intentos++;
       if (response.isSuccess) {
         bandera = true;
         _tiposasignacion = response.result;
       }
     } while (bandera == false);
+    await showAlertDialog(
+        context: context,
+        title: 'Intentos',
+        message: intentos.toString(),
+        actions: <AlertDialogAction>[
+          AlertDialogAction(key: null, label: 'Aceptar'),
+        ]);
     setState(() {});
   }
 
@@ -934,5 +952,38 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       _getObras();
       setState(() {});
     }
+  }
+
+  void _showMap() {
+    _markers.clear();
+
+    for (Asignacion2 asign in _asignaciones2) {
+      var lat = double.tryParse(asign.grxx.toString()) ?? 0;
+      var long = double.tryParse(asign.gryy.toString()) ?? 0;
+
+      if (lat.toString().length > 1 && long.toString().length > 1) {
+        _markers.add(Marker(
+          markerId: MarkerId(asign.reclamoTecnicoID.toString()),
+          position: LatLng(lat, long),
+          infoWindow: InfoWindow(
+            title: '${asign.cliente.toString()} - ${asign.nombre.toString()}',
+            snippet: asign.domicilio.toString(),
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+        ));
+      }
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AsignacionesMapScreen(
+          user: widget.user,
+          positionUser: widget.positionUser,
+          asignacion: _asignaciones[0],
+          markers: _markers,
+        ),
+      ),
+    );
   }
 }
