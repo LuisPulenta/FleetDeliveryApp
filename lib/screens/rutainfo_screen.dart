@@ -556,15 +556,27 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     for (ParadaEnvio element in _paradasenvios) {
       if (!isNullOrEmpty(element.latitud) && !isNullOrEmpty(element.longitud)) {
         _markers.add(Marker(
-          markerId: MarkerId(element.secuencia.toString()),
-          position:
-              LatLng(element.latitud!.toDouble(), element.longitud!.toDouble()),
-          infoWindow: InfoWindow(
-            title: element.titular.toString(),
-            snippet: element.domicilio.toString(),
-          ),
-          icon: BitmapDescriptor.defaultMarker,
-        ));
+            markerId: MarkerId(element.secuencia.toString()),
+            position: LatLng(
+                element.latitud!.toDouble(), element.longitud!.toDouble()),
+            infoWindow: InfoWindow(
+              title: element.titular.toString(),
+              snippet: element.domicilio.toString(),
+            ),
+            icon: (element.estado == 3)
+                ? BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueBlue)
+                : (element.estado == 4)
+                    ? BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueGreen)
+                    : (element.estado == 10)
+                        ? BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueRed)
+                        : (element.estado == 7)
+                            ? BitmapDescriptor.defaultMarkerWithHue(
+                                BitmapDescriptor.hueViolet)
+                            : BitmapDescriptor.defaultMarkerWithHue(
+                                BitmapDescriptor.hueBlue)));
       }
     }
 

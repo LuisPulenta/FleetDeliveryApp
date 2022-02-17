@@ -772,7 +772,18 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
         title: paradaenvio.titular.toString(),
         snippet: paradaenvio.domicilio.toString(),
       ),
-      icon: BitmapDescriptor.defaultMarker,
+      icon: (paradaenvio.estado == 3)
+          ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue)
+          : (paradaenvio.estado == 4)
+              ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
+              : (paradaenvio.estado == 10)
+                  ? BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueRed)
+                  : (paradaenvio.estado == 7)
+                      ? BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueViolet)
+                      : BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueBlue),
     ));
 
     Navigator.push(
