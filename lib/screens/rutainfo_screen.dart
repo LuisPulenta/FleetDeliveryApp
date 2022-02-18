@@ -18,6 +18,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:ui' as ui;
+import 'dart:typed_data';
+import 'package:easy_localization/easy_localization.dart' as localized;
+
 class RutaInfoScreen extends StatefulWidget {
   final Usuario user;
   final RutaCab ruta;
@@ -553,30 +558,46 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   _navegartodos() async {
     _markers.clear();
 
+    Uint8List markerIcon = await getBytesFromCanvas(1, 50, 50, 3);
+
+    final Uint8List customMarker = await getBytesFromAsset(
+        path: "assets/logo.png", //paste the custom image path
+        width: 50 // size of custom image as marker
+        );
+
     for (ParadaEnvio element in _paradasenvios) {
       if (!isNullOrEmpty(element.latitud) && !isNullOrEmpty(element.longitud)) {
-        _markers.add(Marker(
+        markerIcon = await getBytesFromCanvas(
+            element.secuencia!.toInt(), 50, 50, element.estado!.toInt());
+        _markers.add(
+          Marker(
             markerId: MarkerId(element.secuencia.toString()),
+
             position: LatLng(
                 element.latitud!.toDouble(), element.longitud!.toDouble()),
             infoWindow: InfoWindow(
               title: element.titular.toString(),
               snippet: element.domicilio.toString(),
             ),
-            icon: (element.estado == 3)
-                ? BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueBlue)
-                : (element.estado == 4)
-                    ? BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueGreen)
-                    : (element.estado == 10)
-                        ? BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueRed)
-                        : (element.estado == 7)
-                            ? BitmapDescriptor.defaultMarkerWithHue(
-                                BitmapDescriptor.hueViolet)
-                            : BitmapDescriptor.defaultMarkerWithHue(
-                                BitmapDescriptor.hueBlue)));
+
+            icon: BitmapDescriptor.fromBytes(markerIcon),
+            // icon: (element.estado == 3)
+            //     ? BitmapDescriptor.defaultMarkerWithHue(
+            //         BitmapDescriptor.hueBlue)
+            //     : (element.estado == 4)
+            //         ? BitmapDescriptor.defaultMarkerWithHue(
+            //             BitmapDescriptor.hueGreen)
+            //         : (element.estado == 10)
+            //             ? BitmapDescriptor.defaultMarkerWithHue(
+            //                 BitmapDescriptor.hueRed)
+            //             : (element.estado == 7)
+            //                 ? BitmapDescriptor.defaultMarkerWithHue(
+            //                     BitmapDescriptor.hueViolet)
+            //                 : BitmapDescriptor.defaultMarkerWithHue(
+            //                     BitmapDescriptor.hueBlue),
+            //icon: BitmapDescriptor.fromBytes(customMarker),
+          ),
+        );
       }
     }
 
@@ -914,4 +935,65 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
+
+  Future<Uint8List> getBytesFromAsset({String? path, int? width}) async {
+    ByteData? data = await rootBundle.load(path.toString());
+    ui.Codec? codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
+  }
+
+  Future<Uint8List> getBytesFromCanvas(
+      int customNum, int width, int height, int estado) async {
+    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    Paint paint = Paint()..color = Colors.blue;
+
+    final Radius radius = Radius.circular(width / 2);
+
+    if (estado == 3) {
+      paint = Paint()..color = Colors.blue;
+    }
+
+    if (estado == 4) {
+      paint = Paint()..color = Colors.green;
+    }
+
+    if (estado == 10) {
+      paint = Paint()..color = Colors.red;
+    }
+
+    if (estado == 7) {
+      paint = Paint()..color = Colors.purple;
+    }
+
+    canvas.drawRRect(
+        RRect.fromRectAndCorners(
+          Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
+          topLeft: radius,
+          topRight: radius,
+          bottomLeft: radius,
+          bottomRight: radius,
+        ),
+        paint);
+
+    TextPainter painter = TextPainter(textDirection: ui.TextDirection.ltr);
+
+    painter.text = TextSpan(
+      text: customNum.toString(), // your custom number here
+      style: TextStyle(fontSize: 30.0, color: Colors.white),
+    );
+
+    painter.layout();
+    painter.paint(
+        canvas,
+        Offset((width * 0.5) - painter.width * 0.5,
+            (height * .5) - painter.height * 0.5));
+    final img = await pictureRecorder.endRecording().toImage(width, height);
+    final data = await img.toByteData(format: ui.ImageByteFormat.png);
+    return data!.buffer.asUint8List();
+  }
 }
