@@ -21,7 +21,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:ui' as ui;
 import 'dart:typed_data';
-import 'package:easy_localization/easy_localization.dart' as localized;
 
 class RutaInfoScreen extends StatefulWidget {
   final Usuario user;
@@ -558,7 +557,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   _navegartodos() async {
     _markers.clear();
 
-    Uint8List markerIcon = await getBytesFromCanvas(1, 50, 50, 3);
+    Uint8List markerIcon = await getBytesFromCanvas(1, 20, 20, 3);
 
     final Uint8List customMarker = await getBytesFromAsset(
         path: "assets/logo.png", //paste the custom image path
@@ -567,35 +566,48 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
     for (ParadaEnvio element in _paradasenvios) {
       if (!isNullOrEmpty(element.latitud) && !isNullOrEmpty(element.longitud)) {
-        markerIcon = await getBytesFromCanvas(
-            element.secuencia!.toInt(), 50, 50, element.estado!.toInt());
         _markers.add(
           Marker(
             markerId: MarkerId(element.secuencia.toString()),
-
             position: LatLng(
                 element.latitud!.toDouble(), element.longitud!.toDouble()),
             infoWindow: InfoWindow(
               title: element.titular.toString(),
               snippet: element.domicilio.toString(),
             ),
+            icon: (element.estado == 3)
+                ? BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueBlue)
+                : (element.estado == 4)
+                    ? BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueGreen)
+                    : (element.estado == 10)
+                        ? BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueRed)
+                        : (element.estado == 7)
+                            ? BitmapDescriptor.defaultMarkerWithHue(
+                                BitmapDescriptor.hueViolet)
+                            : BitmapDescriptor.defaultMarkerWithHue(
+                                BitmapDescriptor.hueBlue),
+          ),
+        );
+      }
+    }
 
+    for (ParadaEnvio element in _paradasenvios) {
+      if (!isNullOrEmpty(element.latitud) && !isNullOrEmpty(element.longitud)) {
+        markerIcon = await getBytesFromCanvas(
+            element.secuencia!.toInt(), 100, 100, element.estado!.toInt());
+        _markers.add(
+          Marker(
+            markerId: MarkerId(element.secuencia.toString()),
+            position: LatLng(
+                element.latitud!.toDouble(), element.longitud!.toDouble()),
+            infoWindow: InfoWindow(
+              title: element.titular.toString(),
+              snippet: element.domicilio.toString(),
+            ),
             icon: BitmapDescriptor.fromBytes(markerIcon),
-            // icon: (element.estado == 3)
-            //     ? BitmapDescriptor.defaultMarkerWithHue(
-            //         BitmapDescriptor.hueBlue)
-            //     : (element.estado == 4)
-            //         ? BitmapDescriptor.defaultMarkerWithHue(
-            //             BitmapDescriptor.hueGreen)
-            //         : (element.estado == 10)
-            //             ? BitmapDescriptor.defaultMarkerWithHue(
-            //                 BitmapDescriptor.hueRed)
-            //             : (element.estado == 7)
-            //                 ? BitmapDescriptor.defaultMarkerWithHue(
-            //                     BitmapDescriptor.hueViolet)
-            //                 : BitmapDescriptor.defaultMarkerWithHue(
-            //                     BitmapDescriptor.hueBlue),
-            //icon: BitmapDescriptor.fromBytes(customMarker),
           ),
         );
       }
@@ -955,36 +967,37 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     final Radius radius = Radius.circular(width / 2);
 
     if (estado == 3) {
-      paint = Paint()..color = Colors.blue;
+      paint = Paint()..color = Color(0xff3536e1);
     }
 
     if (estado == 4) {
-      paint = Paint()..color = Colors.green;
+      paint = Paint()..color = Color(0xff36eb35);
     }
 
     if (estado == 10) {
-      paint = Paint()..color = Colors.red;
+      paint = Paint()..color = Color(0xffec3534);
     }
 
     if (estado == 7) {
-      paint = Paint()..color = Colors.purple;
+      paint = Paint()..color = Color(0xff8a39d5);
     }
 
-    canvas.drawRRect(
-        RRect.fromRectAndCorners(
-          Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
-          topLeft: radius,
-          topRight: radius,
-          bottomLeft: radius,
-          bottomRight: radius,
-        ),
-        paint);
+    // canvas.drawRRect(
+    //     RRect.fromRectAndCorners(
+    //       Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
+    //       topLeft: radius,
+    //       topRight: radius,
+    //       bottomLeft: radius,
+    //       bottomRight: radius,
+    //     ),
+    //     paint);
 
     TextPainter painter = TextPainter(textDirection: ui.TextDirection.ltr);
 
     painter.text = TextSpan(
       text: customNum.toString(), // your custom number here
-      style: TextStyle(fontSize: 30.0, color: Colors.white),
+      style: TextStyle(
+          fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.bold),
     );
 
     painter.layout();

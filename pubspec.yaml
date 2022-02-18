@@ -55,8 +55,7 @@ dependencies:
   google_maps_flutter: ^2.1.1     # Para mapas
   url_launcher: ^6.0.12           # Para llamar por teléfono
   syncfusion_flutter_signaturepad: ^19.4.48
-  easy_localization: ^3.0.0
-
+  
 
 flutter_icons:
   android: "launcher_icon"
