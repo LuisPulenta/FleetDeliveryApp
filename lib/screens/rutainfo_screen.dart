@@ -1,5 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbparadasenvios_helper.dart';
@@ -48,6 +49,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 //*****************************************************************************
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
+
+  CustomInfoWindowController _customInfoWindowController =
+      CustomInfoWindowController();
 
   bool _showLoader = false;
   bool _paradaGrabada = false;
@@ -571,10 +575,11 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             markerId: MarkerId(element.secuencia.toString()),
             position: LatLng(
                 element.latitud!.toDouble(), element.longitud!.toDouble()),
-            infoWindow: InfoWindow(
-              title: element.titular.toString(),
-              snippet: element.domicilio.toString(),
-            ),
+            // infoWindow: InfoWindow(
+            //   title: element.titular.toString(),
+            //   snippet: element.domicilio.toString(),
+            // ),
+
             icon: (element.estado == 3)
                 ? BitmapDescriptor.defaultMarkerWithHue(
                     BitmapDescriptor.hueBlue)
@@ -603,10 +608,136 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             markerId: MarkerId(element.secuencia.toString()),
             position: LatLng(
                 element.latitud!.toDouble(), element.longitud!.toDouble()),
-            infoWindow: InfoWindow(
-              title: element.titular.toString(),
-              snippet: element.domicilio.toString(),
-            ),
+            // infoWindow: InfoWindow(
+            //   title: element.titular.toString(),
+            //   snippet: element.domicilio.toString(),
+            // ),
+            onTap: () {
+              // CameraPosition(
+              //     target: LatLng(element.latitud!.toDouble(),
+              //         element.longitud!.toDouble()),
+              //     zoom: 16.0);
+              _customInfoWindowController.addInfoWindow!(
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: CircleAvatar(
+                            backgroundColor: (element.estado == 3)
+                                ? Color(0xff3933f2)
+                                : (element.estado == 4)
+                                    ? Color(0xff31eb2f)
+                                    : (element.estado == 10)
+                                        ? Color(0xffe9353a)
+                                        : (element.estado == 7)
+                                            ? Color(0xff8a36e4)
+                                            : Color(0xff3933f2),
+                            child: Text(
+                              element.secuencia.toString(),
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                  child: Text(
+                                element.titular.toString(),
+                                style: TextStyle(fontSize: 12),
+                              )),
+                              Expanded(
+                                  child: Text(element.domicilio.toString(),
+                                      style: TextStyle(fontSize: 12))),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.map,
+                                              color: Color(0xff282886)),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            'Navegar',
+                                            style: TextStyle(
+                                                color: Color(0xff282886)),
+                                          ),
+                                        ],
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Color(0xFFb3b3b4),
+                                        minimumSize: Size(double.infinity, 30),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () => _navegar(element),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Abrir',
+                                            style: TextStyle(
+                                                color: Color(0xff282886)),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Icon(Icons.arrow_forward_ios,
+                                              color: Color(0xff282886)),
+                                        ],
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Color(0xFFb3b3b4),
+                                        minimumSize: Size(double.infinity, 30),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () => _navegar(element),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  LatLng(element.latitud!.toDouble(),
+                      element.longitud!.toDouble()));
+            },
             icon: BitmapDescriptor.fromBytes(markerIcon),
           ),
         );
@@ -624,6 +755,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             positionUser: widget.positionUser,
             paradaenvio: _paradasenvios[0],
             markers: _markers,
+            customInfoWindowController: _customInfoWindowController,
           ),
         ),
       );

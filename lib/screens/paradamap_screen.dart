@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/models/paradaenvio.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
@@ -12,12 +13,14 @@ class ParadaMapScreen extends StatefulWidget {
   final Position positionUser;
   final ParadaEnvio paradaenvio;
   final Set<Marker> markers;
+  final CustomInfoWindowController customInfoWindowController;
 
   const ParadaMapScreen(
       {required this.user,
       required this.positionUser,
       required this.paradaenvio,
-      required this.markers});
+      required this.markers,
+      required this.customInfoWindowController});
 
   @override
   _ParadaMapScreenState createState() => _ParadaMapScreenState();
@@ -51,6 +54,12 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
   LatLng _center = LatLng(0, 0);
 
   @override
+  void dispose() {
+    widget.customInfoWindowController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -67,6 +76,7 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
     _center = LatLng(widget.paradaenvio.latitud!.toDouble(),
         widget.paradaenvio.longitud!.toDouble());
     _markers = widget.markers;
+
     // _markers.add(Marker(
     //   markerId: MarkerId(widget.paradaenvio.secuencia.toString()),
     //   position: _center,
@@ -106,11 +116,18 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
               ? Container(
                   child: Stack(children: <Widget>[
                     GoogleMap(
+                      onTap: (position) {
+                        widget.customInfoWindowController.hideInfoWindow!();
+                      },
                       myLocationEnabled: false,
                       initialCameraPosition: _initialPosition,
                       onCameraMove: _onCameraMove,
                       markers: _markers,
                       mapType: _defaultMapType,
+                      onMapCreated: (GoogleMapController controller) async {
+                        widget.customInfoWindowController.googleMapController =
+                            controller;
+                      },
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 80, right: 10),
@@ -132,6 +149,12 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
                     //     size: 50,
                     //   ),
                     // ),
+                    CustomInfoWindow(
+                      controller: widget.customInfoWindowController,
+                      height: 140,
+                      width: 300,
+                      offset: 100,
+                    ),
                   ]),
                 )
               : Container(),

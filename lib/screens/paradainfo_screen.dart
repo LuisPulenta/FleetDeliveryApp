@@ -17,6 +17,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
+import 'package:custom_info_window/custom_info_window.dart';
 
 class ParadaInfoScreen extends StatefulWidget {
   final Usuario user;
@@ -42,6 +43,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //*****************************************************************************
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
+
+  CustomInfoWindowController _customInfoWindowController =
+      CustomInfoWindowController();
 
   bool _photoChanged = false;
   late XFile _image;
@@ -768,10 +772,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     _markers.add(Marker(
       markerId: MarkerId(paradaenvio.secuencia.toString()),
       position: _center,
-      infoWindow: InfoWindow(
-        title: paradaenvio.titular.toString(),
-        snippet: paradaenvio.domicilio.toString(),
-      ),
       icon: (paradaenvio.estado == 3)
           ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue)
           : (paradaenvio.estado == 4)
@@ -794,6 +794,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                   positionUser: widget.positionUser,
                   paradaenvio: paradaenvio,
                   markers: _markers,
+                  customInfoWindowController: _customInfoWindowController,
                 )));
   }
 
