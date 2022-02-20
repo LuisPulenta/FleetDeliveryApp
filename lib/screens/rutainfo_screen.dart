@@ -659,7 +659,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                               Expanded(
                                   child: Text(
                                 element.titular.toString(),
-                                style: TextStyle(fontSize: 12),
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
                               )),
                               Expanded(
                                   child: Text(element.domicilio.toString(),
@@ -724,7 +725,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                               BorderRadius.circular(5),
                                         ),
                                       ),
-                                      onPressed: () => _navegar(element),
+                                      onPressed: () => _goInfoParada(element),
                                     ),
                                   ),
                                 ],

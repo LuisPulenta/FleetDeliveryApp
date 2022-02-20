@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/helpers/dbparadasenvios_helper.dart';
 import 'package:fleetdeliveryapp/models/envio.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
@@ -18,6 +20,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_info_window/custom_info_window.dart';
+import 'dart:ui' as ui;
 
 class ParadaInfoScreen extends StatefulWidget {
   final Usuario user;
@@ -753,6 +756,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //-------------------------------------------------------------------------
 
   _navegar(ParadaEnvio paradaenvio) async {
+    Uint8List markerIcon = await getBytesFromCanvas(1, 20, 20, 3);
+
     if (paradaenvio.latitud == 0 ||
         paradaenvio.longitud == 0 ||
         isNullOrEmpty(paradaenvio.latitud) ||
@@ -786,6 +791,114 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                           BitmapDescriptor.hueBlue),
     ));
 
+    markerIcon = await getBytesFromCanvas(
+        paradaenvio.secuencia!.toInt(), 100, 100, paradaenvio.estado!.toInt());
+    _markers.add(Marker(
+      markerId: MarkerId(paradaenvio.secuencia.toString()),
+      position: LatLng(
+          paradaenvio.latitud!.toDouble(), paradaenvio.longitud!.toDouble()),
+      // infoWindow: InfoWindow(
+      //   title: element.titular.toString(),
+      //   snippet: element.domicilio.toString(),
+      // ),
+      onTap: () {
+        // CameraPosition(
+        //     target: LatLng(element.latitud!.toDouble(),
+        //         element.longitud!.toDouble()),
+        //     zoom: 16.0);
+        _customInfoWindowController.addInfoWindow!(
+            Container(
+              padding: EdgeInsets.all(5),
+              width: 300,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child: CircleAvatar(
+                      backgroundColor: (paradaenvio.estado == 3)
+                          ? Color(0xff3933f2)
+                          : (paradaenvio.estado == 4)
+                              ? Color(0xff31eb2f)
+                              : (paradaenvio.estado == 10)
+                                  ? Color(0xffe9353a)
+                                  : (paradaenvio.estado == 7)
+                                      ? Color(0xff8a36e4)
+                                      : Color(0xff3933f2),
+                      child: Text(
+                        paradaenvio.secuencia.toString(),
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: Text(
+                          paradaenvio.titular.toString(),
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold),
+                        )),
+                        Expanded(
+                            child: Text(paradaenvio.domicilio.toString(),
+                                style: TextStyle(fontSize: 12))),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.map, color: Color(0xff282886)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      'Navegar',
+                                      style:
+                                          TextStyle(color: Color(0xff282886)),
+                                    ),
+                                  ],
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFFb3b3b4),
+                                  minimumSize: Size(double.infinity, 30),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                onPressed: () => _navegar2(paradaenvio),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            LatLng(paradaenvio.latitud!.toDouble(),
+                paradaenvio.longitud!.toDouble()));
+      },
+      icon: BitmapDescriptor.fromBytes(markerIcon),
+    ));
+
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -796,6 +909,70 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                   markers: _markers,
                   customInfoWindowController: _customInfoWindowController,
                 )));
+  }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO NAVEGAR2 ------------------------------
+//-------------------------------------------------------------------------
+
+  _navegar2(e) async {
+    if (e.latitud == 0 ||
+        e.longitud == 0 ||
+        isNullOrEmpty(e.latitud) ||
+        isNullOrEmpty(e.longitud)) {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso',
+          message: "Esta parada no tiene coordenadas cargadas.",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    _center = LatLng(e.latitud!.toDouble(), e.longitud!.toDouble());
+    _markers.clear();
+    _markers.add(Marker(
+      markerId: MarkerId(e.secuencia.toString()),
+      position: _center,
+      infoWindow: InfoWindow(
+        title: e.titular.toString(),
+        snippet: e.domicilio.toString(),
+      ),
+      icon: BitmapDescriptor.defaultMarker,
+    ));
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      var uri = Uri.parse(
+          "google.navigation:q=${e.latitud!.toDouble()},${e.longitud!.toDouble()}&mode=d");
+      if (await canLaunch(uri.toString())) {
+        await launch(uri.toString());
+      } else {
+        throw 'Could not launch ${uri.toString()}';
+      }
+
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => ParadaMapScreen(
+      //       user: widget.user,
+      //       positionUser: widget.positionUser,
+      //       paradaenvio: e,
+      //       markers: _markers,
+      //     ),
+      //   ),
+      // );
+    } else {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso!',
+          message: "Necesita estar conectado a Internet para acceder al mapa",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+    }
   }
 
 //*****************************************************************************
@@ -1043,6 +1220,58 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     _optionEstado = widget.paradaenvio.estado!;
 
     _getComboEstados();
+  }
+
+  Future<Uint8List> getBytesFromCanvas(
+      int customNum, int width, int height, int estado) async {
+    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    Paint paint = Paint()..color = Colors.blue;
+
+    final Radius radius = Radius.circular(width / 2);
+
+    if (estado == 3) {
+      paint = Paint()..color = Color(0xff3536e1);
+    }
+
+    if (estado == 4) {
+      paint = Paint()..color = Color(0xff36eb35);
+    }
+
+    if (estado == 10) {
+      paint = Paint()..color = Color(0xffec3534);
+    }
+
+    if (estado == 7) {
+      paint = Paint()..color = Color(0xff8a39d5);
+    }
+
+    // canvas.drawRRect(
+    //     RRect.fromRectAndCorners(
+    //       Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
+    //       topLeft: radius,
+    //       topRight: radius,
+    //       bottomLeft: radius,
+    //       bottomRight: radius,
+    //     ),
+    //     paint);
+
+    TextPainter painter = TextPainter(textDirection: ui.TextDirection.ltr);
+
+    painter.text = TextSpan(
+      text: customNum.toString(), // your custom number here
+      style: TextStyle(
+          fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.bold),
+    );
+
+    painter.layout();
+    painter.paint(
+        canvas,
+        Offset((width * 0.5) - painter.width * 0.5,
+            (height * .5) - painter.height * 0.5));
+    final img = await pictureRecorder.endRecording().toImage(width, height);
+    final data = await img.toByteData(format: ui.ImageByteFormat.png);
+    return data!.buffer.asUint8List();
   }
 
 //*****************************************************************************
