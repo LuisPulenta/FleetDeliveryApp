@@ -1,5 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/models/asignacion2.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AsignacionesScreen extends StatefulWidget {
   final Usuario user;
@@ -28,6 +30,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //*****************************************************************************
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
+
+  CustomInfoWindowController _customInfoWindowController =
+      CustomInfoWindowController();
+
   bool _showLoader = false;
   bool _isFiltered = false;
   bool bandera = false;
@@ -965,10 +971,117 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         _markers.add(Marker(
           markerId: MarkerId(asign.reclamoTecnicoID.toString()),
           position: LatLng(lat, long),
-          infoWindow: InfoWindow(
-            title: '${asign.cliente.toString()} - ${asign.nombre.toString()}',
-            snippet: asign.domicilio.toString(),
-          ),
+          // infoWindow: InfoWindow(
+          //   title: '${asign.cliente.toString()} - ${asign.nombre.toString()}',
+          //   snippet: asign.domicilio.toString(),
+          // ),
+          onTap: () {
+            // CameraPosition(
+            //     target: LatLng(element.latitud!.toDouble(),
+            //         element.longitud!.toDouble()),
+            //     zoom: 16.0);
+            _customInfoWindowController.addInfoWindow!(
+                Container(
+                  padding: EdgeInsets.all(5),
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Icon(Icons.info),
+                      ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                                child: Text(
+                              '${asign.cliente.toString()} - ${asign.nombre.toString()}',
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.bold),
+                            )),
+                            Expanded(
+                                child: Text(asign.domicilio.toString(),
+                                    style: TextStyle(fontSize: 12))),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.map,
+                                            color: Color(0xff282886)),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          'Navegar',
+                                          style: TextStyle(
+                                              color: Color(0xff282886)),
+                                        ),
+                                      ],
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFFb3b3b4),
+                                      minimumSize: Size(double.infinity, 30),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () => _navegar(asign),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Abrir',
+                                          style: TextStyle(
+                                              color: Color(0xff282886)),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Icon(Icons.arrow_forward_ios,
+                                            color: Color(0xff282886)),
+                                      ],
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFFb3b3b4),
+                                      minimumSize: Size(double.infinity, 30),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () => _goInfoAsignacion(asign),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                LatLng(lat, long));
+          },
           icon: BitmapDescriptor.defaultMarker,
         ));
       }
@@ -982,8 +1095,58 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           positionUser: widget.positionUser,
           asignacion: _asignaciones[0],
           markers: _markers,
+          customInfoWindowController: _customInfoWindowController,
         ),
       ),
     );
+  }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO isNullOrEmpty -------------------------
+//-------------------------------------------------------------------------
+
+  bool isNullOrEmpty(dynamic obj) =>
+      obj == null ||
+      ((obj is String || obj is List || obj is Map) && obj.isEmpty);
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO NAVEGAR -------------------------------
+//-------------------------------------------------------------------------
+
+  _navegar(e) async {
+    if (e.grxx == "" ||
+        e.gryy == "" ||
+        isNullOrEmpty(e.grxx) ||
+        isNullOrEmpty(e.gryy)) {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso',
+          message: "Este cliente no tiene coordenadas cargadas.",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      var latt = double.tryParse(e.grxx.toString());
+      var long = double.tryParse(e.gryy.toString());
+      var uri = Uri.parse("google.navigation:q=${latt},${long}&mode=d");
+      if (await canLaunch(uri.toString())) {
+        await launch(uri.toString());
+      } else {
+        throw 'Could not launch ${uri.toString()}';
+      }
+    } else {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso!',
+          message: "Necesita estar conectado a Internet para acceder al mapa",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/models/asignacion.dart';
 import 'package:fleetdeliveryapp/models/asignacion2.dart';
@@ -14,12 +15,14 @@ class AsignacionesMapScreen extends StatefulWidget {
   final Position positionUser;
   final Asignacion2 asignacion;
   final Set<Marker> markers;
+  final CustomInfoWindowController customInfoWindowController;
 
   const AsignacionesMapScreen(
       {required this.user,
       required this.positionUser,
       required this.asignacion,
-      required this.markers});
+      required this.markers,
+      required this.customInfoWindowController});
 
   @override
   _AsignacionesMapScreenState createState() => _AsignacionesMapScreenState();
@@ -51,6 +54,12 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
   //static const LatLng _center = const LatLng(-31.4332373, -64.226344);
 
   LatLng _center = LatLng(0, 0);
+
+  @override
+  void dispose() {
+    widget.customInfoWindowController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -106,11 +115,18 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
               ? Container(
                   child: Stack(children: <Widget>[
                     GoogleMap(
+                      onTap: (position) {
+                        widget.customInfoWindowController.hideInfoWindow!();
+                      },
                       myLocationEnabled: false,
                       initialCameraPosition: _initialPosition,
                       onCameraMove: _onCameraMove,
                       markers: _markers,
                       mapType: _defaultMapType,
+                      onMapCreated: (GoogleMapController controller) async {
+                        widget.customInfoWindowController.googleMapController =
+                            controller;
+                      },
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 80, right: 10),
@@ -140,6 +156,12 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
                   text: 'Por favor espere...',
                 )
               : Container(),
+          CustomInfoWindow(
+            controller: widget.customInfoWindowController,
+            height: 140,
+            width: 300,
+            offset: 100,
+          ),
         ],
       ),
     );
