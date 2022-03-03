@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/models/asign.dart';
@@ -12,6 +13,7 @@ import 'package:fleetdeliveryapp/models/asignacion2.dart';
 import 'package:fleetdeliveryapp/models/codigocierre.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
+import 'package:fleetdeliveryapp/screens/asignacionmap_screen.dart';
 import 'package:fleetdeliveryapp/screens/firma_screen.dart';
 import 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
 import 'package:flutter/gestures.dart';
@@ -43,6 +45,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //*****************************************************************************
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
+
+  CustomInfoWindowController _customInfoWindowController =
+      CustomInfoWindowController();
 
   int _codigocierre = -1;
   String _codigocierreError = '';
@@ -139,7 +144,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     estadogaos = _asignacion.estadogaos!;
 
     __codigoscierre = widget.codigoscierre;
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _initialPosition = (_asignacion.grxx != "" && _asignacion.gryy != "")
         ? CameraPosition(
             target: LatLng(double.parse(_asignacion.grxx!),
@@ -247,50 +252,50 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //-------------------------------------------------------------------------
 //-------------------------- 3° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
-                Column(
-                  children: [
-                    AppBar(
-                      title: (Text("Mapa")),
-                      centerTitle: true,
-                      backgroundColor: Color(0xff282886),
-                    ),
-                    Expanded(
-                      child: Container(
-                        child: (_asignacion.grxx != "" &&
-                                _asignacion.gryy != "" &&
-                                _asignacion.grxx != "0" &&
-                                _asignacion.gryy != "0")
-                            ? Stack(
-                                children: [
-                                  GoogleMap(
-                                    myLocationEnabled: false,
-                                    initialCameraPosition: _initialPosition,
-                                    onCameraMove: _onCameraMove,
-                                    markers: _markers,
-                                    mapType: _defaultMapType,
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 80, right: 10),
-                                    alignment: Alignment.topRight,
-                                    child: Column(children: <Widget>[
-                                      FloatingActionButton(
-                                          child: Icon(Icons.layers),
-                                          elevation: 5,
-                                          backgroundColor: Color(0xfff4ab04),
-                                          onPressed: () {
-                                            _changeMapType();
-                                          }),
-                                    ]),
-                                  ),
-                                ],
-                              )
-                            : Center(
-                                child: Text(
-                                    "Esta Asignación no tiene coordenadas cargadas")),
-                      ),
-                    ),
-                  ],
-                ),
+                // Column(
+                //   children: [
+                //     AppBar(
+                //       title: (Text("Mapa")),
+                //       centerTitle: true,
+                //       backgroundColor: Color(0xff282886),
+                //     ),
+                //     Expanded(
+                //       child: Container(
+                //         child: (_asignacion.grxx != "" &&
+                //                 _asignacion.gryy != "" &&
+                //                 _asignacion.grxx != "0" &&
+                //                 _asignacion.gryy != "0")
+                //             ? Stack(
+                //                 children: [
+                //                   GoogleMap(
+                //                     myLocationEnabled: false,
+                //                     initialCameraPosition: _initialPosition,
+                //                     onCameraMove: _onCameraMove,
+                //                     markers: _markers,
+                //                     mapType: _defaultMapType,
+                //                   ),
+                //                   Container(
+                //                     margin: EdgeInsets.only(top: 80, right: 10),
+                //                     alignment: Alignment.topRight,
+                //                     child: Column(children: <Widget>[
+                //                       FloatingActionButton(
+                //                           child: Icon(Icons.layers),
+                //                           elevation: 5,
+                //                           backgroundColor: Color(0xfff4ab04),
+                //                           onPressed: () {
+                //                             _changeMapType();
+                //                           }),
+                //                     ]),
+                //                   ),
+                //                 ],
+                //               )
+                //             : Center(
+                //                 child: Text(
+                //                     "Esta Asignación no tiene coordenadas cargadas")),
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -334,20 +339,20 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   ],
                 ),
               ),
-              Tab(
-                child: Row(
-                  children: [
-                    Icon(Icons.map),
-                    SizedBox(
-                      width: 2,
-                    ),
-                    Text(
-                      "Mapa",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
+              // Tab(
+              //   child: Row(
+              //     children: [
+              //       Icon(Icons.map),
+              //       SizedBox(
+              //         width: 2,
+              //       ),
+              //       Text(
+              //         "Mapa",
+              //         style: TextStyle(fontSize: 14),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ]),
       ),
     );
@@ -512,7 +517,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     color: Color(0xff282886),
                                     size: 34,
                                   ),
-                                  onPressed: () => _navegar(_asignacion),
+                                  onPressed: () => _showMap(_asignacion),
                                 ),
                               ],
                             ),
@@ -1631,5 +1636,105 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     ;
 
     setState(() {});
+  }
+
+  void _showMap(Asignacion2 asignacion) {
+    _markers.clear();
+    var lat = double.tryParse(asignacion.grxx.toString()) ?? 0;
+    var long = double.tryParse(asignacion.gryy.toString()) ?? 0;
+
+    if (lat.toString().length > 1 && long.toString().length > 1) {
+      _markers.add(
+        Marker(
+          markerId: MarkerId(asignacion.reclamoTecnicoID.toString()),
+          position: LatLng(lat, long),
+          onTap: () {
+            _customInfoWindowController.addInfoWindow!(
+                Container(
+                  padding: EdgeInsets.all(5),
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Icon(Icons.info),
+                      ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                                child: Text(
+                              '${asignacion.cliente.toString()} - ${asignacion.nombre.toString()}',
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.bold),
+                            )),
+                            Expanded(
+                                child: Text(asignacion.domicilio.toString(),
+                                    style: TextStyle(fontSize: 12))),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.map,
+                                            color: Color(0xff282886)),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          'Navegar',
+                                          style: TextStyle(
+                                              color: Color(0xff282886)),
+                                        ),
+                                      ],
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFFb3b3b4),
+                                      minimumSize: Size(double.infinity, 30),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () => _navegar(asignacion),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                LatLng(lat, long));
+          },
+          icon: BitmapDescriptor.defaultMarker,
+        ),
+      );
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AsignacionMapScreen(
+          user: widget.user,
+          positionUser: widget.positionUser,
+          asignacion: _asignacion,
+          markers: _markers,
+          customInfoWindowController: _customInfoWindowController,
+        ),
+      ),
+    );
   }
 }
