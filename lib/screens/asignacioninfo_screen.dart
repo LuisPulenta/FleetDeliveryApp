@@ -11,6 +11,7 @@ import 'package:fleetdeliveryapp/models/asign.dart';
 import 'package:fleetdeliveryapp/models/asignacion.dart';
 import 'package:fleetdeliveryapp/models/asignacion2.dart';
 import 'package:fleetdeliveryapp/models/codigocierre.dart';
+import 'package:fleetdeliveryapp/models/funcionesapp.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:fleetdeliveryapp/screens/asignacionmap_screen.dart';
@@ -29,12 +30,14 @@ class AsignacionInfoScreen extends StatefulWidget {
   final Asignacion2 asignacion;
   final List<CodigoCierre> codigoscierre;
   final Position positionUser;
+  final FuncionesApp funcionApp;
 
   AsignacionInfoScreen(
       {required this.user,
       required this.asignacion,
       required this.codigoscierre,
-      required this.positionUser});
+      required this.positionUser,
+      required this.funcionApp});
 
   @override
   _AsignacionInfoScreenState createState() => _AsignacionInfoScreenState();
@@ -559,86 +562,90 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Expanded(
-            child: InkWell(
-              child: Stack(children: <Widget>[
-                Container(
-                  child: !_photoChanged
-                      ? Image(
-                          image: AssetImage('assets/dni.png'),
-                          width: 80,
-                          height: 60,
-                          fit: BoxFit.contain)
-                      : Image.file(
-                          File(_image.path),
-                          width: 80,
-                          height: 60,
-                          fit: BoxFit.contain,
-                        ),
-                ),
-                Positioned(
-                    bottom: 0,
-                    left: 90,
-                    child: InkWell(
-                      onTap: () => _takePicture(),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: Container(
-                          color: Color(0xFF282886),
-                          width: 50,
-                          height: 50,
-                          child: Icon(
-                            Icons.photo_camera,
-                            size: 40,
-                            color: Color(0xFFf6faf8),
-                          ),
-                        ),
+          widget.funcionApp.habilitaDNI == 1
+              ? Expanded(
+                  child: InkWell(
+                    child: Stack(children: <Widget>[
+                      Container(
+                        child: !_photoChanged
+                            ? Image(
+                                image: AssetImage('assets/dni.png'),
+                                width: 80,
+                                height: 60,
+                                fit: BoxFit.contain)
+                            : Image.file(
+                                File(_image.path),
+                                width: 80,
+                                height: 60,
+                                fit: BoxFit.contain,
+                              ),
                       ),
-                    )),
-              ]),
-            ),
-          ),
+                      Positioned(
+                          bottom: 0,
+                          left: 90,
+                          child: InkWell(
+                            onTap: () => _takePicture(),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Container(
+                                color: Color(0xFF282886),
+                                width: 50,
+                                height: 50,
+                                child: Icon(
+                                  Icons.photo_camera,
+                                  size: 40,
+                                  color: Color(0xFFf6faf8),
+                                ),
+                              ),
+                            ),
+                          )),
+                    ]),
+                  ),
+                )
+              : Container(),
           SizedBox(
             width: 15,
           ),
-          Expanded(
-            child: InkWell(
-              child: Stack(children: <Widget>[
-                Container(
-                  child: !_signatureChanged
-                      ? Image(
-                          image: AssetImage('assets/firma.png'),
-                          width: 80,
-                          height: 60,
-                          fit: BoxFit.contain)
-                      : Image.memory(
-                          _signature.buffer.asUint8List(),
-                          width: 80,
-                          height: 60,
-                        ),
-                ),
-                Positioned(
-                    bottom: 0,
-                    left: 90,
-                    child: InkWell(
-                      onTap: () => _takeSignature(),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: Container(
-                          color: Color(0xFF282886),
-                          width: 50,
-                          height: 50,
-                          child: Icon(
-                            Icons.drive_file_rename_outline,
-                            size: 40,
-                            color: Color(0xFFf6faf8),
-                          ),
-                        ),
+          widget.funcionApp.habilitaFirma == 1
+              ? Expanded(
+                  child: InkWell(
+                    child: Stack(children: <Widget>[
+                      Container(
+                        child: !_signatureChanged
+                            ? Image(
+                                image: AssetImage('assets/firma.png'),
+                                width: 80,
+                                height: 60,
+                                fit: BoxFit.contain)
+                            : Image.memory(
+                                _signature.buffer.asUint8List(),
+                                width: 80,
+                                height: 60,
+                              ),
                       ),
-                    )),
-              ]),
-            ),
-          ),
+                      Positioned(
+                          bottom: 0,
+                          left: 90,
+                          child: InkWell(
+                            onTap: () => _takeSignature(),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Container(
+                                color: Color(0xFF282886),
+                                width: 50,
+                                height: 50,
+                                child: Icon(
+                                  Icons.drive_file_rename_outline,
+                                  size: 40,
+                                  color: Color(0xFFf6faf8),
+                                ),
+                              ),
+                            ),
+                          )),
+                    ]),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

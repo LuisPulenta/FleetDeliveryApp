@@ -5,6 +5,7 @@ import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/models/asignacion2.dart';
 import 'package:fleetdeliveryapp/models/codigocierre.dart';
+import 'package:fleetdeliveryapp/models/funcionesapp.dart';
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/tipoasignacion.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
@@ -42,6 +43,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   List<TipoAsignacion> _tiposasignacion = [];
   List<Asignacion2> _asignaciones = [];
   List<Asignacion2> _asignaciones2 = [];
+
+  List<FuncionesApp> _funcionesApp = [];
+  FuncionesApp _funcionApp = FuncionesApp(
+      proyectomodulo: '',
+      habilitaFoto: 0,
+      habilitaDNI: 0,
+      habilitaEstadisticas: 0,
+      habilitaFirma: 0);
 
   List<CodigoCierre> _codigoscierre = [];
 
@@ -767,6 +776,23 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       return;
     }
 
+    Response response2 = Response(isSuccess: false);
+    response2 = await ApiHelper.getFuncionesApp(_tipoasignacion);
+    setState(() {
+      _showLoader = false;
+    });
+
+    if (!response2.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
     _asignaciones = response.result;
     _asignaciones.sort((a, b) {
       return a.cliente
@@ -774,6 +800,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           .toLowerCase()
           .compareTo(b.cliente.toString().toLowerCase());
     });
+
+    _funcionesApp = response2.result;
+
+    _funcionApp = _funcionesApp[0];
 
     _asignaciones2 = _asignaciones;
 
@@ -852,6 +882,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   asignacion: asignacion,
                   codigoscierre: _codigoscierre,
                   positionUser: widget.positionUser,
+                  funcionApp: _funcionApp,
                 )));
     if (result == 'yes' || result != 'yes') {
       //_getObras();
