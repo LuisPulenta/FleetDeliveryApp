@@ -1,0 +1,15 @@
+export 'package:fleetdeliveryapp/screens/agendarcita_screen.dart';
+export 'package:fleetdeliveryapp/screens/asignaciones_screen.dart';
+export 'package:fleetdeliveryapp/screens/asignacionesmap_screen.dart';
+export 'package:fleetdeliveryapp/screens/asignacioninfo_screen.dart';
+export 'package:fleetdeliveryapp/screens/asignacionmap_screen.dart';
+export 'package:fleetdeliveryapp/screens/contacto_screen.dart';
+export 'package:fleetdeliveryapp/screens/display_picture_screen.dart';
+export 'package:fleetdeliveryapp/screens/firma_screen.dart';
+export 'package:fleetdeliveryapp/screens/home2_screen.dart';
+export 'package:fleetdeliveryapp/screens/home_screen.dart';
+export 'package:fleetdeliveryapp/screens/login_screen.dart';
+export 'package:fleetdeliveryapp/screens/paradainfo_screen.dart';
+export 'package:fleetdeliveryapp/screens/paradamap_screen.dart';
+export 'package:fleetdeliveryapp/screens/rutainfo_screen.dart';
+export 'package:fleetdeliveryapp/screens/take_picture_screen.dart';

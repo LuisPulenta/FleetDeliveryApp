@@ -1485,10 +1485,7 @@ class _HomeScreenState extends State<HomeScreen>
 
       _paradasenviosdb = await DBParadasEnvios.paradasenvios();
       _paradasenviosdb.sort((a, b) {
-        return b.fecha
-            .toString()
-            .toLowerCase()
-            .compareTo(a.fecha.toString().toLowerCase());
+        return a.secuencia!.toInt().compareTo(b.secuencia!.toInt());
       });
     });
   }
@@ -1632,10 +1629,7 @@ class _HomeScreenState extends State<HomeScreen>
   Future<void> _llenarparadasenvios() async {
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
     _paradasenviosdb.sort((a, b) {
-      return b.fecha
-          .toString()
-          .toLowerCase()
-          .compareTo(a.fecha.toString().toLowerCase());
+      return a.secuencia!.toInt().compareTo(b.secuencia!.toInt());
     });
 
     _paradasenvios.forEach((paradasenvio) {

@@ -840,6 +840,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       } while (_renovoState == false);
     }
 
+    _paradasenvios.sort((a, b) {
+      return a.secuencia!.toInt().compareTo(b.secuencia!.toInt());
+    });
+
     setState(() {});
   }
 

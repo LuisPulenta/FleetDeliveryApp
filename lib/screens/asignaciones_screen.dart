@@ -3,15 +3,8 @@ import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
-import 'package:fleetdeliveryapp/models/asignacion2.dart';
-import 'package:fleetdeliveryapp/models/codigocierre.dart';
-import 'package:fleetdeliveryapp/models/funcionesapp.dart';
-import 'package:fleetdeliveryapp/models/response.dart';
-import 'package:fleetdeliveryapp/models/tipoasignacion.dart';
-import 'package:fleetdeliveryapp/models/usuario.dart';
-import 'package:fleetdeliveryapp/screens/agendarcita_screen.dart';
-import 'package:fleetdeliveryapp/screens/asignacioninfo_screen.dart';
-import 'package:fleetdeliveryapp/screens/asignacionesmap_screen.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
+import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -344,26 +337,26 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   SizedBox(
                                     height: 1,
                                   ),
-                                  Row(
-                                    children: [
-                                      Text("Rec.Téc.: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Expanded(
-                                        child:
-                                            Text(e.reclamoTecnicoID.toString(),
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                )),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 1,
-                                  ),
+                                  // Row(
+                                  //   children: [
+                                  //     Text("Rec.Téc.: ",
+                                  //         style: TextStyle(
+                                  //           fontSize: 12,
+                                  //           color: Color(0xFF0e4888),
+                                  //           fontWeight: FontWeight.bold,
+                                  //         )),
+                                  //     Expanded(
+                                  //       child:
+                                  //           Text(e.reclamoTecnicoID.toString(),
+                                  //               style: TextStyle(
+                                  //                 fontSize: 12,
+                                  //               )),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 1,
+                                  // ),
                                   Row(
                                     children: [
                                       Text("Dirección: ",
@@ -432,25 +425,25 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   SizedBox(
                                     height: 1,
                                   ),
-                                  Row(
-                                    children: [
-                                      Text("Provincia: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Expanded(
-                                        child: Text(e.provincia.toString(),
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                            )),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 1,
-                                  ),
+                                  // Row(
+                                  //   children: [
+                                  //     Text("Provincia: ",
+                                  //         style: TextStyle(
+                                  //           fontSize: 12,
+                                  //           color: Color(0xFF0e4888),
+                                  //           fontWeight: FontWeight.bold,
+                                  //         )),
+                                  //     Expanded(
+                                  //       child: Text(e.provincia.toString(),
+                                  //           style: TextStyle(
+                                  //             fontSize: 12,
+                                  //           )),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 1,
+                                  // ),
                                   Row(
                                     children: [
                                       Text("Teléfono: ",
@@ -556,27 +549,27 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             SizedBox(
                                               height: 1,
                                             ),
-                                            Row(
-                                              children: [
-                                                Text("Medio Cita: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF0e4888),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                                Expanded(
-                                                  child: Text(
-                                                      e.medioCita.toString(),
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                      )),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 1,
-                                            ),
+                                            // Row(
+                                            //   children: [
+                                            //     Text("Medio Cita: ",
+                                            //         style: TextStyle(
+                                            //           fontSize: 12,
+                                            //           color: Color(0xFF0e4888),
+                                            //           fontWeight:
+                                            //               FontWeight.bold,
+                                            //         )),
+                                            //     Expanded(
+                                            //       child: Text(
+                                            //           e.medioCita.toString(),
+                                            //           style: TextStyle(
+                                            //             fontSize: 12,
+                                            //           )),
+                                            //     ),
+                                            //   ],
+                                            // ),
+                                            // SizedBox(
+                                            //   height: 1,
+                                            // ),
                                             Row(
                                               children: [
                                                 Text("Fec. Cita: ",

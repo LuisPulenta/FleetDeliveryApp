@@ -407,23 +407,23 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             SizedBox(
                               height: 1,
                             ),
-                            Row(
-                              children: [
-                                Text("Rec.Téc.: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text(
-                                      _asignacion.reclamoTecnicoID.toString(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                              ],
-                            ),
+                            // Row(
+                            //   children: [
+                            //     Text("Rec.Téc.: ",
+                            //         style: TextStyle(
+                            //           fontSize: 12,
+                            //           color: Color(0xFF0e4888),
+                            //           fontWeight: FontWeight.bold,
+                            //         )),
+                            //     Expanded(
+                            //       child: Text(
+                            //           _asignacion.reclamoTecnicoID.toString(),
+                            //           style: TextStyle(
+                            //             fontSize: 12,
+                            //           )),
+                            //     ),
+                            //   ],
+                            // ),
                             Row(
                               children: [
                                 Expanded(
@@ -497,20 +497,20 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       SizedBox(
                                         height: 1,
                                       ),
-                                      Row(
-                                        children: [
-                                          Text("Provincia: ",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF0e4888),
-                                                fontWeight: FontWeight.bold,
-                                              )),
-                                          Text(_asignacion.provincia.toString(),
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              )),
-                                        ],
-                                      ),
+                                      // Row(
+                                      //   children: [
+                                      //     Text("Provincia: ",
+                                      //         style: TextStyle(
+                                      //           fontSize: 12,
+                                      //           color: Color(0xFF0e4888),
+                                      //           fontWeight: FontWeight.bold,
+                                      //         )),
+                                      //     Text(_asignacion.provincia.toString(),
+                                      //         style: TextStyle(
+                                      //           fontSize: 12,
+                                      //         )),
+                                      //   ],
+                                      // ),
                                     ],
                                   ),
                                 ),
