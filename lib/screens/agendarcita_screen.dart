@@ -2,12 +2,8 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
-import 'package:fleetdeliveryapp/models/asign.dart';
-import 'package:fleetdeliveryapp/models/asignacion2.dart';
-import 'package:fleetdeliveryapp/models/response.dart';
-import 'package:fleetdeliveryapp/models/usuario.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 
 class AgendarCitaScreen extends StatefulWidget {
   final Usuario user;

@@ -1,14 +1,11 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
-import 'package:fleetdeliveryapp/helpers/dbusuarios_helper.dart';
-import 'package:fleetdeliveryapp/helpers/api_helper.dart';
-import 'package:fleetdeliveryapp/helpers/constants.dart';
-import 'package:fleetdeliveryapp/screens/home_screen.dart';
+import 'package:fleetdeliveryapp/helpers/helpers.dart';
+import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fleetdeliveryapp/models/response.dart';
-import 'package:fleetdeliveryapp/models/usuario.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,14 +41,14 @@ class _LoginScreenState extends State<LoginScreen> {
       centroDistribucion: 0);
 
   //String _email = '*jhollman';
-  //String _email = 'TEST';
-  String _email = '';
+  String _email = 'TEST';
+  //String _email = '';
   String _emailError = '';
   bool _emailShowError = false;
 
   //String _password = 'jona';
-  //String _password = '123456';
-  String _password = '';
+  String _password = '123456';
+  //String _password = '';
   String _passwordError = '';
   bool _passwordShowError = false;
 

@@ -33,6 +33,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   bool bandera = false;
   String _search = '';
 
+  double _sliderValue = 0;
+  bool _prioridad = false;
+
   List<TipoAsignacion> _tiposasignacion = [];
   List<Asignacion2> _asignaciones = [];
   List<Asignacion2> _asignaciones2 = [];
@@ -120,9 +123,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Asignaciones"),
+        title: Text('Asignaciones: ${_asignaciones2.length.toString()}'),
         backgroundColor: Color(0xFF282886),
-        //backgroundColor: Color(0xFF0e4888),
         centerTitle: true,
         actions: <Widget>[
           IconButton(onPressed: _showMap, icon: Icon(Icons.map)),
@@ -156,7 +158,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       children: [
         Expanded(
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.only(left: 10, right: 10, top: 5),
             child: _tiposasignacion.length == 0
                 ? Row(
                     children: [
@@ -230,7 +232,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     return Column(
       children: <Widget>[
         _showTipos(),
-        _showAsignacionesCount(),
+        //_showAsignacionesCount(),
+        _showFiltros(),
         Expanded(
           child: _asignaciones2.length == 0 ? _noContent() : _getListView(),
         )
@@ -239,7 +242,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   }
 
 //-----------------------------------------------------------------------------
-//------------------------------ METODO SHOWOBRASCOUNT ------------------------
+//------------------------------ METODO SHOWASIGNACIONESCOUNT -----------------
 //-----------------------------------------------------------------------------
 
   Widget _showAsignacionesCount() {
@@ -260,6 +263,59 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               )),
+        ],
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------------------
+//------------------------------ METODO SHOWAFILTROS --------------------------
+//-----------------------------------------------------------------------------
+
+  Widget _showFiltros() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+      height: 100,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text("Prioridad: ",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  )),
+              Checkbox(
+                  value: _prioridad,
+                  focusColor: Color(0xFF282886),
+                  fillColor: MaterialStateProperty.all(Color(0xFF282886)),
+                  onChanged: (value) {
+                    _prioridad = value!;
+                    _filter2();
+                  }),
+            ],
+          ),
+          Row(
+            children: [
+              Text("Antiguedad: ",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  )),
+              Slider(
+                min: 0,
+                max: 60,
+                activeColor: Color(0xFF282886),
+                value: _sliderValue,
+                onChanged: (value) {
+                  _sliderValue = value;
+                  _filter2();
+                },
+                divisions: 6,
+              ),
+              Center(child: Text(_sliderValue.toString())),
+            ],
+          ),
         ],
       ),
     );
@@ -474,23 +530,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       Expanded(
                                         child: Text(
                                           e.cantAsign.toString(),
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text("Est. Gaos: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Expanded(
-                                        child: Text(
-                                          e.estadogaos.toString(),
                                           style: TextStyle(
                                             fontSize: 12,
                                           ),
@@ -945,8 +984,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       return;
     }
     List<Asignacion2> filteredList = [];
+    bool varA = false;
+    bool varB = false;
     for (var asignacion in _asignaciones) {
-      if (asignacion.nombre
+      varA = (asignacion.nombre
               .toString()
               .toLowerCase()
               .contains(_search.toLowerCase()) ||
@@ -957,7 +998,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           asignacion.domicilio
               .toString()
               .toLowerCase()
-              .contains(_search.toLowerCase())) {
+              .contains(_search.toLowerCase()));
+
+      varB = _prioridad
+          ? asignacion.codigoCierre == 45
+          : asignacion.codigoCierre != 9999;
+
+      if (varA && varB) {
         filteredList.add(asignacion);
       }
     }
@@ -969,6 +1016,42 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
     Navigator.of(context).pop();
   }
+
+//*****************************************************************************
+//************************** METODO FILTER2 ***********************************
+//*****************************************************************************
+
+  _filter2() {
+    List<Asignacion2> filteredList = [];
+    bool varA = false;
+    bool varB = false;
+    for (var asignacion in _asignaciones) {
+      var dif = DateTime.now()
+          .difference(DateTime.parse(asignacion.fechaAsignada!))
+          .inDays;
+      varA = DateTime.now()
+              .difference(DateTime.parse(asignacion.fechaAsignada!))
+              .inDays >=
+          _sliderValue;
+
+      varB = _prioridad
+          ? asignacion.codigoCierre == 45
+          : asignacion.codigoCierre != 9999;
+
+      if (varA && varB) {
+        filteredList.add(asignacion);
+      }
+    }
+
+    setState(() {
+      _asignaciones2 = filteredList;
+      _isFiltered = true;
+    });
+  }
+
+//*****************************************************************************
+//************************** METODO AGENDARCITA *******************************
+//*****************************************************************************
 
   void _agendarcita(Asignacion2 asignacion) async {
     String? result = await Navigator.push(
@@ -983,6 +1066,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       setState(() {});
     }
   }
+
+//*****************************************************************************
+//************************** METODO SHOWMAP ***********************************
+//*****************************************************************************
 
   void _showMap() {
     _markers.clear();

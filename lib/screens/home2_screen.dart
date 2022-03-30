@@ -1,9 +1,7 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:fleetdeliveryapp/screens/asignaciones_screen.dart';
-import 'package:fleetdeliveryapp/screens/contacto_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:fleetdeliveryapp/models/usuario.dart';
-import 'package:fleetdeliveryapp/screens/login_screen.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
+import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

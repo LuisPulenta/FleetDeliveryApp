@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
-import 'package:fleetdeliveryapp/models/asignacion.dart';
-import 'package:fleetdeliveryapp/models/asignacion2.dart';
-import 'package:fleetdeliveryapp/models/paradaenvio.dart';
-import 'package:fleetdeliveryapp/models/usuario.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';

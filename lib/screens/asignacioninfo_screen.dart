@@ -1,19 +1,11 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
-import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
-import 'package:fleetdeliveryapp/models/asign.dart';
-import 'package:fleetdeliveryapp/models/asignacion.dart';
-import 'package:fleetdeliveryapp/models/asignacion2.dart';
-import 'package:fleetdeliveryapp/models/codigocierre.dart';
-import 'package:fleetdeliveryapp/models/funcionesapp.dart';
-import 'package:fleetdeliveryapp/models/response.dart';
-import 'package:fleetdeliveryapp/models/usuario.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/asignacionmap_screen.dart';
 import 'package:fleetdeliveryapp/screens/firma_screen.dart';
 import 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
@@ -22,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AsignacionInfoScreen extends StatefulWidget {
@@ -147,7 +138,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     estadogaos = _asignacion.estadogaos!;
 
     __codigoscierre = widget.codigoscierre;
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _initialPosition = (_asignacion.grxx != "" && _asignacion.gryy != "")
         ? CameraPosition(
             target: LatLng(double.parse(_asignacion.grxx!),
@@ -217,18 +208,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       backgroundColor: Color(0xff282886),
                     ),
                     Expanded(
-                      child: Center(
-                        child: Column(
-                          children: <Widget>[
-                            Expanded(
-                              child: _showAsignacion(),
-                              flex: 2,
-                            ),
-                            Expanded(child: _showAutonumericos(), flex: 1),
-                          ],
-                        ),
-                      ),
-                    )
+                      child: SingleChildScrollView(child: _showAsignacion()),
+                      flex: 3,
+                    ),
+                    Expanded(child: _showAutonumericos(), flex: 2)
                   ],
                 ),
 //-------------------------------------------------------------------------
@@ -255,50 +238,20 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //-------------------------------------------------------------------------
 //-------------------------- 3° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
-                // Column(
-                //   children: [
-                //     AppBar(
-                //       title: (Text("Mapa")),
-                //       centerTitle: true,
-                //       backgroundColor: Color(0xff282886),
-                //     ),
-                //     Expanded(
-                //       child: Container(
-                //         child: (_asignacion.grxx != "" &&
-                //                 _asignacion.gryy != "" &&
-                //                 _asignacion.grxx != "0" &&
-                //                 _asignacion.gryy != "0")
-                //             ? Stack(
-                //                 children: [
-                //                   GoogleMap(
-                //                     myLocationEnabled: false,
-                //                     initialCameraPosition: _initialPosition,
-                //                     onCameraMove: _onCameraMove,
-                //                     markers: _markers,
-                //                     mapType: _defaultMapType,
-                //                   ),
-                //                   Container(
-                //                     margin: EdgeInsets.only(top: 80, right: 10),
-                //                     alignment: Alignment.topRight,
-                //                     child: Column(children: <Widget>[
-                //                       FloatingActionButton(
-                //                           child: Icon(Icons.layers),
-                //                           elevation: 5,
-                //                           backgroundColor: Color(0xfff4ab04),
-                //                           onPressed: () {
-                //                             _changeMapType();
-                //                           }),
-                //                     ]),
-                //                   ),
-                //                 ],
-                //               )
-                //             : Center(
-                //                 child: Text(
-                //                     "Esta Asignación no tiene coordenadas cargadas")),
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                Column(
+                  children: [
+                    AppBar(
+                      title: (Text("Darío")),
+                      centerTitle: true,
+                      backgroundColor: Color(0xff282886),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: Center(child: Text('A resolver')),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -342,6 +295,20 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   ],
                 ),
               ),
+              Tab(
+                child: Row(
+                  children: [
+                    Icon(Icons.all_out),
+                    SizedBox(
+                      width: 2,
+                    ),
+                    Text(
+                      "Darío",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
               // Tab(
               //   child: Row(
               //     children: [
@@ -366,191 +333,206 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //*****************************************************************************
 
   Widget _showAsignacion() {
-    return SingleChildScrollView(
-      child: Card(
-        color: Colors.white,
-        //color: Color(0xFFC7C7C8),
-        shadowColor: Colors.white,
-        elevation: 10,
-        margin: EdgeInsets.fromLTRB(8, 8, 8, 8),
-        child: Container(
-          margin: EdgeInsets.all(0),
-          padding: EdgeInsets.all(0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text("Cliente: ",
+    return Card(
+      color: Colors.white,
+      //color: Color(0xFFC7C7C8),
+      shadowColor: Colors.white,
+      elevation: 10,
+      margin: EdgeInsets.fromLTRB(8, 8, 8, 8),
+      child: Container(
+        margin: EdgeInsets.all(0),
+        padding: EdgeInsets.all(0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text("Cliente: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(
+                                    '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
                                     )),
-                                Expanded(
-                                  child: Text(
-                                      '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          // Row(
+                          //   children: [
+                          //     Text("Rec.Téc.: ",
+                          //         style: TextStyle(
+                          //           fontSize: 12,
+                          //           color: Color(0xFF0e4888),
+                          //           fontWeight: FontWeight.bold,
+                          //         )),
+                          //     Expanded(
+                          //       child: Text(
+                          //           _asignacion.reclamoTecnicoID.toString(),
+                          //           style: TextStyle(
+                          //             fontSize: 12,
+                          //           )),
+                          //     ),
+                          //   ],
+                          // ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text("Dirección: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                        Expanded(
+                                          child: Text(
+                                              _asignacion.domicilio.toString(),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Entre calles: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                        Expanded(
+                                          child: (_asignacion.entrecallE1
+                                                          .toString()
+                                                          .length >
+                                                      1 &&
+                                                  _asignacion.entrecallE2
+                                                          .toString()
+                                                          .length >
+                                                      1)
+                                              ? Text(
+                                                  '${_asignacion.entrecallE1.toString()} y ${_asignacion.entrecallE2.toString()}',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                  ))
+                                              : Text(""),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Localidad: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                        Text(
+                                            '${_asignacion.localidad.toString()}-${_asignacion.partido.toString()}',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 1,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Cód. Cierre: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                        Expanded(
+                                          child: Text(
+                                              _asignacion.descripcion
+                                                  .toString(),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     Text("Provincia: ",
+                                    //         style: TextStyle(
+                                    //           fontSize: 12,
+                                    //           color: Color(0xFF0e4888),
+                                    //           fontWeight: FontWeight.bold,
+                                    //         )),
+                                    //     Text(_asignacion.provincia.toString(),
+                                    //         style: TextStyle(
+                                    //           fontSize: 12,
+                                    //         )),
+                                    //   ],
+                                    // ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                            // Row(
-                            //   children: [
-                            //     Text("Rec.Téc.: ",
-                            //         style: TextStyle(
-                            //           fontSize: 12,
-                            //           color: Color(0xFF0e4888),
-                            //           fontWeight: FontWeight.bold,
-                            //         )),
-                            //     Expanded(
-                            //       child: Text(
-                            //           _asignacion.reclamoTecnicoID.toString(),
-                            //           style: TextStyle(
-                            //             fontSize: 12,
-                            //           )),
-                            //     ),
-                            //   ],
-                            // ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text("Dirección: ",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF0e4888),
-                                                fontWeight: FontWeight.bold,
-                                              )),
-                                          Expanded(
-                                            child: Text(
-                                                _asignacion.domicilio
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 1,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text("Entre calles: ",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF0e4888),
-                                                fontWeight: FontWeight.bold,
-                                              )),
-                                          Expanded(
-                                            child: (_asignacion.entrecallE1
-                                                            .toString()
-                                                            .length >
-                                                        1 &&
-                                                    _asignacion.entrecallE2
-                                                            .toString()
-                                                            .length >
-                                                        1)
-                                                ? Text(
-                                                    '${_asignacion.entrecallE1.toString()} y ${_asignacion.entrecallE2.toString()}',
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                    ))
-                                                : Text(""),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 1,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text("Localidad: ",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF0e4888),
-                                                fontWeight: FontWeight.bold,
-                                              )),
-                                          Text(
-                                              '${_asignacion.localidad.toString()}-${_asignacion.partido.toString()}',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              )),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 1,
-                                      ),
-                                      // Row(
-                                      //   children: [
-                                      //     Text("Provincia: ",
-                                      //         style: TextStyle(
-                                      //           fontSize: 12,
-                                      //           color: Color(0xFF0e4888),
-                                      //           fontWeight: FontWeight.bold,
-                                      //         )),
-                                      //     Text(_asignacion.provincia.toString(),
-                                      //         style: TextStyle(
-                                      //           fontSize: 12,
-                                      //         )),
-                                      //   ],
-                                      // ),
-                                    ],
-                                  ),
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.map,
+                                  color: Color(0xff282886),
+                                  size: 34,
                                 ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.map,
-                                    color: Color(0xff282886),
-                                    size: 34,
-                                  ),
-                                  onPressed: () => _showMap(_asignacion),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                            Divider(
-                              color: Colors.black,
-                            ),
-                            _showButtonsDNIFirma(),
-                            Divider(
-                              color: Colors.black,
-                            ),
-                            _showButtonsEstados(),
-                            Divider(
-                              color: Colors.black,
-                            ),
-                            _showButtonsGuardarCancelar(),
-                            Divider(
-                              color: Colors.black,
-                            ),
-                          ],
-                        ),
+                                onPressed: () => _showMap(_asignacion),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Divider(
+                            color: Colors.black,
+                          ),
+                          _showButtonsDNIFirma(),
+                          Divider(
+                            color: Colors.black,
+                          ),
+                          _showButtonsEstados(),
+                          Divider(
+                            color: Colors.black,
+                          ),
+                          _showButtonsGuardarCancelar(),
+                          Divider(
+                            color: Colors.black,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -926,64 +908,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       children: <Widget>[
                         Row(
                           children: [
-                            Text("ID Gaos: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.autonumerico.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text("Cód. Cierre: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.codigoCierre.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 1,
-                        ),
-                        Row(
-                          children: [
-                            Text("Desc. Modelo: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.deco1descripcion.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 1,
-                        ),
-                        Row(
-                          children: [
-                            Text("Deco1: ",
+                            Text("Equipo: ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
@@ -995,59 +920,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     fontSize: 12,
                                   )),
                             ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 1,
-                        ),
-                        Row(
-                          children: [
-                            Text("Mac/Serie: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.estadO3.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
+                            SizedBox(
+                              height: 1,
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 1,
-                        ),
                         Row(
                           children: [
-                            Text("Modem: ",
+                            Text("Descripción: ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
                                   fontWeight: FontWeight.bold,
                                 )),
                             Expanded(
-                              child: Text(e.cmodeM1.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 1,
-                        ),
-                        Row(
-                          children: [
-                            Text("Suscripción: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.idSuscripcion.toString(),
+                              child: Text(e.codigoequivalencia.toString(),
                                   style: TextStyle(
                                     fontSize: 12,
                                   )),
@@ -1078,14 +965,33 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         ),
                         Row(
                           children: [
-                            Text("Obs./Activ.: ",
+                            Text("Mac/Serie: ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
                                   fontWeight: FontWeight.bold,
                                 )),
                             Expanded(
-                              child: Text(e.observacion.toString(),
+                              child: Text(e.estadO3.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
+                            Text("Id Gaos: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.autonumerico.toString(),
                                   style: TextStyle(
                                     fontSize: 12,
                                   )),

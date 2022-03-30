@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:fleetdeliveryapp/models/response.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
 
 class DisplayPictureScreen extends StatefulWidget {
   final XFile image;

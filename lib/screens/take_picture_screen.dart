@@ -1,8 +1,7 @@
 import 'package:camera/camera.dart';
+import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:fleetdeliveryapp/models/response.dart';
-
-import 'display_picture_screen.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
 
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
