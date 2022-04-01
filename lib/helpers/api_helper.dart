@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:fleetdeliveryapp/models/asign.dart';
 import 'package:fleetdeliveryapp/models/asignacion2.dart';
 import 'package:fleetdeliveryapp/models/codigocierre.dart';
+import 'package:fleetdeliveryapp/models/controlesequivalencia.dart';
 import 'package:fleetdeliveryapp/models/funcionesapp.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
 import 'package:fleetdeliveryapp/models/proveedor.dart';
@@ -316,6 +317,33 @@ class ApiHelper {
     if (decodedJson != null) {
       for (var item in decodedJson) {
         list.add(FuncionesApp.fromJson(item));
+      }
+    }
+    return Response(isSuccess: true, result: list);
+  }
+
+  static Future<Response> GetControlesEquivalencia(
+      String proyectomodulo) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/AsignacionesOTs/GetControlesEquivalencia/$proyectomodulo');
+    var response = await http.post(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    List<ControlesEquivalencia> list = [];
+    var decodedJson = jsonDecode(body);
+    if (decodedJson != null) {
+      for (var item in decodedJson) {
+        list.add(ControlesEquivalencia.fromJson(item));
       }
     }
     return Response(isSuccess: true, result: list);

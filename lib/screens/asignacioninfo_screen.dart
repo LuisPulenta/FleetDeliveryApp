@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
@@ -9,6 +8,7 @@ import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/asignacionmap_screen.dart';
 import 'package:fleetdeliveryapp/screens/firma_screen.dart';
 import 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,13 +22,15 @@ class AsignacionInfoScreen extends StatefulWidget {
   final List<CodigoCierre> codigoscierre;
   final Position positionUser;
   final FuncionesApp funcionApp;
+  final List<ControlesEquivalencia> controlesEquivalencia;
 
   AsignacionInfoScreen(
       {required this.user,
       required this.asignacion,
       required this.codigoscierre,
       required this.positionUser,
-      required this.funcionApp});
+      required this.funcionApp,
+      required this.controlesEquivalencia});
 
   @override
   _AsignacionInfoScreenState createState() => _AsignacionInfoScreenState();
@@ -53,11 +55,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   bool _observacionesShowError = false;
   TextEditingController _observacionesController = TextEditingController();
 
+  String _macserie = '';
+  String _macserieError = '';
+  bool _macserieShowError = false;
+  TextEditingController _macserieController = TextEditingController();
+
   List<CodigoCierre> __codigoscierre = [];
   bool _photoChanged = false;
   bool _signatureChanged = false;
   late XFile _image;
   late ByteData _signature;
+
+  String _barCodeValue = '';
 
   List<Asign> _asigns = [];
 
@@ -173,7 +182,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffe9dac2),
+      backgroundColor: Color.fromARGB(255, 206, 233, 194),
       body: Stack(
         children: [
           Container(
@@ -199,20 +208,23 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //-------------------------------------------------------------------------
 //-------------------------- 1° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
-                Column(
-                  children: <Widget>[
-                    AppBar(
-                      title: (Text(
-                          'Asignación ${widget.asignacion.proyectomodulo}')),
-                      centerTitle: true,
-                      backgroundColor: Color(0xff282886),
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(child: _showAsignacion()),
-                      flex: 3,
-                    ),
-                    Expanded(child: _showAutonumericos(), flex: 2)
-                  ],
+                Container(
+                  margin: EdgeInsets.all(0),
+                  child: Column(
+                    children: <Widget>[
+                      AppBar(
+                        title: (Text(
+                            'Asignación ${widget.asignacion.proyectomodulo}')),
+                        centerTitle: true,
+                        backgroundColor: Color(0xff282886),
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(child: _showAsignacion()),
+                        flex: 3,
+                      ),
+                      Expanded(child: _showAutonumericos(), flex: 2)
+                    ],
+                  ),
                 ),
 //-------------------------------------------------------------------------
 //-------------------------- 2° TABBAR ------------------------------------
@@ -338,7 +350,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
-      margin: EdgeInsets.fromLTRB(8, 8, 8, 8),
+      margin: EdgeInsets.fromLTRB(8, 12, 8, 0),
       child: Container(
         margin: EdgeInsets.all(0),
         padding: EdgeInsets.all(0),
@@ -522,6 +534,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             color: Colors.black,
                           ),
                           _showButtonsGuardarCancelar(),
+
                           Divider(
                             color: Colors.black,
                           ),
@@ -908,6 +921,25 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       children: <Widget>[
                         Row(
                           children: [
+                            Text("Id Gaos: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.autonumerico.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
                             Text("Equipo: ",
                                 style: TextStyle(
                                   fontSize: 12,
@@ -972,29 +1004,219 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   fontWeight: FontWeight.bold,
                                 )),
                             Expanded(
+                              flex: 7,
                               child: Text(e.estadO3.toString(),
                                   style: TextStyle(
                                     fontSize: 12,
                                   )),
                             ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 1,
-                        ),
-                        Row(
-                          children: [
-                            Text("Id Gaos: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.autonumerico.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            ElevatedButton(
+                                child: Icon(Icons.cancel),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xffdf281e),
+                                  minimumSize: Size(50, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  for (Asign asign in _asigns) {
+                                    if (asign.autonumerico == e.autonumerico) {
+                                      asign.estadO3 = '';
+                                    }
+                                  }
+                                  setState(() {});
+                                }),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            ElevatedButton(
+                              child: Icon(Icons.qr_code_2),
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFF282886),
+                                minimumSize: Size(50, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () {
+                                String barcodeScanRes;
+
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      _macserieController.text = '';
+                                      return Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            AlertDialog(
+                                              backgroundColor: Colors.grey[300],
+                                              title: Text(
+                                                  "Ingrese o escanee el código"),
+                                              content: Column(
+                                                children: [
+                                                  TextField(
+                                                    autofocus: true,
+                                                    controller:
+                                                        _macserieController,
+                                                    decoration: InputDecoration(
+                                                        fillColor: Colors.white,
+                                                        filled: true,
+                                                        hintText: '',
+                                                        labelText: '',
+                                                        errorText:
+                                                            _macserieShowError
+                                                                ? _macserieError
+                                                                : null,
+                                                        prefixIcon:
+                                                            Icon(Icons.tag),
+                                                        border: OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10))),
+                                                    onChanged: (value) {
+                                                      _macserie = value;
+                                                    },
+                                                  ),
+                                                  SizedBox(height: 10),
+                                                  ElevatedButton(
+                                                      child:
+                                                          Icon(Icons.qr_code_2),
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            Color(0xFF282886),
+                                                        minimumSize:
+                                                            Size(50, 50),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                      ),
+                                                      onPressed: () async {
+                                                        String barcodeScanRes;
+                                                        try {
+                                                          barcodeScanRes =
+                                                              await FlutterBarcodeScanner
+                                                                  .scanBarcode(
+                                                                      '#3D8BEF',
+                                                                      'Cancelar',
+                                                                      false,
+                                                                      ScanMode
+                                                                          .DEFAULT);
+                                                          //print(barcodeScanRes);
+                                                        } on PlatformException {
+                                                          barcodeScanRes =
+                                                              'Error';
+                                                        }
+                                                        // if (!mounted) return;
+                                                        if (barcodeScanRes ==
+                                                            '-1') {
+                                                          return;
+                                                        }
+                                                        _macserieController
+                                                                .text =
+                                                            barcodeScanRes;
+                                                      }),
+                                                ],
+                                              ),
+                                              actions: [
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: ElevatedButton(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceAround,
+                                                          children: [
+                                                            Icon(Icons.cancel),
+                                                            Text('Cancelar'),
+                                                          ],
+                                                        ),
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          primary:
+                                                              Color(0xFFB4161B),
+                                                          minimumSize: Size(
+                                                              double.infinity,
+                                                              50),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5),
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Expanded(
+                                                      child: ElevatedButton(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
+                                                            children: [
+                                                              Icon(Icons.save),
+                                                              Text('Aceptar'),
+                                                            ],
+                                                          ),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            primary: Color(
+                                                                0xFF120E43),
+                                                            minimumSize: Size(
+                                                                double.infinity,
+                                                                50),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            for (Asign asign
+                                                                in _asigns) {
+                                                              if (asign
+                                                                      .autonumerico ==
+                                                                  e.autonumerico) {
+                                                                asign.estadO3 =
+                                                                    _macserieController
+                                                                        .text;
+                                                              }
+                                                            }
+                                                            Navigator.pop(
+                                                                context);
+                                                            setState(() {});
+                                                          }),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    barrierDismissible: false);
+                              },
                             ),
                           ],
                         ),
@@ -1074,6 +1296,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       });
     }
   }
+//*****************************************************************************
+//************************** METODO GETASIGNS *********************************
+//*****************************************************************************
 
   Future<void> _getAsigns() async {
     setState(() {
@@ -1126,6 +1351,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       return;
     }
 
+    for (Asign asign in _asigns) {
+      for (ControlesEquivalencia control in widget.controlesEquivalencia) {
+        if (control.decO1 == asign.decO1) {
+          asign.codigoequivalencia = control.descripcion;
+        }
+      }
+    }
+
     setState(() {
       _asigns = response.result;
     });
@@ -1139,7 +1372,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
-      margin: EdgeInsets.fromLTRB(8, 8, 8, 8),
+      margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
       child: Container(
         margin: EdgeInsets.all(0),
         padding: EdgeInsets.all(5),

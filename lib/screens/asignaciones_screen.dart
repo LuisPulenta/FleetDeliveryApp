@@ -3,6 +3,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
+import 'package:fleetdeliveryapp/models/controlesequivalencia.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   List<TipoAsignacion> _tiposasignacion = [];
   List<Asignacion2> _asignaciones = [];
   List<Asignacion2> _asignaciones2 = [];
+  List<ControlesEquivalencia> _controlesEquivalencia = [];
 
   List<FuncionesApp> _funcionesApp = [];
   FuncionesApp _funcionApp = FuncionesApp(
@@ -746,13 +748,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         _tiposasignacion = response.result;
       }
     } while (bandera == false);
-    await showAlertDialog(
-        context: context,
-        title: 'Intentos',
-        message: intentos.toString(),
-        actions: <AlertDialogAction>[
-          AlertDialogAction(key: null, label: 'Aceptar'),
-        ]);
+    // await showAlertDialog(
+    //     context: context,
+    //     title: 'Intentos',
+    //     message: intentos.toString(),
+    //     actions: <AlertDialogAction>[
+    //       AlertDialogAction(key: null, label: 'Aceptar'),
+    //     ]);
     setState(() {});
   }
 
@@ -769,6 +771,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     } else {
       _tipoasignacionShowError = false;
     }
+
+    _prioridad = false;
 
     setState(() {
       _showLoader = true;
@@ -810,11 +814,24 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
     Response response2 = Response(isSuccess: false);
     response2 = await ApiHelper.getFuncionesApp(_tipoasignacion);
+    Response response3 = Response(isSuccess: false);
+    response3 = await ApiHelper.GetControlesEquivalencia(_tipoasignacion);
     setState(() {
       _showLoader = false;
     });
 
     if (!response2.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    if (!response3.isSuccess) {
       await showAlertDialog(
           context: context,
           title: 'Error',
@@ -834,6 +851,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     });
 
     _funcionesApp = response2.result;
+
+    _controlesEquivalencia = response3.result;
 
     _funcionApp = _funcionesApp[0];
 
@@ -915,6 +934,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   codigoscierre: _codigoscierre,
                   positionUser: widget.positionUser,
                   funcionApp: _funcionApp,
+                  controlesEquivalencia: _controlesEquivalencia,
                 )));
     if (result == 'yes' || result != 'yes') {
       //_getObras();
@@ -1025,10 +1045,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     List<Asignacion2> filteredList = [];
     bool varA = false;
     bool varB = false;
+    bool varC = false;
     for (var asignacion in _asignaciones) {
-      var dif = DateTime.now()
-          .difference(DateTime.parse(asignacion.fechaAsignada!))
-          .inDays;
+      if (asignacion.fechaAsignada == null) {
+        asignacion.fechaAsignada = DateTime.now().toString();
+      }
+      if (asignacion.fechaAsignada == '') {
+        asignacion.fechaAsignada = DateTime.now().toString();
+      }
+      asignacion.fechaCita == ''
+          ? asignacion.fechaCita = null
+          : asignacion.fechaCita = asignacion.fechaCita;
+
       varA = DateTime.now()
               .difference(DateTime.parse(asignacion.fechaAsignada!))
               .inDays >=
@@ -1038,7 +1066,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           ? asignacion.codigoCierre == 45
           : asignacion.codigoCierre != 9999;
 
-      if (varA && varB) {
+      varC = (asignacion.fechaCita != null);
+
+      if (varA && (varB || varC)) {
         filteredList.add(asignacion);
       }
     }

@@ -2,6 +2,7 @@ export 'package:fleetdeliveryapp/models/asign.dart';
 export 'package:fleetdeliveryapp/models/asignacion.dart';
 export 'package:fleetdeliveryapp/models/asignacion2.dart';
 export 'package:fleetdeliveryapp/models/codigocierre.dart';
+export 'package:fleetdeliveryapp/models/controlesequivalencia.dart';
 export 'package:fleetdeliveryapp/models/envio.dart';
 export 'package:fleetdeliveryapp/models/funcionesapp.dart';
 export 'package:fleetdeliveryapp/models/motivo.dart';
