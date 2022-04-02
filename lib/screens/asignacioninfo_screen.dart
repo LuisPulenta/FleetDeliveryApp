@@ -68,6 +68,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   String _barCodeValue = '';
 
+  String _equipo = 'Elija un Equipo...';
+  String _equipoError = '';
+  bool _equipoShowError = false;
+  TextEditingController _equipoController = TextEditingController();
+
   List<Asign> _asigns = [];
 
   bool _showLoader = false;
@@ -933,30 +938,40 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     fontSize: 12,
                                   )),
                             ),
+                            Checkbox(
+                                value: e.elegir == 1 ? true : false,
+                                onChanged: (value) {
+                                  for (Asign asign in _asigns) {
+                                    if (asign.autonumerico == e.autonumerico) {
+                                      asign.elegir = value == true ? 1 : 0;
+                                    }
+                                  }
+                                  setState(() {});
+                                }),
                           ],
                         ),
-                        SizedBox(
-                          height: 1,
-                        ),
-                        Row(
-                          children: [
-                            Text("Equipo: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.decO1.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                          ],
-                        ),
+                        // SizedBox(
+                        //   height: 1,
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     Text("Equipo: ",
+                        //         style: TextStyle(
+                        //           fontSize: 12,
+                        //           color: Color(0xFF0e4888),
+                        //           fontWeight: FontWeight.bold,
+                        //         )),
+                        //     Expanded(
+                        //       child: Text(e.decO1.toString(),
+                        //           style: TextStyle(
+                        //             fontSize: 12,
+                        //           )),
+                        //     ),
+                        //     SizedBox(
+                        //       height: 1,
+                        //     ),
+                        //   ],
+                        // ),
                         Row(
                           children: [
                             Text("Descripción: ",
@@ -995,6 +1010,44 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         SizedBox(
                           height: 1,
                         ),
+
+                        Row(
+                          children: [
+                            Text("Conf. Cód. Equipo:   ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: DropdownButtonFormField(
+                                value: _equipo,
+                                itemHeight: 50,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  hintText: 'Elija un Equipo...',
+                                  errorText:
+                                      _equipoShowError ? _equipoError : null,
+                                ),
+                                items: _getComboEquipos(),
+                                onChanged: (value) {
+                                  _equipo = value.toString();
+                                },
+                              ),
+                            ),
+                            Text("                       ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          ],
+                        ),
+
+                        SizedBox(
+                          height: 10,
+                        ),
                         Row(
                           children: [
                             Text("Mac/Serie: ",
@@ -1010,26 +1063,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     fontSize: 12,
                                   )),
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            ElevatedButton(
-                                child: Icon(Icons.cancel),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xffdf281e),
-                                  minimumSize: Size(50, 50),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  for (Asign asign in _asigns) {
-                                    if (asign.autonumerico == e.autonumerico) {
-                                      asign.estadO3 = '';
-                                    }
-                                  }
-                                  setState(() {});
-                                }),
                             SizedBox(
                               width: 5,
                             ),
@@ -1218,6 +1251,26 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     barrierDismissible: false);
                               },
                             ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            ElevatedButton(
+                                child: Icon(Icons.cancel),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xffdf281e),
+                                  minimumSize: Size(50, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  for (Asign asign in _asigns) {
+                                    if (asign.autonumerico == e.autonumerico) {
+                                      asign.estadO3 = '';
+                                    }
+                                  }
+                                  setState(() {});
+                                }),
                           ],
                         ),
                         SizedBox(
@@ -1352,6 +1405,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
 
     for (Asign asign in _asigns) {
+      asign.elegir = null;
       for (ControlesEquivalencia control in widget.controlesEquivalencia) {
         if (control.decO1 == asign.decO1) {
           asign.codigoequivalencia = control.descripcion;
@@ -1882,5 +1936,22 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         ),
       ),
     );
+  }
+
+  List<DropdownMenuItem<String>> _getComboEquipos() {
+    List<DropdownMenuItem<String>> list = [];
+    list.add(DropdownMenuItem(
+      child: Text('Elija un Equipo...'),
+      value: 'Elija un Equipo...',
+    ));
+
+    widget.controlesEquivalencia.forEach((control) {
+      list.add(DropdownMenuItem(
+        child: Text(control.descripcion.toString()),
+        value: control.decO1.toString(),
+      ));
+    });
+
+    return list;
   }
 }

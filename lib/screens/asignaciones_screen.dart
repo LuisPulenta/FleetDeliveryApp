@@ -306,14 +306,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   )),
               Slider(
                 min: 0,
-                max: 60,
+                max: 100,
                 activeColor: Color(0xFF282886),
                 value: _sliderValue,
                 onChanged: (value) {
                   _sliderValue = value;
                   _filter2();
                 },
-                divisions: 6,
+                divisions: 5,
               ),
               Center(child: Text(_sliderValue.toString())),
             ],
