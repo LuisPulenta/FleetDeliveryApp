@@ -52,6 +52,17 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   bool _puso1 = false;
   bool _renovoState = false;
 
+  bool _habilitaPosicion = false;
+  Position _positionUser = Position(
+      longitude: 0,
+      latitude: 0,
+      timestamp: null,
+      accuracy: 0,
+      altitude: 0,
+      heading: 0,
+      speed: 0,
+      speedAccuracy: 0);
+
   LatLng _center = LatLng(0, 0);
   final Set<Marker> _markers = {};
   ParadaEnvio paradaenvioSelected = ParadaEnvio(
@@ -179,7 +190,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       avonTravelRoute: 0,
       avonSecuenceRoute: 0,
       avonInformarInclusion: 0,
-      urlDNIFullPath: '');
+      urlDNIFullPath: '',
+      latitud2: 0,
+      longitud2: 0);
 
   List<ParadaEnvio> _paradasenvios = [];
   List<ParadaEnvio> _paradasenviosdb = [];
@@ -900,7 +913,20 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       }
     });
 
+    double lat = 0.0;
+    double long = 0.0;
+
     _envioGrabado = false;
+
+    if (paradaenvio.estado == 4) {
+      await _getPosition();
+      lat = _positionUser.latitude.toString().length > 0
+          ? _positionUser.latitude
+          : 0;
+      long = _positionUser.longitude.toString().length > 0
+          ? _positionUser.longitude
+          : 0;
+    }
 
     do {
       Map<String, dynamic> requestEnvio = {
@@ -978,7 +1004,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         'avonTravelRoute': envioSelected.avonTravelRoute,
         'avonSecuenceRoute': envioSelected.avonSecuenceRoute,
         'avonInformarInclusion': envioSelected.avonInformarInclusion,
-        'imageArray': paradaenvio.imageArray
+        'imageArray': paradaenvio.imageArray,
+        'latitud2': lat,
+        'longitud2': long,
       };
 
       Response response = await ApiHelper.put(
@@ -1137,5 +1165,75 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     final img = await pictureRecorder.endRecording().toImage(width, height);
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
     return data!.buffer.asUint8List();
+  }
+
+  //************************************************************************
+  //*********************** METODO GETPOSITION *****************************
+  //************************************************************************
+
+  Future _getPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                title: Text('Aviso'),
+                content:
+                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  Text('El permiso de localización está negado.'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ]),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Ok')),
+                ],
+              );
+            });
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: Text('Aviso'),
+              content:
+                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                Text(
+                    'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
+                SizedBox(
+                  height: 10,
+                ),
+              ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('Ok')),
+              ],
+            );
+          });
+      return;
+    }
+
+    _habilitaPosicion = true;
+    _positionUser = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 }

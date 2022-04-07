@@ -73,6 +73,8 @@ class Envio {
   int? avonSecuenceRoute = 0;
   int? avonInformarInclusion = 0;
   String? urlDNIFullPath = '';
+  double? latitud2 = 0.0;
+  double? longitud2 = 0.0;
 
   Envio(
       {required this.idEnvio,
@@ -148,7 +150,9 @@ class Envio {
       required this.avonTravelRoute,
       required this.avonSecuenceRoute,
       required this.avonInformarInclusion,
-      required this.urlDNIFullPath});
+      required this.urlDNIFullPath,
+      required this.latitud2,
+      required this.longitud2});
 
   Envio.fromJson(Map<String, dynamic> json) {
     idEnvio = json['idEnvio'];
@@ -225,6 +229,8 @@ class Envio {
     avonSecuenceRoute = json['avonSecuenceRoute'];
     avonInformarInclusion = json['avonInformarInclusion'];
     urlDNIFullPath = json['urlDNIFullPath'];
+    latitud2 = json['latitud2'];
+    longitud2 = json['longitud2'];
   }
 
   Map<String, dynamic> toJson() {
@@ -303,6 +309,8 @@ class Envio {
     data['avonSecuenceRoute'] = avonSecuenceRoute;
     data['avonInformarInclusion'] = avonInformarInclusion;
     data['urlDNIFullPath'] = urlDNIFullPath;
+    data['latitud2'] = latitud2;
+    data['longitud2'] = longitud2;
     return data;
   }
 
@@ -382,6 +390,8 @@ class Envio {
       'avonSecuenceRoute': avonSecuenceRoute,
       'avonInformarInclusion': avonInformarInclusion,
       'urlDNIFullPath': urlDNIFullPath,
+      'latitud2': latitud2,
+      'longitud2': longitud2,
     };
   }
 }

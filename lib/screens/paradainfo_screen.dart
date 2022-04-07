@@ -374,7 +374,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                          ('N° Remito: ${widget.paradaenvio.idEnvio.toString()}'))
+                          ('N° Remito: ${widget.paradaenvio.idEnvio.toString()} N° Orden Id: ${widget.paradaenvio.ordenid.toString()}'))
                     ],
                   ),
                 ),
