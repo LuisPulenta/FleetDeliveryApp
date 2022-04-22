@@ -918,7 +918,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
     _envioGrabado = false;
 
-    if (paradaenvio.estado == 4) {
+    if (paradaenvio.estado == 4 ||
+        paradaenvio.estado == 7 ||
+        paradaenvio.estado == 10) {
       await _getPosition();
       lat = _positionUser.latitude.toString().length > 0
           ? _positionUser.latitude

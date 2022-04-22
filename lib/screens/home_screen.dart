@@ -1380,7 +1380,7 @@ class _HomeScreenState extends State<HomeScreen>
           context: context,
           title: 'Error',
           message:
-              "La tabla Rutas local está vacía. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.",
+              "La tabla Rutas local está vacía. No se pudieron sincronizar las Rutas de su Usuario. Por favor intente de nuevo. ",
           actions: <AlertDialogAction>[
             AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
