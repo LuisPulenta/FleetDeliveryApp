@@ -271,7 +271,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                     items: _getComboZonas(),
                     onChanged: (value) {
                       _zona = value.toString();
-                      _filter3();
+                      _filter();
                     },
                   ),
           ),
@@ -382,7 +382,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   fillColor: MaterialStateProperty.all(Color(0xFF282886)),
                   onChanged: (value) {
                     _prioridad = value!;
-                    _filter2();
+                    _filter();
                   }),
             ],
           ),
@@ -400,7 +400,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                 value: _sliderValue,
                 onChanged: (value) {
                   _sliderValue = value;
-                  _filter2();
+                  _filter();
                 },
                 divisions: 5,
               ),
@@ -1095,7 +1095,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   void _removeFilter() {
     setState(() {
-      _zona = 'Elija una Zona...';
+      _search = '';
       _isFiltered = false;
     });
     _asignaciones2 = _asignaciones;
@@ -1137,7 +1137,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text('Cancelar')),
-              TextButton(onPressed: () => _filter(), child: Text('Filtrar')),
+              TextButton(
+                  onPressed: () {
+                    _filter();
+                    if (_search != '') {
+                      _isFiltered = true;
+                    } else {
+                      _isFiltered = false;
+                    }
+
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Filtrar')),
             ],
           );
         });
@@ -1148,75 +1159,23 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //*****************************************************************************
 
   _filter() {
-    if (_search.isEmpty) {
-      return;
-    }
+    // if (_search.isEmpty) {
+    //   return;
+    // }
     List<Asignacion2> filteredList = [];
-    bool varA = false;
-    bool varB = false;
-    bool varC = false;
-    for (var asignacion in _asignaciones) {
-      if (_zona == 'Elija una Zona...') {
-        varC = true;
-      } else if (_zona == ' Sin Zona') {
-        varC = asignacion.zona == '';
-      } else {
-        varC = asignacion.zona == _zona;
-      }
-
-      varA = (asignacion.nombre
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.cliente
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.reclamoTecnicoID
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.domicilio
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()));
-
-      varB = _prioridad
-          ? asignacion.codigoCierre == 45
-          : asignacion.codigoCierre != 9999;
-
-      if (varA && varB && varC) {
-        filteredList.add(asignacion);
-      }
-    }
-
-    setState(() {
-      _asignaciones2 = filteredList;
-      _isFiltered = true;
-    });
-
-    Navigator.of(context).pop();
-  }
-
-//*****************************************************************************
-//************************** METODO FILTER2 ***********************************
-//*****************************************************************************
-
-  _filter2() {
-    List<Asignacion2> filteredList = [];
-    bool varA = false;
-    bool varB = false;
-    bool varC = false;
-    bool varD = false;
-    bool varE = false;
+    bool condicionTexto = false;
+    bool condicionAntig = false;
+    bool condicionCodCierre = false;
+    bool condicionFechaCita = false;
+    bool condicionZona = false;
 
     for (var asignacion in _asignaciones) {
       if (_zona == 'Elija una Zona...') {
-        varD = true;
+        condicionZona = true;
       } else if (_zona == ' Sin Zona') {
-        varD = asignacion.zona == '';
+        condicionZona = asignacion.zona == '';
       } else {
-        varD = asignacion.zona == _zona;
+        condicionZona = asignacion.zona == _zona;
       }
 
       if (asignacion.fechaAsignada == null) {
@@ -1225,96 +1184,56 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       if (asignacion.fechaAsignada == '') {
         asignacion.fechaAsignada = DateTime.now().toString();
       }
+
       asignacion.fechaCita == ''
           ? asignacion.fechaCita = null
           : asignacion.fechaCita = asignacion.fechaCita;
 
-      varA = DateTime.now()
+//----------- Condiciones ---------------------------
+      condicionTexto = (asignacion.nombre
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.cliente
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.reclamoTecnicoID
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.domicilio
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()));
+
+      condicionAntig = DateTime.now()
               .difference(DateTime.parse(asignacion.fechaAsignada!))
               .inDays >=
           _sliderValue;
 
-      varB = _prioridad
+      condicionCodCierre = _prioridad
           ? asignacion.codigoCierre == 45
           : asignacion.codigoCierre != 9999;
 
-      varE = (asignacion.fechaCita != null);
+      condicionFechaCita = (asignacion.fechaCita != null);
 
-      varA = (asignacion.nombre
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.cliente
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.reclamoTecnicoID
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.domicilio
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()));
-
-      if (varA && (varB || varC) && varD && varE) {
+      if (condicionTexto &&
+          condicionAntig &&
+          (condicionCodCierre || condicionFechaCita) &&
+          condicionZona)
+      // (condicionTexto &&
+      //     condicionPrioridad &&
+      //     condicionZona &&
+      //     condicionAntig &&
+      //     (condicionCodCierre || condicionFechaCita))
+      {
         filteredList.add(asignacion);
       }
     }
 
     setState(() {
       _asignaciones2 = filteredList;
-      _isFiltered = true;
-    });
-  }
-
-//*****************************************************************************
-//************************** METODO FILTER3 ***********************************
-//*****************************************************************************
-
-  _filter3() {
-    List<Asignacion2> filteredList = [];
-    bool varA = false;
-    bool varB = false;
-    bool varC = false;
-    for (var asignacion in _asignaciones) {
-      if (_zona == 'Elija una Zona...') {
-        varC = true;
-      } else if (_zona == ' Sin Zona') {
-        varC = asignacion.zona == '';
-      } else {
-        varC = asignacion.zona == _zona;
-      }
-
-      varA = (asignacion.nombre
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.cliente
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.reclamoTecnicoID
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.domicilio
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()));
-
-      varB = _prioridad
-          ? asignacion.codigoCierre == 45
-          : asignacion.codigoCierre != 9999;
-
-      if (varA && varB && varC) {
-        filteredList.add(asignacion);
-      }
-    }
-
-    setState(() {
-      _asignaciones2 = filteredList;
-      _isFiltered = true;
     });
   }
 
