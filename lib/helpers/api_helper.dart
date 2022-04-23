@@ -8,6 +8,7 @@ import 'package:fleetdeliveryapp/models/motivo.dart';
 import 'package:fleetdeliveryapp/models/proveedor.dart';
 import 'package:fleetdeliveryapp/models/ruta.dart';
 import 'package:fleetdeliveryapp/models/tipoasignacion.dart';
+import 'package:fleetdeliveryapp/models/zona.dart';
 import 'package:http/http.dart' as http;
 import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
@@ -211,6 +212,32 @@ class ApiHelper {
     if (decodedJson != null) {
       for (var item in decodedJson) {
         list.add(TipoAsignacion.fromJson(item));
+      }
+    }
+    return Response(isSuccess: true, result: list);
+  }
+
+  static Future<Response> getZonas(int codigo, String proyectomodulo) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/Usuarios/GetZonas/$codigo/$proyectomodulo');
+    var response = await http.post(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    List<Zona> list = [];
+    var decodedJson = jsonDecode(body);
+    if (decodedJson != null) {
+      for (var item in decodedJson) {
+        list.add(Zona.fromJson(item));
       }
     }
     return Response(isSuccess: true, result: list);

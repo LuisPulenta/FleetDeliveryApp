@@ -3,8 +3,8 @@ import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
-import 'package:fleetdeliveryapp/models/controlesequivalencia.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
+import 'package:fleetdeliveryapp/models/zona.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -38,6 +38,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   bool _prioridad = false;
 
   List<TipoAsignacion> _tiposasignacion = [];
+  List<Zona> _zonas = [];
   List<Asignacion2> _asignaciones = [];
   List<Asignacion2> _asignaciones2 = [];
   List<ControlesEquivalencia> _controlesEquivalencia = [];
@@ -56,10 +57,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   String _tipoasignacionError = '';
   bool _tipoasignacionShowError = false;
   TextEditingController _tipoasignacionController = TextEditingController();
+
+  String _zona = 'Elija una Zona...';
+  String _zonaError = '';
+  bool _zonaShowError = false;
+  TextEditingController _zonaController = TextEditingController();
+
   int intentos = 0;
 
   Asignacion2 asignacionSelected = Asignacion2(
-      recupidjobcard: '',
       cliente: '',
       nombre: '',
       domicilio: '',
@@ -103,7 +109,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       cantAsign: 0,
       codigoequivalencia: '',
       deco1descripcion: '',
-      elegir: 0);
+      elegir: 0,
+      observacionCaptura: '',
+      zona: '');
 
   final Set<Marker> _markers = {};
 
@@ -125,7 +133,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Asignaciones: ${_asignaciones2.length.toString()}'),
+        title: _tipoasignacion != 'Elija un Tipo de Asignación...'
+            ? Text(
+                'Asig. ${_tipoasignacion}: ${_asignaciones2.length.toString()}')
+            : Text('Asignaciones: ${_asignaciones2.length.toString()}'),
         backgroundColor: Color(0xFF282886),
         centerTitle: true,
         actions: <Widget>[
@@ -226,14 +237,92 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     return list;
   }
 
-  //-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//------------------------------ SHOWZONAS-------------------------------------
+//-----------------------------------------------------------------------------
+
+  Widget _showZonas() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+            child: _tiposasignacion.length == 0
+                ? Row(
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Cargando Zonas...'),
+                    ],
+                  )
+                : DropdownButtonFormField(
+                    value: _zona,
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Elija una Zona...',
+                      labelText: 'Zona',
+                      errorText: _zonaShowError ? _zonaError : null,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                    items: _getComboZonas(),
+                    onChanged: (value) {
+                      _zona = value.toString();
+                      _filter3();
+                    },
+                  ),
+          ),
+        ),
+        // SizedBox(
+        //   width: 10,
+        // ),
+        // ElevatedButton(
+        //   child: Icon(Icons.search),
+        //   style: ElevatedButton.styleFrom(
+        //     primary: Color(0xFF282886),
+        //     minimumSize: Size(50, 50),
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(5),
+        //     ),
+        //   ),
+        //   onPressed: () => _getObras(),
+        // ),
+      ],
+    );
+  }
+
+  List<DropdownMenuItem<String>> _getComboZonas() {
+    List<DropdownMenuItem<String>> list = [];
+    list.add(DropdownMenuItem(
+      child: Text('Elija una Zona...'),
+      value: 'Elija una Zona...',
+    ));
+
+    _zonas.forEach((zona) {
+      if (zona.zona == '') {
+        zona.zona = ' Sin Zona';
+      }
+
+      list.add(DropdownMenuItem(
+        child: Text(zona.zona.toString()),
+        value: zona.zona.toString(),
+      ));
+    });
+
+    return list;
+  }
+
+//-----------------------------------------------------------------------------
 //------------------------------ METODO GETCONTENT --------------------------
 //-----------------------------------------------------------------------------
 
   Widget _getContent() {
     return Column(
       children: <Widget>[
-        _showTipos(),
+        _zonas.length > 1 ? _showZonas() : _showTipos(),
         //_showAsignacionesCount(),
         _showFiltros(),
         Expanded(
@@ -478,6 +567,30 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                               fontSize: 12,
                                             )),
                                       ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      e.zona != ""
+                                          ? Text("Zona: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF0e4888),
+                                                fontWeight: FontWeight.bold,
+                                              ))
+                                          : Container(),
+                                      e.zona != ""
+                                          ? Expanded(
+                                              child:
+                                                  Text('${e.zona.toString()}',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      )),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                   SizedBox(
@@ -759,6 +872,39 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   }
 
 //*****************************************************************************
+//************************** METODO GETZONAS **********************************
+//*****************************************************************************
+
+  Future<Null> _getZonas() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    bandera = false;
+    intentos = 0;
+
+    do {
+      Response response = Response(isSuccess: false);
+      response = await ApiHelper.getZonas(widget.user.idUser, _tipoasignacion);
+      intentos++;
+      if (response.isSuccess) {
+        bandera = true;
+        _zonas = response.result;
+      }
+    } while (bandera == false);
+    setState(() {});
+  }
+
+//*****************************************************************************
 //************************** METODO LOADOBRAS *********************************
 //*****************************************************************************
 
@@ -859,6 +1005,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     _asignaciones2 = _asignaciones;
 
     await _getCodigosCierre();
+    await _getZonas();
   }
 
 //*****************************************************************************
@@ -948,6 +1095,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   void _removeFilter() {
     setState(() {
+      _zona = 'Elija una Zona...';
       _isFiltered = false;
     });
     _asignaciones2 = _asignaciones;
@@ -1006,8 +1154,21 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     List<Asignacion2> filteredList = [];
     bool varA = false;
     bool varB = false;
+    bool varC = false;
     for (var asignacion in _asignaciones) {
+      if (_zona == 'Elija una Zona...') {
+        varC = true;
+      } else if (_zona == ' Sin Zona') {
+        varC = asignacion.zona == '';
+      } else {
+        varC = asignacion.zona == _zona;
+      }
+
       varA = (asignacion.nombre
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.cliente
               .toString()
               .toLowerCase()
               .contains(_search.toLowerCase()) ||
@@ -1024,7 +1185,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           ? asignacion.codigoCierre == 45
           : asignacion.codigoCierre != 9999;
 
-      if (varA && varB) {
+      if (varA && varB && varC) {
         filteredList.add(asignacion);
       }
     }
@@ -1046,7 +1207,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     bool varA = false;
     bool varB = false;
     bool varC = false;
+    bool varD = false;
+    bool varE = false;
+
     for (var asignacion in _asignaciones) {
+      if (_zona == 'Elija una Zona...') {
+        varD = true;
+      } else if (_zona == ' Sin Zona') {
+        varD = asignacion.zona == '';
+      } else {
+        varD = asignacion.zona == _zona;
+      }
+
       if (asignacion.fechaAsignada == null) {
         asignacion.fechaAsignada = DateTime.now().toString();
       }
@@ -1066,9 +1238,76 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           ? asignacion.codigoCierre == 45
           : asignacion.codigoCierre != 9999;
 
-      varC = (asignacion.fechaCita != null);
+      varE = (asignacion.fechaCita != null);
 
-      if (varA && (varB || varC)) {
+      varA = (asignacion.nombre
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.cliente
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.reclamoTecnicoID
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.domicilio
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()));
+
+      if (varA && (varB || varC) && varD && varE) {
+        filteredList.add(asignacion);
+      }
+    }
+
+    setState(() {
+      _asignaciones2 = filteredList;
+      _isFiltered = true;
+    });
+  }
+
+//*****************************************************************************
+//************************** METODO FILTER3 ***********************************
+//*****************************************************************************
+
+  _filter3() {
+    List<Asignacion2> filteredList = [];
+    bool varA = false;
+    bool varB = false;
+    bool varC = false;
+    for (var asignacion in _asignaciones) {
+      if (_zona == 'Elija una Zona...') {
+        varC = true;
+      } else if (_zona == ' Sin Zona') {
+        varC = asignacion.zona == '';
+      } else {
+        varC = asignacion.zona == _zona;
+      }
+
+      varA = (asignacion.nombre
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.cliente
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.reclamoTecnicoID
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.domicilio
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()));
+
+      varB = _prioridad
+          ? asignacion.codigoCierre == 45
+          : asignacion.codigoCierre != 9999;
+
+      if (varA && varB && varC) {
         filteredList.add(asignacion);
       }
     }

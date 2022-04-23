@@ -1,5 +1,4 @@
 class Asignacion2 {
-  String? recupidjobcard = '';
   String? cliente = '';
   String? nombre = '';
   String? domicilio = '';
@@ -44,10 +43,11 @@ class Asignacion2 {
   String? codigoequivalencia = '';
   String? deco1descripcion = '';
   int? elegir = 0;
+  String? observacionCaptura = '';
+  String? zona = '';
 
   Asignacion2(
-      {required this.recupidjobcard,
-      required this.cliente,
+      {required this.cliente,
       required this.nombre,
       required this.domicilio,
       required this.cp,
@@ -90,10 +90,11 @@ class Asignacion2 {
       required this.cantAsign,
       required this.codigoequivalencia,
       required this.deco1descripcion,
-      required this.elegir});
+      required this.elegir,
+      required this.observacionCaptura,
+      required this.zona});
 
   Asignacion2.fromJson(Map<String, dynamic> json) {
-    recupidjobcard = json['recupidjobcard'];
     cliente = json['cliente'];
     nombre = json['nombre'];
     domicilio = json['domicilio'];
@@ -138,11 +139,12 @@ class Asignacion2 {
     codigoequivalencia = json['codigoequivalencia'];
     deco1descripcion = json['deco1descripcion'];
     elegir = json['elegir'];
+    observacionCaptura = json['observacionCaptura'];
+    zona = json['zona'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['recupidjobcard'] = this.recupidjobcard;
     data['cliente'] = this.cliente;
     data['nombre'] = this.nombre;
     data['domicilio'] = this.domicilio;
@@ -187,12 +189,13 @@ class Asignacion2 {
     data['codigoequivalencia'] = this.codigoequivalencia;
     data['deco1descripcion'] = this.deco1descripcion;
     data['elegir'] = this.elegir;
+    data['observacionCaptura'] = this.observacionCaptura;
+    data['zona'] = this.zona;
     return data;
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'recupidjobcard': recupidjobcard,
       'cliente': cliente,
       'nombre': nombre,
       'domicilio': domicilio,
@@ -237,6 +240,8 @@ class Asignacion2 {
       'codigoequivalencia': codigoequivalencia,
       'deco1descripcion': deco1descripcion,
       'elegir': elegir,
+      'observacionCaptura': observacionCaptura,
+      'zona': zona,
     };
   }
 }

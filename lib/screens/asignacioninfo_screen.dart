@@ -68,7 +68,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   String _barCodeValue = '';
 
-  String _equipo = 'Elija un Equipo...';
+  String _equipo = 'Elija un Modelo...';
   String _equipoError = '';
   bool _equipoShowError = false;
   TextEditingController _equipoController = TextEditingController();
@@ -93,7 +93,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   String estadogaos = "";
 
   Asignacion2 _asignacion = Asignacion2(
-      recupidjobcard: '',
       cliente: '',
       nombre: '',
       domicilio: '',
@@ -137,7 +136,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       cantAsign: 0,
       codigoequivalencia: '',
       deco1descripcion: '',
-      elegir: 0);
+      elegir: 0,
+      observacionCaptura: '',
+      zona: '');
 
   LatLng _center = LatLng(0, 0);
 
@@ -258,13 +259,92 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 Column(
                   children: [
                     AppBar(
-                      title: (Text("Darío")),
+                      title: (Text("Observaciones")),
                       centerTitle: true,
                       backgroundColor: Color(0xff282886),
                     ),
                     Expanded(
                       child: Container(
-                        child: Center(child: Text('A resolver')),
+                        margin: EdgeInsets.all(10),
+                        child: Center(
+                            child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text("Novedades: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Expanded(
+                                  child: Text('${_asignacion.novedades}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Text("N° Series Extras: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Expanded(
+                                  child: Text('${_asignacion.nroSeriesExtras}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Text("Obs. Inicial: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Expanded(
+                                  child:
+                                      Text('${_asignacion.observacionCaptura}',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Text("Obs. Cliente: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Expanded(
+                                  child: Text('${_asignacion.observacion}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
                       ),
                     ),
                   ],
@@ -315,12 +395,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               Tab(
                 child: Row(
                   children: [
-                    Icon(Icons.all_out),
+                    Icon(Icons.list),
                     SizedBox(
                       width: 2,
                     ),
                     Text(
-                      "Darío",
+                      "Observ.",
                       style: TextStyle(fontSize: 14),
                     ),
                   ],
@@ -933,7 +1013,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   fontWeight: FontWeight.bold,
                                 )),
                             Expanded(
-                              child: Text(e.autonumerico.toString(),
+                              child: Text(e.idregistro.toString(),
                                   style: TextStyle(
                                     fontSize: 12,
                                   )),
@@ -950,28 +1030,28 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 }),
                           ],
                         ),
-                        // SizedBox(
-                        //   height: 1,
-                        // ),
-                        // Row(
-                        //   children: [
-                        //     Text("Equipo: ",
-                        //         style: TextStyle(
-                        //           fontSize: 12,
-                        //           color: Color(0xFF0e4888),
-                        //           fontWeight: FontWeight.bold,
-                        //         )),
-                        //     Expanded(
-                        //       child: Text(e.decO1.toString(),
-                        //           style: TextStyle(
-                        //             fontSize: 12,
-                        //           )),
-                        //     ),
-                        //     SizedBox(
-                        //       height: 1,
-                        //     ),
-                        //   ],
-                        // ),
+                        SizedBox(
+                          height: 1,
+                        ),
+                        Row(
+                          children: [
+                            Text("Equipo: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Expanded(
+                              child: Text(e.decO1.toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 1,
+                            ),
+                          ],
+                        ),
                         Row(
                           children: [
                             Text("Descripción: ",
@@ -1010,10 +1090,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         SizedBox(
                           height: 1,
                         ),
-
                         Row(
                           children: [
-                            Text("Conf. Cód. Equipo:   ",
+                            Text("Conf. Modelo:   ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFF0e4888),
@@ -1026,7 +1105,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 decoration: InputDecoration(
                                   fillColor: Colors.white,
                                   filled: true,
-                                  hintText: 'Elija un Equipo...',
+                                  hintText: 'Elija un Modelo...',
                                   errorText:
                                       _equipoShowError ? _equipoError : null,
                                 ),
@@ -1044,7 +1123,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 )),
                           ],
                         ),
-
                         SizedBox(
                           height: 10,
                         ),
@@ -1941,8 +2019,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   List<DropdownMenuItem<String>> _getComboEquipos() {
     List<DropdownMenuItem<String>> list = [];
     list.add(DropdownMenuItem(
-      child: Text('Elija un Equipo...'),
-      value: 'Elija un Equipo...',
+      child: Text('Elija un Modelo...'),
+      value: 'Elija un Modelo...',
     ));
 
     widget.controlesEquivalencia.forEach((control) {

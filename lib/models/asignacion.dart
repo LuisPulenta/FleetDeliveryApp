@@ -1,5 +1,4 @@
 class Asignacion {
-  String recupidjobcard = '';
   String? cliente = '';
   String? nombre = '';
   String? domicilio = '';
@@ -37,11 +36,12 @@ class Asignacion {
   String? telefAlternativo2 = '';
   String? telefAlternativo3 = '';
   String? telefAlternativo4 = '';
+  String? observacionCaptura = '';
+  String? zona = '';
   int? cantAsign = 0;
 
   Asignacion(
-      {required this.recupidjobcard,
-      required this.cliente,
+      {required this.cliente,
       required this.nombre,
       required this.domicilio,
       required this.cp,
@@ -78,10 +78,11 @@ class Asignacion {
       required this.telefAlternativo2,
       required this.telefAlternativo3,
       required this.telefAlternativo4,
-      required this.cantAsign});
+      required this.cantAsign,
+      required this.observacionCaptura,
+      required this.zona});
 
   Asignacion.fromJson(Map<String, dynamic> json) {
-    recupidjobcard = json['recupidjobcard'];
     cliente = json['cliente'];
     nombre = json['nombre'];
     domicilio = json['domicilio'];
@@ -120,11 +121,12 @@ class Asignacion {
     telefAlternativo3 = json['telefAlternativo3'];
     telefAlternativo4 = json['telefAlternativo4'];
     cantAsign = json['cantAsign'];
+    observacionCaptura = json['observacionCaptura'];
+    zona = json['zona'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['recupidjobcard'] = this.recupidjobcard;
     data['cliente'] = this.cliente;
     data['nombre'] = this.nombre;
     data['domicilio'] = this.domicilio;
@@ -163,12 +165,13 @@ class Asignacion {
     data['telefAlternativo3'] = this.telefAlternativo3;
     data['telefAlternativo4'] = this.telefAlternativo4;
     data['cantAsign'] = this.cantAsign;
+    data['observacionCaptura'] = this.observacionCaptura;
+    data['zona'] = this.zona;
     return data;
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'recupidjobcard': recupidjobcard,
       'cliente': cliente,
       'nombre': nombre,
       'domicilio': domicilio,
@@ -207,6 +210,8 @@ class Asignacion {
       'telefAlternativo3': telefAlternativo3,
       'telefAlternativo4': telefAlternativo4,
       'cantAsign': cantAsign,
+      'observacionCaptura': observacionCaptura,
+      'zona': zona,
     };
   }
 }
