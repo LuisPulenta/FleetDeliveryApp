@@ -1221,13 +1221,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       if (condicionTexto &&
           condicionAntig &&
           (condicionCodCierre || condicionFechaCita) &&
-          condicionZona)
-      // (condicionTexto &&
-      //     condicionPrioridad &&
-      //     condicionZona &&
-      //     condicionAntig &&
-      //     (condicionCodCierre || condicionFechaCita))
-      {
+          condicionZona) {
         filteredList.add(asignacion);
       }
     }
