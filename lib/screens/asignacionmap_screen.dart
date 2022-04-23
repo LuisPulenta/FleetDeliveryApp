@@ -62,18 +62,20 @@ class _AsignacionMapScreenState extends State<AsignacionMapScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _initialPosition = (widget.markers.length == 1)
-        ? CameraPosition(
-            target: LatLng(double.parse(widget.asignacion.grxx!),
-                double.parse(widget.asignacion.gryy!)),
-            zoom: 16.0)
-        : CameraPosition(
-            target: LatLng(double.parse(widget.asignacion.grxx!),
-                double.parse(widget.asignacion.gryy!)),
-            zoom: 12.0);
+
+    double? grxx = double.tryParse(widget.asignacion.grxx!);
+    double? gryy = double.tryParse(widget.asignacion.gryy!);
+
+    _initialPosition =
+        (widget.markers.length == 1 && grxx != null && gryy != null)
+            ? CameraPosition(target: LatLng(grxx, gryy), zoom: 16.0)
+            : (widget.markers.length > 1 && grxx != null && gryy != null)
+                ? CameraPosition(target: LatLng(grxx, gryy), zoom: 12.0)
+                : CameraPosition(target: LatLng(0, 0), zoom: 12.0);
     ubicOk = true;
-    _center = LatLng(double.parse(widget.asignacion.grxx!),
-        double.parse(widget.asignacion.gryy!));
+    _center =
+        (grxx != null && gryy != null) ? LatLng(grxx, gryy) : LatLng(0, 0);
+
     _markers = widget.markers;
     // _markers.add(Marker(
     //   markerId: MarkerId(widget.paradaenvio.secuencia.toString()),

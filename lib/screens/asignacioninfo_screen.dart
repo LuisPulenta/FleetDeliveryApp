@@ -154,18 +154,17 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     __codigoscierre = widget.codigoscierre;
     _tabController = TabController(length: 3, vsync: this);
-    _initialPosition = (_asignacion.grxx != "" && _asignacion.gryy != "")
-        ? CameraPosition(
-            target: LatLng(double.parse(_asignacion.grxx!),
-                double.parse(_asignacion.gryy!)),
-            zoom: 16.0)
+
+    double? grxx = double.tryParse(_asignacion.grxx!);
+    double? gryy = double.tryParse(_asignacion.gryy!);
+
+    _initialPosition = (grxx != null && gryy != null)
+        ? CameraPosition(target: LatLng(grxx, gryy), zoom: 16.0)
         : CameraPosition(target: LatLng(0, 0), zoom: 16.0);
 
     ubicOk = true;
-    _center = (_asignacion.grxx != "" && _asignacion.gryy != "")
-        ? LatLng(
-            double.parse(_asignacion.grxx!), double.parse(_asignacion.gryy!))
-        : LatLng(0, 0);
+    _center =
+        (grxx != null && gryy != null) ? LatLng(grxx, gryy) : LatLng(0, 0);
 
     _markers.clear();
     _markers.add(Marker(
@@ -549,11 +548,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                               color: Color(0xFF0e4888),
                                               fontWeight: FontWeight.bold,
                                             )),
-                                        Text(
-                                            '${_asignacion.localidad.toString()}-${_asignacion.partido.toString()}',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        Expanded(
+                                          child: Text(
+                                              '${_asignacion.localidad.toString()}-${_asignacion.partido.toString()}',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              )),
+                                        ),
                                       ],
                                     ),
                                     SizedBox(

@@ -1260,7 +1260,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       var lat = double.tryParse(asign.grxx.toString()) ?? 0;
       var long = double.tryParse(asign.gryy.toString()) ?? 0;
 
-      if (lat.toString().length > 1 && long.toString().length > 1) {
+      if (lat.toString().length > 3 && long.toString().length > 3) {
         _markers.add(Marker(
           markerId: MarkerId(asign.reclamoTecnicoID.toString()),
           position: LatLng(lat, long),
