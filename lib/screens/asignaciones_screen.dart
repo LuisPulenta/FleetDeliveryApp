@@ -1256,11 +1256,31 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   void _showMap() {
     _markers.clear();
 
+    double latmin = 180.0;
+    double latmax = -180.0;
+    double longmin = 180.0;
+    double longmax = -180.0;
+    double latcenter = 0.0;
+    double longcenter = 0.0;
+
     for (Asignacion2 asign in _asignaciones2) {
       var lat = double.tryParse(asign.grxx.toString()) ?? 0;
       var long = double.tryParse(asign.gryy.toString()) ?? 0;
 
       if (lat.toString().length > 3 && long.toString().length > 3) {
+        if (lat < latmin) {
+          latmin = lat;
+        }
+        if (lat > latmax) {
+          latmax = lat;
+        }
+        if (long < longmin) {
+          longmin = long;
+        }
+        if (long > longmax) {
+          longmax = long;
+        }
+
         _markers.add(Marker(
           markerId: MarkerId(asign.reclamoTecnicoID.toString()),
           position: LatLng(lat, long),
@@ -1379,6 +1399,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         ));
       }
     }
+    latcenter = (latmin + latmax) / 2;
+    longcenter = (longmin + longmax) / 2;
 
     Navigator.push(
       context,
@@ -1387,6 +1409,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           user: widget.user,
           positionUser: widget.positionUser,
           asignacion: _asignaciones[0],
+          posicion: LatLng(latcenter, longcenter),
           markers: _markers,
           customInfoWindowController: _customInfoWindowController,
         ),

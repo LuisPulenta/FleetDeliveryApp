@@ -11,6 +11,7 @@ class AsignacionesMapScreen extends StatefulWidget {
   final Usuario user;
   final Position positionUser;
   final Asignacion2 asignacion;
+  final LatLng posicion;
   final Set<Marker> markers;
   final CustomInfoWindowController customInfoWindowController;
 
@@ -18,6 +19,7 @@ class AsignacionesMapScreen extends StatefulWidget {
       {required this.user,
       required this.positionUser,
       required this.asignacion,
+      required this.posicion,
       required this.markers,
       required this.customInfoWindowController});
 
@@ -62,21 +64,13 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    double? grxx = double.tryParse(widget.asignacion.grxx!);
-    double? gryy = double.tryParse(widget.asignacion.gryy!);
 
     _markers = widget.markers;
 
-    _initialPosition =
-        (widget.markers.length == 1 && grxx != null && gryy != null)
-            ? CameraPosition(target: LatLng(grxx, gryy), zoom: 16.0)
-            : (widget.markers.length > 1 && grxx != null && gryy != null)
-                ? CameraPosition(target: LatLng(grxx, gryy), zoom: 12.0)
-                : CameraPosition(target: LatLng(0, 0), zoom: 12.0);
+    _initialPosition = CameraPosition(target: widget.posicion, zoom: 3.0);
 
     ubicOk = true;
-    _center =
-        (grxx != null && gryy != null) ? LatLng(grxx, gryy) : LatLng(0, 0);
+    _center = widget.posicion;
 
     // _markers.add(Marker(
     //   markerId: MarkerId(widget.paradaenvio.secuencia.toString()),

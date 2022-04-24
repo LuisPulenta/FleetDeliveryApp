@@ -1917,10 +1917,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
   }
 
-  void _showMap(Asignacion2 asignacion) {
+  void _showMap(Asignacion2 asignacion) async {
     _markers.clear();
     var lat = double.tryParse(asignacion.grxx.toString()) ?? 0;
     var long = double.tryParse(asignacion.gryy.toString()) ?? 0;
+
+    if (lat == 0 || long == 0 || isNullOrEmpty(lat) || isNullOrEmpty(long)) {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso',
+          message: "Esta parada no tiene coordenadas cargadas.",
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
 
     if (lat.toString().length > 1 && long.toString().length > 1) {
       _markers.add(
