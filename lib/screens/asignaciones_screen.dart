@@ -41,6 +41,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   List<Zona> _zonas = [];
   List<Asignacion2> _asignaciones = [];
   List<Asignacion2> _asignaciones2 = [];
+
   List<ControlesEquivalencia> _controlesEquivalencia = [];
 
   List<FuncionesApp> _funcionesApp = [];
@@ -49,8 +50,11 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       habilitaFoto: 0,
       habilitaDNI: 0,
       habilitaEstadisticas: 0,
-      habilitaFirma: 0);
+      habilitaFirma: 0,
+      serieObligatoria: 0,
+      codigoFinal: 0);
 
+  List<CodigoCierre> _codigoscierreAux = [];
   List<CodigoCierre> _codigoscierre = [];
 
   String _tipoasignacion = 'Elija un Tipo de Asignación...';
@@ -388,7 +392,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           ),
           Row(
             children: [
-              Text("Antiguedad: ",
+              Text("Antiguedad (días): ",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -404,7 +408,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                 },
                 divisions: 5,
               ),
-              Center(child: Text(_sliderValue.toString())),
+              Center(child: Text(_sliderValue.round().toString())),
             ],
           ),
         ],
@@ -1058,7 +1062,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           ]);
       return;
     }
-    _codigoscierre = response.result;
+    _codigoscierreAux = response.result;
+    _codigoscierre.clear();
+
+    _codigoscierreAux.forEach((codCierre) {
+      if (codCierre.codigoCierre != _funcionApp.codigoFinal) {
+        _codigoscierre.add(codCierre);
+      }
+    });
+
     _codigoscierre.sort((a, b) {
       return a.codigoCierre
           .toString()
@@ -1254,6 +1266,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //*****************************************************************************
 
   void _showMap() {
+    if (_asignaciones2.length == 0) {
+      return;
+    }
+
     _markers.clear();
 
     double latmin = 180.0;

@@ -92,6 +92,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   String estadogaos = "";
 
+  final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
+
   Asignacion2 _asignacion = Asignacion2(
       cliente: '',
       nombre: '',
@@ -772,15 +774,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Expanded(
+              flex: 6,
               child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.done),
                       SizedBox(
-                        width: 2,
+                        width: 3,
                       ),
-                      Text('Si a todo'),
+                      Text('Realizado', style: TextStyle(fontSize: 12)),
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
@@ -795,18 +798,19 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   }),
             ),
             SizedBox(
-              width: 5,
+              width: 3,
             ),
             Expanded(
+              flex: 7,
               child: ElevatedButton(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.cancel),
                     SizedBox(
-                      width: 2,
+                      width: 3,
                     ),
-                    Text('No a todo'),
+                    Text('No Realizado', style: TextStyle(fontSize: 12)),
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
@@ -822,10 +826,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               ),
             ),
             SizedBox(
-              width: 5,
+              width: 3,
             ),
             _asignacion.cantAsign! > 1
                 ? Expanded(
+                    flex: 6,
                     child: ElevatedButton(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -834,7 +839,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           SizedBox(
                             width: 2,
                           ),
-                          Text('Parcial'),
+                          Text('Parcial', style: TextStyle(fontSize: 12)),
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
@@ -862,6 +867,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         Container(
           padding: EdgeInsets.all(0),
           child: DropdownButtonFormField(
+            key: _key,
             isExpanded: true,
             value: _codigocierre,
             decoration: InputDecoration(
@@ -875,9 +881,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             ),
             items: _getComboCodigosCierre(),
-            onChanged: (value) {
-              _codigocierre = value as int;
-            },
+            onChanged: (estadogaos == 'INC' || estadogaos == 'PAR')
+                ? (value) {
+                    _codigocierre = value as int;
+                  }
+                : null,
           ),
         ),
         SizedBox(
@@ -1019,16 +1027,19 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     fontSize: 12,
                                   )),
                             ),
-                            Checkbox(
-                                value: e.elegir == 1 ? true : false,
-                                onChanged: (value) {
-                                  for (Asign asign in _asigns) {
-                                    if (asign.autonumerico == e.autonumerico) {
-                                      asign.elegir = value == true ? 1 : 0;
-                                    }
-                                  }
-                                  setState(() {});
-                                }),
+                            _asigns.length > 1
+                                ? Checkbox(
+                                    value: e.elegir == 1 ? true : false,
+                                    onChanged: (value) {
+                                      for (Asign asign in _asigns) {
+                                        if (asign.autonumerico ==
+                                            e.autonumerico) {
+                                          asign.elegir = value == true ? 1 : 0;
+                                        }
+                                      }
+                                      setState(() {});
+                                    })
+                                : Container(),
                           ],
                         ),
                         SizedBox(
@@ -1850,6 +1861,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   void _elegirtodos() {
     estadogaos = "EJB";
+    _codigocierre = -1;
+    _key.currentState?.reset();
+
     for (Asign asign in _asigns) {
       asign.estadO2 = "SI";
       asign.elegir = 1;
@@ -1859,7 +1873,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   }
 
   void _deselegirtodos() {
-    estadogaos = "PEN";
+    estadogaos = "INC";
     for (Asign asign in _asigns) {
       asign.estadO2 = "NO";
       asign.elegir = 0;
