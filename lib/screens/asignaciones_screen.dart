@@ -1091,6 +1091,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   user: widget.user,
                   asignacion: asignacion,
                   codigoscierre: _codigoscierre,
+                  codigoscierreAux: _codigoscierreAux,
                   positionUser: widget.positionUser,
                   funcionApp: _funcionApp,
                   controlesEquivalencia: _controlesEquivalencia,

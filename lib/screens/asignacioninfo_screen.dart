@@ -20,6 +20,7 @@ class AsignacionInfoScreen extends StatefulWidget {
   final Usuario user;
   final Asignacion2 asignacion;
   final List<CodigoCierre> codigoscierre;
+  final List<CodigoCierre> codigoscierreAux;
   final Position positionUser;
   final FuncionesApp funcionApp;
   final List<ControlesEquivalencia> controlesEquivalencia;
@@ -28,6 +29,7 @@ class AsignacionInfoScreen extends StatefulWidget {
       {required this.user,
       required this.asignacion,
       required this.codigoscierre,
+      required this.codigoscierreAux,
       required this.positionUser,
       required this.funcionApp,
       required this.controlesEquivalencia});
@@ -44,6 +46,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
+
+  String codCierre = '';
+  String descCodCierre = '';
 
   int _codigocierre = -1;
   String _codigocierreError = '';
@@ -639,6 +644,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
+//*****************************************************************************
+//************************** SHOWBUTTONDNIFIRMA *******************************
+//*****************************************************************************
+
   Widget _showButtonsDNIFirma() {
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20),
@@ -733,6 +742,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       ),
     );
   }
+
+//*****************************************************************************
+//************************** SHOWBUTTONSESTADOS *******************************
+//*****************************************************************************
 
   Widget _showButtonsEstados() {
     return Column(
@@ -860,6 +873,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       ],
     );
   }
+
+//*****************************************************************************
+//************************** SHOWBUTTONSGUARDARCANCELAR ***********************
+//*****************************************************************************
 
   Widget _showButtonsGuardarCancelar() {
     return Column(
@@ -995,6 +1012,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
+//*****************************************************************************
+//************************** SHOWAUTONUMERICOS ********************************
+//*****************************************************************************
+
   Widget _showAutonumericos() {
     return ListView(
       children: _asigns.map((e) {
@@ -1124,6 +1145,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 items: _getComboEquipos(),
                                 onChanged: (value) {
                                   _equipo = value.toString();
+
+                                  for (Asign asign in _asigns) {
+                                    if (asign.autonumerico == e.autonumerico) {
+                                      asign.marcaModeloId = _equipo;
+                                    }
+                                  }
                                 },
                               ),
                             ),
@@ -1315,6 +1342,46 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                             ),
                                                           ),
                                                           onPressed: () {
+                                                            if (_macserieController
+                                                                    .text
+                                                                    .length <
+                                                                6) {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return AlertDialog(
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
+                                                                      ),
+                                                                      title: Text(
+                                                                          'Aviso'),
+                                                                      content: Column(
+                                                                          mainAxisSize: MainAxisSize
+                                                                              .min,
+                                                                          children: <
+                                                                              Widget>[
+                                                                            Text('El código debe tener al menos 6 caracteres.'),
+                                                                            SizedBox(
+                                                                              height: 10,
+                                                                            ),
+                                                                          ]),
+                                                                      actions: <
+                                                                          Widget>[
+                                                                        TextButton(
+                                                                            onPressed: () =>
+                                                                                Navigator.of(context).pop(),
+                                                                            child: Text('Ok')),
+                                                                      ],
+                                                                    );
+                                                                  });
+
+                                                              return;
+                                                            }
+
                                                             for (Asign asign
                                                                 in _asigns) {
                                                               if (asign
@@ -1376,6 +1443,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
+//*****************************************************************************
+//************************** GETCOMBOCODIGOSCIERRE ****************************
+//*****************************************************************************
+
   List<DropdownMenuItem<int>> _getComboCodigosCierre() {
     List<DropdownMenuItem<int>> list = [];
     list.add(DropdownMenuItem(
@@ -1392,6 +1463,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     return list;
   }
+
+//*****************************************************************************
+//************************** TAKEPICTURE **************************************
+//*****************************************************************************
 
   void _takePicture() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -1428,6 +1503,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
     }
   }
+
+//*****************************************************************************
+//************************** TAKESIGNATURE ************************************
+//*****************************************************************************
 
   void _takeSignature() async {
     Response? response = await Navigator.push(
@@ -1509,6 +1588,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     var a = 1;
   }
+
+//*****************************************************************************
+//************************** SHOWTELEFONOS ************************************
+//*****************************************************************************
 
   Widget _showTelefonos() {
     return Card(
@@ -1789,7 +1872,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-  //-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 //-------------------------- METODO NAVEGAR -------------------------------
 //-------------------------------------------------------------------------
 
@@ -1892,6 +1975,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
   }
 
+//*****************************************************************************
+//************************** METODO GUARDAR ***********************************
+//*****************************************************************************
+
   void _guardar() async {
     if (estadogaos == "PEN") {
       await showAlertDialog(
@@ -1901,6 +1988,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           actions: <AlertDialogAction>[
             AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
+      return;
     }
     ;
 
@@ -1913,6 +2001,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           actions: <AlertDialogAction>[
             AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
+      return;
     }
     ;
 
@@ -1925,11 +2014,201 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           actions: <AlertDialogAction>[
             AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
+      return;
     }
     ;
 
+    for (Asign asign in _asigns) {
+      bool band = false;
+
+      if (asign.estadO3!.length < 6) {
+        band = true;
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                title: Text('Aviso'),
+                content:
+                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  Text('Mac/Serie debe tener al menos 6 caracteres.'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ]),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Ok')),
+                ],
+              );
+            });
+      }
+      ;
+      setState(() {});
+      if (band) {
+        return;
+      }
+    }
+    ;
+
+    for (Asign asign in _asigns) {
+      codCierre = (estadogaos == 'EJB')
+          ? widget.funcionApp.codigoFinal.toString()
+          : _codigocierre.toString();
+
+      for (CodigoCierre cod in widget.codigoscierreAux) {
+        if (cod.codigoCierre.toString() == codCierre) {
+          descCodCierre = cod.descripcion!;
+        }
+      }
+
+      Map<String, dynamic> request = {
+        //----------------- Campos que mantienen el valor -----------------
+        'idregistro': asign.idregistro,
+        'subagentemercado': asign.subagentemercado,
+        'recupidjobcard': asign.recupidjobcard,
+        'cliente': asign.cliente,
+        'nombre': asign.nombre,
+        'domicilio': asign.domicilio,
+        'entrecallE1': asign.entrecallE1,
+        'entrecallE2': asign.entrecallE2,
+        'cp': asign.cp,
+        'ztecnico': asign.ztecnico,
+        'provincia': asign.provincia,
+        'localidad': asign.localidad,
+        'telefono': asign.telefono,
+        'grxx': asign.grxx,
+        'gryy': asign.gryy,
+        'decO1': asign.decO1,
+        'cmodeM1': asign.cmodeM1,
+        'estado': asign.estado,
+        'zona': asign.zona,
+        'idr': asign.idr,
+        'modelo': asign.modelo,
+        'smartcard': asign.smartcard,
+        'ruta': asign.ruta,
+        'tarifa': asign.tarifa,
+        'proyectomodulo': asign.proyectomodulo,
+        'bajasistema': asign.bajasistema,
+        'idcabeceracertif': asign.idcabeceracertif,
+        'subcon': asign.subcon,
+        'causantec': asign.causantec,
+        'pasaDefinitiva': asign.pasaDefinitiva,
+        'fechaAsignada': asign.fechaAsignada,
+        'hsCaptura': asign.hsCaptura,
+        'hsAsignada': asign.hsAsignada,
+        'userID': asign.userID,
+        'terminalAsigna': asign.terminalAsigna,
+        'esCR': asign.esCR,
+        'autonumerico': asign.autonumerico,
+        'reclamoTecnicoID': asign.reclamoTecnicoID,
+        'clienteTipoId': asign.clienteTipoId,
+        'documento': asign.documento,
+        'partido': asign.partido,
+        'emailCliente': asign.emailCliente,
+        'observacionCaptura': asign.observacionCaptura,
+        'fechaInicio': asign.fechaInicio,
+        'fechaEnvio': asign.fechaEnvio,
+        'enviado': asign.enviado,
+        'cancelado': asign.cancelado,
+        'recupero': asign.recupero,
+        'visitaTecnica': asign.visitaTecnica,
+        'novedades': asign.novedades,
+        'pdfGenerado': asign.pdfGenerado,
+        'fechaCumplidaTecnico': asign.fechaCumplidaTecnico,
+        'archivoOutGenerado': asign.archivoOutGenerado,
+        'idSuscripcion': asign.idSuscripcion,
+        'itemsID': asign.itemsID,
+        'sectorOperativo': asign.sectorOperativo,
+        'idTipoTrabajoRel': asign.idTipoTrabajoRel,
+        'motivos': asign.motivos,
+        'fc_inicio_base': asign.fc_inicio_base,
+        'vc_fin_base': asign.vc_fin_base,
+        'fechaCita': asign.fechaCita,
+        'medioCita': asign.medioCita,
+        'nroSeriesExtras': asign.nroSeriesExtras,
+        'escames': asign.escames,
+        'escaanio': asign.escaanio,
+        'estado4': asign.estado4,
+        'loteNro': asign.loteNro,
+        'fechabaja': asign.fechabaja,
+        'tipocliente': asign.tipocliente,
+        'incentivo': asign.incentivo,
+        'desconexion': asign.desconexion,
+        'quincena': asign.quincena,
+        'impreso': asign.impreso,
+        'idusercambio': asign.idusercambio,
+        'franjaentrega': asign.franjaentrega,
+        'telefAlternativo1': asign.telefAlternativo1,
+        'telefAlternativo2': asign.telefAlternativo2,
+        'telefAlternativo3': asign.telefAlternativo3,
+        'telefAlternativo4': asign.telefAlternativo4,
+        'tag1': asign.tag1,
+        'tipotel1': asign.tipotel1,
+        'tipotel2': asign.tipotel2,
+        'tipotel3': asign.tipotel3,
+        'tipotel4': asign.tipotel4,
+        'valorunico': asign.valorunico,
+        'clienteCompleto': asign.clienteCompleto,
+        'entreCalles': asign.entreCalles,
+        'descripcion': asign.descripcion,
+        'cierraenapp': asign.cierraenapp,
+        'nomostrarapp': asign.nomostrarapp,
+        'urlDni2': asign.urlDni2,
+        'urlFirma2': asign.urlFirma2,
+        'fechacarga': asign.fechacarga,
+        'fechaent': asign.fechaent,
+        'tecasig': asign.tecasig,
+        'fechacaptura': asign.fechacaptura,
+        'linkFoto': asign.linkFoto,
+
+        //----------------- Campos que cambian el valor -----------------
+        'estadogaos': estadogaos,
+        'estadO3': asign.estadO3, //Mac Serie
+        'marcaModeloId': asign.marcaModeloId,
+        'observacion': _observaciones,
+        'evento4': asign.evento3,
+        'fechaEvento4': asign.fechaEvento3,
+        'evento3': asign.evento2,
+        'fechaEvento3': asign.fechaEvento2,
+        'evento2': asign.evento1,
+        'fechaEvento2': asign.fechaEvento1,
+        'evento1': descCodCierre,
+        'fechaEvento1': DateTime.now().toString(),
+        'estadO2': estadogaos == 'EJB' ? 'SI' : 'NO',
+        'codigoCierre': codCierre,
+
+        'urlDni': 'Por ahora no hay DNI',
+        'urlFirma': 'Por ahora no hay Firma',
+        'fechacumplida': DateTime.now().toString(),
+        'hsCumplida': 80000,
+        'hsCumplidaTime': DateTime.now().toString(),
+      };
+
+      Response response = await ApiHelper.put(
+          '/api/AsignacionesOTs/', asign.idregistro.toString(), request);
+
+      if (!response.isSuccess) {
+        await showAlertDialog(
+            context: context,
+            title: 'Error',
+            message: response.message,
+            actions: <AlertDialogAction>[
+              AlertDialogAction(key: null, label: 'Aceptar'),
+            ]);
+        return;
+      }
+    }
+
     setState(() {});
   }
+
+//*****************************************************************************
+//************************** SHOWMAP ******************************************
+//*****************************************************************************
 
   void _showMap(Asignacion2 asignacion) async {
     _markers.clear();
@@ -1940,7 +2219,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       await showAlertDialog(
           context: context,
           title: 'Aviso',
-          message: "Esta parada no tiene coordenadas cargadas.",
+          message: "Esta asignación no tiene coordenadas cargadas.",
           actions: <AlertDialogAction>[
             AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
@@ -2041,6 +2320,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       ),
     );
   }
+
+//*****************************************************************************
+//************************** GETCOMBOEQUIPOS **********************************
+//*****************************************************************************
 
   List<DropdownMenuItem<String>> _getComboEquipos() {
     List<DropdownMenuItem<String>> list = [];
