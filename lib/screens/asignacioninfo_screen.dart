@@ -48,7 +48,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       CustomInfoWindowController();
 
   String codCierre = '';
-  String descCodCierre = '';
+  String descCodCierreEJB = '';
+  String descCodCierreINC = '';
 
   int _codigocierre = -1;
   String _codigocierreError = '';
@@ -231,10 +232,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         backgroundColor: Color(0xff282886),
                       ),
                       Expanded(
-                        child: SingleChildScrollView(child: _showAsignacion()),
-                        flex: 3,
+                          flex: widget.funcionApp.habilitaDNI == 1 ? 15 : 5,
+                          child:
+                              SingleChildScrollView(child: _showAsignacion())),
+                      Expanded(
+                        child: _showAutonumericos(),
+                        flex: widget.funcionApp.habilitaDNI == 1 ? 7 : 4,
                       ),
-                      Expanded(child: _showAutonumericos(), flex: 2)
+                      _showButtonsGuardarCancelar(),
                     ],
                   ),
                 ),
@@ -441,7 +446,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
-      margin: EdgeInsets.fromLTRB(8, 12, 8, 0),
+      margin: EdgeInsets.fromLTRB(8, 12, 8, 8),
       child: Container(
         margin: EdgeInsets.all(0),
         padding: EdgeInsets.all(0),
@@ -626,7 +631,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           Divider(
                             color: Colors.black,
                           ),
-                          _showButtonsGuardarCancelar(),
+                          //_showButtonsGuardarCancelar(),
+                          _showCodCierreObservaciones(),
 
                           Divider(
                             color: Colors.black,
@@ -875,10 +881,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   }
 
 //*****************************************************************************
-//************************** SHOWBUTTONSGUARDARCANCELAR ***********************
+//************************** SHOWCODCIERREOBSERVACIONES ***********************
 //*****************************************************************************
 
-  Widget _showButtonsGuardarCancelar() {
+  Widget _showCodCierreObservaciones() {
     return Column(
       children: [
         Container(
@@ -922,93 +928,104 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             _observaciones = value;
           },
         ),
-        SizedBox(
-          height: 1,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Expanded(
-              child: ElevatedButton(
+      ],
+    );
+  }
+
+//*****************************************************************************
+//************************** SHOWBUTTONSGUARDARCANCELAR ***********************
+//*****************************************************************************
+
+  Widget _showButtonsGuardarCancelar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Expanded(
+                child: ElevatedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.save),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text('Guardar', style: TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF282886),
+                      minimumSize: Size(double.infinity, 40),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {
+                      _guardar();
+                    }),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.save),
+                      Icon(Icons.cancel),
                       SizedBox(
                         width: 2,
                       ),
-                      Text('Guardar', style: TextStyle(fontSize: 12)),
+                      Text('Cancelar', style: TextStyle(fontSize: 12)),
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF282886),
+                    primary: Color(0xffdf281e),
                     minimumSize: Size(double.infinity, 40),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
                   onPressed: () {
-                    _guardar();
-                  }),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Expanded(
-              child: ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.cancel),
-                    SizedBox(
-                      width: 2,
-                    ),
-                    Text('Cancelar', style: TextStyle(fontSize: 12)),
-                  ],
+                    Navigator.pop(context, "No");
+                  },
                 ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xffdf281e),
-                  minimumSize: Size(double.infinity, 40),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pop(context, "No");
-                },
               ),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Expanded(
-              child: ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.star_half),
-                    SizedBox(
-                      width: 2,
-                    ),
-                    Text(
-                      'Otro recup.',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFc41c9c),
-                  minimumSize: Size(double.infinity, 40),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                onPressed: () {},
+              SizedBox(
+                width: 5,
               ),
-            ),
-          ],
-        ),
-      ],
+              Expanded(
+                child: ElevatedButton(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.star_half),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Text(
+                        'Otro recup.',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFc41c9c),
+                    minimumSize: Size(double.infinity, 40),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -1019,426 +1036,432 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   Widget _showAutonumericos() {
     return ListView(
       children: _asigns.map((e) {
-        return Card(
-            color: Color(0xFFbfd4e7),
-            shadowColor: Color(0xFF0000FF),
-            elevation: 10,
-            margin: EdgeInsets.all(5),
-            child: InkWell(
-              onTap: () {}, //=> _goHistory(e),
-              child: Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: Column(
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            Text("Id Gaos: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.idregistro.toString(),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Card(
+              color: Color(0xFFbfd4e7),
+              shadowColor: Color(0xFF0000FF),
+              elevation: 10,
+              margin: EdgeInsets.all(5),
+              child: InkWell(
+                onTap: () {}, //=> _goHistory(e),
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                          child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: [
+                              Text("Id Gaos: ",
                                   style: TextStyle(
                                     fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
                                   )),
-                            ),
-                            _asigns.length > 1
-                                ? Checkbox(
-                                    value: e.elegir == 1 ? true : false,
-                                    onChanged: (value) {
-                                      for (Asign asign in _asigns) {
-                                        if (asign.autonumerico ==
-                                            e.autonumerico) {
-                                          asign.elegir = value == true ? 1 : 0;
+                              Expanded(
+                                child: Text(e.idregistro.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                              _asigns.length > 1 && estadogaos == 'PAR'
+                                  ? Checkbox(
+                                      value: e.elegir == 1 ? true : false,
+                                      onChanged: (value) {
+                                        for (Asign asign in _asigns) {
+                                          if (asign.autonumerico ==
+                                              e.autonumerico) {
+                                            asign.elegir =
+                                                value == true ? 1 : 0;
+                                          }
                                         }
+                                        setState(() {});
+                                      })
+                                  : Container(),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              Text("Equipo: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(e.decO1.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                              SizedBox(
+                                height: 1,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text("Descripción: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(e.codigoequivalencia.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              Text("Modelo: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(e.marcaModeloId.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              Text("Conf. Modelo:   ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: DropdownButtonFormField(
+                                  value: _equipo,
+                                  itemHeight: 50,
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    hintText: 'Elija un Modelo...',
+                                    errorText:
+                                        _equipoShowError ? _equipoError : null,
+                                  ),
+                                  items: _getComboEquipos(),
+                                  onChanged: (value) {
+                                    _equipo = value.toString();
+
+                                    for (Asign asign in _asigns) {
+                                      if (asign.autonumerico ==
+                                          e.autonumerico) {
+                                        asign.marcaModeloId = _equipo;
                                       }
-                                      setState(() {});
-                                    })
-                                : Container(),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 1,
-                        ),
-                        Row(
-                          children: [
-                            Text("Equipo: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.decO1.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
-                            ),
-                            SizedBox(
-                              height: 1,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text("Descripción: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.codigoequivalencia.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 1,
-                        ),
-                        Row(
-                          children: [
-                            Text("Modelo: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: Text(e.marcaModeloId.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 1,
-                        ),
-                        Row(
-                          children: [
-                            Text("Conf. Modelo:   ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              child: DropdownButtonFormField(
-                                value: _equipo,
-                                itemHeight: 50,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                  hintText: 'Elija un Modelo...',
-                                  errorText:
-                                      _equipoShowError ? _equipoError : null,
-                                ),
-                                items: _getComboEquipos(),
-                                onChanged: (value) {
-                                  _equipo = value.toString();
-
-                                  for (Asign asign in _asigns) {
-                                    if (asign.autonumerico == e.autonumerico) {
-                                      asign.marcaModeloId = _equipo;
                                     }
-                                  }
-                                },
-                              ),
-                            ),
-                            Text("                       ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Text("Mac/Serie: ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF0e4888),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                              flex: 7,
-                              child: Text(e.estadO3.toString(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  )),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            ElevatedButton(
-                              child: Icon(Icons.qr_code_2),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xFF282886),
-                                minimumSize: Size(50, 50),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                                  },
                                 ),
                               ),
-                              onPressed: () {
-                                String barcodeScanRes;
+                              Text("        ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          widget.funcionApp.serieObligatoria == 1
+                              ? Row(
+                                  children: [
+                                    Text("Mac/Serie: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      flex: 7,
+                                      child: Text(e.estadO3.toString(),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    ElevatedButton(
+                                      child: Icon(Icons.qr_code_2),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Color(0xFF282886),
+                                        minimumSize: Size(50, 50),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        String barcodeScanRes;
 
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      _macserieController.text = '';
-                                      return Center(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            AlertDialog(
-                                              backgroundColor: Colors.grey[300],
-                                              title: Text(
-                                                  "Ingrese o escanee el código"),
-                                              content: Column(
-                                                children: [
-                                                  TextField(
-                                                    autofocus: true,
-                                                    controller:
-                                                        _macserieController,
-                                                    decoration: InputDecoration(
-                                                        fillColor: Colors.white,
-                                                        filled: true,
-                                                        hintText: '',
-                                                        labelText: '',
-                                                        errorText:
-                                                            _macserieShowError
-                                                                ? _macserieError
-                                                                : null,
-                                                        prefixIcon:
-                                                            Icon(Icons.tag),
-                                                        border: OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10))),
-                                                    onChanged: (value) {
-                                                      _macserie = value;
-                                                    },
-                                                  ),
-                                                  SizedBox(height: 10),
-                                                  ElevatedButton(
-                                                      child:
-                                                          Icon(Icons.qr_code_2),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        primary:
-                                                            Color(0xFF282886),
-                                                        minimumSize:
-                                                            Size(50, 50),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                      ),
-                                                      onPressed: () async {
-                                                        String barcodeScanRes;
-                                                        try {
-                                                          barcodeScanRes =
-                                                              await FlutterBarcodeScanner
-                                                                  .scanBarcode(
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              _macserieController.text = '';
+                                              return Center(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    AlertDialog(
+                                                      backgroundColor:
+                                                          Colors.grey[300],
+                                                      title: Text(
+                                                          "Ingrese o escanee el código"),
+                                                      content: Column(
+                                                        children: [
+                                                          TextField(
+                                                            autofocus: true,
+                                                            controller:
+                                                                _macserieController,
+                                                            decoration: InputDecoration(
+                                                                fillColor:
+                                                                    Colors
+                                                                        .white,
+                                                                filled: true,
+                                                                hintText: '',
+                                                                labelText: '',
+                                                                errorText:
+                                                                    _macserieShowError
+                                                                        ? _macserieError
+                                                                        : null,
+                                                                prefixIcon:
+                                                                    Icon(Icons
+                                                                        .tag),
+                                                                border: OutlineInputBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10))),
+                                                            onChanged: (value) {
+                                                              _macserie = value;
+                                                            },
+                                                          ),
+                                                          SizedBox(height: 10),
+                                                          ElevatedButton(
+                                                              child: Icon(Icons
+                                                                  .qr_code_2),
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                primary: Color(
+                                                                    0xFF282886),
+                                                                minimumSize:
+                                                                    Size(
+                                                                        50, 50),
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                ),
+                                                              ),
+                                                              onPressed:
+                                                                  () async {
+                                                                String
+                                                                    barcodeScanRes;
+                                                                try {
+                                                                  barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
                                                                       '#3D8BEF',
                                                                       'Cancelar',
                                                                       false,
                                                                       ScanMode
                                                                           .DEFAULT);
-                                                          //print(barcodeScanRes);
-                                                        } on PlatformException {
-                                                          barcodeScanRes =
-                                                              'Error';
-                                                        }
-                                                        // if (!mounted) return;
-                                                        if (barcodeScanRes ==
-                                                            '-1') {
-                                                          return;
-                                                        }
-                                                        _macserieController
-                                                                .text =
-                                                            barcodeScanRes;
-                                                      }),
-                                                ],
-                                              ),
-                                              actions: [
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: ElevatedButton(
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceAround,
+                                                                  //print(barcodeScanRes);
+                                                                } on PlatformException {
+                                                                  barcodeScanRes =
+                                                                      'Error';
+                                                                }
+                                                                // if (!mounted) return;
+                                                                if (barcodeScanRes ==
+                                                                    '-1') {
+                                                                  return;
+                                                                }
+                                                                _macserieController
+                                                                        .text =
+                                                                    barcodeScanRes;
+                                                              }),
+                                                        ],
+                                                      ),
+                                                      actions: [
+                                                        Row(
                                                           children: [
-                                                            Icon(Icons.cancel),
-                                                            Text('Cancelar'),
+                                                            Expanded(
+                                                              child:
+                                                                  ElevatedButton(
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
+                                                                  children: [
+                                                                    Icon(Icons
+                                                                        .cancel),
+                                                                    Text(
+                                                                        'Cancelar'),
+                                                                  ],
+                                                                ),
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                  primary: Color(
+                                                                      0xFFB4161B),
+                                                                  minimumSize: Size(
+                                                                      double
+                                                                          .infinity,
+                                                                      50),
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(5),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Expanded(
+                                                              child:
+                                                                  ElevatedButton(
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceAround,
+                                                                        children: [
+                                                                          Icon(Icons
+                                                                              .save),
+                                                                          Text(
+                                                                              'Aceptar'),
+                                                                        ],
+                                                                      ),
+                                                                      style: ElevatedButton
+                                                                          .styleFrom(
+                                                                        primary:
+                                                                            Color(0xFF120E43),
+                                                                        minimumSize: Size(
+                                                                            double.infinity,
+                                                                            50),
+                                                                        shape:
+                                                                            RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(5),
+                                                                        ),
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        if (_macserieController.text.length <
+                                                                            6) {
+                                                                          showDialog(
+                                                                              context: context,
+                                                                              builder: (context) {
+                                                                                return AlertDialog(
+                                                                                  shape: RoundedRectangleBorder(
+                                                                                    borderRadius: BorderRadius.circular(10),
+                                                                                  ),
+                                                                                  title: Text('Aviso'),
+                                                                                  content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                                                                                    Text('El código debe tener al menos 6 caracteres.'),
+                                                                                    SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                  ]),
+                                                                                  actions: <Widget>[
+                                                                                    TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('Ok')),
+                                                                                  ],
+                                                                                );
+                                                                              });
+
+                                                                          return;
+                                                                        }
+
+                                                                        for (Asign asign
+                                                                            in _asigns) {
+                                                                          if (asign.autonumerico ==
+                                                                              e.autonumerico) {
+                                                                            asign.estadO3 =
+                                                                                _macserieController.text;
+                                                                          }
+                                                                        }
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                        setState(
+                                                                            () {});
+                                                                      }),
+                                                            ),
                                                           ],
                                                         ),
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          primary:
-                                                              Color(0xFFB4161B),
-                                                          minimumSize: Size(
-                                                              double.infinity,
-                                                              50),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                          ),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Expanded(
-                                                      child: ElevatedButton(
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceAround,
-                                                            children: [
-                                                              Icon(Icons.save),
-                                                              Text('Aceptar'),
-                                                            ],
-                                                          ),
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            primary: Color(
-                                                                0xFF120E43),
-                                                            minimumSize: Size(
-                                                                double.infinity,
-                                                                50),
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                            ),
-                                                          ),
-                                                          onPressed: () {
-                                                            if (_macserieController
-                                                                    .text
-                                                                    .length <
-                                                                6) {
-                                                              showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (context) {
-                                                                    return AlertDialog(
-                                                                      shape:
-                                                                          RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10),
-                                                                      ),
-                                                                      title: Text(
-                                                                          'Aviso'),
-                                                                      content: Column(
-                                                                          mainAxisSize: MainAxisSize
-                                                                              .min,
-                                                                          children: <
-                                                                              Widget>[
-                                                                            Text('El código debe tener al menos 6 caracteres.'),
-                                                                            SizedBox(
-                                                                              height: 10,
-                                                                            ),
-                                                                          ]),
-                                                                      actions: <
-                                                                          Widget>[
-                                                                        TextButton(
-                                                                            onPressed: () =>
-                                                                                Navigator.of(context).pop(),
-                                                                            child: Text('Ok')),
-                                                                      ],
-                                                                    );
-                                                                  });
-
-                                                              return;
-                                                            }
-
-                                                            for (Asign asign
-                                                                in _asigns) {
-                                                              if (asign
-                                                                      .autonumerico ==
-                                                                  e.autonumerico) {
-                                                                asign.estadO3 =
-                                                                    _macserieController
-                                                                        .text;
-                                                              }
-                                                            }
-                                                            Navigator.pop(
-                                                                context);
-                                                            setState(() {});
-                                                          }),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
-                                              ],
-                                            ),
-                                          ],
+                                              );
+                                            },
+                                            barrierDismissible: false);
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    ElevatedButton(
+                                        child: Icon(Icons.cancel),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Color(0xffdf281e),
+                                          minimumSize: Size(50, 50),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
                                         ),
-                                      );
-                                    },
-                                    barrierDismissible: false);
-                              },
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            ElevatedButton(
-                                child: Icon(Icons.cancel),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xffdf281e),
-                                  minimumSize: Size(50, 50),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  for (Asign asign in _asigns) {
-                                    if (asign.autonumerico == e.autonumerico) {
-                                      asign.estadO3 = '';
-                                    }
-                                  }
-                                  setState(() {});
-                                }),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 1,
-                        ),
-                      ],
-                    )),
-                  ],
+                                        onPressed: () {
+                                          for (Asign asign in _asigns) {
+                                            if (asign.autonumerico ==
+                                                e.autonumerico) {
+                                              asign.estadO3 = '';
+                                            }
+                                          }
+                                          setState(() {});
+                                        }),
+                                  ],
+                                )
+                              : Container(),
+                          SizedBox(
+                            height: 1,
+                          ),
+                        ],
+                      )),
+                    ],
+                  ),
                 ),
-              ),
-            ));
+              )),
+        );
       }).toList(),
     );
   }
@@ -1979,6 +2002,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //************************** METODO GUARDAR ***********************************
 //*****************************************************************************
 
+//-------------------------- Verifica que no sea PEN --------------------------
   void _guardar() async {
     if (estadogaos == "PEN") {
       await showAlertDialog(
@@ -1991,6 +2015,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       return;
     }
     ;
+
+//---------------- Verifica que si es INC tenga Código de Cierre --------------
 
     if (estadogaos == "INC" && _codigocierre == -1) {
       await showAlertDialog(
@@ -2005,6 +2031,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
     ;
 
+//---------------- Verifica que si es PAR tenga Código de Cierre --------------
+
     if (estadogaos == "PAR" && _codigocierre == -1) {
       await showAlertDialog(
           context: context,
@@ -2018,10 +2046,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
     ;
 
+//---------------- Verifica que estén cargados los Mac/Serie ------------------
+
     for (Asign asign in _asigns) {
       bool band = false;
 
-      if (asign.estadO3!.length < 6) {
+      if ((estadogaos == 'EJB' && asign.estadO3!.length < 6) ||
+          ((estadogaos == 'PAR' &&
+              asign.estadO3!.length < 6 &&
+              asign.elegir == 1))) {
         band = true;
         showDialog(
             context: context,
@@ -2054,14 +2087,43 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
     ;
 
-    for (Asign asign in _asigns) {
-      codCierre = (estadogaos == 'EJB')
-          ? widget.funcionApp.codigoFinal.toString()
-          : _codigocierre.toString();
+//---------------- Establece valores para grabar -----------------------------
 
-      for (CodigoCierre cod in widget.codigoscierreAux) {
-        if (cod.codigoCierre.toString() == codCierre) {
-          descCodCierre = cod.descripcion!;
+//----- Fecha -----
+    DateTime fechaYa = DateTime.now();
+
+//----- Código de Cierre y Descripción elegido y final-----
+
+    for (CodigoCierre cod in widget.codigoscierreAux) {
+      if (cod.codigoCierre.toString() == _codigocierre.toString()) {
+        descCodCierreINC = cod.descripcion!;
+      }
+      if (cod.codigoCierre == widget.funcionApp.codigoFinal) {
+        descCodCierreEJB = cod.descripcion!;
+      }
+    }
+
+//----- EstadoGaos y Código de Cierre -----
+
+    String evento1 = '';
+    for (Asign asign in _asigns) {
+      if (estadogaos == 'EJB') {
+        asign.codigoCierre = widget.funcionApp.codigoFinal;
+        asign.estadogaos = 'EJB';
+        evento1 = descCodCierreEJB;
+      } else if (estadogaos == 'INC') {
+        asign.codigoCierre = _codigocierre;
+        asign.estadogaos = 'INC';
+        evento1 = descCodCierreINC;
+      } else if (estadogaos == 'PAR') {
+        if (asign.elegir == 1) {
+          asign.codigoCierre = widget.funcionApp.codigoFinal;
+          asign.estadogaos = 'EJB';
+          evento1 = descCodCierreEJB;
+        } else {
+          asign.codigoCierre = _codigocierre;
+          asign.estadogaos = 'INC';
+          evento1 = descCodCierreINC;
         }
       }
 
@@ -2166,9 +2228,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         'linkFoto': asign.linkFoto,
 
         //----------------- Campos que cambian el valor -----------------
-        'estadogaos': estadogaos,
+        'estadogaos': asign.estadogaos,
         'estadO3': asign.estadO3, //Mac Serie
-        'marcaModeloId': asign.marcaModeloId,
+        'marcaModeloId': widget.funcionApp.serieObligatoria == 1
+            ? asign.marcaModeloId
+            : asign.decO1,
         'observacion': _observaciones,
         'evento4': asign.evento3,
         'fechaEvento4': asign.fechaEvento3,
@@ -2176,16 +2240,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         'fechaEvento3': asign.fechaEvento2,
         'evento2': asign.evento1,
         'fechaEvento2': asign.fechaEvento1,
-        'evento1': descCodCierre,
-        'fechaEvento1': DateTime.now().toString(),
-        'estadO2': estadogaos == 'EJB' ? 'SI' : 'NO',
-        'codigoCierre': codCierre,
+        'evento1': evento1,
+        'fechaEvento1': fechaYa.toString(),
+        'estadO2': asign.estadogaos == 'EJB' ? 'SI' : 'NO',
+        'codigoCierre': asign.codigoCierre,
 
         'urlDni': 'Por ahora no hay DNI',
         'urlFirma': 'Por ahora no hay Firma',
-        'fechacumplida': DateTime.now().toString(),
+        'fechacumplida': fechaYa.toString(),
         'hsCumplida': 80000,
-        'hsCumplidaTime': DateTime.now().toString(),
+        'hsCumplidaTime': fechaYa.toString(),
       };
 
       Response response = await ApiHelper.put(
