@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 class FirmaScreen extends StatefulWidget {
@@ -23,9 +24,10 @@ class _FirmaScreenState extends State<FirmaScreen> {
   }
 
   void _handleSaveButtonPressed() async {
-    final data =
+    ui.Image image =
         await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
-    final bytes = await data.toByteData(format: ui.ImageByteFormat.png);
+    ByteData? bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+
     Response response = Response(isSuccess: true, result: bytes);
     Navigator.pop(context, response);
   }

@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
@@ -10,7 +14,6 @@ import 'package:fleetdeliveryapp/screens/firma_screen.dart';
 import 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -67,10 +70,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   TextEditingController _macserieController = TextEditingController();
 
   List<CodigoCierre> __codigoscierre = [];
-  bool _photoChanged = false;
+  bool _photoChangedDNI = false;
   bool _signatureChanged = false;
   late XFile _image;
-  late ByteData _signature;
+  late ByteData? _signature;
+  late XFile _signature2;
+  late String _signature3;
 
   String _barCodeValue = '';
 
@@ -665,7 +670,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   child: InkWell(
                     child: Stack(children: <Widget>[
                       Container(
-                        child: !_photoChanged
+                        child: !_photoChangedDNI
                             ? Image(
                                 image: AssetImage('assets/dni.png'),
                                 width: 80,
@@ -716,7 +721,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 height: 60,
                                 fit: BoxFit.contain)
                             : Image.memory(
-                                _signature.buffer.asUint8List(),
+                                _signature!.buffer.asUint8List(),
                                 width: 80,
                                 height: 60,
                               ),
@@ -1520,7 +1525,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   )));
       if (response != null) {
         setState(() {
-          _photoChanged = true;
+          _photoChangedDNI = true;
           _image = response.result;
         });
       }
@@ -1539,6 +1544,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         _signatureChanged = true;
         _signature = response.result;
       });
+
+      //_signature2 = await _signature.toByteData(format: ui.ImageByteFormat.png);
+      _signature3 = await _signature.toString();
     }
   }
 //*****************************************************************************
@@ -2048,44 +2056,46 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //---------------- Verifica que estén cargados los Mac/Serie ------------------
 
-    for (Asign asign in _asigns) {
-      bool band = false;
+    if (widget.funcionApp.serieObligatoria == 1) {
+      for (Asign asign in _asigns) {
+        bool band = false;
 
-      if ((estadogaos == 'EJB' && asign.estadO3!.length < 6) ||
-          ((estadogaos == 'PAR' &&
-              asign.estadO3!.length < 6 &&
-              asign.elegir == 1))) {
-        band = true;
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                title: Text('Aviso'),
-                content:
-                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  Text('Mac/Serie debe tener al menos 6 caracteres.'),
-                  SizedBox(
-                    height: 10,
+        if ((estadogaos == 'EJB' && asign.estadO3!.length < 6) ||
+            ((estadogaos == 'PAR' &&
+                asign.estadO3!.length < 6 &&
+                asign.elegir == 1))) {
+          band = true;
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                ]),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text('Ok')),
-                ],
-              );
-            });
+                  title: Text('Aviso'),
+                  content:
+                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    Text('Mac/Serie debe tener al menos 6 caracteres.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+                  actions: <Widget>[
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text('Ok')),
+                  ],
+                );
+              });
+        }
+        ;
+        setState(() {});
+        if (band) {
+          return;
+        }
       }
       ;
-      setState(() {});
-      if (band) {
-        return;
-      }
     }
-    ;
 
 //---------------- Establece valores para grabar -----------------------------
 
@@ -2125,6 +2135,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           asign.estadogaos = 'INC';
           evento1 = descCodCierreINC;
         }
+      }
+
+      String base64imageDNI = '';
+      if (_photoChangedDNI) {
+        List<int> imageBytesDNI = await _image.readAsBytes();
+        base64imageDNI = base64Encode(imageBytesDNI);
+      }
+
+      String base64imageFirma = '';
+      if (_signatureChanged) {
+        List<int> imageBytesFirma = _signature!.buffer.asUint8List();
+        base64imageFirma = base64Encode(imageBytesFirma);
       }
 
       Map<String, dynamic> request = {
@@ -2250,6 +2272,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         'fechacumplida': fechaYa.toString(),
         'hsCumplida': 80000,
         'hsCumplidaTime': fechaYa.toString(),
+        'imageArrayDni': base64imageDNI,
+        'imageArrayFirma': base64imageFirma,
       };
 
       Response response = await ApiHelper.put(
@@ -2268,6 +2292,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
 
     setState(() {});
+    Navigator.pop(context, "Yes");
   }
 
 //*****************************************************************************

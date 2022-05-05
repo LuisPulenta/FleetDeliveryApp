@@ -1096,8 +1096,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   funcionApp: _funcionApp,
                   controlesEquivalencia: _controlesEquivalencia,
                 )));
-    if (result == 'yes' || result != 'yes') {
-      //_getObras();
+    if (result == 'Yes') {
+      _getObras();
       setState(() {});
     }
   }
