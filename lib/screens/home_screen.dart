@@ -558,6 +558,7 @@ class _HomeScreenState extends State<HomeScreen>
         ],
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.pink,
         child: TabBar(
             controller: _tabController,
             indicatorColor: Color(0xff282886),
