@@ -30,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen>
 
   TabController? _tabController;
 
+  int paraSincronizar = 0;
+
   List<Ruta> _rutasApi = [];
   List<RutaCab> _rutas = [];
 
@@ -558,14 +560,16 @@ class _HomeScreenState extends State<HomeScreen>
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.pink,
+        color:
+            paraSincronizar > 0 ? Color.fromARGB(255, 219, 8, 5) : Colors.white,
         child: TabBar(
             controller: _tabController,
             indicatorColor: Color(0xff282886),
             indicatorSize: TabBarIndicatorSize.tab,
             indicatorWeight: 5,
             labelColor: Color(0xff282886),
-            unselectedLabelColor: Colors.grey,
+            unselectedLabelColor:
+                paraSincronizar > 0 ? Colors.white : Colors.grey,
             labelPadding: EdgeInsets.all(10),
             tabs: <Widget>[
               Tab(
@@ -833,8 +837,16 @@ class _HomeScreenState extends State<HomeScreen>
 //-------------------------------------------------------------------------
 //-------------------------- METODO GETLISTVIEW ---------------------------
 //-------------------------------------------------------------------------
-
   Widget _getListView() {
+    paraSincronizar = 0;
+
+    for (ParadaEnvio pe in _paradasenviosdb) {
+      if (pe.enviado == 0) {
+        paraSincronizar++;
+      }
+      ;
+    }
+
     return Container(
       height: 550,
       child: ListView(
