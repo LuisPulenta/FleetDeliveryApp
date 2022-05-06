@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
-import 'package:fleetdeliveryapp/screens/asignacionmap_screen.dart';
-import 'package:fleetdeliveryapp/screens/firma_screen.dart';
-import 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
+import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -200,7 +196,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 206, 233, 194),
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Container(
@@ -1002,31 +998,45 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               SizedBox(
                 width: 5,
               ),
-              Expanded(
-                child: ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.star_half),
-                      SizedBox(
-                        width: 2,
+              widget.funcionApp.habilitaOtroRecupero == 1
+                  ? Expanded(
+                      child: ElevatedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.star_half),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Text(
+                              'Otro recup.',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFc41c9c),
+                          minimumSize: Size(double.infinity, 40),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OtroRecuperoScreen(
+                                  user: widget.user,
+                                  asignacion: widget.asignacion,
+                                  idgaos: _asigns[0].idregistro,
+                                  controlesEquivalencia:
+                                      widget.controlesEquivalencia),
+                            ),
+                          );
+                        },
                       ),
-                      Text(
-                        'Otro recup.',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ],
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFc41c9c),
-                    minimumSize: Size(double.infinity, 40),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
+                    )
+                  : Container(),
             ],
           ),
         ],
@@ -1203,9 +1213,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     Expanded(
                                       flex: 7,
                                       child: Text(e.estadO3.toString(),
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                          )),
+                                          style: TextStyle(fontSize: 12)),
                                     ),
                                     SizedBox(
                                       width: 5,

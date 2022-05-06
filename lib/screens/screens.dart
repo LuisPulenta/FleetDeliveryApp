@@ -9,6 +9,7 @@ export 'package:fleetdeliveryapp/screens/firma_screen.dart';
 export 'package:fleetdeliveryapp/screens/home2_screen.dart';
 export 'package:fleetdeliveryapp/screens/home_screen.dart';
 export 'package:fleetdeliveryapp/screens/login_screen.dart';
+export 'package:fleetdeliveryapp/screens/otro_recupero_screen.dart';
 export 'package:fleetdeliveryapp/screens/paradainfo_screen.dart';
 export 'package:fleetdeliveryapp/screens/paradamap_screen.dart';
 export 'package:fleetdeliveryapp/screens/rutainfo_screen.dart';
