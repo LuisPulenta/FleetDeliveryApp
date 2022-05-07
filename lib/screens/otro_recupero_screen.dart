@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/models/asignacion2.dart';
@@ -200,35 +201,6 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                           children: [
                                             Expanded(
                                               child: ElevatedButton(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Icon(Icons.cancel),
-                                                    Text('Cancelar'),
-                                                  ],
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Color(0xFFB4161B),
-                                                  minimumSize:
-                                                      Size(double.infinity, 50),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Expanded(
-                                              child: ElevatedButton(
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -302,6 +274,35 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                     setState(() {});
                                                   }),
                                             ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                              child: ElevatedButton(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    Icon(Icons.cancel),
+                                                    Text('Cancelar'),
+                                                  ],
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color(0xFFB4161B),
+                                                  minimumSize:
+                                                      Size(double.infinity, 50),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ],
@@ -337,31 +338,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                   Expanded(
                     child: ElevatedButton(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Icon(Icons.cancel),
-                          Text('Cancelar'),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFB4161B),
-                        minimumSize: Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Icon(Icons.save),
                           Text('Guardar'),
@@ -376,6 +353,30 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                       ),
                       onPressed: () {
                         _grabar();
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(Icons.cancel),
+                          Text('Cancelar'),
+                        ],
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFB4161B),
+                        minimumSize: Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
                     ),
                   ),
@@ -414,6 +415,48 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
 //*****************************************************************************
 
   Future<void> _grabar() async {
+//---------------- Verifica que se haya elegido un modelo --------------
+
+    if (_coddeco1OtroRecupero == 'Elija un Modelo...') {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Debe elegir un Modelo.',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    ;
+
+//---------------- Verifica que se haya elegido un MacSerie --------------
+
+    if (_nroserieextraOtroRecupero == '') {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Debe elegir un Mac/Serie.',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    ;
+
+    //---------------- Verifica que MacSerie no tenga más de 30 caracteres --------------
+
+    if (_nroserieextraOtroRecupero.length > 30) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Mac/Serie no puede tener más de 30 caracteres.',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    ;
+
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {

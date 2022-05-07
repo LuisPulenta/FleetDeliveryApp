@@ -652,6 +652,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                           e.cantAsign.toString(),
                                           style: TextStyle(
                                             fontSize: 12,
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ),

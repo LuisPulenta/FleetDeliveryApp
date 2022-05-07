@@ -1169,7 +1169,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               Expanded(
                                 child: DropdownButtonFormField(
                                   value: _equipo,
-                                  itemHeight: 50,
+                                  isExpanded: true,
+                                  isDense: true,
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.black),
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
@@ -1326,44 +1329,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                             Expanded(
                                                               child:
                                                                   ElevatedButton(
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceAround,
-                                                                  children: [
-                                                                    Icon(Icons
-                                                                        .cancel),
-                                                                    Text(
-                                                                        'Cancelar'),
-                                                                  ],
-                                                                ),
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  primary: Color(
-                                                                      0xFFB4161B),
-                                                                  minimumSize: Size(
-                                                                      double
-                                                                          .infinity,
-                                                                      50),
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(5),
-                                                                  ),
-                                                                ),
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            Expanded(
-                                                              child:
-                                                                  ElevatedButton(
                                                                       child:
                                                                           Row(
                                                                         mainAxisAlignment:
@@ -1428,6 +1393,44 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                         setState(
                                                                             () {});
                                                                       }),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Expanded(
+                                                              child:
+                                                                  ElevatedButton(
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
+                                                                  children: [
+                                                                    Icon(Icons
+                                                                        .cancel),
+                                                                    Text(
+                                                                        'Cancelar'),
+                                                                  ],
+                                                                ),
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                  primary: Color(
+                                                                      0xFFB4161B),
+                                                                  minimumSize: Size(
+                                                                      double
+                                                                          .infinity,
+                                                                      50),
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(5),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                              ),
                                                             ),
                                                           ],
                                                         ),
@@ -2062,6 +2065,34 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
     ;
 
+//---------------- Verifica que haya Foto del DNI --------------
+
+    if (widget.funcionApp.habilitaDNI == 1 && _photoChangedDNI == false) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Debe cargar la Foto del DNI.',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    ;
+
+//---------------- Verifica que haya Firma --------------
+
+    if (widget.funcionApp.habilitaFirma == 1 && _signatureChanged == false) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Debe cargar la Firma.',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    ;
+
 //---------------- Verifica que estén cargados los Mac/Serie ------------------
 
     if (widget.funcionApp.serieObligatoria == 1) {
@@ -2259,8 +2290,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
         //----------------- Campos que cambian el valor -----------------
         'estadogaos': asign.estadogaos,
-        'estadO3': asign.estadO3, //Mac Serie
-        'marcaModeloId': widget.funcionApp.serieObligatoria == 1
+        'estadO3': widget.funcionApp.serieObligatoria == 1
+            ? asign.estadO3
+            : asign.decO1, //Mac Serie
+        'marcaModeloId': asign.marcaModeloId != 'Elija un Modelo...'
             ? asign.marcaModeloId
             : asign.decO1,
         'observacion': _observaciones,
