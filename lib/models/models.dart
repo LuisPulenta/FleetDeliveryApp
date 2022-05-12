@@ -17,3 +17,4 @@ export 'package:fleetdeliveryapp/models/rutacab.dart';
 export 'package:fleetdeliveryapp/models/seguimiento.dart';
 export 'package:fleetdeliveryapp/models/tipoasignacion.dart';
 export 'package:fleetdeliveryapp/models/usuario.dart';
+export 'package:fleetdeliveryapp/models/web_sesion.dart';

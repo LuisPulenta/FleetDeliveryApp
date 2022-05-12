@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   int paraSincronizar = 0;
 
+  int? _nroConexion = 0;
   List<Ruta> _rutasApi = [];
   List<RutaCab> _rutas = [];
 
@@ -1142,6 +1143,20 @@ class _HomeScreenState extends State<HomeScreen>
 //*****************************************************************************
 
   void _logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isRemembered', false);
+    await prefs.setString('userBody', '');
+    await prefs.setString('date', '');
+
+    //------------ Guarda en WebSesion la fecha y hora de salida ----------
+    _nroConexion = prefs.getInt('nroConexion');
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      Response response = await ApiHelper.putWebSesion(_nroConexion!);
+    }
+
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }

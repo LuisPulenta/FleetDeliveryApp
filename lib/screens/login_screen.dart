@@ -1,15 +1,20 @@
+import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:device_information/device_information.dart';
+
+import 'dart:math';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
-import 'package:fleetdeliveryapp/screens/screens.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'home2_screen.dart';
+import 'package:fleetdeliveryapp/screens/screens.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -27,6 +32,16 @@ class _LoginScreenState extends State<LoginScreen> {
   List<Usuario> _usuarios = [];
   bool _usuariosConseguidos = false;
 
+  String _platformVersion = 'Unknown',
+      _imeiNo = "",
+      _modelName = "",
+      _manufacturerName = "",
+      _deviceName = "",
+      _productName = "",
+      _cpuType = "",
+      _hardware = "";
+  var _apiLevel;
+
   Usuario _usuarioLogueado = Usuario(
       idUser: 0,
       codigo: '',
@@ -40,15 +55,17 @@ class _LoginScreenState extends State<LoginScreen> {
       orden: 0,
       centroDistribucion: 0);
 
+  List<WebSesion> _webSesionsdb = [];
+
   //String _email = '*jhollman';
-  //String _email = 'TEST';
-  String _email = '';
+  String _email = 'TEST';
+  //String _email = '';
   String _emailError = '';
   bool _emailShowError = false;
 
   //String _password = 'jona';
-  //String _password = '123456';
-  String _password = '';
+  String _password = '123456';
+  //String _password = '';
   String _passwordError = '';
   bool _passwordShowError = false;
 
@@ -65,7 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    initPlatformState();
     _getprefs();
+
     //_getUsuarios();
   }
 
@@ -325,6 +344,50 @@ class _LoginScreenState extends State<LoginScreen> {
     await prefs.setString(
         'validohasta', DateTime.now().add(Duration(hours: 12)).toString());
 
+    // Agregar registro a bd local websesion
+
+    Random r = new Random();
+    int resultado = r.nextInt((99999999 - 10000000) + 1) + 10000000;
+    double hora = (DateTime.now().hour * 3600 +
+            DateTime.now().minute * 60 +
+            DateTime.now().second +
+            DateTime.now().millisecond * 0.001) *
+        100;
+
+    WebSesion webSesion = WebSesion(
+        nroConexion: resultado,
+        usuario: _usuarioLogueado.idUser.toString(),
+        iP: _imeiNo,
+        loginDate: DateTime.now().toString(),
+        loginTime: hora.round(),
+        modulo: "App",
+        logoutDate: "",
+        logoutTime: 0,
+        conectAverage: 0,
+        id_ws: 0,
+        version: Constants.version);
+
+    DBWebSesions.insertWebSesion(webSesion);
+
+    // Agregar nroConexion a SharedPreferences
+
+    await prefs.setInt('nroConexion', resultado);
+
+    // Si hay internet
+    //    - Subir al servidor todos los registros de la bd local websesion
+    //    - borrar la bd local websesion
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      _webSesionsdb = await DBWebSesions.webSesions();
+
+      _webSesionsdb.forEach((_webSesion) async {
+        await _postWebSesion(_webSesion);
+      });
+      DBWebSesions.delete();
+    }
+
     if (_usuarioLogueado.codigo == "PQ") {
       Navigator.pushReplacement(
           context,
@@ -466,7 +529,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //-------------------------------------------------------------------------
 
-  //*****************************************************************************
+//*****************************************************************************
 //************************** METODO GETPREFS **********************************
 //*****************************************************************************
 
@@ -479,5 +542,105 @@ class _LoginScreenState extends State<LoginScreen> {
   void _launchURL() async {
     if (!await launch('http://www.fleetsa.com.ar:99/LoginForm'))
       throw 'No se puede conectar a la Web de Fleet';
+  }
+
+//*****************************************************************************
+//************************** METODO INITPLATFORMSTATE *************************
+//*****************************************************************************
+
+  Future<void> initPlatformState() async {
+    late String platformVersion,
+        imeiNo = '',
+        modelName = '',
+        manufacturer = '',
+        deviceName = '',
+        productName = '',
+        cpuType = '',
+        hardware = '';
+    var apiLevel;
+    // Platform messages may fail,
+    // so we use a try/catch PlatformException.
+
+    var status = await Permission.phone.status;
+
+    if (status.isDenied) {
+      await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: Text('Aviso'),
+              content:
+                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                Text(
+                    'La App necesita que habilite el Permiso de acceso al teléfono para registrar el IMEI del celular con que se loguea.'),
+                SizedBox(
+                  height: 10,
+                ),
+              ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('Ok')),
+              ],
+            );
+          });
+      openAppSettings();
+    }
+
+    try {
+      platformVersion = await DeviceInformation.platformVersion;
+      imeiNo = await DeviceInformation.deviceIMEINumber;
+      modelName = await DeviceInformation.deviceModel;
+      manufacturer = await DeviceInformation.deviceManufacturer;
+      apiLevel = await DeviceInformation.apiLevel;
+      deviceName = await DeviceInformation.deviceName;
+      productName = await DeviceInformation.productName;
+      cpuType = await DeviceInformation.cpuName;
+      hardware = await DeviceInformation.hardware;
+    } on PlatformException catch (e) {
+      platformVersion = '${e.message}';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _platformVersion = "Running on :$platformVersion";
+      _imeiNo = imeiNo;
+      _modelName = modelName;
+      _manufacturerName = manufacturer;
+      _apiLevel = apiLevel;
+      _deviceName = deviceName;
+      _productName = productName;
+      _cpuType = cpuType;
+      _hardware = hardware;
+    });
+  }
+
+//*****************************************************************************
+//******************** METODO POSTWEBSESION ***********************************
+//*****************************************************************************
+
+  Future<void> _postWebSesion(WebSesion webSesion) async {
+    Map<String, dynamic> requestWebSesion = {
+      'nroConexion': webSesion.nroConexion,
+      'usuario': webSesion.usuario,
+      'iP': webSesion.iP,
+      'loginDate': webSesion.loginDate,
+      'loginTime': webSesion.loginTime,
+      'modulo': webSesion.modulo,
+      'logoutDate': webSesion.logoutDate,
+      'conectAverage': webSesion.conectAverage,
+      'id_ws': webSesion.id_ws,
+      'version': webSesion.version,
+    };
+
+    Response response =
+        await ApiHelper.post('/api/WebSesions/', requestWebSesion);
   }
 }

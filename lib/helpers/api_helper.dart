@@ -4,6 +4,7 @@ import 'package:fleetdeliveryapp/models/asignacion2.dart';
 import 'package:fleetdeliveryapp/models/codigocierre.dart';
 import 'package:fleetdeliveryapp/models/controlesequivalencia.dart';
 import 'package:fleetdeliveryapp/models/funcionesapp.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/models/motivo.dart';
 import 'package:fleetdeliveryapp/models/proveedor.dart';
 import 'package:fleetdeliveryapp/models/ruta.dart';
@@ -374,5 +375,24 @@ class ApiHelper {
       }
     }
     return Response(isSuccess: true, result: list);
+  }
+
+  static Future<Response> putWebSesion(int nroConexion) async {
+    var url = Uri.parse('${Constants.apiUrl}/api/WebSesions/$nroConexion');
+    var response = await http.put(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    var decodedJson = jsonDecode(body);
+    return Response(isSuccess: true, result: decodedJson);
   }
 }

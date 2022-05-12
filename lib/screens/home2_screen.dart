@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:connectivity/connectivity.dart';
+import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
@@ -47,6 +50,8 @@ class _Home2ScreenState extends State<Home2Screen> {
   String _conectadodesde = '';
   String _validohasta = '';
   String _ultimaactualizacion = '';
+
+  int? _nroConexion = 0;
 
 //*****************************************************************************
 //************************** INIT STATE ***************************************
@@ -248,6 +253,16 @@ class _Home2ScreenState extends State<Home2Screen> {
     await prefs.setBool('isRemembered', false);
     await prefs.setString('userBody', '');
     await prefs.setString('date', '');
+
+    //------------ Guarda en WebSesion la fecha y hora de salida ----------
+    _nroConexion = prefs.getInt('nroConexion');
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult != ConnectivityResult.none) {
+      Response response = await ApiHelper.putWebSesion(_nroConexion!);
+    }
+
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
