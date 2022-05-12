@@ -13,8 +13,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   final Usuario user;
+  final WebSesion webSesion;
 
-  HomeScreen({required this.user});
+  HomeScreen({required this.user, required this.webSesion});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -1155,6 +1156,26 @@ class _HomeScreenState extends State<HomeScreen>
 
     if (connectivityResult != ConnectivityResult.none) {
       Response response = await ApiHelper.putWebSesion(_nroConexion!);
+    } else {
+      double hora = (DateTime.now().hour * 3600 +
+              DateTime.now().minute * 60 +
+              DateTime.now().second +
+              DateTime.now().millisecond * 0.001) *
+          100;
+      WebSesion websesion = WebSesion(
+          nroConexion: widget.webSesion.nroConexion,
+          usuario: widget.webSesion.usuario,
+          iP: widget.webSesion.iP,
+          loginDate: widget.webSesion.loginDate,
+          loginTime: widget.webSesion.loginTime,
+          modulo: widget.webSesion.modulo,
+          logoutDate: DateTime.now().toString(),
+          logoutTime: hora.round(),
+          conectAverage: widget.webSesion.conectAverage,
+          id_ws: widget.webSesion.id_ws,
+          version: widget.webSesion.version);
+
+      await DBWebSesions.update(websesion);
     }
 
     Navigator.pushReplacement(

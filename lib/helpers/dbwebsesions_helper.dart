@@ -22,6 +22,12 @@ class DBWebSesions {
     return database.delete("websesions");
   }
 
+  static Future<int> update(WebSesion websesion) async {
+    Database database = await _openDBWebSesions();
+    return database.update("websesions", websesion.toMap(),
+        where: "nroConexion = ?", whereArgs: [websesion.nroConexion]);
+  }
+
   static Future<List<WebSesion>> webSesions() async {
     Database database = await _openDBWebSesions();
     final List<Map<String, dynamic>> webSesionsMap =

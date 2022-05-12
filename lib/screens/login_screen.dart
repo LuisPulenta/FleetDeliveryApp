@@ -385,7 +385,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _webSesionsdb.forEach((_webSesion) async {
         await _postWebSesion(_webSesion);
       });
-      DBWebSesions.delete();
+      await DBWebSesions.delete();
     }
 
     if (_usuarioLogueado.codigo == "PQ") {
@@ -394,6 +394,7 @@ class _LoginScreenState extends State<LoginScreen> {
           MaterialPageRoute(
               builder: (context) => HomeScreen(
                     user: _usuarioLogueado,
+                    webSesion: webSesion,
                   )));
     }
 
@@ -403,6 +404,7 @@ class _LoginScreenState extends State<LoginScreen> {
           MaterialPageRoute(
               builder: (context) => Home2Screen(
                     user: _usuarioLogueado,
+                    webSesion: webSesion,
                   )));
     }
   }
@@ -635,6 +637,7 @@ class _LoginScreenState extends State<LoginScreen> {
       'loginTime': webSesion.loginTime,
       'modulo': webSesion.modulo,
       'logoutDate': webSesion.logoutDate,
+      'logoutTime': webSesion.logoutTime,
       'conectAverage': webSesion.conectAverage,
       'id_ws': webSesion.id_ws,
       'version': webSesion.version,
