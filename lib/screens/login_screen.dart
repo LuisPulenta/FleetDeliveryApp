@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -590,6 +592,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           });
       openAppSettings();
+      //exit(0);
     }
 
     try {
