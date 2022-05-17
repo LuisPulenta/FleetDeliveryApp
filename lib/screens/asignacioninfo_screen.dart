@@ -1168,31 +1168,35 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           fontWeight: FontWeight.bold,
                                         )),
                                     Expanded(
-                                      child: DropdownButtonFormField(
-                                        value: _equipo,
-                                        isExpanded: true,
-                                        isDense: true,
-                                        style: TextStyle(
-                                            fontSize: 12, color: Colors.black),
-                                        decoration: InputDecoration(
-                                          fillColor: Colors.white,
-                                          filled: true,
-                                          hintText: 'Elija un Modelo...',
-                                          errorText: _equipoShowError
-                                              ? _equipoError
-                                              : null,
-                                        ),
-                                        items: _getComboEquipos(),
-                                        onChanged: (value) {
-                                          _equipo = value.toString();
+                                      child: Container(
+                                        height: 40,
+                                        child: DropdownButtonFormField(
+                                          value: _equipo,
+                                          isExpanded: true,
+                                          isDense: true,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black),
+                                          decoration: InputDecoration(
+                                            fillColor: Colors.white,
+                                            filled: true,
+                                            hintText: 'Elija un Modelo...',
+                                            errorText: _equipoShowError
+                                                ? _equipoError
+                                                : null,
+                                          ),
+                                          items: _getComboEquipos(),
+                                          onChanged: (value) {
+                                            _equipo = value.toString();
 
-                                          for (Asign asign in _asigns) {
-                                            if (asign.autonumerico ==
-                                                e.autonumerico) {
-                                              asign.marcaModeloId = _equipo;
+                                            for (Asign asign in _asigns) {
+                                              if (asign.autonumerico ==
+                                                  e.autonumerico) {
+                                                asign.marcaModeloId = _equipo;
+                                              }
                                             }
-                                          }
-                                        },
+                                          },
+                                        ),
                                       ),
                                     ),
                                     Text("        ",
@@ -1228,7 +1232,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       child: Icon(Icons.qr_code_2),
                                       style: ElevatedButton.styleFrom(
                                         primary: Color(0xFF282886),
-                                        minimumSize: Size(50, 50),
+                                        minimumSize: Size(50, 40),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(5),
@@ -1453,7 +1457,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         child: Icon(Icons.cancel),
                                         style: ElevatedButton.styleFrom(
                                           primary: Color(0xffdf281e),
-                                          minimumSize: Size(50, 50),
+                                          minimumSize: Size(50, 40),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(5),
