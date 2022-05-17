@@ -319,26 +319,26 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              children: [
-                                Text("Obs. Inicial: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child:
-                                      Text('${_asignacion.observacionCaptura}',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                          )),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
+                            // Row(
+                            //   children: [
+                            //     Text("Obs. Inicial: ",
+                            //         style: TextStyle(
+                            //           fontSize: 12,
+                            //           color: Color(0xFF0e4888),
+                            //           fontWeight: FontWeight.bold,
+                            //         )),
+                            //     Expanded(
+                            //       child:
+                            //           Text('${_asignacion.observacionCaptura}',
+                            //               style: TextStyle(
+                            //                 fontSize: 12,
+                            //               )),
+                            //     ),
+                            //   ],
+                            // ),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
                             Row(
                               children: [
                                 Text("Obs. Cliente: ",
@@ -863,7 +863,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFc41c9c),
+                        primary: Color.fromARGB(255, 52, 52, 52),
                         minimumSize: Size(double.infinity, 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -1139,68 +1139,71 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           SizedBox(
                             height: 1,
                           ),
-                          Row(
-                            children: [
-                              Text("Modelo: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Expanded(
-                                child: Text(e.marcaModeloId.toString(),
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    )),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 1,
-                          ),
-                          Row(
-                            children: [
-                              Text("Conf. Modelo:   ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Expanded(
-                                child: DropdownButtonFormField(
-                                  value: _equipo,
-                                  isExpanded: true,
-                                  isDense: true,
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.black),
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    hintText: 'Elija un Modelo...',
-                                    errorText:
-                                        _equipoShowError ? _equipoError : null,
-                                  ),
-                                  items: _getComboEquipos(),
-                                  onChanged: (value) {
-                                    _equipo = value.toString();
+                          // Row(
+                          //   children: [
+                          //     Text("Modelo: ",
+                          //         style: TextStyle(
+                          //           fontSize: 12,
+                          //           color: Color(0xFF0e4888),
+                          //           fontWeight: FontWeight.bold,
+                          //         )),
+                          //     Expanded(
+                          //       child: Text(e.marcaModeloId.toString(),
+                          //           style: TextStyle(
+                          //             fontSize: 12,
+                          //           )),
+                          //     ),
+                          //   ],
+                          // ),
+                          // SizedBox(
+                          //   height: 1,
+                          // ),
+                          widget.funcionApp.habilitaCambioModelo == 1
+                              ? Row(
+                                  children: [
+                                    Text("Conf. Modelo:   ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      child: DropdownButtonFormField(
+                                        value: _equipo,
+                                        isExpanded: true,
+                                        isDense: true,
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.black),
+                                        decoration: InputDecoration(
+                                          fillColor: Colors.white,
+                                          filled: true,
+                                          hintText: 'Elija un Modelo...',
+                                          errorText: _equipoShowError
+                                              ? _equipoError
+                                              : null,
+                                        ),
+                                        items: _getComboEquipos(),
+                                        onChanged: (value) {
+                                          _equipo = value.toString();
 
-                                    for (Asign asign in _asigns) {
-                                      if (asign.autonumerico ==
-                                          e.autonumerico) {
-                                        asign.marcaModeloId = _equipo;
-                                      }
-                                    }
-                                  },
-                                ),
-                              ),
-                              Text("        ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ],
-                          ),
+                                          for (Asign asign in _asigns) {
+                                            if (asign.autonumerico ==
+                                                e.autonumerico) {
+                                              asign.marcaModeloId = _equipo;
+                                            }
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Text("        ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                  ],
+                                )
+                              : Container(),
                           SizedBox(
                             height: 10,
                           ),

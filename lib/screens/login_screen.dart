@@ -362,7 +362,7 @@ class _LoginScreenState extends State<LoginScreen> {
         iP: _imeiNo,
         loginDate: DateTime.now().toString(),
         loginTime: hora.round(),
-        modulo: "App",
+        modulo: 'App-${_usuarioLogueado.codigo}',
         logoutDate: "",
         logoutTime: 0,
         conectAverage: 0,
