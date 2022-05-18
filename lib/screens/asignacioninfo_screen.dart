@@ -2074,7 +2074,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //---------------- Verifica que haya Foto del DNI --------------
 
-    if (widget.funcionApp.habilitaDNI == 1 && _photoChangedDNI == false) {
+    if (widget.funcionApp.habilitaDNI == 1 &&
+        _photoChangedDNI == false &&
+        estadogaos == 'EJB') {
       await showAlertDialog(
           context: context,
           title: 'Error',
@@ -2088,7 +2090,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //---------------- Verifica que haya Firma --------------
 
-    if (widget.funcionApp.habilitaFirma == 1 && _signatureChanged == false) {
+    if (widget.funcionApp.habilitaFirma == 1 &&
+        _signatureChanged == false &&
+        estadogaos == 'EJB') {
       await showAlertDialog(
           context: context,
           title: 'Error',
