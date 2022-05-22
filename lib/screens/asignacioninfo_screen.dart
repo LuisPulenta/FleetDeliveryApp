@@ -448,7 +448,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
-      margin: EdgeInsets.fromLTRB(8, 12, 8, 8),
+      margin: EdgeInsets.fromLTRB(8, 12, 8, 0),
       child: Container(
         margin: EdgeInsets.all(0),
         padding: EdgeInsets.all(0),
@@ -1089,6 +1089,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   Widget _showAutonumericos() {
     return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
       physics: BouncingScrollPhysics(),
       children: _asigns.map((e) {
         return Padding(
