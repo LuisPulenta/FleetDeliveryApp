@@ -13,6 +13,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AsignacionInfoScreen extends StatefulWidget {
@@ -233,12 +234,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         backgroundColor: Color(0xff282886),
                       ),
                       Expanded(
-                          flex: widget.funcionApp.habilitaDNI == 1 ? 15 : 5,
+                          flex: widget.funcionApp.habilitaDNI == 1 ? 15 : 7,
                           child:
                               SingleChildScrollView(child: _showAsignacion())),
                       Expanded(
                         child: _showAutonumericos(),
-                        flex: widget.funcionApp.habilitaDNI == 1 ? 7 : 4,
+                        flex: widget.funcionApp.habilitaDNI == 1 ? 7 : 6,
                       ),
                       _showButtonsGuardarCancelar(),
                     ],
@@ -464,12 +465,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         children: [
                           Row(
                             children: [
-                              Text("Cliente: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              Container(
+                                width: 80,
+                                child: Text("Cliente: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
                               Expanded(
                                 child: Text(
                                     '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
@@ -506,12 +510,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   children: [
                                     Row(
                                       children: [
-                                        Text("Dirección: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        Container(
+                                          width: 80,
+                                          child: Text("Dirección: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF0e4888),
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                        ),
                                         Expanded(
                                           child: Text(
                                               _asignacion.domicilio.toString(),
@@ -526,12 +533,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     ),
                                     Row(
                                       children: [
-                                        Text("Entre calles: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        Container(
+                                          width: 80,
+                                          child: Text("Entre calles: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF0e4888),
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                        ),
                                         Expanded(
                                           child: (_asignacion.entrecallE1
                                                           .toString()
@@ -555,12 +565,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     ),
                                     Row(
                                       children: [
-                                        Text("Localidad: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        Container(
+                                          width: 80,
+                                          child: Text("Localidad: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF0e4888),
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                        ),
                                         Expanded(
                                           child: Text(
                                               '${_asignacion.localidad.toString()}-${_asignacion.partido.toString()}',
@@ -575,12 +588,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     ),
                                     Row(
                                       children: [
-                                        Text("Cód. Cierre: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        Container(
+                                          width: 80,
+                                          child: Text("Cód. Cierre: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF0e4888),
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                        ),
                                         Expanded(
                                           child: Text(
                                               _asignacion.descripcion
@@ -667,32 +683,55 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     child: Stack(children: <Widget>[
                       Container(
                         child: !_photoChangedDNI
-                            ? Image(
-                                image: AssetImage('assets/dni.png'),
-                                width: 80,
-                                height: 60,
-                                fit: BoxFit.contain)
-                            : Image.file(
-                                File(_image.path),
-                                width: 80,
-                                height: 60,
-                                fit: BoxFit.contain,
+                            ? Center(
+                                child: Image(
+                                    image: AssetImage('assets/dni.png'),
+                                    width: 80,
+                                    height: 60,
+                                    fit: BoxFit.contain),
+                              )
+                            : Center(
+                                child: Image.file(
+                                  File(_image.path),
+                                  width: 80,
+                                  height: 60,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                       ),
                       Positioned(
                           bottom: 0,
-                          left: 90,
+                          left: 125,
                           child: InkWell(
                             onTap: () => _takePicture(),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(30),
                               child: Container(
                                 color: Color(0xFF282886),
-                                width: 50,
-                                height: 50,
+                                width: 40,
+                                height: 40,
                                 child: Icon(
                                   Icons.photo_camera,
-                                  size: 40,
+                                  size: 30,
+                                  color: Color(0xFFf6faf8),
+                                ),
+                              ),
+                            ),
+                          )),
+                      Positioned(
+                          bottom: 0,
+                          left: 0,
+                          child: InkWell(
+                            onTap: () => _selectPicture(),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Container(
+                                color: Color(0xFF282886),
+                                width: 40,
+                                height: 40,
+                                child: Icon(
+                                  Icons.image,
+                                  size: 30,
                                   color: Color(0xFFf6faf8),
                                 ),
                               ),
@@ -1015,7 +1054,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ],
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFc41c9c),
+                          primary: Color.fromARGB(255, 52, 52, 52),
                           minimumSize: Size(double.infinity, 40),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -1050,6 +1089,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   Widget _showAutonumericos() {
     return ListView(
+      physics: BouncingScrollPhysics(),
       children: _asigns.map((e) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -1057,7 +1097,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               color: Color(0xFFbfd4e7),
               shadowColor: Color(0xFF0000FF),
               elevation: 10,
-              margin: EdgeInsets.all(5),
+              margin: EdgeInsets.only(left: 5, bottom: 5, right: 5, top: 0),
               child: InkWell(
                 onTap: () {}, //=> _goHistory(e),
                 child: Container(
@@ -1070,12 +1110,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         children: <Widget>[
                           Row(
                             children: [
-                              Text("Id Gaos: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              Container(
+                                width: 100,
+                                child: Text("Id Gaos: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
                               Expanded(
                                 child: Text(e.idregistro.toString(),
                                     style: TextStyle(
@@ -1103,12 +1146,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           Row(
                             children: [
-                              Text("Equipo: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              Container(
+                                width: 100,
+                                child: Text("Equipo: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
                               Expanded(
                                 child: Text(e.decO1.toString(),
                                     style: TextStyle(
@@ -1122,12 +1168,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           Row(
                             children: [
-                              Text("Descripción: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              Container(
+                                width: 100,
+                                child: Text("Descripción: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
                               Expanded(
                                 child: Text(e.codigoequivalencia.toString(),
                                     style: TextStyle(
@@ -1161,12 +1210,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           widget.funcionApp.habilitaCambioModelo == 1
                               ? Row(
                                   children: [
-                                    Text("Conf. Modelo:   ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        )),
+                                    Container(
+                                      width: 100,
+                                      child: Text("Conf. Modelo:   ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
                                     Expanded(
                                       child: Container(
                                         height: 40,
@@ -1214,12 +1266,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           widget.funcionApp.serieObligatoria == 1
                               ? Row(
                                   children: [
-                                    Text("Mac/Serie: ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        )),
+                                    Container(
+                                      width: 100,
+                                      child: Text("Mac/Serie: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
                                     Expanded(
                                       flex: 7,
                                       child: Text(e.estadO3.toString(),
@@ -2481,5 +2536,19 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     });
 
     return list;
+  }
+
+//*****************************************************************************
+//************************** SELECTPICTURE ************************************
+//*****************************************************************************
+  void _selectPicture() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _photoChangedDNI = true;
+        _image = image;
+      });
+    }
   }
 }

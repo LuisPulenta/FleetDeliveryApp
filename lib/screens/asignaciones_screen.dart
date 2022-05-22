@@ -472,12 +472,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text("Cliente: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      Container(
+                                        width: 80,
+                                        child: Text("Cliente: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
                                       Expanded(
                                         child: Text(
                                             '${e.cliente.toString()} - ${e.nombre.toString()}',
@@ -512,12 +515,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   // ),
                                   Row(
                                     children: [
-                                      Text("Dirección: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      Container(
+                                        width: 80,
+                                        child: Text("Dirección: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
                                       Expanded(
                                         child: Text(e.domicilio.toString(),
                                             style: TextStyle(
@@ -531,12 +537,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   ),
                                   Row(
                                     children: [
-                                      Text("Entre calles: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      Container(
+                                        width: 80,
+                                        child: Text("Entre calles: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
                                       Expanded(
                                         child: (e.entrecallE1
                                                         .toString()
@@ -560,12 +569,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   ),
                                   Row(
                                     children: [
-                                      Text("Localidad: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      Container(
+                                        width: 80,
+                                        child: Text("Localidad: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
                                       Expanded(
                                         child: Text(
                                             '${e.localidad.toString()}-${e.partido.toString()}',
@@ -581,12 +593,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   Row(
                                     children: [
                                       e.zona != ""
-                                          ? Text("Zona: ",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF0e4888),
-                                                fontWeight: FontWeight.bold,
-                                              ))
+                                          ? Container(
+                                              width: 80,
+                                              child: Text("Zona: ",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF0e4888),
+                                                    fontWeight: FontWeight.bold,
+                                                  )),
+                                            )
                                           : Container(),
                                       e.zona != ""
                                           ? Expanded(
@@ -623,12 +638,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   // ),
                                   Row(
                                     children: [
-                                      Text("Teléfono: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      Container(
+                                        width: 80,
+                                        child: Text("Teléfono: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
                                       Expanded(
                                         child: Text(e.telefono.toString(),
                                             style: TextStyle(
@@ -642,12 +660,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   ),
                                   Row(
                                     children: [
-                                      Text("Cant. Eq.: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      Container(
+                                        width: 80,
+                                        child: Text("Cant. Eq.: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
                                       Expanded(
                                         child: Text(
                                           e.cantAsign.toString(),
@@ -665,12 +686,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   ),
                                   Row(
                                     children: [
-                                      Text("Cód. Cierre: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      Container(
+                                        width: 80,
+                                        child: Text("Cód. Cierre: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
                                       Expanded(
                                         child: Text(e.descripcion.toString(),
                                             style: TextStyle(
@@ -690,13 +714,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                           children: [
                                             Row(
                                               children: [
-                                                Text("Fec. Asig.: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF0e4888),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
+                                                Container(
+                                                  width: 80,
+                                                  child: Text("Fec. Asig.: ",
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color:
+                                                            Color(0xFF0e4888),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      )),
+                                                ),
                                                 Expanded(
                                                   child: e.fechaAsignada == null
                                                       ? Text("")
@@ -734,13 +762,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             // ),
                                             Row(
                                               children: [
-                                                Text("Fec. Cita: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF0e4888),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
+                                                Container(
+                                                  width: 80,
+                                                  child: Text("Fec. Cita: ",
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color:
+                                                            Color(0xFF0e4888),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      )),
+                                                ),
                                                 Expanded(
                                                   child: e.fechaCita == null
                                                       ? Text("")
@@ -757,13 +789,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             ),
                                             Row(
                                               children: [
-                                                Text("Hora Cita: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF0e4888),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
+                                                Container(
+                                                  width: 80,
+                                                  child: Text("Hora Cita: ",
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color:
+                                                            Color(0xFF0e4888),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      )),
+                                                ),
                                                 Expanded(
                                                   child: e.fechaCita == null
                                                       ? Text("")
