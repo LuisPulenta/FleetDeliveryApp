@@ -48,6 +48,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       CustomInfoWindowController();
 
   String codCierre = '';
+  String codCierreGenerico = '';
+
   String descCodCierreEJB = '';
   String descCodCierreINC = '';
 
@@ -186,6 +188,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       ),
       icon: BitmapDescriptor.defaultMarker,
     ));
+
+    widget.controlesEquivalencia.forEach((control) {
+      if (control.codigoequivalencia == "Genérico") {
+        codCierreGenerico = control.decO1;
+      }
+    });
 
     _getAsigns();
   }
@@ -1224,7 +1232,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       child: Container(
                                         height: 40,
                                         child: DropdownButtonFormField(
-                                          value: _equipo,
+                                          value: e.marcaModeloId, //_equipo,
                                           isExpanded: true,
                                           isDense: true,
                                           style: TextStyle(
@@ -1691,7 +1699,27 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       _asigns = response.result;
     });
 
-    var a = 1;
+    _asigns.forEach((asign) {
+      if (asign.marcaModeloId == null) {
+        asign.marcaModeloId = codCierreGenerico;
+      }
+
+      if (asign.marcaModeloId == "") {
+        asign.marcaModeloId = codCierreGenerico;
+      }
+
+      bool bandera = true;
+
+      widget.controlesEquivalencia.forEach((control) {
+        if (control.decO1 == asign.marcaModeloId) {
+          bandera = false;
+        }
+      });
+
+      if (bandera) {
+        asign.marcaModeloId = codCierreGenerico;
+      }
+    });
   }
 
 //*****************************************************************************
