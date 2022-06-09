@@ -20,6 +20,7 @@ class Asignacion {
   String? novedades = '';
   String? provincia = '';
   int? reclamoTecnicoID = 0;
+  String? motivos = '';
   String? fechaCita = '';
   String? medioCita = '';
   String? nroSeriesExtras = '';
@@ -62,6 +63,7 @@ class Asignacion {
       required this.novedades,
       required this.provincia,
       required this.reclamoTecnicoID,
+      required this.motivos,
       required this.fechaCita,
       required this.medioCita,
       required this.nroSeriesExtras,
@@ -104,6 +106,7 @@ class Asignacion {
     novedades = json['novedades'];
     provincia = json['provincia'];
     reclamoTecnicoID = json['reclamoTecnicoID'];
+    motivos = json['motivos'];
     fechaCita = json['fechaCita'];
     medioCita = json['medioCita'];
     nroSeriesExtras = json['nroSeriesExtras'];
@@ -148,6 +151,7 @@ class Asignacion {
     data['novedades'] = this.novedades;
     data['provincia'] = this.provincia;
     data['reclamoTecnicoID'] = this.reclamoTecnicoID;
+    data['motivos'] = this.motivos;
     data['fechaCita'] = this.fechaCita;
     data['medioCita'] = this.medioCita;
     data['nroSeriesExtras'] = this.nroSeriesExtras;
@@ -193,6 +197,7 @@ class Asignacion {
       'novedades': novedades,
       'provincia': provincia,
       'reclamoTecnicoID': reclamoTecnicoID,
+      'motivos': motivos,
       'fechaCita': fechaCita,
       'medioCita': medioCita,
       'nroSeriesExtras': nroSeriesExtras,

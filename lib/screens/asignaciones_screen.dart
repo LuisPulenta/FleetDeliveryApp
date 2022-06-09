@@ -36,9 +36,11 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   double _sliderValue = 0;
   bool _prioridad = false;
+  bool _citaHoy = false;
 
   List<TipoAsignacion> _tiposasignacion = [];
   List<Zona> _zonas = [];
+  List<Cartera> _carteras = [];
   List<Asignacion2> _asignaciones = [];
   List<Asignacion2> _asignaciones2 = [];
 
@@ -69,6 +71,11 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   bool _zonaShowError = false;
   TextEditingController _zonaController = TextEditingController();
 
+  String _cartera = 'Elija una Cartera...';
+  String _carteraError = '';
+  bool _carteraShowError = false;
+  TextEditingController _carteraController = TextEditingController();
+
   int intentos = 0;
 
   Asignacion2 asignacionSelected = Asignacion2(
@@ -96,6 +103,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       novedades: '',
       provincia: '',
       reclamoTecnicoID: 0,
+      motivos: '',
       fechaCita: '',
       medioCita: '',
       nroSeriesExtras: '',
@@ -212,16 +220,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           width: 10,
         ),
         ElevatedButton(
-          child: Icon(Icons.search),
-          style: ElevatedButton.styleFrom(
-            primary: Color(0xFF282886),
-            minimumSize: Size(50, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
+            child: Icon(Icons.search),
+            style: ElevatedButton.styleFrom(
+              primary: Color(0xFF282886),
+              minimumSize: Size(50, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
             ),
-          ),
-          onPressed: () => _getObras(),
-        ),
+            //onPressed: () => _getObras(),
+            onPressed: () async {
+              await _getObras();
+            }),
       ],
     );
   }
@@ -252,6 +262,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       children: [
         Expanded(
           child: Container(
+            height: 66,
             padding: EdgeInsets.only(left: 10, right: 10, top: 5),
             child: _tiposasignacion.length == 0
                 ? Row(
@@ -265,6 +276,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   )
                 : DropdownButtonFormField(
                     value: _zona,
+                    isExpanded: true,
+                    isDense: true,
+                    style: TextStyle(fontSize: 12, color: Colors.black),
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -282,20 +296,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   ),
           ),
         ),
-        // SizedBox(
-        //   width: 10,
-        // ),
-        // ElevatedButton(
-        //   child: Icon(Icons.search),
-        //   style: ElevatedButton.styleFrom(
-        //     primary: Color(0xFF282886),
-        //     minimumSize: Size(50, 50),
-        //     shape: RoundedRectangleBorder(
-        //       borderRadius: BorderRadius.circular(5),
-        //     ),
-        //   ),
-        //   onPressed: () => _getObras(),
-        // ),
       ],
     );
   }
@@ -322,13 +322,85 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   }
 
 //-----------------------------------------------------------------------------
+//------------------------------ SHOWCARTERAS----------------------------------
+//-----------------------------------------------------------------------------
+
+  Widget _showCarteras() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+            height: 66,
+            child: _tiposasignacion.length == 0
+                ? Row(
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Cargando Carteras...'),
+                    ],
+                  )
+                : DropdownButtonFormField(
+                    value: _cartera,
+                    isExpanded: true,
+                    isDense: true,
+                    style: TextStyle(fontSize: 12, color: Colors.black),
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Elija una Cartera...',
+                      labelText: 'Cartera',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      errorText: _carteraShowError ? _carteraError : null,
+                    ),
+                    items: _getComboCarteras(),
+                    onChanged: (value) {
+                      _cartera = value.toString();
+                      _filter();
+                    },
+                  ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<DropdownMenuItem<String>> _getComboCarteras() {
+    List<DropdownMenuItem<String>> list = [];
+    list.add(DropdownMenuItem(
+      child: Text('Elija una Cartera...'),
+      value: 'Elija una Cartera...',
+    ));
+
+    _carteras.forEach((cartera) {
+      if (cartera.motivos == '') {
+        cartera.motivos = ' Sin Cartera';
+      }
+
+      list.add(DropdownMenuItem(
+        child: Text(cartera.motivos.toString()),
+        value: cartera.motivos.toString(),
+      ));
+    });
+
+    return list;
+  }
+
+//-----------------------------------------------------------------------------
 //------------------------------ METODO GETCONTENT --------------------------
 //-----------------------------------------------------------------------------
 
   Widget _getContent() {
     return Column(
       children: <Widget>[
-        _zonas.length > 1 ? _showZonas() : _showTipos(),
+        _zonas.length <= 1 && _carteras.length <= 1
+            ? _showTipos()
+            : Container(),
+        _zonas.length > 1 ? _showZonas() : Container(),
+        _carteras.length > 1 ? _showCarteras() : Container(),
         //_showAsignacionesCount(),
         _showFiltros(),
         Expanded(
@@ -388,6 +460,22 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   fillColor: MaterialStateProperty.all(Color(0xFF282886)),
                   onChanged: (value) {
                     _prioridad = value!;
+                    _filter();
+                  }),
+              SizedBox(
+                width: 50,
+              ),
+              Text("Con Cita HOY: ",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  )),
+              Checkbox(
+                  value: _citaHoy,
+                  focusColor: Color(0xFF282886),
+                  fillColor: MaterialStateProperty.all(Color(0xFF282886)),
+                  onChanged: (value) {
+                    _citaHoy = value!;
                     _filter();
                   }),
             ],
@@ -709,7 +797,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   Row(
                                     children: [
                                       Expanded(
-                                        flex: 1,
+                                        flex: 10,
                                         child: Column(
                                           children: [
                                             Row(
@@ -815,7 +903,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                         ),
                                       ),
                                       Expanded(
-                                        flex: 1,
+                                        flex: 9,
                                         child: Column(
                                           children: [
                                             ElevatedButton(
@@ -832,8 +920,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                               ),
                                               style: ElevatedButton.styleFrom(
                                                 primary: Color(0xFF282886),
-                                                minimumSize:
-                                                    Size(double.infinity, 50),
+                                                minimumSize: Size(60, 36),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(5),
@@ -846,6 +933,25 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ),
                                       SizedBox(
                                         height: 1,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 80,
+                                        child: Text("Cartera: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
+                                      Expanded(
+                                        child: Text(e.motivos.toString(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
                                       ),
                                     ],
                                   ),
@@ -946,6 +1052,42 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       }
     } while (bandera == false);
     setState(() {});
+    var a = 1;
+  }
+
+//*****************************************************************************
+//************************** METODO GETCARTERAS **********************************
+//*****************************************************************************
+
+  Future<Null> _getCarteras() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    bandera = false;
+    intentos = 0;
+
+    do {
+      Response response = Response(isSuccess: false);
+      response =
+          await ApiHelper.getCarteras(widget.user.idUser, _tipoasignacion);
+      intentos++;
+      if (response.isSuccess) {
+        bandera = true;
+        _carteras = response.result;
+      }
+    } while (bandera == false);
+    setState(() {});
+    var a = 1;
   }
 
 //*****************************************************************************
@@ -1050,6 +1192,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
     await _getCodigosCierre();
     await _getZonas();
+    await _getCarteras();
   }
 
 //*****************************************************************************
@@ -1117,6 +1260,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           .toLowerCase()
           .compareTo(b.codigoCierre.toString().toLowerCase());
     });
+
+    var a = 1;
   }
 
 //*****************************************************************************
@@ -1151,7 +1296,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       _search = '';
       _isFiltered = false;
     });
-    _asignaciones2 = _asignaciones;
+    //_asignaciones2 = _asignaciones;
+    _filter();
   }
 
 //*****************************************************************************
@@ -1221,6 +1367,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     bool condicionCodCierre = false;
     bool condicionFechaCita = false;
     bool condicionZona = false;
+    bool condicionCartera = false;
+    bool condicionCitaHoy = false;
 
     for (var asignacion in _asignaciones) {
       if (_zona == 'Elija una Zona...') {
@@ -1229,6 +1377,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         condicionZona = asignacion.zona == '';
       } else {
         condicionZona = asignacion.zona == _zona;
+      }
+
+      if (_cartera == 'Elija una Cartera...') {
+        condicionCartera = true;
+      } else if (_cartera == ' Sin Cartera') {
+        condicionCartera = asignacion.motivos == '';
+      } else {
+        condicionCartera = asignacion.motivos == _cartera;
       }
 
       if (asignacion.fechaAsignada == null) {
@@ -1243,6 +1399,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           : asignacion.fechaCita = asignacion.fechaCita;
 
 //----------- Condiciones ---------------------------
+//------------------------------------------------------------------------
       condicionTexto = (asignacion.nombre
               .toString()
               .toLowerCase()
@@ -1259,22 +1416,39 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               .toString()
               .toLowerCase()
               .contains(_search.toLowerCase()));
-
+//------------------------------------------------------------------------
       condicionAntig = DateTime.now()
               .difference(DateTime.parse(asignacion.fechaAsignada!))
               .inDays >=
           _sliderValue;
-
+//------------------------------------------------------------------------
       condicionCodCierre = _prioridad
           ? asignacion.codigoCierre == 45
           : asignacion.codigoCierre != 9999;
+//------------------------------------------------------------------------
+      if (!_citaHoy) {
+        condicionCitaHoy = true;
+      } else {
+        if (asignacion.fechaCita != null) {
+          DateTime now = new DateTime.now();
+          DateTime hoy = new DateTime(now.year, now.month, now.day);
 
+          condicionCitaHoy = _citaHoy
+              ? DateTime.parse(asignacion.fechaCita!).isAfter(hoy)
+              : true;
+        } else {
+          condicionCitaHoy = false;
+        }
+      }
+//------------------------------------------------------------------------
       condicionFechaCita = (asignacion.fechaCita != null);
-
+//------------------------------------------------------------------------
       if (condicionTexto &&
           condicionAntig &&
           (condicionCodCierre || condicionFechaCita) &&
-          condicionZona) {
+          condicionZona &&
+          condicionCartera &&
+          condicionCitaHoy) {
         filteredList.add(asignacion);
       }
     }

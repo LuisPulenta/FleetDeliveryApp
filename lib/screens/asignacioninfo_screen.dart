@@ -129,6 +129,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       novedades: '',
       provincia: '',
       reclamoTecnicoID: 0,
+      motivos: '',
       fechaCita: '',
       medioCita: '',
       nroSeriesExtras: '',
@@ -328,26 +329,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             SizedBox(
                               height: 20,
                             ),
-                            // Row(
-                            //   children: [
-                            //     Text("Obs. Inicial: ",
-                            //         style: TextStyle(
-                            //           fontSize: 12,
-                            //           color: Color(0xFF0e4888),
-                            //           fontWeight: FontWeight.bold,
-                            //         )),
-                            //     Expanded(
-                            //       child:
-                            //           Text('${_asignacion.observacionCaptura}',
-                            //               style: TextStyle(
-                            //                 fontSize: 12,
-                            //               )),
-                            //     ),
-                            //   ],
-                            // ),
-                            // SizedBox(
-                            //   height: 20,
-                            // ),
                             Row(
                               children: [
                                 Text("Obs. Cliente: ",
@@ -363,6 +344,28 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       )),
                                 ),
                               ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Text("Cartera: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Expanded(
+                                  child: Text('${_asignacion.motivos}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
                             ),
                           ],
                         )),
