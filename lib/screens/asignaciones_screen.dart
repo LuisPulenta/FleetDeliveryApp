@@ -1432,10 +1432,11 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         if (asignacion.fechaCita != null) {
           DateTime now = new DateTime.now();
           DateTime hoy = new DateTime(now.year, now.month, now.day);
+          DateTime fechaAsigAux = DateTime.parse(asignacion.fechaCita!);
+          DateTime fechaAsig = new DateTime(
+              fechaAsigAux.year, fechaAsigAux.month, fechaAsigAux.day);
 
-          condicionCitaHoy = _citaHoy
-              ? DateTime.parse(asignacion.fechaCita!).isAfter(hoy)
-              : true;
+          condicionCitaHoy = _citaHoy ? fechaAsig == hoy : true;
         } else {
           condicionCitaHoy = false;
         }
