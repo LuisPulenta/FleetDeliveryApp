@@ -1,20 +1,17 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_information/device_information.dart';
-
 import 'dart:math';
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 
@@ -33,6 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
   List<Usuario> _usuariosApi = [];
   List<Usuario> _usuarios = [];
   bool _usuariosConseguidos = false;
+
+  bool _rememberme = true;
 
   String _platformVersion = 'Unknown',
       _imeiNo = "",
@@ -168,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        //_showRememberme(),
+                        _showRememberme(),
                         _showButtons(),
                       ],
                     ),
@@ -306,6 +305,23 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+//-----------------------------------------------------------------
+//--------------------- METODO SHOWREMEMBERME ---------------------
+//-----------------------------------------------------------------
+
+  _showRememberme() {
+    return CheckboxListTile(
+      activeColor: Color(0xFF282886),
+      title: const Text('Recordarme:'),
+      value: _rememberme,
+      onChanged: (value) {
+        setState(() {
+          _rememberme = value!;
+        });
+      },
+    );
+  }
+
 //*****************************************************************************
 //************************** METODO LOGIN *************************************
 //*****************************************************************************
@@ -341,6 +357,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _usuarioLogueado = filteredUsuario[0];
 
+    String body = jsonEncode(_usuarioLogueado);
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('conectadodesde', DateTime.now().toString());
     await prefs.setString(
@@ -373,7 +391,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // Agregar nroConexion a SharedPreferences
 
-    await prefs.setInt('nroConexion', resultado);
+    String wsesion = jsonEncode(webSesion);
+
+    if (_rememberme) {
+      _storeUser(body, wsesion);
+    }
 
     // Si hay internet
     //    - Subir al servidor todos los registros de la bd local websesion
@@ -648,5 +670,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
     Response response =
         await ApiHelper.post('/api/WebSesions/', requestWebSesion);
+  }
+
+//*****************************************************************************
+//******************** METODO _storeUser **************************************
+//*****************************************************************************
+
+  void _storeUser(String body, String wsesion) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isRemembered', true);
+    await prefs.setString('usuario', body);
+    await prefs.setString('websesion', wsesion);
+    await prefs.setString('date', DateTime.now().toString());
   }
 }

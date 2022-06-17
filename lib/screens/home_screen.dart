@@ -1150,12 +1150,13 @@ class _HomeScreenState extends State<HomeScreen>
     await prefs.setString('date', '');
 
     //------------ Guarda en WebSesion la fecha y hora de salida ----------
-    _nroConexion = prefs.getInt('nroConexion');
+    _nroConexion = widget.webSesion.nroConexion;
 
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
-      Response response = await ApiHelper.putWebSesion(_nroConexion!);
+      Response response =
+          await ApiHelper.putWebSesion(widget.webSesion.nroConexion);
     } else {
       double hora = (DateTime.now().hour * 3600 +
               DateTime.now().minute * 60 +

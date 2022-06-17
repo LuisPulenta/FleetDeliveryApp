@@ -14,3 +14,4 @@ export 'package:fleetdeliveryapp/screens/paradainfo_screen.dart';
 export 'package:fleetdeliveryapp/screens/paradamap_screen.dart';
 export 'package:fleetdeliveryapp/screens/rutainfo_screen.dart';
 export 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
+export 'package:fleetdeliveryapp/screens/wait_screen.dart';

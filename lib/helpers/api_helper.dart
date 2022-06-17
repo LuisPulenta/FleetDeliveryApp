@@ -1,18 +1,7 @@
 import 'dart:convert';
-import 'package:fleetdeliveryapp/models/asign.dart';
-import 'package:fleetdeliveryapp/models/asignacion2.dart';
-import 'package:fleetdeliveryapp/models/codigocierre.dart';
-import 'package:fleetdeliveryapp/models/controlesequivalencia.dart';
-import 'package:fleetdeliveryapp/models/funcionesapp.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
-import 'package:fleetdeliveryapp/models/motivo.dart';
-import 'package:fleetdeliveryapp/models/proveedor.dart';
-import 'package:fleetdeliveryapp/models/ruta.dart';
-import 'package:fleetdeliveryapp/models/tipoasignacion.dart';
 import 'package:fleetdeliveryapp/models/zona.dart';
 import 'package:http/http.dart' as http;
-import 'package:fleetdeliveryapp/models/response.dart';
-import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'constants.dart';
 
 class ApiHelper {
