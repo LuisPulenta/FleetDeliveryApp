@@ -21,12 +21,12 @@ class ControlesEquivalencia {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['decO1'] = this.decO1;
-    data['codigoequivalencia'] = this.codigoequivalencia;
-    data['descripcion'] = this.descripcion;
-    data['proyectoModulo'] = this.proyectoModulo;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['decO1'] = decO1;
+    data['codigoequivalencia'] = codigoequivalencia;
+    data['descripcion'] = descripcion;
+    data['proyectoModulo'] = proyectoModulo;
     return data;
   }
 }

@@ -7,12 +7,12 @@ class ContactoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Contacto"),
+        title: const Text("Contacto"),
       ),
       body: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(vertical: 60),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.symmetric(vertical: 60),
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -37,7 +37,7 @@ class ContactoScreen extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       "Key_Press Software Developers",
                       style: TextStyle(
@@ -49,7 +49,7 @@ class ContactoScreen extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       "Mistol 71 Mi Valle Golf, Va. Parque Santa Ana",
                       style: TextStyle(fontSize: 14, color: Colors.black),
@@ -58,7 +58,7 @@ class ContactoScreen extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       "Córdoba - Argentina (5101)",
                       style: TextStyle(fontSize: 14, color: Colors.black),
@@ -67,7 +67,7 @@ class ContactoScreen extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Icon(Icons.phone),
                     SizedBox(
                       width: 20,
@@ -80,7 +80,7 @@ class ContactoScreen extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Icon(Icons.mail),
                     SizedBox(
                       width: 20,
@@ -93,7 +93,7 @@ class ContactoScreen extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Icon(Icons.language),
                     SizedBox(
                       width: 20,

@@ -39,7 +39,7 @@ class WebSesion {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['nroConexion'] = nroConexion;
     data['usuario'] = usuario;
     data['iP'] = iP;

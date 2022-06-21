@@ -8,7 +8,7 @@ class TipoAsignacion {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['proyectomodulo'] = proyectomodulo;
     return data;
   }

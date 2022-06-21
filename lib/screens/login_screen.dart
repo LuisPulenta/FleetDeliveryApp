@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -33,15 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _rememberme = true;
 
-  String _platformVersion = 'Unknown',
-      _imeiNo = "",
-      _modelName = "",
-      _manufacturerName = "",
-      _deviceName = "",
-      _productName = "",
-      _cpuType = "",
-      _hardware = "";
-  var _apiLevel;
+  String _imeiNo = "";
 
   Usuario _usuarioLogueado = Usuario(
       idUser: 0,
@@ -96,14 +87,15 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffd3a735),
+      backgroundColor: const Color(0xffd3a735),
       body: Stack(
         children: <Widget>[
           Container(
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 60),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
+              padding: const EdgeInsets.symmetric(vertical: 60),
+              decoration: const BoxDecoration(
+                // ignore: unnecessary_const
+                gradient: const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -116,55 +108,54 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              child: Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Image.asset(
-                      "assets/logo2.png",
-                      height: 100,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          Constants.version,
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Image.asset(
+                    "assets/logo2.png",
+                    height: 100,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        Constants.version,
+                        style: const TextStyle(
+                          fontSize: 20,
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               )),
           Transform.translate(
-            offset: Offset(0, -60),
+            offset: const Offset(0, -60),
             child: Center(
               child: SingleChildScrollView(
                 child: Card(
-                  color: Color(
+                  color: const Color(
                     (0xffb3b3b4),
                   ),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   elevation: 15,
-                  margin: EdgeInsets.only(
+                  margin: const EdgeInsets.only(
                       left: 20, right: 20, top: 260, bottom: 20),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 35, vertical: 20),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         _showEmail(),
                         _showPassword(),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         _showRememberme(),
@@ -178,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Center(
             child: _showLoader
-                ? LoaderComponent(text: 'Cargando USUARIOS.')
+                ? const LoaderComponent(text: 'Cargando USUARIOS.')
                 : Container(),
           )
         ],
@@ -188,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _showEmail() {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: TextField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
@@ -197,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
             hintText: 'Usuario...',
             labelText: 'Usuario',
             errorText: _emailShowError ? _emailError : null,
-            prefixIcon: Icon(Icons.person),
+            prefixIcon: const Icon(Icons.person),
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
         onChanged: (value) {
@@ -209,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _showPassword() {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: TextField(
         obscureText: !_passwordShow,
         decoration: InputDecoration(
@@ -218,11 +209,11 @@ class _LoginScreenState extends State<LoginScreen> {
             hintText: 'Contraseña...',
             labelText: 'Contraseña',
             errorText: _passwordShowError ? _passwordError : null,
-            prefixIcon: Icon(Icons.lock),
+            prefixIcon: const Icon(Icons.lock),
             suffixIcon: IconButton(
               icon: _passwordShow
-                  ? Icon(Icons.visibility)
-                  : Icon(Icons.visibility_off),
+                  ? const Icon(Icons.visibility)
+                  : const Icon(Icons.visibility_off),
               onPressed: () {
                 setState(() {
                   _passwordShow = !_passwordShow;
@@ -240,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _showButtons() {
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20),
       child: Column(
         children: [
           Row(
@@ -250,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(Icons.login),
                       SizedBox(
                         width: 20,
@@ -259,8 +250,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF282886),
-                    minimumSize: Size(double.infinity, 50),
+                    primary: const Color(0xFF282886),
+                    minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -270,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
@@ -280,7 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(Icons.language),
                       SizedBox(
                         width: 20,
@@ -289,8 +280,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF637893),
-                    minimumSize: Size(double.infinity, 50),
+                    primary: const Color(0xFF637893),
+                    minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -311,7 +302,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _showRememberme() {
     return CheckboxListTile(
-      activeColor: Color(0xFF282886),
+      activeColor: const Color(0xFF282886),
       title: const Text('Recordarme:'),
       value: _rememberme,
       onChanged: (value) {
@@ -361,12 +352,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('conectadodesde', DateTime.now().toString());
-    await prefs.setString(
-        'validohasta', DateTime.now().add(Duration(hours: 12)).toString());
+    await prefs.setString('validohasta',
+        DateTime.now().add(const Duration(hours: 12)).toString());
 
     // Agregar registro a bd local websesion
 
-    Random r = new Random();
+    Random r = Random();
     int resultado = r.nextInt((99999999 - 10000000) + 1) + 10000000;
     double hora = (DateTime.now().hour * 3600 +
             DateTime.now().minute * 60 +
@@ -406,9 +397,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (connectivityResult != ConnectivityResult.none) {
       _webSesionsdb = await DBWebSesions.webSesions();
 
-      _webSesionsdb.forEach((_webSesion) async {
+      for (var _webSesion in _webSesionsdb) {
         await _postWebSesion(_webSesion);
-      });
+      }
       await DBWebSesions.delete();
     }
 
@@ -464,10 +455,10 @@ class _LoginScreenState extends State<LoginScreen> {
 //*****************************************************************************
 //*********************** METODO GETUSUARIOS **********************************
 //*****************************************************************************
-  Future<Null> _getUsuarios() async {
+  Future<void> _getUsuarios() async {
     if ((_ultimaactualizacion == "null") ||
         (DateTime.parse(_ultimaactualizacion)
-            .isBefore(DateTime.now().add(Duration(days: -5))))) {
+            .isBefore(DateTime.now().add(const Duration(days: -5))))) {
       setState(() {
         _showLoader = true;
       });
@@ -489,9 +480,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('ultimaactualizacion',
-            DateTime.now().add(Duration(days: 0)).toString());
-
-        var a = 1;
+            DateTime.now().add(const Duration(days: 0)).toString());
       } else {
         setState(() {
           _showLoader = false;
@@ -503,7 +492,7 @@ class _LoginScreenState extends State<LoginScreen> {
             message:
                 "Debe actualizar la Tabla Usuarios. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.",
             actions: <AlertDialogAction>[
-              AlertDialogAction(key: null, label: 'Aceptar'),
+              const AlertDialogAction(key: null, label: 'Aceptar'),
             ]);
 
         return;
@@ -520,9 +509,9 @@ class _LoginScreenState extends State<LoginScreen> {
     void _insertUsuarios() async {
       if (_usuariosApi.isNotEmpty) {
         DBUsuarios.delete();
-        _usuariosApi.forEach((element) {
+        for (var element in _usuariosApi) {
           DBUsuarios.insertUsuario(element);
-        });
+        }
       }
     }
 
@@ -542,7 +531,7 @@ class _LoginScreenState extends State<LoginScreen> {
           message:
               "La tabla Usuarios local está vacía. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.",
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       SystemNavigator.pop();
       return;
@@ -566,8 +555,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _launchURL() async {
-    if (!await launch('http://www.fleetsa.com.ar:99/LoginForm'))
+    if (!await launch('http://www.fleetsa.com.ar:99/LoginForm')) {
       throw 'No se puede conectar a la Web de Fleet';
+    }
   }
 
 //*****************************************************************************
@@ -575,15 +565,8 @@ class _LoginScreenState extends State<LoginScreen> {
 //*****************************************************************************
 
   Future<void> initPlatformState() async {
-    late String platformVersion,
-        imeiNo = '',
-        modelName = '',
-        manufacturer = '',
-        deviceName = '',
-        productName = '',
-        cpuType = '',
-        hardware = '';
-    var apiLevel;
+    late String imeiNo = '';
+
     // Platform messages may fail,
     // so we use a try/catch PlatformException.
 
@@ -597,19 +580,20 @@ class _LoginScreenState extends State<LoginScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              title: Text('Aviso'),
-              content:
-                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                Text(
-                    'La App necesita que habilite el Permiso de acceso al teléfono para registrar el IMEI del celular con que se loguea.'),
-                SizedBox(
-                  height: 10,
-                ),
-              ]),
+              title: const Text('Aviso'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text(
+                        'La App necesita que habilite el Permiso de acceso al teléfono para registrar el IMEI del celular con que se loguea.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
               actions: <Widget>[
                 TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text('Ok')),
+                    child: const Text('Ok')),
               ],
             );
           });
@@ -618,18 +602,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      platformVersion = await DeviceInformation.platformVersion;
       imeiNo = await DeviceInformation.deviceIMEINumber;
-      modelName = await DeviceInformation.deviceModel;
-      manufacturer = await DeviceInformation.deviceManufacturer;
-      apiLevel = await DeviceInformation.apiLevel;
-      deviceName = await DeviceInformation.deviceName;
-      productName = await DeviceInformation.productName;
-      cpuType = await DeviceInformation.cpuName;
-      hardware = await DeviceInformation.hardware;
-    } on PlatformException catch (e) {
-      platformVersion = '${e.message}';
-    }
+    } on PlatformException catch (e) {}
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -637,15 +611,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) return;
 
     setState(() {
-      _platformVersion = "Running on :$platformVersion";
       _imeiNo = imeiNo;
-      _modelName = modelName;
-      _manufacturerName = manufacturer;
-      _apiLevel = apiLevel;
-      _deviceName = deviceName;
-      _productName = productName;
-      _cpuType = cpuType;
-      _hardware = hardware;
     });
   }
 
@@ -668,8 +634,7 @@ class _LoginScreenState extends State<LoginScreen> {
       'version': webSesion.version,
     };
 
-    Response response =
-        await ApiHelper.post('/api/WebSesions/', requestWebSesion);
+    await ApiHelper.post('/api/WebSesions/', requestWebSesion);
   }
 
 //*****************************************************************************

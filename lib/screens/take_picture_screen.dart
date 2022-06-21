@@ -6,7 +6,7 @@ import 'package:fleetdeliveryapp/models/models.dart';
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
 
-  TakePictureScreen({required this.camera});
+  const TakePictureScreen({Key? key, required this.camera}) : super(key: key);
 
   @override
   _TakePictureScreenState createState() => _TakePictureScreenState();
@@ -36,7 +36,7 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tomar Foto'),
+        title: const Text('Tomar Foto'),
       ),
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
@@ -44,14 +44,14 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
           if (snapshot.connectionState == ConnectionState.done) {
             return CameraPreview(_controller);
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.camera_alt),
+        child: const Icon(Icons.camera_alt),
         onPressed: () async {
           try {
             await _initializeControllerFuture;

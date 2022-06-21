@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/helpers/dbwebsesions_helper.dart';
@@ -13,20 +11,19 @@ class Home2Screen extends StatefulWidget {
   final Usuario user;
   final WebSesion webSesion;
 
-  Home2Screen({required this.user, required this.webSesion});
+  const Home2Screen({Key? key, required this.user, required this.webSesion})
+      : super(key: key);
 
   @override
   _Home2ScreenState createState() => _Home2ScreenState();
 }
 
 class _Home2ScreenState extends State<Home2Screen> {
-  @override
-
-//*****************************************************************************
+  //*****************************************************************************
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
 
-  Position _positionUser = Position(
+  Position _positionUser = const Position(
       longitude: 0,
       latitude: 0,
       timestamp: null,
@@ -36,25 +33,6 @@ class _Home2ScreenState extends State<Home2Screen> {
       speed: 0,
       speedAccuracy: 0);
 
-  Usuario _user = Usuario(
-      idUser: 0,
-      codigo: '',
-      apellidonombre: '',
-      usrlogin: '',
-      usrcontrasena: '',
-      habilitadoWeb: 0,
-      vehiculo: '',
-      dominio: '',
-      celular: '',
-      orden: 0,
-      centroDistribucion: 0);
-
-  String _conectadodesde = '';
-  String _validohasta = '';
-  String _ultimaactualizacion = '';
-
-  int? _nroConexion = 0;
-
 //*****************************************************************************
 //************************** INIT STATE ***************************************
 //*****************************************************************************
@@ -62,7 +40,6 @@ class _Home2ScreenState extends State<Home2Screen> {
   @override
   void initState() {
     super.initState();
-    _user = widget.user;
     _getprefs();
     _getPosition();
   }
@@ -71,11 +48,12 @@ class _Home2ScreenState extends State<Home2Screen> {
 //************************** PANTALLA *****************************************
 //*****************************************************************************
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Fleet App'),
-        backgroundColor: Color(0xFF282886),
+        title: const Text('Fleet App'),
+        backgroundColor: const Color(0xFF282886),
         centerTitle: true,
       ),
       body: _getBody(),
@@ -86,8 +64,8 @@ class _Home2ScreenState extends State<Home2Screen> {
   Widget _getBody() {
     return Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 60),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.symmetric(vertical: 60),
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -98,7 +76,7 @@ class _Home2ScreenState extends State<Home2Screen> {
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               Image.asset(
@@ -107,7 +85,7 @@ class _Home2ScreenState extends State<Home2Screen> {
               ),
               Text(
                 'Bienvenido/a ${widget.user.apellidonombre}',
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF0e4888)),
@@ -120,7 +98,7 @@ class _Home2ScreenState extends State<Home2Screen> {
   Widget _getMenu() {
     return Drawer(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -133,7 +111,7 @@ class _Home2ScreenState extends State<Home2Screen> {
         child: ListView(
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -145,19 +123,19 @@ class _Home2ScreenState extends State<Home2Screen> {
               ),
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Image(
+                  const Image(
                     image: AssetImage('assets/logo2.png'),
                     width: 200,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         "Usuario: ",
                         style: (TextStyle(
                             color: Color(0xff0e4888),
@@ -165,25 +143,25 @@ class _Home2ScreenState extends State<Home2Screen> {
                       ),
                       Text(
                         widget.user.apellidonombre!,
-                        style: (TextStyle(color: Colors.black)),
+                        style: (const TextStyle(color: Colors.black)),
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               color: Color(0xff0e4888),
               height: 1,
             ),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.router,
                 color: Color(0xff0e4888),
               ),
-              title: Text('Asignaciones',
+              title: const Text('Asignaciones',
                   style: TextStyle(fontSize: 15, color: Color(0xff0e4888))),
-              tileColor: Color(0xff0e4888),
+              tileColor: const Color(0xff0e4888),
               onTap: () {
                 Navigator.push(
                     context,
@@ -194,51 +172,53 @@ class _Home2ScreenState extends State<Home2Screen> {
                             )));
               },
             ),
-            Divider(
+            const Divider(
               color: Color(0xff0e4888),
               height: 1,
             ),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.equalizer,
                 color: Color(0xff0e4888),
               ),
-              title: Text('Estadísticas',
+              title: const Text('Estadísticas',
                   style: TextStyle(fontSize: 15, color: Color(0xff0e4888))),
-              tileColor: Color(0xff8c8c94),
+              tileColor: const Color(0xff8c8c94),
               onTap: () {
                 // Navigator.push(context,
                 //     MaterialPageRoute(builder: (context) => SeguridadScreen()));
               },
             ),
-            Divider(
+            const Divider(
               color: Color(0xff0e4888),
               height: 1,
             ),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.contact_page,
                 color: Color(0xff0e4888),
               ),
-              title: Text('Contacto',
+              title: const Text('Contacto',
                   style: TextStyle(fontSize: 15, color: Color(0xff0e4888))),
-              tileColor: Color(0xff8c8c94),
+              tileColor: const Color(0xff8c8c94),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ContactoScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ContactoScreen()));
               },
             ),
-            Divider(
+            const Divider(
               color: Color(0xff0e4888),
               height: 1,
             ),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.logout,
                 color: Color(0xff0e4888),
               ),
-              tileColor: Color(0xff8c8c94),
-              title: Text('Cerrar Sesión',
+              tileColor: const Color(0xff8c8c94),
+              title: const Text('Cerrar Sesión',
                   style: TextStyle(fontSize: 15, color: Color(0xff0e4888))),
               onTap: () {
                 _logOut();
@@ -257,13 +237,11 @@ class _Home2ScreenState extends State<Home2Screen> {
     await prefs.setString('date', '');
 
     //------------ Guarda en WebSesion la fecha y hora de salida ----------
-    _nroConexion = widget.webSesion.nroConexion;
 
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
-      Response response =
-          await ApiHelper.putWebSesion(widget.webSesion.nroConexion!);
+      await ApiHelper.putWebSesion(widget.webSesion.nroConexion);
     } else {
       double hora = (DateTime.now().hour * 3600 +
               DateTime.now().minute * 60 +
@@ -287,7 +265,7 @@ class _Home2ScreenState extends State<Home2Screen> {
     }
 
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
 //*****************************************************************************
@@ -296,9 +274,6 @@ class _Home2ScreenState extends State<Home2Screen> {
 
   void _getprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _conectadodesde = prefs.getString('conectadodesde').toString();
-    _validohasta = prefs.getString('validohasta').toString();
-    _ultimaactualizacion = prefs.getString('ultimaactualizacion').toString();
   }
 
   //*****************************************************************************
@@ -306,7 +281,6 @@ class _Home2ScreenState extends State<Home2Screen> {
 //*****************************************************************************
 
   Future _getPosition() async {
-    bool serviceEnabled;
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -319,18 +293,19 @@ class _Home2ScreenState extends State<Home2Screen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                title: Text('Aviso'),
-                content:
-                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  Text('El permiso de localización está negado.'),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ]),
+                title: const Text('Aviso'),
+                content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const <Widget>[
+                      Text('El permiso de localización está negado.'),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ]),
                 actions: <Widget>[
                   TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: Text('Ok')),
+                      child: const Text('Ok')),
                 ],
               );
             });
@@ -346,19 +321,20 @@ class _Home2ScreenState extends State<Home2Screen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              title: Text('Aviso'),
-              content:
-                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                Text(
-                    'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
-                SizedBox(
-                  height: 10,
-                ),
-              ]),
+              title: const Text('Aviso'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text(
+                        'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
               actions: <Widget>[
                 TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text('Ok')),
+                    child: const Text('Ok')),
               ],
             );
           });

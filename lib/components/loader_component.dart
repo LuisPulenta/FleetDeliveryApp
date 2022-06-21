@@ -12,25 +12,25 @@ class LoaderComponent extends StatelessWidget {
         width: 240,
         height: 160,
         decoration: BoxDecoration(
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: Color(0xff282886),
+              color: const Color(0xff282886),
             )),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(
+            const CircularProgressIndicator(
               color: Color(0xff282886),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(text, style: TextStyle(fontSize: 15)),
-            SizedBox(
+            Text(text, style: const TextStyle(fontSize: 15)),
+            const SizedBox(
               height: 20,
             ),
-            Text("Por favor espere...", style: TextStyle(fontSize: 15)),
+            const Text("Por favor espere...", style: TextStyle(fontSize: 15)),
           ],
         ),
       ),

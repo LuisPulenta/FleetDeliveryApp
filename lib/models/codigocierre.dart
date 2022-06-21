@@ -21,12 +21,12 @@ class CodigoCierre {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['proyectomodulo'] = this.proyectomodulo;
-    data['codigoCierre'] = this.codigoCierre;
-    data['descripcion'] = this.descripcion;
-    data['cierraEnAPP'] = this.cierraEnAPP;
-    data['noMostrarAPP'] = this.noMostrarAPP;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['proyectomodulo'] = proyectomodulo;
+    data['codigoCierre'] = codigoCierre;
+    data['descripcion'] = descripcion;
+    data['cierraEnAPP'] = cierraEnAPP;
+    data['noMostrarAPP'] = noMostrarAPP;
     return data;
   }
 

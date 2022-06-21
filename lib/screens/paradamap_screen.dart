@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -15,29 +13,27 @@ class ParadaMapScreen extends StatefulWidget {
   final CustomInfoWindowController customInfoWindowController;
 
   const ParadaMapScreen(
-      {required this.user,
+      {Key? key,
+      required this.user,
       required this.positionUser,
       required this.paradaenvio,
       required this.markers,
-      required this.customInfoWindowController});
+      required this.customInfoWindowController})
+      : super(key: key);
 
   @override
   _ParadaMapScreenState createState() => _ParadaMapScreenState();
 }
 
 class _ParadaMapScreenState extends State<ParadaMapScreen> {
-  String _direccion = '';
-  String _direccionError = '';
-  bool _direccionShowError = false;
-  TextEditingController _direccionController = TextEditingController();
   bool ubicOk = false;
   double latitud = 0;
   double longitud = 0;
-  bool _showLoader = false;
+  final bool _showLoader = false;
   Set<Marker> _markers = {};
   MapType _defaultMapType = MapType.normal;
   String direccion = '';
-  Position position = Position(
+  Position position = const Position(
       longitude: 0,
       latitude: 0,
       timestamp: null,
@@ -47,10 +43,8 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
       speed: 0,
       speedAccuracy: 0);
   CameraPosition _initialPosition =
-      CameraPosition(target: LatLng(31, 64), zoom: 16.0);
+      const CameraPosition(target: LatLng(31, 64), zoom: 16.0);
   //static const LatLng _center = const LatLng(-31.4332373, -64.226344);
-
-  LatLng _center = LatLng(0, 0);
 
   @override
   void dispose() {
@@ -60,7 +54,6 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initialPosition = (widget.markers.length == 1)
         ? CameraPosition(
@@ -72,8 +65,6 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
                 widget.paradaenvio.longitud!.toDouble()),
             zoom: 12.0);
     ubicOk = true;
-    _center = LatLng(widget.paradaenvio.latitud!.toDouble(),
-        widget.paradaenvio.longitud!.toDouble());
     _markers = widget.markers;
 
     // _markers.add(Marker(
@@ -85,19 +76,6 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
     //   ),
     //   icon: BitmapDescriptor.defaultMarker,
     // ));
-  }
-
-  Future _getPosition() async {
-    position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    latitud = position.latitude;
-    longitud = position.longitude;
-    direccion = placemarks[0].street.toString() +
-        " - " +
-        placemarks[0].locality.toString();
   }
 
   @override
@@ -112,53 +90,51 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
       body: Stack(
         children: [
           ubicOk == true
-              ? Container(
-                  child: Stack(children: <Widget>[
-                    GoogleMap(
-                      onTap: (position) {
-                        widget.customInfoWindowController.hideInfoWindow!();
-                      },
-                      myLocationEnabled: false,
-                      initialCameraPosition: _initialPosition,
-                      onCameraMove: _onCameraMove,
-                      markers: _markers,
-                      mapType: _defaultMapType,
-                      onMapCreated: (GoogleMapController controller) async {
-                        widget.customInfoWindowController.googleMapController =
-                            controller;
-                      },
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 80, right: 10),
-                      alignment: Alignment.topRight,
-                      child: Column(children: <Widget>[
-                        FloatingActionButton(
-                            child: Icon(Icons.layers),
-                            elevation: 5,
-                            backgroundColor: Color(0xfff4ab04),
-                            onPressed: () {
-                              _changeMapType();
-                            }),
-                      ]),
-                    ),
-                    // Center(
-                    //   child: Icon(
-                    //     Icons.location_on,
-                    //     color: Colors.red,
-                    //     size: 50,
-                    //   ),
-                    // ),
-                    CustomInfoWindow(
-                      controller: widget.customInfoWindowController,
-                      height: 140,
-                      width: 300,
-                      offset: 100,
-                    ),
-                  ]),
-                )
+              ? Stack(children: <Widget>[
+                  GoogleMap(
+                    onTap: (position) {
+                      widget.customInfoWindowController.hideInfoWindow!();
+                    },
+                    myLocationEnabled: false,
+                    initialCameraPosition: _initialPosition,
+                    onCameraMove: _onCameraMove,
+                    markers: _markers,
+                    mapType: _defaultMapType,
+                    onMapCreated: (GoogleMapController controller) async {
+                      widget.customInfoWindowController.googleMapController =
+                          controller;
+                    },
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 80, right: 10),
+                    alignment: Alignment.topRight,
+                    child: Column(children: <Widget>[
+                      FloatingActionButton(
+                          child: const Icon(Icons.layers),
+                          elevation: 5,
+                          backgroundColor: const Color(0xfff4ab04),
+                          onPressed: () {
+                            _changeMapType();
+                          }),
+                    ]),
+                  ),
+                  // Center(
+                  //   child: Icon(
+                  //     Icons.location_on,
+                  //     color: Colors.red,
+                  //     size: 50,
+                  //   ),
+                  // ),
+                  CustomInfoWindow(
+                    controller: widget.customInfoWindowController,
+                    height: 140,
+                    width: 300,
+                    offset: 100,
+                  ),
+                ])
               : Container(),
           _showLoader
-              ? LoaderComponent(
+              ? const LoaderComponent(
                   text: 'Por favor espere...',
                 )
               : Container(),
@@ -167,9 +143,7 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
     );
   }
 
-  void _onCameraMove(CameraPosition position) {
-    _center = position.target;
-  }
+  void _onCameraMove(CameraPosition position) {}
 
   void _changeMapType() {
     _defaultMapType = _defaultMapType == MapType.normal

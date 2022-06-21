@@ -234,7 +234,7 @@ class Envio {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['idEnvio'] = idEnvio;
     data['idproveedor'] = idproveedor;
     data['agencianr'] = agencianr;

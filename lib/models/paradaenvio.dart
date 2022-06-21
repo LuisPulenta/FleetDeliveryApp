@@ -25,34 +25,41 @@ class ParadaEnvio {
   String? fecha = '';
   String? imageArray = '';
   String? observaciones = '';
+  int? enviadoparada = 0;
+  int? enviadoenvio = 0;
+  int? enviadoseguimiento = 0;
 
-  ParadaEnvio(
-      {required this.idParada,
-      required this.idRuta,
-      required this.idEnvio,
-      required this.secuencia,
-      required this.leyenda,
-      required this.latitud,
-      required this.longitud,
-      required this.idproveedor,
-      required this.estado,
-      required this.ordenid,
-      required this.titular,
-      required this.dni,
-      required this.domicilio,
-      required this.cp,
-      required this.entreCalles,
-      required this.telefonos,
-      required this.localidad,
-      required this.bultos,
-      required this.proveedor,
-      required this.motivo,
-      required this.motivodesc,
-      required this.notas,
-      required this.enviado,
-      required this.fecha,
-      required this.imageArray,
-      required this.observaciones});
+  ParadaEnvio({
+    required this.idParada,
+    required this.idRuta,
+    required this.idEnvio,
+    required this.secuencia,
+    required this.leyenda,
+    required this.latitud,
+    required this.longitud,
+    required this.idproveedor,
+    required this.estado,
+    required this.ordenid,
+    required this.titular,
+    required this.dni,
+    required this.domicilio,
+    required this.cp,
+    required this.entreCalles,
+    required this.telefonos,
+    required this.localidad,
+    required this.bultos,
+    required this.proveedor,
+    required this.motivo,
+    required this.motivodesc,
+    required this.notas,
+    required this.enviado,
+    required this.fecha,
+    required this.imageArray,
+    required this.observaciones,
+    required this.enviadoparada,
+    required this.enviadoenvio,
+    required this.enviadoseguimiento,
+  });
 
   ParadaEnvio.fromJson(Map<String, dynamic> json) {
     idParada = json['idParada'];
@@ -82,10 +89,13 @@ class ParadaEnvio {
     fecha = json['fecha'];
     imageArray = json['imageArray'];
     observaciones = json['observaciones'];
+    enviadoparada = json['enviadoparada'];
+    enviadoenvio = json['enviadoenvio'];
+    enviadoseguimiento = json['enviadoseguimiento'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['idParada'] = idParada;
     data['idRuta'] = idRuta;
     data['idEnvio'] = idEnvio;
@@ -113,6 +123,9 @@ class ParadaEnvio {
     data['fecha'] = fecha;
     data['imageArray'] = imageArray;
     data['observaciones'] = observaciones;
+    data['enviadoparada'] = enviadoparada;
+    data['enviadoenvio'] = enviadoenvio;
+    data['enviadoseguimiento'] = enviadoseguimiento;
 
     return data;
   }
@@ -145,6 +158,9 @@ class ParadaEnvio {
       'fecha': fecha,
       'imageArray': imageArray,
       'observaciones': observaciones,
+      'enviadoparada': enviadoparada,
+      'enviadoenvio': enviadoenvio,
+      'enviadoseguimiento': enviadoseguimiento,
     };
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_const
+
 import 'dart:ui' as ui;
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
@@ -36,17 +38,17 @@ class _FirmaScreenState extends State<FirmaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Firma"),
+          title: const Text("Firma"),
           centerTitle: true,
-          backgroundColor: Color(0xff282886),
+          backgroundColor: const Color(0xff282886),
         ),
         body: Container(
-          padding: EdgeInsets.all(5),
-          color: Color(0xFFC7C7C8),
+          padding: const EdgeInsets.all(5),
+          color: const Color(0xFFC7C7C8),
           child: Column(
               children: [
                 Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Container(
                         child: SfSignaturePad(
                             key: signatureGlobalKey,
@@ -56,16 +58,16 @@ class _FirmaScreenState extends State<FirmaScreen> {
                             maximumStrokeWidth: 4.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey)))),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Expanded(
                     child: ElevatedButton(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Icon(Icons.save),
                             SizedBox(
                               width: 12,
@@ -74,22 +76,22 @@ class _FirmaScreenState extends State<FirmaScreen> {
                           ],
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF120E43),
-                          minimumSize: Size(double.infinity, 40),
+                          primary: const Color(0xFF120E43),
+                          minimumSize: const Size(double.infinity, 40),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
                         onPressed: _handleSaveButtonPressed),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Expanded(
                     child: ElevatedButton(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: const [
                           Icon(Icons.delete),
                           SizedBox(
                             width: 12,
@@ -98,8 +100,8 @@ class _FirmaScreenState extends State<FirmaScreen> {
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFE03B8B),
-                        minimumSize: Size(double.infinity, 40),
+                        primary: const Color(0xFFE03B8B),
+                        minimumSize: const Size(double.infinity, 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -107,7 +109,7 @@ class _FirmaScreenState extends State<FirmaScreen> {
                       onPressed: _handleClearButtonPressed,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                 ], mainAxisAlignment: MainAxisAlignment.spaceEvenly)

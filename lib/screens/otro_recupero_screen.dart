@@ -1,9 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/models/asignacion2.dart';
 import 'package:fleetdeliveryapp/models/controlesequivalencia.dart';
-import 'package:fleetdeliveryapp/models/response.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,10 +14,12 @@ class OtroRecuperoScreen extends StatefulWidget {
   final List<ControlesEquivalencia> controlesEquivalencia;
 
   const OtroRecuperoScreen(
-      {required this.user,
+      {Key? key,
+      required this.user,
       required this.asignacion,
       required this.idgaos,
-      required this.controlesEquivalencia});
+      required this.controlesEquivalencia})
+      : super(key: key);
 
   @override
   State<OtroRecuperoScreen> createState() => _OtroRecuperoScreenState();
@@ -27,43 +27,41 @@ class OtroRecuperoScreen extends StatefulWidget {
 
 class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
   String _coddeco1OtroRecupero = 'Elija un Modelo...';
-  String _coddeco1OtroRecuperoError = '';
-  bool _coddeco1OtroRecuperoShowError = false;
-  TextEditingController _coddeco1OtroRecuperoController =
-      TextEditingController();
+  final String _coddeco1OtroRecuperoError = '';
+  final bool _coddeco1OtroRecuperoShowError = false;
 
   String _nroserieextraOtroRecupero = '';
-  String _nroserieextraOtroRecuperoError = '';
-  bool _nroserieextraOtroRecuperoShowError = false;
-  TextEditingController _nroserieextraOtroRecuperoController =
+  final String _nroserieextraOtroRecuperoError = '';
+  final bool _nroserieextraOtroRecuperoShowError = false;
+  final TextEditingController _nroserieextraOtroRecuperoController =
       TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFbfd4e7),
+      backgroundColor: const Color(0xFFbfd4e7),
       appBar: AppBar(
-        backgroundColor: Color(0xff282886),
-        title: Text('Otro Recupero'),
+        backgroundColor: const Color(0xff282886),
+        title: const Text('Otro Recupero'),
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 30),
-              Text(
+              const SizedBox(height: 30),
+              const Text(
                 'Esta opción es UNICAMENTE para registrar Recupero de Equipos que no estaban informados que los tenía el Cliente, y que el mismo solicita devolver.',
                 style: TextStyle(
                     color: Colors.red,
                     fontSize: 14,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 children: [
-                  Text("Modelo: ",
+                  const Text("Modelo: ",
                       style: TextStyle(
                         fontSize: 12,
                         color: Color(0xFF0e4888),
@@ -87,7 +85,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                       },
                     ),
                   ),
-                  Text("   ",
+                  const Text("   ",
                       style: TextStyle(
                         fontSize: 12,
                         color: Color(0xFF0e4888),
@@ -95,10 +93,10 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                       )),
                 ],
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 children: [
-                  Text("Mac/Serie: ",
+                  const Text("Mac/Serie: ",
                       style: TextStyle(
                         fontSize: 12,
                         color: Color(0xFF0e4888),
@@ -107,24 +105,23 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                   Expanded(
                     flex: 7,
                     child: Text(_nroserieextraOtroRecupero,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   ElevatedButton(
-                      child: Icon(Icons.qr_code_2),
+                      child: const Icon(Icons.qr_code_2),
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF282886),
-                        minimumSize: Size(50, 50),
+                        primary: const Color(0xFF282886),
+                        minimumSize: const Size(50, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
                       onPressed: () {
-                        String barcodeScanRes;
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -135,8 +132,8 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                   children: [
                                     AlertDialog(
                                       backgroundColor: Colors.grey[300],
-                                      title:
-                                          Text("Ingrese o escanee el código"),
+                                      title: const Text(
+                                          "Ingrese o escanee el código"),
                                       content: Column(
                                         children: [
                                           TextField(
@@ -152,7 +149,8 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                     _nroserieextraOtroRecuperoShowError
                                                         ? _nroserieextraOtroRecuperoError
                                                         : null,
-                                                prefixIcon: Icon(Icons.tag),
+                                                prefixIcon:
+                                                    const Icon(Icons.tag),
                                                 border: OutlineInputBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -162,12 +160,14 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                   value;
                                             },
                                           ),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                           ElevatedButton(
-                                              child: Icon(Icons.qr_code_2),
+                                              child:
+                                                  const Icon(Icons.qr_code_2),
                                               style: ElevatedButton.styleFrom(
-                                                primary: Color(0xFF282886),
-                                                minimumSize: Size(50, 50),
+                                                primary:
+                                                    const Color(0xFF282886),
+                                                minimumSize: const Size(50, 50),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(5),
@@ -205,15 +205,16 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceAround,
-                                                    children: [
+                                                    children: const [
                                                       Icon(Icons.save),
                                                       Text('Aceptar'),
                                                     ],
                                                   ),
                                                   style:
                                                       ElevatedButton.styleFrom(
-                                                    primary: Color(0xFF120E43),
-                                                    minimumSize: Size(
+                                                    primary:
+                                                        const Color(0xFF120E43),
+                                                    minimumSize: const Size(
                                                         double.infinity, 50),
                                                     shape:
                                                         RoundedRectangleBorder(
@@ -237,13 +238,13 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                                         .circular(
                                                                             10),
                                                               ),
-                                                              title:
-                                                                  Text('Aviso'),
+                                                              title: const Text(
+                                                                  'Aviso'),
                                                               content: Column(
                                                                   mainAxisSize:
                                                                       MainAxisSize
                                                                           .min,
-                                                                  children: <
+                                                                  children: const <
                                                                       Widget>[
                                                                     Text(
                                                                         'El código debe tener al menos 6 caracteres.'),
@@ -257,7 +258,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                                     onPressed: () =>
                                                                         Navigator.of(context)
                                                                             .pop(),
-                                                                    child: Text(
+                                                                    child: const Text(
                                                                         'Ok')),
                                                               ],
                                                             );
@@ -274,7 +275,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                     setState(() {});
                                                   }),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 10,
                                             ),
                                             Expanded(
@@ -283,15 +284,16 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceAround,
-                                                  children: [
+                                                  children: const [
                                                     Icon(Icons.cancel),
                                                     Text('Cancelar'),
                                                   ],
                                                 ),
                                                 style: ElevatedButton.styleFrom(
-                                                  primary: Color(0xFFB4161B),
-                                                  minimumSize:
-                                                      Size(double.infinity, 50),
+                                                  primary:
+                                                      const Color(0xFFB4161B),
+                                                  minimumSize: const Size(
+                                                      double.infinity, 50),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -313,14 +315,14 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                             },
                             barrierDismissible: false);
                       }),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   ElevatedButton(
-                      child: Icon(Icons.cancel),
+                      child: const Icon(Icons.cancel),
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xffdf281e),
-                        minimumSize: Size(50, 50),
+                        primary: const Color(0xffdf281e),
+                        minimumSize: const Size(50, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -332,21 +334,21 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                       }),
                 ],
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                        children: const [
                           Icon(Icons.save),
                           Text('Guardar'),
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF120E43),
-                        minimumSize: Size(double.infinity, 50),
+                        primary: const Color(0xFF120E43),
+                        minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -356,21 +358,21 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(
                     child: ElevatedButton(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                        children: const [
                           Icon(Icons.cancel),
                           Text('Cancelar'),
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFB4161B),
-                        minimumSize: Size(double.infinity, 50),
+                        primary: const Color(0xFFB4161B),
+                        minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -395,17 +397,17 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
 
   List<DropdownMenuItem<String>> _getComboEquipos() {
     List<DropdownMenuItem<String>> list = [];
-    list.add(DropdownMenuItem(
+    list.add(const DropdownMenuItem(
       child: Text('Elija un Modelo...'),
       value: 'Elija un Modelo...',
     ));
 
-    widget.controlesEquivalencia.forEach((control) {
+    for (var control in widget.controlesEquivalencia) {
       list.add(DropdownMenuItem(
         child: Text(control.descripcion.toString()),
         value: control.decO1.toString(),
       ));
-    });
+    }
 
     return list;
   }
@@ -423,11 +425,10 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
           title: 'Error',
           message: 'Debe elegir un Modelo.',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
-    ;
 
 //---------------- Verifica que se haya elegido un MacSerie --------------
 
@@ -437,11 +438,10 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
           title: 'Error',
           message: 'Debe elegir un Mac/Serie.',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
-    ;
 
     //---------------- Verifica que MacSerie no tenga más de 30 caracteres --------------
 
@@ -451,30 +451,14 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
           title: 'Error',
           message: 'Mac/Serie no puede tener más de 30 caracteres.',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
-    ;
 
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
-      Map<String, dynamic> request = {
-        'idasignacionextra': 0,
-        'idgaos': widget.idgaos,
-        'fechacarga': DateTime.now().toString(),
-        'nrocliente': widget.asignacion.cliente,
-        'idtecnico': widget.user.idUser,
-        'coddeco1': _coddeco1OtroRecupero,
-        'nroserieextra': _nroserieextraOtroRecupero,
-        'proyectomodulo': widget.asignacion.proyectomodulo,
-      };
-
-      Response response = await ApiHelper.post(
-        '/api/AsignacionesOtsEquiposExtra',
-        request,
-      );
       Navigator.pop(context);
     }
   }

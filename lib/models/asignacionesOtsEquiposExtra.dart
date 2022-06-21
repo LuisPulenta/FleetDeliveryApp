@@ -30,15 +30,15 @@ class AsignacionesOtsEquiposExtra {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['idasignacionextra'] = this.idasignacionextra;
-    data['idgaos'] = this.idgaos;
-    data['fechacarga'] = this.fechacarga;
-    data['nrocliente'] = this.nrocliente;
-    data['idtecnico'] = this.idtecnico;
-    data['coddeco1'] = this.coddeco1;
-    data['nroserieextra'] = this.nroserieextra;
-    data['proyectomodulo'] = this.proyectomodulo;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['idasignacionextra'] = idasignacionextra;
+    data['idgaos'] = idgaos;
+    data['fechacarga'] = fechacarga;
+    data['nrocliente'] = nrocliente;
+    data['idtecnico'] = idtecnico;
+    data['coddeco1'] = coddeco1;
+    data['nroserieextra'] = nroserieextra;
+    data['proyectomodulo'] = proyectomodulo;
     return data;
   }
 

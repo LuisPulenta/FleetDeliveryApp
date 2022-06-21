@@ -39,7 +39,7 @@ class Usuario {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['idUser'] = idUser;
     data['codigo'] = codigo;
     data['apellidonombre'] = apellidonombre;

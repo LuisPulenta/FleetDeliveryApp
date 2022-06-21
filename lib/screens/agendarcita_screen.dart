@@ -9,7 +9,9 @@ class AgendarCitaScreen extends StatefulWidget {
   final Usuario user;
   final Asignacion2 asignacion;
 
-  AgendarCitaScreen({required this.user, required this.asignacion});
+  const AgendarCitaScreen(
+      {Key? key, required this.user, required this.asignacion})
+      : super(key: key);
 
   @override
   _AgendarCitaScreenState createState() => _AgendarCitaScreenState();
@@ -24,7 +26,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
   String _opseleccionada = "Teléfono";
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
-  bool _showLoader = false;
+  final bool _showLoader = false;
   bool bandera = false;
   List<Asign> _asigns = [];
 
@@ -36,16 +38,16 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Agendar Cita"),
-        backgroundColor: Color(0xFF0e4888),
+        title: const Text("Agendar Cita"),
+        backgroundColor: const Color(0xFF0e4888),
         //backgroundColor: Color(0xFF0e4888),
         centerTitle: true,
       ),
       body: Stack(
         children: [
           Container(
-            padding: EdgeInsets.all(5),
-            color: Color(0xFFC7C7C8),
+            padding: const EdgeInsets.all(5),
+            color: const Color(0xFFC7C7C8),
             child: Column(
               children: <Widget>[
                 _showAsignacion(),
@@ -55,7 +57,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
           ),
           Center(
             child: _showLoader
-                ? LoaderComponent(text: 'Guardando CITA.')
+                ? const LoaderComponent(text: 'Guardando CITA.')
                 : Container(),
           )
         ],
@@ -73,15 +75,15 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
       //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
-      margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
       child: Container(
-        margin: EdgeInsets.all(0),
-        padding: EdgeInsets.all(5),
+        margin: const EdgeInsets.all(0),
+        padding: const EdgeInsets.all(5),
         child: Row(
           children: [
             Expanded(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -90,7 +92,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                         children: [
                           Row(
                             children: [
-                              Text("Cliente: ",
+                              const Text("Cliente: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -99,18 +101,18 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                               Expanded(
                                 child: Text(
                                     '${widget.asignacion.cliente.toString()} - ${widget.asignacion.nombre.toString()}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           Row(
                             children: [
-                              Text("Rec.Téc.: ",
+                              const Text("Rec.Téc.: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -120,18 +122,18 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                                 child: Text(
                                     widget.asignacion.reclamoTecnicoID
                                         .toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           Row(
                             children: [
-                              Text("Dirección: ",
+                              const Text("Dirección: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -140,18 +142,18 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                               Expanded(
                                 child:
                                     Text(widget.asignacion.domicilio.toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 12,
                                         )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           Row(
                             children: [
-                              Text("Localidad: ",
+                              const Text("Localidad: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -160,18 +162,18 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                               Expanded(
                                 child:
                                     Text(widget.asignacion.localidad.toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 12,
                                         )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           Row(
                             children: [
-                              Text("Provincia: ",
+                              const Text("Provincia: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -180,18 +182,18 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                               Expanded(
                                 child:
                                     Text(widget.asignacion.provincia.toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 12,
                                         )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           Row(
                             children: [
-                              Text("Teléfono: ",
+                              const Text("Teléfono: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -200,25 +202,25 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                               Expanded(
                                 child:
                                     Text(widget.asignacion.telefono.toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 12,
                                         )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 3,
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                             height: 2,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 3,
                           ),
                           Row(
                             children: [
-                              Text("Est. Gaos: ",
+                              const Text("Est. Gaos: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -227,15 +229,15 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                               Expanded(
                                 child: Text(
                                   widget.asignacion.estadogaos.toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 12,
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
-                              Text("Cód. Cierre: ",
+                              const Text("Cód. Cierre: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -244,17 +246,17 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                               Expanded(
                                 child: Text(
                                   widget.asignacion.codigoCierre.toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 12,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 3,
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                             height: 2,
                           ),
@@ -281,34 +283,34 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
       //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
-      margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
       child: Container(
-        margin: EdgeInsets.all(0),
-        padding: EdgeInsets.all(5),
+        margin: const EdgeInsets.all(0),
+        padding: const EdgeInsets.all(5),
         child: Row(
           children: [
             Expanded(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 23,
                           ),
                           _showMedioCita(),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           _getFecha(context),
-                          SizedBox(
+                          const SizedBox(
                             height: 50,
                           ),
                           _showButtons(context),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                         ],
@@ -331,8 +333,8 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
   Widget _showMedioCita() {
     return Row(
       children: <Widget>[
-        Icon(Icons.fact_check),
-        SizedBox(
+        const Icon(Icons.fact_check),
+        const SizedBox(
           width: 20,
         ),
         Expanded(
@@ -358,9 +360,9 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
 
   List<DropdownMenuItem<String>> getOptionsDropDown() {
     List<DropdownMenuItem<String>> list = [];
-    medios.forEach((element) {
+    for (var element in medios) {
       list.add(DropdownMenuItem(child: Text(element), value: element));
-    });
+    }
     return list;
   }
 
@@ -375,66 +377,64 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
         ),
         Positioned(
           bottom: 0,
-          child: Container(
-            child: Row(
-              children: [
-                Icon(Icons.calendar_today),
-                SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _selectDate(context);
-                        },
-                        child: InkWell(
-                          child: Text(
-                              "    ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"),
-                        ),
+          child: Row(
+            children: [
+              const Icon(Icons.calendar_today),
+              const SizedBox(
+                width: 20,
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                      child: InkWell(
+                        child: Text(
+                            "    ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"),
                       ),
-                    ],
-                  ),
-                  width: 110,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    border: Border.all(color: Colors.black, width: 1.0),
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 40,
+                width: 110,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(color: Colors.black, width: 1.0),
                 ),
-                Icon(Icons.schedule),
-                SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _selectTime(context);
-                        },
-                        child: InkWell(
-                          child: Text(
-                              "        ${selectedTime.hour}:${selectedTime.minute}"),
-                        ),
+              ),
+              const SizedBox(
+                width: 40,
+              ),
+              const Icon(Icons.schedule),
+              const SizedBox(
+                width: 20,
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _selectTime(context);
+                      },
+                      child: InkWell(
+                        child: Text(
+                            "        ${selectedTime.hour}:${selectedTime.minute}"),
                       ),
-                    ],
-                  ),
-                  width: 110,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    border: Border.all(color: Colors.black, width: 1.0),
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+                width: 110,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(color: Colors.black, width: 1.0),
+                ),
+              ),
+            ],
           ),
         ),
         Positioned(
@@ -442,7 +442,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
           bottom: 40,
           child: Container(
               color: Colors.white,
-              child: Text(
+              child: const Text(
                 ' Fecha Cita: ',
                 style: TextStyle(fontSize: 12),
               )),
@@ -452,7 +452,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
           bottom: 40,
           child: Container(
               color: Colors.white,
-              child: Text(
+              child: const Text(
                 ' Hora Cita: ',
                 style: TextStyle(fontSize: 12),
               )),
@@ -468,10 +468,11 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
       firstDate: DateTime(2022),
       lastDate: DateTime(2023),
     );
-    if (selected != null && selected != selectedDate)
+    if (selected != null && selected != selectedDate) {
       setState(() {
         selectedDate = selected;
       });
+    }
   }
 
   void _selectTime(BuildContext context) async {
@@ -479,10 +480,11 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
       initialTime: TimeOfDay.now(),
       context: context,
     );
-    if (selected != null && selected != selectedTime)
+    if (selected != null && selected != selectedTime) {
       setState(() {
-        selectedTime = selected as TimeOfDay;
+        selectedTime = selected;
       });
+    }
   }
 
 //*****************************************************************************
@@ -491,7 +493,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
 
   Widget _showButtons(context) {
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20),
       child: Column(
         children: [
           Row(
@@ -501,7 +503,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                 child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(Icons.save),
                       SizedBox(
                         width: 20,
@@ -510,8 +512,8 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF282886),
-                    minimumSize: Size(double.infinity, 50),
+                    primary: const Color(0xFF282886),
+                    minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -519,12 +521,12 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                   onPressed: () => _save(widget.asignacion, context),
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Expanded(
                 child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(Icons.cancel),
                       SizedBox(
                         width: 20,
@@ -533,8 +535,8 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF637893),
-                    minimumSize: Size(double.infinity, 50),
+                    primary: const Color(0xFF637893),
+                    minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -564,7 +566,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
           title: 'Error',
           message: 'Verifica que estés conectado a Internet',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -578,7 +580,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
 
     do {
       Response response = Response(isSuccess: false);
-      response = await ApiHelper.GetAutonumericos(request1);
+      response = await ApiHelper.getAutonumericos(request1);
       if (response.isSuccess) {
         bandera = true;
         _asigns = response.result;
@@ -594,7 +596,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
         'estadO3': _asign.estadO3,
         'estadogaos': _asign.estadogaos,
         'evento1':
-            'Cita por ${_opseleccionada} para el ${selectedDate.day}/${selectedDate.month}/${selectedDate.year} ${selectedTime.hour}:${selectedTime.minute}',
+            'Cita por $_opseleccionada para el ${selectedDate.day}/${selectedDate.month}/${selectedDate.year} ${selectedTime.hour}:${selectedTime.minute}',
         'evento2': asignacion.evento1,
         'evento3': asignacion.evento2,
         'evento4': asignacion.evento3,
@@ -633,7 +635,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
             title: 'Error',
             message: response.message,
             actions: <AlertDialogAction>[
-              AlertDialogAction(key: null, label: 'Aceptar'),
+              const AlertDialogAction(key: null, label: 'Aceptar'),
             ]);
         return;
       }

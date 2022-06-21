@@ -24,12 +24,14 @@ class ParadaInfoScreen extends StatefulWidget {
   final List<Envio> envios;
 
   const ParadaInfoScreen(
-      {required this.user,
+      {Key? key,
+      required this.user,
       required this.paradaenvio,
       required this.positionUser,
       required this.motivos,
       required this.paradas,
-      required this.envios});
+      required this.envios})
+      : super(key: key);
 
   @override
   _ParadaInfoScreenState createState() => _ParadaInfoScreenState();
@@ -40,7 +42,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
 
-  CustomInfoWindowController _customInfoWindowController =
+  final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
 
   bool _photoChanged = false;
@@ -58,40 +60,45 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   bool _optionMotivoShowError = false;
 
   String _observaciones = '';
-  String _observacionesError = '';
-  bool _observacionesShowError = false;
-  TextEditingController _observacionesController = TextEditingController();
+  final String _observacionesError = '';
+  final bool _observacionesShowError = false;
+  final TextEditingController _observacionesController =
+      TextEditingController();
   String _motivodesc = '';
 
   List<DropdownMenuItem<int>> _items = [];
   List<ParadaEnvio> _paradasEnvios = [];
   ParadaEnvio _paradaEnvioSelected = ParadaEnvio(
-      idParada: 0,
-      idRuta: 0,
-      idEnvio: 0,
-      secuencia: 0,
-      leyenda: '',
-      latitud: 0,
-      longitud: 0,
-      idproveedor: 0,
-      estado: 0,
-      ordenid: '',
-      titular: '',
-      dni: '',
-      domicilio: '',
-      cp: '',
-      entreCalles: '',
-      telefonos: '',
-      localidad: '',
-      bultos: 0,
-      proveedor: '',
-      motivo: 0,
-      motivodesc: '',
-      notas: '',
-      enviado: 0,
-      fecha: '',
-      imageArray: '',
-      observaciones: '');
+    idParada: 0,
+    idRuta: 0,
+    idEnvio: 0,
+    secuencia: 0,
+    leyenda: '',
+    latitud: 0,
+    longitud: 0,
+    idproveedor: 0,
+    estado: 0,
+    ordenid: '',
+    titular: '',
+    dni: '',
+    domicilio: '',
+    cp: '',
+    entreCalles: '',
+    telefonos: '',
+    localidad: '',
+    bultos: 0,
+    proveedor: '',
+    motivo: 0,
+    motivodesc: '',
+    notas: '',
+    enviado: 0,
+    fecha: '',
+    imageArray: '',
+    observaciones: '',
+    enviadoparada: 0,
+    enviadoenvio: 0,
+    enviadoseguimiento: 0,
+  );
 
   Parada paradaSelected = Parada(
       idParada: 0,
@@ -116,7 +123,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       idLiquidacionFletero: 0,
       turno: '');
 
-  LatLng _center = LatLng(0, 0);
+  LatLng _center = const LatLng(0, 0);
   final Set<Marker> _markers = {};
 
 //*****************************************************************************
@@ -161,7 +168,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
             _showPaquete(),
             _showDelivery(),
             _showButton(),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ],
@@ -178,39 +185,39 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     return Column(children: [
       //************ CLIENTE *********
       Card(
-        margin: EdgeInsets.all(10),
-        color: Color(0xffb3b3b4),
+        margin: const EdgeInsets.all(10),
+        color: const Color(0xffb3b3b4),
         child: Column(
           children: [
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Text(
                     "Cliente",
                     style: TextStyle(fontSize: 20),
                   ),
                 ],
               ),
-              color: Color(0xff8b8cb6),
+              color: const Color(0xff8b8cb6),
               width: double.infinity,
               height: 40,
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               height: 70,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
-                  Icon(Icons.person),
-                  SizedBox(
+                  const Icon(Icons.person),
+                  const SizedBox(
                     width: 20,
                   ),
-                  Container(
+                  SizedBox(
                     width: 300,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +225,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                       children: [
                         Text(
                           widget.paradaenvio.titular.toString(),
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(('DOC: ${widget.paradaenvio.dni.toString()}'))
                       ],
@@ -226,46 +233,46 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                   ),
                 ],
               ),
-              color: Color(0xffdadada),
+              color: const Color(0xffdadada),
               width: double.infinity,
             ),
-            Divider(
+            const Divider(
               height: 3,
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               height: 130,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
-                  Icon(Icons.home),
-                  SizedBox(
+                  const Icon(Icons.home),
+                  const SizedBox(
                     width: 20,
                   ),
-                  Container(
+                  SizedBox(
                     width: 240,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '${widget.paradaenvio.leyenda.toString()}',
-                          style: TextStyle(fontSize: 14),
+                          widget.paradaenvio.leyenda.toString(),
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(
                             ('Entre: ${widget.paradaenvio.entreCalles.toString()}')),
                         Text(
                           '${widget.paradaenvio.localidad.toString()} (${widget.paradaenvio.cp.toString().replaceAll(" ", "")})',
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         ),
                       ],
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.map,
                       color: Colors.blue,
                       size: 34,
@@ -274,42 +281,42 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                   ),
                 ],
               ),
-              color: Color(0xffdadada),
+              color: const Color(0xffdadada),
               width: double.infinity,
             ),
-            Divider(
+            const Divider(
               height: 3,
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
-                  Icon(Icons.phone),
-                  SizedBox(
+                  const Icon(Icons.phone),
+                  const SizedBox(
                     width: 20,
                   ),
-                  Container(
+                  SizedBox(
                     width: 220,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '${widget.paradaenvio.telefonos.toString()}',
-                          style: TextStyle(fontSize: 14),
+                          widget.paradaenvio.telefonos.toString(),
+                          style: const TextStyle(fontSize: 14),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.phone_forwarded,
                       color: Colors.green,
                       size: 34,
@@ -319,7 +326,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                   ),
                 ],
               ),
-              color: Color(0xffdadada),
+              color: const Color(0xffdadada),
               width: double.infinity,
               height: 60,
             ),
@@ -335,8 +342,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   _showPaquete() {
     return //************ PAQUETE *********
         Card(
-      margin: EdgeInsets.all(10),
-      color: Color(0xffb3b3b4),
+      margin: const EdgeInsets.all(10),
+      color: const Color(0xffb3b3b4),
       child: Column(
         children: [
           Container(
@@ -345,29 +352,29 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
               children: [
                 Text(
                   'Paquete - ${widget.paradaenvio.proveedor.toString()}',
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 ),
               ],
             ),
-            color: Color(0xff8b8cb6),
+            color: const Color(0xff8b8cb6),
             width: double.infinity,
             height: 40,
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: 40,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.receipt_long),
-                SizedBox(
+                const Icon(Icons.receipt_long),
+                const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                   width: 300,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -380,26 +387,26 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: Color(0xffdadada),
+            color: const Color(0xffdadada),
             width: double.infinity,
           ),
-          Divider(
+          const Divider(
             height: 3,
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: 40,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.inventory_2),
-                SizedBox(
+                const Icon(Icons.inventory_2),
+                const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                   width: 300,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -412,25 +419,25 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: Color(0xffdadada),
+            color: const Color(0xffdadada),
             width: double.infinity,
           ),
-          Divider(
+          const Divider(
             height: 3,
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.format_list_bulleted),
-                SizedBox(
+                const Icon(Icons.format_list_bulleted),
+                const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                   width: 300,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -443,7 +450,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: Color(0xffdadada),
+            color: const Color(0xffdadada),
             width: double.infinity,
           ),
         ],
@@ -458,47 +465,47 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   _showDelivery() {
     return //************ DELIVERY *********
         Card(
-      margin: EdgeInsets.all(10),
-      color: Color(0xffb3b3b4),
+      margin: const EdgeInsets.all(10),
+      color: const Color(0xffb3b3b4),
       child: Column(
         children: [
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: const [
                 Text(
                   "Delivery",
                   style: TextStyle(fontSize: 20),
                 ),
               ],
             ),
-            color: Color(0xff8b8cb6),
+            color: const Color(0xff8b8cb6),
             width: double.infinity,
             height: 40,
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: 145,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.fact_check),
-                SizedBox(
+                const Icon(Icons.fact_check),
+                const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                   width: 300,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(('Estado: ')),
+                      const Text(('Estado: ')),
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: DropdownButtonFormField(
                             items: _items,
                             value: _optionEstado,
@@ -525,49 +532,49 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: Color(0xffdadada),
+            color: const Color(0xffdadada),
             width: double.infinity,
           ),
           (_optionEstado == 10 || _optionEstado == 7)
-              ? Divider(
+              ? const Divider(
                   height: 3,
                 )
               : Container(),
           (_optionEstado == 10 || _optionEstado == 7)
               ? Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   height: 145,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
-                      Icon(Icons.fact_check),
-                      SizedBox(
+                      const Icon(Icons.fact_check),
+                      const SizedBox(
                         width: 20,
                       ),
-                      Container(
+                      SizedBox(
                         width: 300,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(('Motivo: ')),
+                            const Text(('Motivo: ')),
                             Container(
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: DropdownButtonFormField(
                                   value: _optionMotivo,
                                   onChanged: (option) {
                                     setState(() {
                                       _optionMotivo = option as int;
-                                      widget.motivos.forEach((motivo) {
+                                      for (var motivo in widget.motivos) {
                                         if (motivo.id == _optionMotivo) {
                                           _motivodesc =
                                               motivo.motivo.toString();
                                         }
-                                      });
+                                      }
                                     });
                                   },
                                   items: _getOptions2(),
@@ -589,35 +596,35 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                       ),
                     ],
                   ),
-                  color: Color(0xffdadada),
+                  color: const Color(0xffdadada),
                   width: double.infinity,
                 )
               : Container(),
-          Divider(
+          const Divider(
             height: 3,
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: 170,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.format_list_bulleted),
-                SizedBox(
+                const Icon(Icons.format_list_bulleted),
+                const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                   width: 300,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(('Notas: ')),
+                      const Text(('Notas: ')),
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: TextField(
                           maxLines: 3,
                           controller: _observacionesController,
@@ -641,57 +648,57 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: Color(0xffdadada),
+            color: const Color(0xffdadada),
             width: double.infinity,
           ),
-          Divider(
+          const Divider(
             height: 3,
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: 140,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.badge),
-                SizedBox(
+                const Icon(Icons.badge),
+                const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                   width: 300,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(('Documentación: ')),
+                      const Text(('Documentación: ')),
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.fiber_manual_record,
                               size: 12,
                             ),
-                            Text(('   Tomar foto')),
-                            SizedBox(
+                            const Text(('   Tomar foto')),
+                            const SizedBox(
                               width: 5,
                             ),
                             IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.photo_camera,
                                 color: Colors.blue,
                                 size: 34,
                               ),
                               onPressed: () => _goAddPhoto(),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 15,
                             ),
                             !_photoChanged
-                                ? Image(
+                                ? const Image(
                                     image: AssetImage('assets/noimage.png'),
                                     width: 80,
                                     height: 80,
@@ -710,7 +717,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: Color(0xffdadada),
+            color: const Color(0xffdadada),
             width: double.infinity,
           ),
         ],
@@ -724,15 +731,15 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
   Widget _showButton() {
     return Container(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         child: Row(
           children: <Widget>[
             Expanded(
               child: ElevatedButton(
-                child: Text('Guardar'),
+                child: const Text('Guardar'),
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF120E43),
-                  minimumSize: Size(double.infinity, 50),
+                  primary: const Color(0xFF120E43),
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -760,7 +767,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           title: 'Aviso',
           message: "Esta parada no tiene coordenadas cargadas.",
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -801,7 +808,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
         //     zoom: 16.0);
         _customInfoWindowController.addInfoWindow!(
             Container(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               width: 300,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -810,27 +817,25 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    child: CircleAvatar(
-                      backgroundColor: (paradaenvio.estado == 3)
-                          ? Color(0xff3933f2)
-                          : (paradaenvio.estado == 4)
-                              ? Color(0xff31eb2f)
-                              : (paradaenvio.estado == 10)
-                                  ? Color(0xffe9353a)
-                                  : (paradaenvio.estado == 7)
-                                      ? Color(0xff8a36e4)
-                                      : Color(0xff3933f2),
-                      child: Text(
-                        paradaenvio.secuencia.toString(),
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
+                  CircleAvatar(
+                    backgroundColor: (paradaenvio.estado == 3)
+                        ? const Color(0xff3933f2)
+                        : (paradaenvio.estado == 4)
+                            ? const Color(0xff31eb2f)
+                            : (paradaenvio.estado == 10)
+                                ? const Color(0xffe9353a)
+                                : (paradaenvio.estado == 7)
+                                    ? const Color(0xff8a36e4)
+                                    : const Color(0xff3933f2),
+                    child: Text(
+                      paradaenvio.secuencia.toString(),
+                      style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8.0,
                   ),
                   Expanded(
@@ -841,19 +846,19 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                         Expanded(
                             child: Text(
                           paradaenvio.titular.toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 12, fontWeight: FontWeight.bold),
                         )),
                         Expanded(
                             child: Text(paradaenvio.domicilio.toString(),
-                                style: TextStyle(fontSize: 12))),
+                                style: const TextStyle(fontSize: 12))),
                         Row(
                           children: [
                             Expanded(
                               child: ElevatedButton(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
+                                  children: const [
                                     Icon(Icons.map, color: Color(0xff282886)),
                                     SizedBox(
                                       width: 5,
@@ -866,8 +871,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                                   ],
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFFb3b3b4),
-                                  minimumSize: Size(double.infinity, 30),
+                                  primary: const Color(0xFFb3b3b4),
+                                  minimumSize: const Size(double.infinity, 30),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                   ),
@@ -875,7 +880,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                                 onPressed: () => _navegar2(paradaenvio),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                           ],
@@ -918,7 +923,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           title: 'Aviso',
           message: "Esta parada no tiene coordenadas cargadas.",
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -963,7 +968,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           title: 'Aviso!',
           message: "Necesita estar conectado a Internet para acceder al mapa",
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
     }
   }
@@ -974,17 +979,17 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
   List<DropdownMenuItem<int>> _getOptions2() {
     List<DropdownMenuItem<int>> list = [];
-    list.add(DropdownMenuItem(
+    list.add(const DropdownMenuItem(
       child: Text('Seleccione un Motivo...'),
       value: 0,
     ));
 
-    widget.motivos.forEach((element) {
+    for (var element in widget.motivos) {
       list.add(DropdownMenuItem(
         child: Text(element.motivo.toString()),
         value: element.id,
       ));
-    });
+    }
     return list;
   }
 
@@ -1001,9 +1006,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
         title: 'Seleccionar cámara',
         message: '¿Qué cámara desea utilizar?',
         actions: <AlertDialogAction>[
-          AlertDialogAction(key: 'no', label: 'Trasera'),
-          AlertDialogAction(key: 'yes', label: 'Delantera'),
-          AlertDialogAction(key: 'cancel', label: 'Cancelar'),
+          const AlertDialogAction(key: 'no', label: 'Trasera'),
+          const AlertDialogAction(key: 'yes', label: 'Delantera'),
+          const AlertDialogAction(key: 'cancel', label: 'Cancelar'),
         ]);
     if (response1 == 'yes') {
       firstCamera = cameras.first;
@@ -1038,9 +1043,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
         title: 'Confirmación',
         message: '¿De donde deseas obtener la imagen?',
         actions: <AlertDialogAction>[
-          AlertDialogAction(key: 'cancel', label: 'Cancelar'),
-          AlertDialogAction(key: 'camera', label: 'Cámara'),
-          AlertDialogAction(key: 'gallery', label: 'Galería'),
+          const AlertDialogAction(key: 'cancel', label: 'Cancelar'),
+          const AlertDialogAction(key: 'camera', label: 'Cámara'),
+          const AlertDialogAction(key: 'gallery', label: 'Galería'),
         ]);
 
     if (response == 'cancel') {
@@ -1062,7 +1067,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //************************** METODO SELECTPICTURE *****************************
 //*****************************************************************************
 
-  Future<Null> _selectPicture() async {
+  Future<void> _selectPicture() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? _image2 = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -1137,11 +1142,11 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //*****************************************************************************
 
   Future<void> _guardaParadaEnBDLocal() async {
-    widget.paradas.forEach((element) {
+    for (var element in widget.paradas) {
       if (element.idParada == widget.paradaenvio.idParada) {
         paradaSelected = element;
       }
-    });
+    }
 
     String base64Image = '';
     if (_photoChanged) {
@@ -1150,32 +1155,36 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     }
 
     ParadaEnvio requestParadaEnvio = ParadaEnvio(
-        idParada: widget.paradaenvio.idParada,
-        idRuta: widget.paradaenvio.idRuta,
-        idEnvio: widget.paradaenvio.idEnvio,
-        secuencia: widget.paradaenvio.secuencia,
-        leyenda: widget.paradaenvio.leyenda,
-        latitud: widget.paradaenvio.latitud,
-        longitud: widget.paradaenvio.longitud,
-        idproveedor: widget.paradaenvio.idproveedor,
-        estado: _estado,
-        ordenid: widget.paradaenvio.ordenid,
-        titular: widget.paradaenvio.titular,
-        dni: widget.paradaenvio.dni,
-        domicilio: widget.paradaenvio.domicilio,
-        cp: widget.paradaenvio.cp,
-        entreCalles: widget.paradaenvio.entreCalles,
-        telefonos: widget.paradaenvio.telefonos,
-        localidad: widget.paradaenvio.localidad,
-        bultos: widget.paradaenvio.bultos,
-        proveedor: widget.paradaenvio.proveedor,
-        motivo: _optionMotivo,
-        motivodesc: _motivodesc,
-        notas: _observaciones,
-        enviado: 0,
-        fecha: DateTime.now().toString(),
-        imageArray: base64Image,
-        observaciones: widget.paradaenvio.observaciones);
+      idParada: widget.paradaenvio.idParada,
+      idRuta: widget.paradaenvio.idRuta,
+      idEnvio: widget.paradaenvio.idEnvio,
+      secuencia: widget.paradaenvio.secuencia,
+      leyenda: widget.paradaenvio.leyenda,
+      latitud: widget.paradaenvio.latitud,
+      longitud: widget.paradaenvio.longitud,
+      idproveedor: widget.paradaenvio.idproveedor,
+      estado: _estado,
+      ordenid: widget.paradaenvio.ordenid,
+      titular: widget.paradaenvio.titular,
+      dni: widget.paradaenvio.dni,
+      domicilio: widget.paradaenvio.domicilio,
+      cp: widget.paradaenvio.cp,
+      entreCalles: widget.paradaenvio.entreCalles,
+      telefonos: widget.paradaenvio.telefonos,
+      localidad: widget.paradaenvio.localidad,
+      bultos: widget.paradaenvio.bultos,
+      proveedor: widget.paradaenvio.proveedor,
+      motivo: _optionMotivo,
+      motivodesc: _motivodesc,
+      notas: _observaciones,
+      enviado: 0,
+      fecha: DateTime.now().toString(),
+      imageArray: base64Image,
+      observaciones: widget.paradaenvio.observaciones,
+      enviadoparada: 0,
+      enviadoenvio: 0,
+      enviadoseguimiento: 0,
+    );
 
     await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
     _showSnackbar();
@@ -1219,25 +1228,14 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       int customNum, int width, int height, int estado) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
-    Paint paint = Paint()..color = Colors.blue;
 
-    final Radius radius = Radius.circular(width / 2);
+    if (estado == 3) {}
 
-    if (estado == 3) {
-      paint = Paint()..color = Color(0xff3536e1);
-    }
+    if (estado == 4) {}
 
-    if (estado == 4) {
-      paint = Paint()..color = Color(0xff36eb35);
-    }
+    if (estado == 10) {}
 
-    if (estado == 10) {
-      paint = Paint()..color = Color(0xffec3534);
-    }
-
-    if (estado == 7) {
-      paint = Paint()..color = Color(0xff8a39d5);
-    }
+    if (estado == 7) {}
 
     // canvas.drawRRect(
     //     RRect.fromRectAndCorners(
@@ -1253,7 +1251,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
     painter.text = TextSpan(
       text: customNum.toString(), // your custom number here
-      style: TextStyle(
+      style: const TextStyle(
           fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.bold),
     );
 
@@ -1275,17 +1273,17 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     _items = [];
 
     List<DropdownMenuItem<int>> list = [];
-    list.add(DropdownMenuItem(
+    list.add(const DropdownMenuItem(
       child: Text('Seleccione un Estado...'),
       value: 0,
     ));
 
-    _listoptions.forEach((_listoption) {
+    for (var _listoption in _listoptions) {
       list.add(DropdownMenuItem(
         child: Text(_listoption.description),
         value: _listoption.id,
       ));
-    });
+    }
 
     _items = list;
 
@@ -1297,7 +1295,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //*****************************************************************************
 
   void _showSnackbar() {
-    SnackBar snackbar = SnackBar(
+    SnackBar snackbar = const SnackBar(
       content: Text("Estado de Parada grabada con éxito"),
       backgroundColor: Colors.lightGreen,
       //duration: Duration(seconds: 3),

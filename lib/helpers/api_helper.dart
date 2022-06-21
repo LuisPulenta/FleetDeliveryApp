@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'constants.dart';
 
 class ApiHelper {
+//---------------------------------------------------------------------------
   static Future<Response> put(
       String controller, String id, Map<String, dynamic> request) async {
     var url = Uri.parse('${Constants.apiUrl}$controller$id');
@@ -24,6 +25,7 @@ class ApiHelper {
     return Response(isSuccess: true);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> post(
       String controller, Map<String, dynamic> request) async {
     var url = Uri.parse('${Constants.apiUrl}$controller');
@@ -43,6 +45,7 @@ class ApiHelper {
     return Response(isSuccess: true);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> delete(String controller, String id) async {
     var url = Uri.parse('${Constants.apiUrl}$controller$id');
     var response = await http.delete(
@@ -60,6 +63,7 @@ class ApiHelper {
     return Response(isSuccess: true);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getUsuarios() async {
     var url = Uri.parse('${Constants.apiUrl}/api/Usuarios');
     var response = await http.get(
@@ -85,6 +89,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getProveedores() async {
     var url = Uri.parse('${Constants.apiUrl}/api/Proveedores');
     var response = await http.get(
@@ -110,6 +115,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getMotivos() async {
     var url = Uri.parse('${Constants.apiUrl}/api/Motivos');
     var response = await http.get(
@@ -135,6 +141,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getNroRegistroMax() async {
     var url =
         Uri.parse('${Constants.apiUrl}/api/Seguimientos/GetNroRegistroMax');
@@ -156,6 +163,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: decodedJson);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getRutas(int codigo) async {
     var url = Uri.parse('${Constants.apiUrl}/api/Usuarios/GetRutas/$codigo');
     var response = await http.post(
@@ -181,6 +189,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getTipoAsignaciones(int codigo) async {
     var url = Uri.parse(
         '${Constants.apiUrl}/api/Usuarios/GetTiposAsignaciones/$codigo');
@@ -207,6 +216,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getZonas(int codigo, String proyectomodulo) async {
     var url = Uri.parse(
         '${Constants.apiUrl}/api/Usuarios/GetZonas/$codigo/$proyectomodulo');
@@ -233,6 +243,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getCarteras(int codigo, String proyectomodulo) async {
     var url = Uri.parse(
         '${Constants.apiUrl}/api/Usuarios/GetCarteras/$codigo/$proyectomodulo');
@@ -259,6 +270,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getAsignaciones(
       int codigo, String proyectomodulo) async {
     var url = Uri.parse(
@@ -286,6 +298,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getCodigosCierre(String proyectomodulo) async {
     var url = Uri.parse(
         '${Constants.apiUrl}/api/Usuarios/GetCodigosCierre/$proyectomodulo');
@@ -312,7 +325,8 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
-  static Future<Response> GetAutonumericos(Map<String, dynamic> request) async {
+//---------------------------------------------------------------------------
+  static Future<Response> getAutonumericos(Map<String, dynamic> request) async {
     var url =
         Uri.parse('${Constants.apiUrl}/api/AsignacionesOTs/GetAutonumericos');
     var response = await http.post(
@@ -339,6 +353,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> getFuncionesApp(String proyectomodulo) async {
     var url = Uri.parse(
         '${Constants.apiUrl}/api/Usuarios/GetFuncionesApps/$proyectomodulo');
@@ -365,7 +380,8 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
-  static Future<Response> GetControlesEquivalencia(
+//---------------------------------------------------------------------------
+  static Future<Response> getControlesEquivalencia(
       String proyectomodulo) async {
     var url = Uri.parse(
         '${Constants.apiUrl}/api/AsignacionesOTs/GetControlesEquivalencia/$proyectomodulo');
@@ -392,6 +408,7 @@ class ApiHelper {
     return Response(isSuccess: true, result: list);
   }
 
+//---------------------------------------------------------------------------
   static Future<Response> putWebSesion(int nroConexion) async {
     var url = Uri.parse('${Constants.apiUrl}/api/WebSesions/$nroConexion');
     var response = await http.put(

@@ -36,7 +36,7 @@ class Seguimiento {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['idenvio'] = idenvio;
     data['idetapa'] = idetapa;

@@ -33,16 +33,16 @@ class FuncionesApp {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['proyectomodulo'] = this.proyectomodulo;
-    data['habilitaFoto'] = this.habilitaFoto;
-    data['habilitaDNI'] = this.habilitaDNI;
-    data['habilitaEstadisticas'] = this.habilitaEstadisticas;
-    data['habilitaFirma'] = this.habilitaFirma;
-    data['serieObligatoria'] = this.serieObligatoria;
-    data['codigoFinal'] = this.codigoFinal;
-    data['habilitaOtroRecupero'] = this.habilitaOtroRecupero;
-    data['habilitaCambioModelo'] = this.habilitaCambioModelo;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['proyectomodulo'] = proyectomodulo;
+    data['habilitaFoto'] = habilitaFoto;
+    data['habilitaDNI'] = habilitaDNI;
+    data['habilitaEstadisticas'] = habilitaEstadisticas;
+    data['habilitaFirma'] = habilitaFirma;
+    data['serieObligatoria'] = serieObligatoria;
+    data['codigoFinal'] = codigoFinal;
+    data['habilitaOtroRecupero'] = habilitaOtroRecupero;
+    data['habilitaCambioModelo'] = habilitaCambioModelo;
     return data;
   }
 

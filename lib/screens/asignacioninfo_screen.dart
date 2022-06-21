@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_const
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -25,14 +27,16 @@ class AsignacionInfoScreen extends StatefulWidget {
   final FuncionesApp funcionApp;
   final List<ControlesEquivalencia> controlesEquivalencia;
 
-  AsignacionInfoScreen(
-      {required this.user,
+  const AsignacionInfoScreen(
+      {Key? key,
+      required this.user,
       required this.asignacion,
       required this.codigoscierre,
       required this.codigoscierreAux,
       required this.positionUser,
       required this.funcionApp,
-      required this.controlesEquivalencia});
+      required this.controlesEquivalencia})
+      : super(key: key);
 
   @override
   _AsignacionInfoScreenState createState() => _AsignacionInfoScreenState();
@@ -44,7 +48,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
 
-  CustomInfoWindowController _customInfoWindowController =
+  final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
 
   String codCierre = '';
@@ -54,49 +58,36 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   String descCodCierreINC = '';
 
   int _codigocierre = -1;
-  String _codigocierreError = '';
-  bool _codigocierreShowError = false;
-  TextEditingController _codigocierreController = TextEditingController();
+  final String _codigocierreError = '';
+  final bool _codigocierreShowError = false;
 
   String _observaciones = '';
-  String _observacionesError = '';
-  bool _observacionesShowError = false;
-  TextEditingController _observacionesController = TextEditingController();
+  final String _observacionesError = '';
+  final bool _observacionesShowError = false;
+  final TextEditingController _observacionesController =
+      TextEditingController();
 
-  String _macserie = '';
-  String _macserieError = '';
-  bool _macserieShowError = false;
-  TextEditingController _macserieController = TextEditingController();
+  final String _macserieError = '';
+  final bool _macserieShowError = false;
+  final TextEditingController _macserieController = TextEditingController();
 
   List<CodigoCierre> __codigoscierre = [];
   bool _photoChangedDNI = false;
   bool _signatureChanged = false;
   late XFile _image;
   late ByteData? _signature;
-  late XFile _signature2;
-  late String _signature3;
-
-  String _barCodeValue = '';
 
   String _equipo = 'Elija un Modelo...';
-  String _equipoError = '';
-  bool _equipoShowError = false;
-  TextEditingController _equipoController = TextEditingController();
+  final String _equipoError = '';
+  final bool _equipoShowError = false;
 
   List<Asign> _asigns = [];
-
-  bool _showLoader = false;
 
   bool bandera = false;
 
   bool ubicOk = false;
 
   TabController? _tabController;
-
-  MapType _defaultMapType = MapType.normal;
-
-  CameraPosition _initialPosition =
-      CameraPosition(target: LatLng(31, 64), zoom: 16.0);
 
   final Set<Marker> _markers = {};
 
@@ -153,14 +144,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       observacionCaptura: '',
       zona: '');
 
-  LatLng _center = LatLng(0, 0);
+  LatLng _center = const LatLng(0, 0);
 
 //*****************************************************************************
 //************************** INIT STATE ***************************************
 //*****************************************************************************
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _asignacion = widget.asignacion;
     estadogaos = _asignacion.estadogaos!;
@@ -171,13 +161,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     double? grxx = double.tryParse(_asignacion.grxx!);
     double? gryy = double.tryParse(_asignacion.gryy!);
 
-    _initialPosition = (grxx != null && gryy != null)
-        ? CameraPosition(target: LatLng(grxx, gryy), zoom: 16.0)
-        : CameraPosition(target: LatLng(0, 0), zoom: 16.0);
-
     ubicOk = true;
-    _center =
-        (grxx != null && gryy != null) ? LatLng(grxx, gryy) : LatLng(0, 0);
+    _center = (grxx != null && gryy != null)
+        ? LatLng(grxx, gryy)
+        : const LatLng(0, 0);
 
     _markers.clear();
     _markers.add(Marker(
@@ -190,11 +177,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       icon: BitmapDescriptor.defaultMarker,
     ));
 
-    widget.controlesEquivalencia.forEach((control) {
+    for (var control in widget.controlesEquivalencia) {
       if (control.codigoequivalencia == "Genérico") {
         codCierreGenerico = control.decO1;
       }
-    });
+    }
 
     _getAsigns();
   }
@@ -210,15 +197,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
+            decoration: const BoxDecoration(
+              gradient: const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(
+                  const Color(
                     (0xffdadada),
                   ),
-                  Color(
+                  const Color(
                     (0xffb3b3b4),
                   ),
                 ],
@@ -226,21 +213,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             ),
             child: TabBarView(
               controller: _tabController,
-              physics: AlwaysScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               dragStartBehavior: DragStartBehavior.start,
               children: <Widget>[
 //-------------------------------------------------------------------------
 //-------------------------- 1° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
                 Container(
-                  margin: EdgeInsets.all(0),
+                  margin: const EdgeInsets.all(0),
                   child: Column(
                     children: <Widget>[
                       AppBar(
                         title: (Text(
                             'Asignación ${widget.asignacion.proyectomodulo}')),
                         centerTitle: true,
-                        backgroundColor: Color(0xff282886),
+                        backgroundColor: const Color(0xff282886),
                       ),
                       Expanded(
                           flex: widget.funcionApp.habilitaDNI == 1 ? 15 : 7,
@@ -260,9 +247,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 Column(
                   children: [
                     AppBar(
-                      title: (Text("Teléfonos")),
+                      title: (const Text("Teléfonos")),
                       centerTitle: true,
-                      backgroundColor: Color(0xff282886),
+                      backgroundColor: const Color(0xff282886),
                     ),
                     Expanded(
                       child: Center(
@@ -281,90 +268,90 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 Column(
                   children: [
                     AppBar(
-                      title: (Text("Observaciones")),
+                      title: (const Text("Observaciones")),
                       centerTitle: true,
-                      backgroundColor: Color(0xff282886),
+                      backgroundColor: const Color(0xff282886),
                     ),
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
                         child: Center(
                             child: Column(
                           children: [
                             Row(
                               children: [
-                                Text("Novedades: ",
-                                    style: TextStyle(
+                                const Text("Novedades: ",
+                                    style: const TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xFF0e4888),
+                                      color: const Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
                                     )),
                                 Expanded(
                                   child: Text('${_asignacion.novedades}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                       )),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Row(
                               children: [
-                                Text("N° Series Extras: ",
-                                    style: TextStyle(
+                                const Text("N° Series Extras: ",
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
                                     )),
                                 Expanded(
                                   child: Text('${_asignacion.nroSeriesExtras}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                       )),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Row(
                               children: [
-                                Text("Obs. Cliente: ",
-                                    style: TextStyle(
+                                const Text("Obs. Cliente: ",
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
                                     )),
                                 Expanded(
                                   child: Text('${_asignacion.observacion}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                       )),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Row(
                               children: [
-                                Text("Cartera: ",
-                                    style: TextStyle(
+                                const Text("Cartera: ",
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
                                     )),
                                 Expanded(
                                   child: Text('${_asignacion.motivos}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                       )),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                           ],
@@ -381,16 +368,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       bottomNavigationBar: BottomAppBar(
         child: TabBar(
             controller: _tabController,
-            indicatorColor: Color(0xff282886),
+            indicatorColor: const Color(0xff282886),
             indicatorSize: TabBarIndicatorSize.tab,
             indicatorWeight: 2,
-            labelColor: Color(0xff282886),
+            labelColor: const Color(0xff282886),
             unselectedLabelColor: Colors.grey,
-            labelPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
+            labelPadding: const EdgeInsets.fromLTRB(10, 1, 10, 1),
             tabs: <Widget>[
               Tab(
                 child: Row(
-                  children: [
+                  children: const [
                     Icon(Icons.local_shipping),
                     SizedBox(
                       width: 2,
@@ -404,7 +391,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               ),
               Tab(
                 child: Row(
-                  children: [
+                  children: const [
                     Icon(Icons.phone),
                     SizedBox(
                       width: 2,
@@ -418,7 +405,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               ),
               Tab(
                 child: Row(
-                  children: [
+                  children: const [
                     Icon(Icons.list),
                     SizedBox(
                       width: 2,
@@ -459,15 +446,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
-      margin: EdgeInsets.fromLTRB(8, 12, 8, 0),
+      margin: const EdgeInsets.fromLTRB(8, 12, 8, 0),
       child: Container(
-        margin: EdgeInsets.all(0),
-        padding: EdgeInsets.all(0),
+        margin: const EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         child: Row(
           children: [
             Expanded(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
+                margin: const EdgeInsets.symmetric(horizontal: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -476,7 +463,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         children: [
                           Row(
                             children: [
-                              Container(
+                              const SizedBox(
                                 width: 80,
                                 child: Text("Cliente: ",
                                     style: TextStyle(
@@ -488,13 +475,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               Expanded(
                                 child: Text(
                                     '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           // Row(
@@ -521,7 +508,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   children: [
                                     Row(
                                       children: [
-                                        Container(
+                                        const SizedBox(
                                           width: 80,
                                           child: Text("Dirección: ",
                                               style: TextStyle(
@@ -533,18 +520,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         Expanded(
                                           child: Text(
                                               _asignacion.domicilio.toString(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 12,
                                               )),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 1,
                                     ),
                                     Row(
                                       children: [
-                                        Container(
+                                        const SizedBox(
                                           width: 80,
                                           child: Text("Entre calles: ",
                                               style: TextStyle(
@@ -564,19 +551,19 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                       1)
                                               ? Text(
                                                   '${_asignacion.entrecallE1.toString()} y ${_asignacion.entrecallE2.toString()}',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 12,
                                                   ))
-                                              : Text(""),
+                                              : const Text(""),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 1,
                                     ),
                                     Row(
                                       children: [
-                                        Container(
+                                        const SizedBox(
                                           width: 80,
                                           child: Text("Localidad: ",
                                               style: TextStyle(
@@ -588,18 +575,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         Expanded(
                                           child: Text(
                                               '${_asignacion.localidad.toString()}-${_asignacion.partido.toString()}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 12,
                                               )),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 1,
                                     ),
                                     Row(
                                       children: [
-                                        Container(
+                                        const SizedBox(
                                           width: 80,
                                           child: Text("Cód. Cierre: ",
                                               style: TextStyle(
@@ -612,7 +599,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           child: Text(
                                               _asignacion.descripcion
                                                   .toString(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 12,
                                               )),
                                         ),
@@ -636,33 +623,33 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 ),
                               ),
                               IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.map,
-                                  color: Color(0xff282886),
+                                  color: const Color(0xff282886),
                                   size: 34,
                                 ),
                                 onPressed: () => _showMap(_asignacion),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                           ),
                           _showButtonsDNIFirma(),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                           ),
                           _showButtonsEstados(),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                           ),
                           //_showButtonsGuardarCancelar(),
                           _showCodCierreObservaciones(),
 
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                           ),
                         ],
@@ -684,7 +671,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   Widget _showButtonsDNIFirma() {
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -694,8 +681,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     child: Stack(children: <Widget>[
                       Container(
                         child: !_photoChangedDNI
-                            ? Center(
-                                child: Image(
+                            ? const Center(
+                                child: const Image(
                                     image: AssetImage('assets/dni.png'),
                                     width: 80,
                                     height: 60,
@@ -718,10 +705,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(30),
                               child: Container(
-                                color: Color(0xFF282886),
+                                color: const Color(0xFF282886),
                                 width: 40,
                                 height: 40,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.photo_camera,
                                   size: 30,
                                   color: Color(0xFFf6faf8),
@@ -737,13 +724,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(30),
                               child: Container(
-                                color: Color(0xFF282886),
+                                color: const Color(0xFF282886),
                                 width: 40,
                                 height: 40,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.image,
                                   size: 30,
-                                  color: Color(0xFFf6faf8),
+                                  color: const Color(0xFFf6faf8),
                                 ),
                               ),
                             ),
@@ -752,7 +739,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   ),
                 )
               : Container(),
-          SizedBox(
+          const SizedBox(
             width: 15,
           ),
           widget.funcionApp.habilitaFirma == 1
@@ -761,7 +748,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     child: Stack(children: <Widget>[
                       Container(
                         child: !_signatureChanged
-                            ? Image(
+                            ? const Image(
                                 image: AssetImage('assets/firma.png'),
                                 width: 80,
                                 height: 60,
@@ -780,10 +767,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(30),
                               child: Container(
-                                color: Color(0xFF282886),
+                                color: const Color(0xFF282886),
                                 width: 50,
                                 height: 50,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.drive_file_rename_outline,
                                   size: 40,
                                   color: Color(0xFFf6faf8),
@@ -809,21 +796,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       children: [
         Row(
           children: [
-            Text("Est. Gaos: ",
-                style: TextStyle(
+            const Text("Est. Gaos: ",
+                style: const TextStyle(
                   fontSize: 12,
-                  color: Color(0xFF0e4888),
+                  color: const Color(0xFF0e4888),
                   fontWeight: FontWeight.bold,
                 )),
             Expanded(
               child: Text(
                 estadogaos.toString(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                 ),
               ),
             ),
-            Text("Cód. Cierre: ",
+            const Text("Cód. Cierre: ",
                 style: TextStyle(
                   fontSize: 12,
                   color: Color(0xFF0e4888),
@@ -831,13 +818,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 )),
             Expanded(
               child: Text(_asignacion.descripcion.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                   )),
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 1,
         ),
         Row(
@@ -848,7 +835,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(Icons.done),
                       SizedBox(
                         width: 3,
@@ -857,8 +844,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF282886),
-                    minimumSize: Size(double.infinity, 40),
+                    primary: const Color(0xFF282886),
+                    minimumSize: const Size(double.infinity, 40),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -867,7 +854,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     _elegirtodos();
                   }),
             ),
-            SizedBox(
+            const SizedBox(
               width: 3,
             ),
             Expanded(
@@ -875,7 +862,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               child: ElevatedButton(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Icon(Icons.cancel),
                     SizedBox(
                       width: 3,
@@ -884,8 +871,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xffdf281e),
-                  minimumSize: Size(double.infinity, 40),
+                  primary: const Color(0xffdf281e),
+                  minimumSize: const Size(double.infinity, 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -895,7 +882,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 3,
             ),
             _asignacion.cantAsign! > 1
@@ -904,7 +891,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     child: ElevatedButton(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: const [
                           Icon(Icons.star_half),
                           SizedBox(
                             width: 2,
@@ -913,8 +900,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromARGB(255, 52, 52, 52),
-                        minimumSize: Size(double.infinity, 40),
+                        primary: const Color.fromARGB(255, 52, 52, 52),
+                        minimumSize: const Size(double.infinity, 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -939,7 +926,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
           child: DropdownButtonFormField(
             key: _key,
             isExpanded: true,
@@ -962,17 +949,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 : null,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         TextField(
-          style: TextStyle(fontSize: 14.0, height: 1.0, color: Colors.black),
+          style:
+              const TextStyle(fontSize: 14.0, height: 1.0, color: Colors.black),
           controller: _observacionesController,
           decoration: InputDecoration(
               hintText: 'Ingresa observaciones...',
               labelText: 'Observaciones',
               errorText: _observacionesShowError ? _observacionesError : null,
-              suffixIcon: Icon(Icons.notes),
+              suffixIcon: const Icon(Icons.notes),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
           onChanged: (value) {
@@ -999,7 +987,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 child: ElevatedButton(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Icon(Icons.save),
                         SizedBox(
                           width: 2,
@@ -1008,8 +996,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       ],
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF282886),
-                      minimumSize: Size(double.infinity, 40),
+                      primary: const Color(0xFF282886),
+                      minimumSize: const Size(double.infinity, 40),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
@@ -1018,14 +1006,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       _guardar();
                     }),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               Expanded(
                 child: ElevatedButton(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(Icons.cancel),
                       SizedBox(
                         width: 2,
@@ -1034,8 +1022,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xffdf281e),
-                    minimumSize: Size(double.infinity, 40),
+                    primary: const Color(0xffdf281e),
+                    minimumSize: const Size(double.infinity, 40),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -1045,7 +1033,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               widget.funcionApp.habilitaOtroRecupero == 1
@@ -1053,7 +1041,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       child: ElevatedButton(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Icon(Icons.star_half),
                             SizedBox(
                               width: 2,
@@ -1065,8 +1053,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ],
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 52, 52, 52),
-                          minimumSize: Size(double.infinity, 40),
+                          primary: const Color.fromARGB(255, 52, 52, 52),
+                          minimumSize: const Size(double.infinity, 40),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
@@ -1101,20 +1089,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   Widget _showAutonumericos() {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       children: _asigns.map((e) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Card(
-              color: Color(0xFFbfd4e7),
-              shadowColor: Color(0xFF0000FF),
+              color: const Color(0xFFbfd4e7),
+              shadowColor: const Color(0xFF0000FF),
               elevation: 10,
-              margin: EdgeInsets.only(left: 5, bottom: 5, right: 5, top: 0),
+              margin:
+                  const EdgeInsets.only(left: 5, bottom: 5, right: 5, top: 0),
               child: InkWell(
                 onTap: () {}, //=> _goHistory(e),
                 child: Container(
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(0),
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(0),
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -1122,7 +1111,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         children: <Widget>[
                           Row(
                             children: [
-                              Container(
+                              const SizedBox(
                                 width: 100,
                                 child: Text("Id Gaos: ",
                                     style: TextStyle(
@@ -1133,7 +1122,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                               Expanded(
                                 child: Text(e.idregistro.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
@@ -1153,12 +1142,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   : Container(),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           Row(
                             children: [
-                              Container(
+                              const SizedBox(
                                 width: 100,
                                 child: Text("Equipo: ",
                                     style: TextStyle(
@@ -1169,18 +1158,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                               Expanded(
                                 child: Text(e.decO1.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 1,
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              Container(
+                              const SizedBox(
                                 width: 100,
                                 child: Text("Descripción: ",
                                     style: TextStyle(
@@ -1191,13 +1180,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                               Expanded(
                                 child: Text(e.codigoequivalencia.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           // Row(
@@ -1222,7 +1211,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           widget.funcionApp.habilitaCambioModelo == 1
                               ? Row(
                                   children: [
-                                    Container(
+                                    const SizedBox(
                                       width: 100,
                                       child: Text("Conf. Modelo:   ",
                                           style: TextStyle(
@@ -1232,13 +1221,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           )),
                                     ),
                                     Expanded(
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 40,
                                         child: DropdownButtonFormField(
                                           value: e.marcaModeloId, //_equipo,
                                           isExpanded: true,
                                           isDense: true,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 12,
                                               color: Colors.black),
                                           decoration: InputDecoration(
@@ -1263,22 +1252,22 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         ),
                                       ),
                                     ),
-                                    Text("        ",
-                                        style: TextStyle(
+                                    const Text("        ",
+                                        style: const TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF0e4888),
+                                          color: const Color(0xFF0e4888),
                                           fontWeight: FontWeight.bold,
                                         )),
                                   ],
                                 )
                               : Container(),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           widget.funcionApp.serieObligatoria == 1
                               ? Row(
                                   children: [
-                                    Container(
+                                    const SizedBox(
                                       width: 100,
                                       child: Text("Mac/Serie: ",
                                           style: TextStyle(
@@ -1290,24 +1279,22 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     Expanded(
                                       flex: 7,
                                       child: Text(e.estadO3.toString(),
-                                          style: TextStyle(fontSize: 12)),
+                                          style: const TextStyle(fontSize: 12)),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     ElevatedButton(
-                                      child: Icon(Icons.qr_code_2),
+                                      child: const Icon(Icons.qr_code_2),
                                       style: ElevatedButton.styleFrom(
-                                        primary: Color(0xFF282886),
-                                        minimumSize: Size(50, 40),
+                                        primary: const Color(0xFF282886),
+                                        minimumSize: const Size(50, 40),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(5),
                                         ),
                                       ),
                                       onPressed: () {
-                                        String barcodeScanRes;
-
                                         showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
@@ -1320,7 +1307,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                     AlertDialog(
                                                       backgroundColor:
                                                           Colors.grey[300],
-                                                      title: Text(
+                                                      title: const Text(
                                                           "Ingrese o escanee el código"),
                                                       content: Column(
                                                         children: [
@@ -1340,27 +1327,30 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                         ? _macserieError
                                                                         : null,
                                                                 prefixIcon:
-                                                                    Icon(Icons
-                                                                        .tag),
+                                                                    const Icon(
+                                                                        Icons
+                                                                            .tag),
                                                                 border: OutlineInputBorder(
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             10))),
-                                                            onChanged: (value) {
-                                                              _macserie = value;
-                                                            },
+                                                            onChanged:
+                                                                (value) {},
                                                           ),
-                                                          SizedBox(height: 10),
+                                                          const SizedBox(
+                                                              height: 10),
                                                           ElevatedButton(
-                                                              child: Icon(Icons
-                                                                  .qr_code_2),
+                                                              child: const Icon(
+                                                                  Icons
+                                                                      .qr_code_2),
                                                               style:
                                                                   ElevatedButton
                                                                       .styleFrom(
-                                                                primary: Color(
-                                                                    0xFF282886),
+                                                                primary:
+                                                                    const Color(
+                                                                        0xFF282886),
                                                                 minimumSize:
-                                                                    Size(
+                                                                    const Size(
                                                                         50, 50),
                                                                 shape:
                                                                     RoundedRectangleBorder(
@@ -1407,7 +1397,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                           Row(
                                                                         mainAxisAlignment:
                                                                             MainAxisAlignment.spaceAround,
-                                                                        children: [
+                                                                        children: const [
                                                                           Icon(Icons
                                                                               .save),
                                                                           Text(
@@ -1417,8 +1407,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                       style: ElevatedButton
                                                                           .styleFrom(
                                                                         primary:
-                                                                            Color(0xFF120E43),
-                                                                        minimumSize: Size(
+                                                                            const Color(0xFF120E43),
+                                                                        minimumSize: const Size(
                                                                             double.infinity,
                                                                             50),
                                                                         shape:
@@ -1438,15 +1428,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                                   shape: RoundedRectangleBorder(
                                                                                     borderRadius: BorderRadius.circular(10),
                                                                                   ),
-                                                                                  title: Text('Aviso'),
-                                                                                  content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                                                                                  title: const Text('Aviso'),
+                                                                                  content: Column(mainAxisSize: MainAxisSize.min, children: const <Widget>[
                                                                                     Text('El código debe tener al menos 6 caracteres.'),
                                                                                     SizedBox(
                                                                                       height: 10,
                                                                                     ),
                                                                                   ]),
                                                                                   actions: <Widget>[
-                                                                                    TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('Ok')),
+                                                                                    TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Ok')),
                                                                                   ],
                                                                                 );
                                                                               });
@@ -1468,7 +1458,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                             () {});
                                                                       }),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 10,
                                                             ),
                                                             Expanded(
@@ -1478,7 +1468,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                   mainAxisAlignment:
                                                                       MainAxisAlignment
                                                                           .spaceAround,
-                                                                  children: [
+                                                                  children: const [
                                                                     Icon(Icons
                                                                         .cancel),
                                                                     Text(
@@ -1487,12 +1477,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                 ),
                                                                 style: ElevatedButton
                                                                     .styleFrom(
-                                                                  primary: Color(
-                                                                      0xFFB4161B),
-                                                                  minimumSize: Size(
-                                                                      double
-                                                                          .infinity,
-                                                                      50),
+                                                                  primary:
+                                                                      const Color(
+                                                                          0xFFB4161B),
+                                                                  minimumSize:
+                                                                      const Size(
+                                                                          double
+                                                                              .infinity,
+                                                                          50),
                                                                   shape:
                                                                       RoundedRectangleBorder(
                                                                     borderRadius:
@@ -1517,14 +1509,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             barrierDismissible: false);
                                       },
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     ElevatedButton(
-                                        child: Icon(Icons.cancel),
+                                        child: const Icon(Icons.cancel),
                                         style: ElevatedButton.styleFrom(
-                                          primary: Color(0xffdf281e),
-                                          minimumSize: Size(50, 40),
+                                          primary: const Color(0xffdf281e),
+                                          minimumSize: const Size(50, 40),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(5),
@@ -1542,7 +1534,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                         ],
@@ -1562,17 +1554,17 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   List<DropdownMenuItem<int>> _getComboCodigosCierre() {
     List<DropdownMenuItem<int>> list = [];
-    list.add(DropdownMenuItem(
+    list.add(const DropdownMenuItem(
       child: Text('Elija Código de Cierre.'),
       value: -1,
     ));
 
-    __codigoscierre.forEach((codigocierre) {
+    for (var codigocierre in __codigoscierre) {
       list.add(DropdownMenuItem(
         child: Text(codigocierre.descripcion.toString()),
         value: codigocierre.codigoCierre,
       ));
-    });
+    }
 
     return list;
   }
@@ -1590,9 +1582,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         title: 'Seleccionar cámara',
         message: '¿Qué cámara desea utilizar?',
         actions: <AlertDialogAction>[
-          AlertDialogAction(key: 'no', label: 'Trasera'),
-          AlertDialogAction(key: 'yes', label: 'Delantera'),
-          AlertDialogAction(key: 'cancel', label: 'Cancelar'),
+          const AlertDialogAction(key: 'no', label: 'Trasera'),
+          const AlertDialogAction(key: 'yes', label: 'Delantera'),
+          const AlertDialogAction(key: 'cancel', label: 'Cancelar'),
         ]);
     if (response1 == 'yes') {
       firstCamera = cameras.first;
@@ -1623,7 +1615,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   void _takeSignature() async {
     Response? response = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => FirmaScreen()));
+        context, MaterialPageRoute(builder: (context) => const FirmaScreen()));
     if (response != null) {
       setState(() {
         _signatureChanged = true;
@@ -1631,7 +1623,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       });
 
       //_signature2 = await _signature.toByteData(format: ui.ImageByteFormat.png);
-      _signature3 = await _signature.toString();
     }
   }
 //*****************************************************************************
@@ -1639,22 +1630,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //*****************************************************************************
 
   Future<void> _getAsigns() async {
-    setState(() {
-      _showLoader = true;
-    });
+    setState(() {});
 
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
-      setState(() {
-        _showLoader = false;
-      });
+      setState(() {});
       await showAlertDialog(
           context: context,
           title: 'Error',
           message: 'Verifica que estés conectado a Internet',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1667,16 +1654,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     Response response = Response(isSuccess: false);
     do {
-      response = await ApiHelper.GetAutonumericos(request1);
+      response = await ApiHelper.getAutonumericos(request1);
       if (response.isSuccess) {
         bandera = true;
         _asigns = response.result;
       }
     } while (bandera == false);
 
-    setState(() {
-      _showLoader = false;
-    });
+    setState(() {});
 
     if (!response.isSuccess) {
       await showAlertDialog(
@@ -1684,7 +1669,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           title: 'Error',
           message: response.message,
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1702,10 +1687,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       _asigns = response.result;
     });
 
-    _asigns.forEach((asign) {
-      if (asign.marcaModeloId == null) {
-        asign.marcaModeloId = codCierreGenerico;
-      }
+    for (var asign in _asigns) {
+      asign.marcaModeloId ??= codCierreGenerico;
 
       if (asign.marcaModeloId == "") {
         asign.marcaModeloId = codCierreGenerico;
@@ -1713,16 +1696,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
       bool bandera = true;
 
-      widget.controlesEquivalencia.forEach((control) {
+      for (var control in widget.controlesEquivalencia) {
         if (control.decO1 == asign.marcaModeloId) {
           bandera = false;
         }
-      });
+      }
 
       if (bandera) {
         asign.marcaModeloId = codCierreGenerico;
       }
-    });
+    }
   }
 
 //*****************************************************************************
@@ -1735,15 +1718,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
-      margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+      margin: const EdgeInsets.fromLTRB(8, 0, 8, 0),
       child: Container(
-        margin: EdgeInsets.all(0),
-        padding: EdgeInsets.all(5),
+        margin: const EdgeInsets.all(0),
+        padding: const EdgeInsets.all(5),
         child: Row(
           children: [
             Expanded(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -1752,97 +1735,97 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         children: [
                           Row(
                             children: [
-                              Text("Cliente: ",
-                                  style: TextStyle(
+                              const Text("Cliente: ",
+                                  style: const TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFF0e4888),
+                                    color: const Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
                                   )),
                               Expanded(
                                 child: Text(
                                     '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           Row(
                             children: [
-                              Text("Dirección: ",
-                                  style: TextStyle(
+                              const Text("Dirección: ",
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
                                   )),
                               Expanded(
                                 child: Text(_asignacion.domicilio.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           Row(
                             children: [
-                              Text("Localidad: ",
-                                  style: TextStyle(
+                              const Text("Localidad: ",
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
                                   )),
                               Expanded(
                                 child: Text(_asignacion.localidad.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 1,
                           ),
                           Row(
                             children: [
-                              Text("Provincia: ",
-                                  style: TextStyle(
+                              const Text("Provincia: ",
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
                                   )),
                               Expanded(
                                 child: Text(_asignacion.provincia.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                             ],
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                           ),
                           Row(
                             children: [
-                              Text("Teléfono: ",
+                              const Text("Teléfono: ",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFF0e4888),
+                                    color: const Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
                                   )),
                               Expanded(
                                 child: Text(_asignacion.telefono.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                               IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.phone_forwarded,
                                   size: 34,
                                 ),
@@ -1852,13 +1835,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                             ],
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                           ),
                           Row(
                             children: [
-                              Text("Tel. Alt. 1: ",
-                                  style: TextStyle(
+                              const Text("Tel. Alt. 1: ",
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
@@ -1866,12 +1849,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               Expanded(
                                 child: Text(
                                     _asignacion.telefAlternativo1.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                               IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.phone_forwarded,
                                   size: 34,
                                 ),
@@ -1887,13 +1870,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                             ],
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                           ),
                           Row(
                             children: [
-                              Text("Tel. Alt. 2: ",
-                                  style: TextStyle(
+                              const Text("Tel. Alt. 2: ",
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
@@ -1901,12 +1884,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               Expanded(
                                 child: Text(
                                     _asignacion.telefAlternativo2.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                               IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.phone_forwarded,
                                   size: 34,
                                 ),
@@ -1922,26 +1905,26 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                             ],
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                           ),
                           Row(
                             children: [
-                              Text("Tel. Alt. 3: ",
-                                  style: TextStyle(
+                              const Text("Tel. Alt. 3: ",
+                                  style: const TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFF0e4888),
+                                    color: const Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
                                   )),
                               Expanded(
                                 child: Text(
                                     _asignacion.telefAlternativo3.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                               IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.phone_forwarded,
                                   size: 34,
                                 ),
@@ -1957,12 +1940,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                             ],
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                           ),
                           Row(
                             children: [
-                              Text("Tel. Alt. 4: ",
+                              const Text("Tel. Alt. 4: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -1971,12 +1954,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               Expanded(
                                 child: Text(
                                     _asignacion.telefAlternativo4.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     )),
                               ),
                               IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.phone_forwarded,
                                   size: 34,
                                 ),
@@ -1992,7 +1975,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                             ],
                           ),
-                          Divider(
+                          const Divider(
                             color: Colors.black,
                           ),
                         ],
@@ -2022,7 +2005,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           title: 'Aviso',
           message: "Esta asignación no tiene coordenadas cargadas.",
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -2056,7 +2039,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           title: 'Aviso!',
           message: "Necesita estar conectado a Internet para acceder al mapa",
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
     }
   }
@@ -2064,19 +2047,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
-
-  void _onCameraMove(CameraPosition position) {
-    _center = position.target;
-  }
-
-  void _changeMapType() {
-    _defaultMapType = _defaultMapType == MapType.normal
-        ? MapType.satellite
-        : _defaultMapType == MapType.satellite
-            ? MapType.hybrid
-            : MapType.normal;
-    setState(() {});
-  }
 
   void _elegirtodos() {
     estadogaos = "EJB";
@@ -2123,11 +2093,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           title: 'Error',
           message: 'El Estado sigue "PEN". No tiene sentido guardar.',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
-    ;
 
 //---------------- Verifica que si es INC tenga Código de Cierre --------------
 
@@ -2138,11 +2107,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           message:
               'Si la Orden tiene un Estado "INC", hay que cargar el Código Cierre.',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
-    ;
 
 //---------------- Verifica que si es PAR tenga Código de Cierre --------------
 
@@ -2153,11 +2121,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           message:
               'Si la Orden tiene un Estado "PAR", hay que cargar el Código Cierre.',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
-    ;
 
 //---------------- Verifica que haya Foto del DNI --------------
 
@@ -2169,11 +2136,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           title: 'Error',
           message: 'Debe cargar la Foto del DNI.',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
-    ;
 
 //---------------- Verifica que haya Firma --------------
 
@@ -2185,11 +2151,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           title: 'Error',
           message: 'Debe cargar la Firma.',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
-    ;
 
 //---------------- Verifica que estén cargados los Mac/Serie ------------------
 
@@ -2209,29 +2174,28 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  title: Text('Aviso'),
-                  content:
-                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                    Text('Mac/Serie debe tener al menos 6 caracteres.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
+                  title: const Text('Aviso'),
+                  content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const <Widget>[
+                        Text('Mac/Serie debe tener al menos 6 caracteres.'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ]),
                   actions: <Widget>[
                     TextButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        child: Text('Ok')),
+                        child: const Text('Ok')),
                   ],
                 );
               });
         }
-        ;
         setState(() {});
         if (band) {
           return;
         }
       }
-      ;
     }
 
 //---------------- Establece valores para grabar -----------------------------
@@ -2424,7 +2388,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             title: 'Error',
             message: response.message,
             actions: <AlertDialogAction>[
-              AlertDialogAction(key: null, label: 'Aceptar'),
+              const AlertDialogAction(key: null, label: 'Aceptar'),
             ]);
         return;
       }
@@ -2449,7 +2413,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           title: 'Aviso',
           message: "Esta asignación no tiene coordenadas cargadas.",
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -2462,7 +2426,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           onTap: () {
             _customInfoWindowController.addInfoWindow!(
                 Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   width: 300,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -2471,10 +2435,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        child: Icon(Icons.info),
-                      ),
-                      SizedBox(
+                      const Icon(Icons.info),
+                      const SizedBox(
                         width: 8.0,
                       ),
                       Expanded(
@@ -2485,12 +2447,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             Expanded(
                                 child: Text(
                               '${asignacion.cliente.toString()} - ${asignacion.nombre.toString()}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             )),
                             Expanded(
                                 child: Text(asignacion.domicilio.toString(),
-                                    style: TextStyle(fontSize: 12))),
+                                    style: const TextStyle(fontSize: 12))),
                             Row(
                               children: [
                                 Expanded(
@@ -2498,7 +2460,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: [
+                                      children: const [
                                         Icon(Icons.map,
                                             color: Color(0xff282886)),
                                         SizedBox(
@@ -2512,8 +2474,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       ],
                                     ),
                                     style: ElevatedButton.styleFrom(
-                                      primary: Color(0xFFb3b3b4),
-                                      minimumSize: Size(double.infinity, 30),
+                                      primary: const Color(0xFFb3b3b4),
+                                      minimumSize:
+                                          const Size(double.infinity, 30),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5),
                                       ),
@@ -2555,17 +2518,17 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   List<DropdownMenuItem<String>> _getComboEquipos() {
     List<DropdownMenuItem<String>> list = [];
-    list.add(DropdownMenuItem(
+    list.add(const DropdownMenuItem(
       child: Text('Elija un Modelo...'),
       value: 'Elija un Modelo...',
     ));
 
-    widget.controlesEquivalencia.forEach((control) {
+    for (var control in widget.controlesEquivalencia) {
       list.add(DropdownMenuItem(
         child: Text(control.descripcion.toString()),
         value: control.decO1.toString(),
       ));
-    });
+    }
 
     return list;
   }

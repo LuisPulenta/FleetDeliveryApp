@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_const
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
@@ -15,7 +17,9 @@ import 'package:url_launcher/url_launcher.dart';
 class AsignacionesScreen extends StatefulWidget {
   final Usuario user;
   final Position positionUser;
-  const AsignacionesScreen({required this.user, required this.positionUser});
+  const AsignacionesScreen(
+      {Key? key, required this.user, required this.positionUser})
+      : super(key: key);
 
   @override
   _AsignacionesScreenState createState() => _AsignacionesScreenState();
@@ -26,7 +30,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
 
-  CustomInfoWindowController _customInfoWindowController =
+  final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
 
   bool _showLoader = false;
@@ -59,22 +63,19 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       habilitaCambioModelo: 0);
 
   List<CodigoCierre> _codigoscierreAux = [];
-  List<CodigoCierre> _codigoscierre = [];
+  final List<CodigoCierre> _codigoscierre = [];
 
   String _tipoasignacion = 'Elija un Tipo de Asignación...';
   String _tipoasignacionError = '';
   bool _tipoasignacionShowError = false;
-  TextEditingController _tipoasignacionController = TextEditingController();
 
   String _zona = 'Elija una Zona...';
-  String _zonaError = '';
-  bool _zonaShowError = false;
-  TextEditingController _zonaController = TextEditingController();
+  final String _zonaError = '';
+  final bool _zonaShowError = false;
 
   String _cartera = 'Elija una Cartera...';
-  String _carteraError = '';
-  bool _carteraShowError = false;
-  TextEditingController _carteraController = TextEditingController();
+  final String _carteraError = '';
+  final bool _carteraShowError = false;
 
   int intentos = 0;
 
@@ -149,25 +150,25 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       appBar: AppBar(
         title: _tipoasignacion != 'Elija un Tipo de Asignación...'
             ? Text(
-                'Asig. ${_tipoasignacion}: ${_asignaciones2.length.toString()}')
+                'Asig. $_tipoasignacion: ${_asignaciones2.length.toString()}')
             : Text('Asignaciones: ${_asignaciones2.length.toString()}'),
-        backgroundColor: Color(0xFF282886),
+        backgroundColor: const Color(0xFF282886),
         centerTitle: true,
         actions: <Widget>[
-          IconButton(onPressed: _showMap, icon: Icon(Icons.map)),
+          IconButton(onPressed: _showMap, icon: const Icon(Icons.map)),
           _isFiltered
               ? IconButton(
-                  onPressed: _removeFilter, icon: Icon(Icons.filter_none))
+                  onPressed: _removeFilter, icon: const Icon(Icons.filter_none))
               : IconButton(
-                  onPressed: _showFilter, icon: Icon(Icons.filter_alt)),
+                  onPressed: _showFilter, icon: const Icon(Icons.filter_alt)),
         ],
       ),
       body: Container(
-        padding: EdgeInsets.all(5),
-        color: Color(0xFFC7C7C8),
+        padding: const EdgeInsets.all(5),
+        color: const Color(0xFFC7C7C8),
         child: Center(
           child: _showLoader
-              ? LoaderComponent(
+              ? const LoaderComponent(
                   text: 'Cargando ASIGNACIONES.',
                 )
               : _getContent(),
@@ -185,10 +186,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       children: [
         Expanded(
           child: Container(
-            padding: EdgeInsets.only(left: 10, right: 10, top: 5),
-            child: _tiposasignacion.length == 0
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
+            child: _tiposasignacion.isEmpty
                 ? Row(
-                    children: [
+                    children: const [
                       CircularProgressIndicator(),
                       SizedBox(
                         width: 10,
@@ -216,14 +217,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
         ElevatedButton(
-            child: Icon(Icons.search),
+            child: const Icon(Icons.search),
             style: ElevatedButton.styleFrom(
-              primary: Color(0xFF282886),
-              minimumSize: Size(50, 50),
+              primary: const Color(0xFF282886),
+              minimumSize: const Size(50, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
@@ -238,17 +239,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   List<DropdownMenuItem<String>> _getComboTiposAsignacion() {
     List<DropdownMenuItem<String>> list = [];
-    list.add(DropdownMenuItem(
+    list.add(const DropdownMenuItem(
       child: Text('Elija un Tipo de Asignación...'),
       value: 'Elija un Tipo de Asignación...',
     ));
 
-    _tiposasignacion.forEach((tipoasignacion) {
+    for (var tipoasignacion in _tiposasignacion) {
       list.add(DropdownMenuItem(
         child: Text(tipoasignacion.proyectomodulo.toString()),
         value: tipoasignacion.proyectomodulo.toString(),
       ));
-    });
+    }
 
     return list;
   }
@@ -263,10 +264,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         Expanded(
           child: Container(
             height: 66,
-            padding: EdgeInsets.only(left: 10, right: 10, top: 5),
-            child: _tiposasignacion.length == 0
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
+            child: _tiposasignacion.isEmpty
                 ? Row(
-                    children: [
+                    children: const [
                       CircularProgressIndicator(),
                       SizedBox(
                         width: 10,
@@ -278,7 +279,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                     value: _zona,
                     isExpanded: true,
                     isDense: true,
-                    style: TextStyle(fontSize: 12, color: Colors.black),
+                    style: const TextStyle(fontSize: 12, color: Colors.black),
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -302,12 +303,12 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   List<DropdownMenuItem<String>> _getComboZonas() {
     List<DropdownMenuItem<String>> list = [];
-    list.add(DropdownMenuItem(
+    list.add(const DropdownMenuItem(
       child: Text('Elija una Zona...'),
       value: 'Elija una Zona...',
     ));
 
-    _zonas.forEach((zona) {
+    for (var zona in _zonas) {
       if (zona.zona == '') {
         zona.zona = ' Sin Zona';
       }
@@ -316,7 +317,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         child: Text(zona.zona.toString()),
         value: zona.zona.toString(),
       ));
-    });
+    }
 
     return list;
   }
@@ -330,11 +331,11 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       children: [
         Expanded(
           child: Container(
-            padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
             height: 66,
-            child: _tiposasignacion.length == 0
+            child: _tiposasignacion.isEmpty
                 ? Row(
-                    children: [
+                    children: const [
                       CircularProgressIndicator(),
                       SizedBox(
                         width: 10,
@@ -346,7 +347,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                     value: _cartera,
                     isExpanded: true,
                     isDense: true,
-                    style: TextStyle(fontSize: 12, color: Colors.black),
+                    style: const TextStyle(fontSize: 12, color: Colors.black),
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -370,12 +371,12 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   List<DropdownMenuItem<String>> _getComboCarteras() {
     List<DropdownMenuItem<String>> list = [];
-    list.add(DropdownMenuItem(
+    list.add(const DropdownMenuItem(
       child: Text('Elija una Cartera...'),
       value: 'Elija una Cartera...',
     ));
 
-    _carteras.forEach((cartera) {
+    for (var cartera in _carteras) {
       if (cartera.motivos == '') {
         cartera.motivos = ' Sin Cartera';
       }
@@ -384,7 +385,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         child: Text(cartera.motivos.toString()),
         value: cartera.motivos.toString(),
       ));
-    });
+    }
 
     return list;
   }
@@ -404,36 +405,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         //_showAsignacionesCount(),
         _showFiltros(),
         Expanded(
-          child: _asignaciones2.length == 0 ? _noContent() : _getListView(),
+          child: _asignaciones2.isEmpty ? _noContent() : _getListView(),
         )
       ],
-    );
-  }
-
-//-----------------------------------------------------------------------------
-//------------------------------ METODO SHOWASIGNACIONESCOUNT -----------------
-//-----------------------------------------------------------------------------
-
-  Widget _showAsignacionesCount() {
-    return Container(
-      padding: EdgeInsets.all(10),
-      height: 40,
-      child: Row(
-        children: [
-          Text("Cantidad de Asignaciones: ",
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xFF0e4888),
-                fontWeight: FontWeight.bold,
-              )),
-          Text(_asignaciones2.length.toString(),
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              )),
-        ],
-      ),
     );
   }
 
@@ -443,37 +417,37 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   Widget _showFiltros() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
       height: 100,
       child: Column(
         children: [
           Row(
             children: [
-              Text("Prioridad: ",
+              const Text("Prioridad: ",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   )),
               Checkbox(
                   value: _prioridad,
-                  focusColor: Color(0xFF282886),
-                  fillColor: MaterialStateProperty.all(Color(0xFF282886)),
+                  focusColor: const Color(0xFF282886),
+                  fillColor: MaterialStateProperty.all(const Color(0xFF282886)),
                   onChanged: (value) {
                     _prioridad = value!;
                     _filter();
                   }),
-              SizedBox(
+              const SizedBox(
                 width: 50,
               ),
-              Text("Con Cita HOY: ",
+              const Text("Con Cita HOY: ",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   )),
               Checkbox(
                   value: _citaHoy,
-                  focusColor: Color(0xFF282886),
-                  fillColor: MaterialStateProperty.all(Color(0xFF282886)),
+                  focusColor: const Color(0xFF282886),
+                  fillColor: MaterialStateProperty.all(const Color(0xFF282886)),
                   onChanged: (value) {
                     _citaHoy = value!;
                     _filter();
@@ -482,7 +456,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           ),
           Row(
             children: [
-              Text("Antiguedad (días): ",
+              const Text("Antiguedad (días): ",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -490,7 +464,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               Slider(
                 min: 0,
                 max: 100,
-                activeColor: Color(0xFF282886),
+                activeColor: const Color(0xFF282886),
                 value: _sliderValue,
                 onChanged: (value) {
                   _sliderValue = value;
@@ -512,13 +486,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   Widget _noContent() {
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       child: Center(
         child: Text(
           _isFiltered
               ? 'No hay Asignaciones con ese criterio de búsqueda'
               : 'No hay Asignaciones registradas',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -538,20 +512,20 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
             //color: Color(0xFFC7C7C8),
             shadowColor: Colors.white,
             elevation: 10,
-            margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: InkWell(
               onTap: () {
                 asignacionSelected = e;
                 _goInfoAsignacion(e);
               },
               child: Container(
-                margin: EdgeInsets.all(0),
-                padding: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(0),
+                padding: const EdgeInsets.all(5),
                 child: Row(
                   children: [
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -560,7 +534,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                 children: [
                                   Row(
                                     children: [
-                                      Container(
+                                      const SizedBox(
                                         width: 80,
                                         child: Text("Cliente: ",
                                             style: TextStyle(
@@ -572,13 +546,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       Expanded(
                                         child: Text(
                                             '${e.cliente.toString()} - ${e.nombre.toString()}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 12,
                                             )),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 1,
                                   ),
                                   // Row(
@@ -603,7 +577,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   // ),
                                   Row(
                                     children: [
-                                      Container(
+                                      const SizedBox(
                                         width: 80,
                                         child: Text("Dirección: ",
                                             style: TextStyle(
@@ -614,18 +588,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ),
                                       Expanded(
                                         child: Text(e.domicilio.toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 12,
                                             )),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 1,
                                   ),
                                   Row(
                                     children: [
-                                      Container(
+                                      const SizedBox(
                                         width: 80,
                                         child: Text("Entre calles: ",
                                             style: TextStyle(
@@ -645,19 +619,19 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                     1)
                                             ? Text(
                                                 '${e.entrecallE1.toString()} y ${e.entrecallE2.toString()}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 12,
                                                 ))
-                                            : Text(""),
+                                            : const Text(""),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 1,
                                   ),
                                   Row(
                                     children: [
-                                      Container(
+                                      const SizedBox(
                                         width: 80,
                                         child: Text("Localidad: ",
                                             style: TextStyle(
@@ -669,19 +643,19 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       Expanded(
                                         child: Text(
                                             '${e.localidad.toString()}-${e.partido.toString()}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 12,
                                             )),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 1,
                                   ),
                                   Row(
                                     children: [
                                       e.zona != ""
-                                          ? Container(
+                                          ? const SizedBox(
                                               width: 80,
                                               child: Text("Zona: ",
                                                   style: TextStyle(
@@ -693,16 +667,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                           : Container(),
                                       e.zona != ""
                                           ? Expanded(
-                                              child:
-                                                  Text('${e.zona.toString()}',
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                      )),
+                                              child: Text(e.zona.toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                  )),
                                             )
                                           : Container(),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 1,
                                   ),
                                   // Row(
@@ -726,7 +699,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   // ),
                                   Row(
                                     children: [
-                                      Container(
+                                      const SizedBox(
                                         width: 80,
                                         child: Text("Teléfono: ",
                                             style: TextStyle(
@@ -737,18 +710,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ),
                                       Expanded(
                                         child: Text(e.telefono.toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 12,
                                             )),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 1,
                                   ),
                                   Row(
                                     children: [
-                                      Container(
+                                      const SizedBox(
                                         width: 80,
                                         child: Text("Cant. Eq.: ",
                                             style: TextStyle(
@@ -760,7 +733,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       Expanded(
                                         child: Text(
                                           e.cantAsign.toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.red,
                                             fontWeight: FontWeight.bold,
@@ -769,12 +742,12 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 1,
                                   ),
                                   Row(
                                     children: [
-                                      Container(
+                                      const SizedBox(
                                         width: 80,
                                         child: Text("Cód. Cierre: ",
                                             style: TextStyle(
@@ -785,13 +758,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ),
                                       Expanded(
                                         child: Text(e.descripcion.toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 12,
                                             )),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 1,
                                   ),
                                   Row(
@@ -802,7 +775,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                           children: [
                                             Row(
                                               children: [
-                                                Container(
+                                                const SizedBox(
                                                   width: 80,
                                                   child: Text("Fec. Asig.: ",
                                                       style: TextStyle(
@@ -815,16 +788,21 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                 ),
                                                 Expanded(
                                                   child: e.fechaAsignada == null
-                                                      ? Text("")
+                                                      ? const Text("")
                                                       : Text(
-                                                          '${DateFormat('dd/MM/yyyy').format(DateTime.parse(e.fechaAsignada.toString()))}',
-                                                          style: TextStyle(
+                                                          DateFormat(
+                                                                  'dd/MM/yyyy')
+                                                              .format(DateTime.parse(e
+                                                                  .fechaAsignada
+                                                                  .toString())),
+                                                          style:
+                                                              const TextStyle(
                                                             fontSize: 12,
                                                           )),
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 1,
                                             ),
                                             // Row(
@@ -850,7 +828,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             // ),
                                             Row(
                                               children: [
-                                                Container(
+                                                const SizedBox(
                                                   width: 80,
                                                   child: Text("Fec. Cita: ",
                                                       style: TextStyle(
@@ -863,21 +841,27 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                 ),
                                                 Expanded(
                                                   child: e.fechaCita == null
-                                                      ? Text("")
+                                                      ? const Text("")
                                                       : Text(
-                                                          '${DateFormat('dd/MM/yyyy').format(DateTime.parse(e.fechaCita.toString()))}',
-                                                          style: TextStyle(
+                                                          DateFormat(
+                                                                  'dd/MM/yyyy')
+                                                              .format(DateTime
+                                                                  .parse(e
+                                                                      .fechaCita
+                                                                      .toString())),
+                                                          style:
+                                                              const TextStyle(
                                                             fontSize: 12,
                                                           )),
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 1,
                                             ),
                                             Row(
                                               children: [
-                                                Container(
+                                                const SizedBox(
                                                   width: 80,
                                                   child: Text("Hora Cita: ",
                                                       style: TextStyle(
@@ -890,10 +874,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                 ),
                                                 Expanded(
                                                   child: e.fechaCita == null
-                                                      ? Text("")
+                                                      ? const Text("")
                                                       : Text(
-                                                          '${DateFormat('hh:mm').format(DateTime.parse(e.fechaCita.toString()))}',
-                                                          style: TextStyle(
+                                                          DateFormat('hh:mm')
+                                                              .format(DateTime
+                                                                  .parse(e
+                                                                      .fechaCita
+                                                                      .toString())),
+                                                          style:
+                                                              const TextStyle(
                                                             fontSize: 12,
                                                           )),
                                                 ),
@@ -910,7 +899,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                children: [
+                                                children: const [
                                                   Icon(Icons.fact_check),
                                                   SizedBox(
                                                     width: 10,
@@ -919,8 +908,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                 ],
                                               ),
                                               style: ElevatedButton.styleFrom(
-                                                primary: Color(0xFF282886),
-                                                minimumSize: Size(60, 36),
+                                                primary:
+                                                    const Color(0xFF282886),
+                                                minimumSize: const Size(60, 36),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(5),
@@ -931,14 +921,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                           ],
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 1,
                                       ),
                                     ],
                                   ),
                                   Row(
                                     children: [
-                                      Container(
+                                      const SizedBox(
                                         width: 80,
                                         child: Text("Cartera: ",
                                             style: TextStyle(
@@ -949,7 +939,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ),
                                       Expanded(
                                         child: Text(e.motivos.toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 12,
                                             )),
                                       ),
@@ -962,7 +952,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                         ),
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios),
+                    const Icon(Icons.arrow_forward_ios),
                   ],
                 ),
               ),
@@ -985,7 +975,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //************************** METODO GETTIPOASIGNACIONES ***********************
 //*****************************************************************************
 
-  Future<Null> _getTiposAsignaciones() async {
+  Future<void> _getTiposAsignaciones() async {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
@@ -994,7 +984,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Error',
           message: 'Verifica que estés conectado a Internet',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1025,7 +1015,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //************************** METODO GETZONAS **********************************
 //*****************************************************************************
 
-  Future<Null> _getZonas() async {
+  Future<void> _getZonas() async {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
@@ -1034,7 +1024,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Error',
           message: 'Verifica que estés conectado a Internet',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1052,14 +1042,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       }
     } while (bandera == false);
     setState(() {});
-    var a = 1;
   }
 
 //*****************************************************************************
 //************************** METODO GETCARTERAS **********************************
 //*****************************************************************************
 
-  Future<Null> _getCarteras() async {
+  Future<void> _getCarteras() async {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
@@ -1068,7 +1057,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Error',
           message: 'Verifica que estés conectado a Internet',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1087,14 +1076,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       }
     } while (bandera == false);
     setState(() {});
-    var a = 1;
   }
 
 //*****************************************************************************
 //************************** METODO LOADOBRAS *********************************
 //*****************************************************************************
 
-  Future<Null> _getObras() async {
+  Future<void> _getObras() async {
     if (_tipoasignacion == 'Elija un Tipo de Asignación...') {
       _tipoasignacionShowError = true;
       _tipoasignacionError = 'Elija un Tipo de Asignación...';
@@ -1121,7 +1109,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Error',
           message: 'Verifica que estés conectado a Internet',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1139,7 +1127,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Error',
           message: response.message,
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1147,7 +1135,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     Response response2 = Response(isSuccess: false);
     response2 = await ApiHelper.getFuncionesApp(_tipoasignacion);
     Response response3 = Response(isSuccess: false);
-    response3 = await ApiHelper.GetControlesEquivalencia(_tipoasignacion);
+    response3 = await ApiHelper.getControlesEquivalencia(_tipoasignacion);
     setState(() {
       _showLoader = false;
     });
@@ -1158,7 +1146,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Error',
           message: response.message,
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1169,7 +1157,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Error',
           message: response.message,
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1199,7 +1187,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //************************** METODO LOADOBRAS *********************************
 //*****************************************************************************
 
-  Future<Null> _getCodigosCierre() async {
+  Future<void> _getCodigosCierre() async {
     if (_tipoasignacion == 'Elija un Tipo de Asignación...') {
       _tipoasignacionShowError = true;
       _tipoasignacionError = 'Elija un Tipo de Asignación...';
@@ -1224,7 +1212,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Error',
           message: 'Verifica que estés conectado a Internet',
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1241,18 +1229,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Error',
           message: response.message,
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
     _codigoscierreAux = response.result;
     _codigoscierre.clear();
 
-    _codigoscierreAux.forEach((codCierre) {
+    for (var codCierre in _codigoscierreAux) {
       if (codCierre.codigoCierre != _funcionApp.codigoFinal) {
         _codigoscierre.add(codCierre);
       }
-    });
+    }
 
     _codigoscierre.sort((a, b) {
       return a.codigoCierre
@@ -1260,8 +1248,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           .toLowerCase()
           .compareTo(b.codigoCierre.toString().toLowerCase());
     });
-
-    var a = 1;
   }
 
 //*****************************************************************************
@@ -1312,11 +1298,11 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            title: Text('Filtrar Asignaciones'),
+            title: const Text('Filtrar Asignaciones'),
             content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              Text(
+              const Text(
                   'Escriba texto a buscar en Cliente, Reclamo Técnico o Dirección'),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               TextField(
@@ -1324,7 +1310,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                 decoration: InputDecoration(
                     hintText: 'Criterio de búsqueda...',
                     labelText: 'Buscar',
-                    suffixIcon: Icon(Icons.search),
+                    suffixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
                 onChanged: (value) {
@@ -1335,7 +1321,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
             actions: <Widget>[
               TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Cancelar')),
+                  child: const Text('Cancelar')),
               TextButton(
                   onPressed: () {
                     _filter();
@@ -1347,7 +1333,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
                     Navigator.of(context).pop();
                   },
-                  child: Text('Filtrar')),
+                  child: const Text('Filtrar')),
             ],
           );
         });
@@ -1387,9 +1373,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         condicionCartera = asignacion.motivos == _cartera;
       }
 
-      if (asignacion.fechaAsignada == null) {
-        asignacion.fechaAsignada = DateTime.now().toString();
-      }
+      asignacion.fechaAsignada ??= DateTime.now().toString();
       if (asignacion.fechaAsignada == '') {
         asignacion.fechaAsignada = DateTime.now().toString();
       }
@@ -1430,11 +1414,11 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         condicionCitaHoy = true;
       } else {
         if (asignacion.fechaCita != null) {
-          DateTime now = new DateTime.now();
-          DateTime hoy = new DateTime(now.year, now.month, now.day);
+          DateTime now = DateTime.now();
+          DateTime hoy = DateTime(now.year, now.month, now.day);
           DateTime fechaAsigAux = DateTime.parse(asignacion.fechaCita!);
-          DateTime fechaAsig = new DateTime(
-              fechaAsigAux.year, fechaAsigAux.month, fechaAsigAux.day);
+          DateTime fechaAsig =
+              DateTime(fechaAsigAux.year, fechaAsigAux.month, fechaAsigAux.day);
 
           condicionCitaHoy = _citaHoy ? fechaAsig == hoy : true;
         } else {
@@ -1482,7 +1466,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //*****************************************************************************
 
   void _showMap() {
-    if (_asignaciones2.length == 0) {
+    if (_asignaciones2.isEmpty) {
       return;
     }
 
@@ -1527,7 +1511,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
             //     zoom: 16.0);
             _customInfoWindowController.addInfoWindow!(
                 Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   width: 300,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -1536,10 +1520,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        child: Icon(Icons.info),
-                      ),
-                      SizedBox(
+                      const Icon(Icons.info),
+                      const SizedBox(
                         width: 8.0,
                       ),
                       Expanded(
@@ -1550,12 +1532,12 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                             Expanded(
                                 child: Text(
                               '${asign.cliente.toString()} - ${asign.nombre.toString()}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             )),
                             Expanded(
                                 child: Text(asign.domicilio.toString(),
-                                    style: TextStyle(fontSize: 12))),
+                                    style: const TextStyle(fontSize: 12))),
                             Row(
                               children: [
                                 Expanded(
@@ -1563,7 +1545,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: [
+                                      children: const [
                                         Icon(Icons.map,
                                             color: Color(0xff282886)),
                                         SizedBox(
@@ -1577,8 +1559,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ],
                                     ),
                                     style: ElevatedButton.styleFrom(
-                                      primary: Color(0xFFb3b3b4),
-                                      minimumSize: Size(double.infinity, 30),
+                                      primary: const Color(0xFFb3b3b4),
+                                      minimumSize:
+                                          const Size(double.infinity, 30),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5),
                                       ),
@@ -1586,7 +1569,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                     onPressed: () => _navegar(asign),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
                                 Expanded(
@@ -1594,7 +1577,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: [
+                                      children: const [
                                         Text(
                                           'Abrir',
                                           style: TextStyle(
@@ -1608,8 +1591,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ],
                                     ),
                                     style: ElevatedButton.styleFrom(
-                                      primary: Color(0xFFb3b3b4),
-                                      minimumSize: Size(double.infinity, 30),
+                                      primary: const Color(0xFFb3b3b4),
+                                      minimumSize:
+                                          const Size(double.infinity, 30),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5),
                                       ),
@@ -1671,7 +1655,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Aviso',
           message: "Este cliente no tiene coordenadas cargadas.",
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
     }
@@ -1681,7 +1665,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     if (connectivityResult != ConnectivityResult.none) {
       var latt = double.tryParse(e.grxx.toString());
       var long = double.tryParse(e.gryy.toString());
-      var uri = Uri.parse("google.navigation:q=${latt},${long}&mode=d");
+      var uri = Uri.parse("google.navigation:q=$latt,$long&mode=d");
       if (await canLaunch(uri.toString())) {
         await launch(uri.toString());
       } else {
@@ -1693,7 +1677,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           title: 'Aviso!',
           message: "Necesita estar conectado a Internet para acceder al mapa",
           actions: <AlertDialogAction>[
-            AlertDialogAction(key: null, label: 'Aceptar'),
+            const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
     }
   }

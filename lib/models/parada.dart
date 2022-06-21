@@ -69,7 +69,7 @@ class Parada {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['idParada'] = idParada;
     data['idRuta'] = idRuta;
     data['idEnvio'] = idEnvio;
