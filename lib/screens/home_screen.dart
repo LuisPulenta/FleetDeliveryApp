@@ -441,7 +441,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ],
                       backgroundColor: const Color(0xff282886),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     _showEnviosCount(),
@@ -2300,12 +2300,12 @@ class _HomeScreenState extends State<HomeScreen>
       margin: const EdgeInsets.symmetric(horizontal: 0),
       child: Card(
           color: Colors.white,
-          margin: EdgeInsets.all(1),
+          margin: const EdgeInsets.all(1),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Container(
-              margin: EdgeInsets.all(1),
-              padding: EdgeInsets.all(0),
+              margin: const EdgeInsets.all(1),
+              padding: const EdgeInsets.all(0),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -2314,11 +2314,11 @@ class _HomeScreenState extends State<HomeScreen>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
+                          SizedBox(
                             width: 110,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text(
                                   'Sincronizados:',
                                   style: TextStyle(
@@ -2329,14 +2329,14 @@ class _HomeScreenState extends State<HomeScreen>
                               ],
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: 25,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
                                   sincronizados.toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -2344,11 +2344,11 @@ class _HomeScreenState extends State<HomeScreen>
                               ],
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: 125,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text(
                                   'No sincronizados:',
                                   style: TextStyle(
@@ -2360,14 +2360,14 @@ class _HomeScreenState extends State<HomeScreen>
                               ],
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: 45,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
                                   nosincronizados.toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.red,

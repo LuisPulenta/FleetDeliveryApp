@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_const
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -198,14 +196,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         children: [
           Container(
             decoration: const BoxDecoration(
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  const Color(
+                  Color(
                     (0xffdadada),
                   ),
-                  const Color(
+                  Color(
                     (0xffb3b3b4),
                   ),
                 ],
@@ -281,9 +279,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             Row(
                               children: [
                                 const Text("Novedades: ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 12,
-                                      color: const Color(0xFF0e4888),
+                                      color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
                                     )),
                                 Expanded(
@@ -300,7 +298,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             Row(
                               children: [
                                 const Text("N° Series Extras: ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
@@ -319,7 +317,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             Row(
                               children: [
                                 const Text("Obs. Cliente: ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
@@ -338,7 +336,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             Row(
                               children: [
                                 const Text("Cartera: ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
@@ -625,7 +623,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               IconButton(
                                 icon: const Icon(
                                   Icons.map,
-                                  color: const Color(0xff282886),
+                                  color: Color(0xff282886),
                                   size: 34,
                                 ),
                                 onPressed: () => _showMap(_asignacion),
@@ -682,7 +680,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       Container(
                         child: !_photoChangedDNI
                             ? const Center(
-                                child: const Image(
+                                child: Image(
                                     image: AssetImage('assets/dni.png'),
                                     width: 80,
                                     height: 60,
@@ -730,7 +728,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 child: const Icon(
                                   Icons.image,
                                   size: 30,
-                                  color: const Color(0xFFf6faf8),
+                                  color: Color(0xFFf6faf8),
                                 ),
                               ),
                             ),
@@ -797,9 +795,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         Row(
           children: [
             const Text("Est. Gaos: ",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
-                  color: const Color(0xFF0e4888),
+                  color: Color(0xFF0e4888),
                   fontWeight: FontWeight.bold,
                 )),
             Expanded(
@@ -1253,9 +1251,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       ),
                                     ),
                                     const Text("        ",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 12,
-                                          color: const Color(0xFF0e4888),
+                                          color: Color(0xFF0e4888),
                                           fontWeight: FontWeight.bold,
                                         )),
                                   ],
@@ -1450,6 +1448,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                               e.autonumerico) {
                                                                             asign.estadO3 =
                                                                                 _macserieController.text;
+                                                                            asign.elegir =
+                                                                                1;
                                                                           }
                                                                         }
                                                                         Navigator.pop(
@@ -1736,9 +1736,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           Row(
                             children: [
                               const Text("Cliente: ",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
-                                    color: const Color(0xFF0e4888),
+                                    color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
                                   )),
                               Expanded(
@@ -1756,7 +1756,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           Row(
                             children: [
                               const Text("Dirección: ",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
@@ -1775,7 +1775,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           Row(
                             children: [
                               const Text("Localidad: ",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
@@ -1794,7 +1794,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           Row(
                             children: [
                               const Text("Provincia: ",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
@@ -1815,7 +1815,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               const Text("Teléfono: ",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: const Color(0xFF0e4888),
+                                    color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
                                   )),
                               Expanded(
@@ -1841,7 +1841,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           Row(
                             children: [
                               const Text("Tel. Alt. 1: ",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
@@ -1876,7 +1876,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           Row(
                             children: [
                               const Text("Tel. Alt. 2: ",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
@@ -1911,9 +1911,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           Row(
                             children: [
                               const Text("Tel. Alt. 3: ",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
-                                    color: const Color(0xFF0e4888),
+                                    color: Color(0xFF0e4888),
                                     fontWeight: FontWeight.bold,
                                   )),
                               Expanded(
@@ -2124,6 +2124,44 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
       return;
+    }
+
+//---------------- Verifica que si es PAR haya elegidos y no elegidos -------
+
+    if (estadogaos == "PAR") {
+      int elegidos = 0;
+      int noelegidos = 0;
+      for (Asign asign in _asigns) {
+        if (asign.elegir == 1) {
+          elegidos = elegidos + 1;
+        } else {
+          noelegidos = noelegidos + 1;
+        }
+      }
+
+      if (elegidos == 0) {
+        await showAlertDialog(
+            context: context,
+            title: 'Error',
+            message:
+                'La Orden tiene un Estado "PAR" pero NO HA ELEGIDO ninguna asignación, ',
+            actions: <AlertDialogAction>[
+              const AlertDialogAction(key: null, label: 'Aceptar'),
+            ]);
+        return;
+      }
+
+      if (noelegidos == 0) {
+        await showAlertDialog(
+            context: context,
+            title: 'Error',
+            message:
+                'La Orden tiene un Estado "PAR" pero HA ELEGIDO TODAS las asignaciones, ',
+            actions: <AlertDialogAction>[
+              const AlertDialogAction(key: null, label: 'Aceptar'),
+            ]);
+        return;
+      }
     }
 
 //---------------- Verifica que haya Foto del DNI --------------

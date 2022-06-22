@@ -36,7 +36,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   bool _showLoader = false;
   bool _isFiltered = false;
   bool bandera = false;
+
   String _search = '';
+  final TextEditingController _searchController = TextEditingController();
 
   double _sliderValue = 0;
   bool _prioridad = false;
@@ -155,12 +157,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         backgroundColor: const Color(0xFF282886),
         centerTitle: true,
         actions: <Widget>[
-          IconButton(onPressed: _showMap, icon: const Icon(Icons.map)),
-          _isFiltered
-              ? IconButton(
-                  onPressed: _removeFilter, icon: const Icon(Icons.filter_none))
-              : IconButton(
-                  onPressed: _showFilter, icon: const Icon(Icons.filter_alt)),
+          _asignaciones.isEmpty
+              ? Container()
+              : IconButton(onPressed: _showMap, icon: const Icon(Icons.map)),
+          _asignaciones.isEmpty
+              ? Container()
+              : _isFiltered
+                  ? IconButton(
+                      onPressed: _removeFilter,
+                      icon: const Icon(Icons.filter_none))
+                  : IconButton(
+                      onPressed: _showFilter,
+                      icon: const Icon(Icons.filter_alt)),
         ],
       ),
       body: Container(
@@ -292,6 +300,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                     items: _getComboZonas(),
                     onChanged: (value) {
                       _zona = value.toString();
+                      if (_zona != 'Elija una Zona...' ||
+                          _cartera != 'Elija una Cartera...') {
+                        _isFiltered = true;
+                      } else {
+                        _isFiltered = false;
+                      }
+                      setState(() {});
+
                       _filter();
                     },
                   ),
@@ -300,6 +316,129 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       ],
     );
   }
+
+//-----------------------------------------------------------------------------
+//--------------------------- SHOWTEXTFILTER ----------------------------------
+//-----------------------------------------------------------------------------
+  Widget _showTextFilter() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            children: [
+              Expanded(flex: 4, child: _showTextoBuscar()),
+              Expanded(flex: 2, child: _showButtons()),
+            ],
+          ),
+          const SizedBox(
+            height: 0,
+          ),
+        ],
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showTextoBuscar -------------------
+//-----------------------------------------------------------------
+
+  Widget _showTextoBuscar() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: TextField(
+        controller: _searchController,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          fillColor: Colors.white,
+          filled: true,
+          hintText: 'Texto a buscar...',
+          labelText: 'Texto a buscar',
+          //errorText: _codigoShowError ? _codigoError : null,
+
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: const Color(0xFF282886),
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        onChanged: (value) {
+          _search = value;
+        },
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO SHOWBUTTONS ------------------------
+//-----------------------------------------------------------------
+
+  Widget _showButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Expanded(
+          child: ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.search),
+                  SizedBox(
+                    width: 5,
+                  ),
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: const Color(0xFF282886),
+                minimumSize: const Size(50, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              onPressed: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+                _filter();
+              }),
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        Expanded(
+          child: ElevatedButton(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.cancel),
+                SizedBox(
+                  width: 5,
+                ),
+              ],
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.red,
+              minimumSize: const Size(50, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            onPressed: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+              _search = '';
+              _searchController.text = '';
+              _filter();
+            }, //=> _search(),
+          ),
+        ),
+      ],
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _getComboZonas ---------------------
+//-----------------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboZonas() {
     List<DropdownMenuItem<String>> list = [];
@@ -360,6 +499,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                     items: _getComboCarteras(),
                     onChanged: (value) {
                       _cartera = value.toString();
+
+                      if (_zona != 'Elija una Zona...' ||
+                          _cartera != 'Elija una Cartera...') {
+                        _isFiltered = true;
+                      } else {
+                        _isFiltered = false;
+                      }
+                      setState(() {});
                       _filter();
                     },
                   ),
@@ -397,11 +544,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   Widget _getContent() {
     return Column(
       children: <Widget>[
-        _zonas.length <= 1 && _carteras.length <= 1
-            ? _showTipos()
-            : Container(),
-        _zonas.length > 1 ? _showZonas() : Container(),
-        _carteras.length > 1 ? _showCarteras() : Container(),
+        // _zonas.length <= 1 && _carteras.length <= 1
+        //     ? _showTipos()
+        //     : Container(),
+
+        _asignaciones.isEmpty ? _showTipos() : _showTextFilter(),
+
+        // _zonas.length > 1 ? _showZonas() : Container(),
+        // _carteras.length > 1 ? _showCarteras() : Container(),
+
         //_showAsignacionesCount(),
         _showFiltros(),
         Expanded(
@@ -1117,9 +1268,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     Response response = Response(isSuccess: false);
     response =
         await ApiHelper.getAsignaciones(widget.user.idUser, _tipoasignacion);
-    setState(() {
-      _showLoader = false;
-    });
 
     if (!response.isSuccess) {
       await showAlertDialog(
@@ -1136,9 +1284,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     response2 = await ApiHelper.getFuncionesApp(_tipoasignacion);
     Response response3 = Response(isSuccess: false);
     response3 = await ApiHelper.getControlesEquivalencia(_tipoasignacion);
-    setState(() {
-      _showLoader = false;
-    });
 
     if (!response2.isSuccess) {
       await showAlertDialog(
@@ -1181,6 +1326,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     await _getCodigosCierre();
     await _getZonas();
     await _getCarteras();
+    setState(() {
+      _showLoader = false;
+    });
   }
 
 //*****************************************************************************
@@ -1196,10 +1344,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     } else {
       _tipoasignacionShowError = false;
     }
-
-    setState(() {
-      _showLoader = true;
-    });
 
     var connectivityResult = await Connectivity().checkConnectivity();
 
@@ -1219,9 +1363,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
     Response response = Response(isSuccess: false);
     response = await ApiHelper.getCodigosCierre(_tipoasignacion);
-    setState(() {
-      _showLoader = false;
-    });
 
     if (!response.isSuccess) {
       await showAlertDialog(
@@ -1300,41 +1441,30 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
             ),
             title: const Text('Filtrar Asignaciones'),
             content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              const Text(
-                  'Escriba texto a buscar en Cliente, Reclamo Técnico o Dirección'),
+              const Text('Seleccione un valor de las listas desplegables'),
               const SizedBox(
                 height: 10,
               ),
-              TextField(
-                autofocus: true,
-                decoration: InputDecoration(
-                    hintText: 'Criterio de búsqueda...',
-                    labelText: 'Buscar',
-                    suffixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10))),
-                onChanged: (value) {
-                  _search = value;
-                },
-              ),
+              _zonas.length > 1 ? _showZonas() : Container(),
+              _carteras.length > 1 ? _showCarteras() : Container(),
             ]),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancelar')),
-              TextButton(
-                  onPressed: () {
-                    _filter();
-                    if (_search != '') {
-                      _isFiltered = true;
-                    } else {
-                      _isFiltered = false;
-                    }
+            //actions: <Widget>[
+            // TextButton(
+            //     onPressed: () => Navigator.of(context).pop(),
+            //     child: const Text('Cancelar')),
+            // TextButton(
+            //     onPressed: () {
+            //       _filter();
+            //       if (_search != '') {
+            //         _isFiltered = true;
+            //       } else {
+            //         _isFiltered = false;
+            //       }
 
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Filtrar')),
-            ],
+            //       Navigator.of(context).pop();
+            //     },
+            //     child: const Text('Filtrar')),
+            //],
           );
         });
   }
