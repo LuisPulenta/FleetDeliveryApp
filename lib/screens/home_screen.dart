@@ -61,11 +61,6 @@ class _HomeScreenState extends State<HomeScreen>
   bool _passwordShowError = false;
   bool _passwordShow = false;
 
-  bool _paradaGrabada = false;
-  bool _envioGrabado = false;
-  bool _seguimientoGrabado = false;
-  bool _puso1 = false;
-
   String _result2 = "no";
 
   bool _hayInternet = false;
@@ -134,6 +129,29 @@ class _HomeScreenState extends State<HomeScreen>
   );
 
   Parada paradaSelected = Parada(
+      idParada: 0,
+      idRuta: 0,
+      idEnvio: 0,
+      tag: 0,
+      secuencia: 0,
+      leyenda: '',
+      latitud: 0,
+      longitud: 0,
+      iconoPropio: '',
+      iDmapa: '',
+      distancia: 0,
+      tiempo: 0,
+      estado: 0,
+      fecha: '',
+      hora: '',
+      idMotivo: 0,
+      notaChofer: '',
+      nuevoOrden: 0,
+      idCabCertificacion: 0,
+      idLiquidacionFletero: 0,
+      turno: '');
+
+  Parada paradaSaved = Parada(
       idParada: 0,
       idRuta: 0,
       idEnvio: 0,
@@ -234,6 +252,96 @@ class _HomeScreenState extends State<HomeScreen>
       latitud2: 0,
       longitud2: 0);
 
+  Envio envioSaved = Envio(
+      idEnvio: 0,
+      idproveedor: 0,
+      agencianr: 0,
+      estado: 0,
+      envia: '',
+      ruta: '',
+      ordenid: '',
+      fecha: 0,
+      hora: '',
+      imei: '',
+      transporte: '',
+      contrato: '',
+      titular: '',
+      dni: '',
+      domicilio: '',
+      cp: '',
+      latitud: 0,
+      longitud: 0,
+      autorizado: '',
+      observaciones: '',
+      idCabCertificacion: 0,
+      idRemitoProveedor: 0,
+      idSubconUsrWeb: 0,
+      fechaAlta: '',
+      fechaEnvio: '',
+      fechaDistribucion: '',
+      entreCalles: '',
+      mail: '',
+      telefonos: '',
+      localidad: '',
+      tag: 0,
+      provincia: '',
+      fechaEntregaCliente: '',
+      scaneadoIn: '',
+      scaneadoOut: '',
+      ingresoDeposito: 0,
+      salidaDistribucion: 0,
+      idRuta: 0,
+      nroSecuencia: 0,
+      fechaHoraOptimoCamino: '',
+      bultos: 0,
+      peso: '',
+      alto: '',
+      ancho: '',
+      largo: '',
+      idComprobante: 0,
+      enviarMailSegunEstado: '',
+      fechaRuta: '',
+      ordenIDparaOC: '',
+      hashUnico: '',
+      bultosPikeados: 0,
+      centroDistribucion: '',
+      fechaUltimaActualizacion: '',
+      volumen: '',
+      avonZoneNumber: 0,
+      avonSectorNumber: 0,
+      avonAccountNumber: '',
+      avonCampaignNumber: 0,
+      avonCampaignYear: 0,
+      domicilioCorregido: '',
+      domicilioCorregidoUsando: 0,
+      urlFirma: '',
+      urlDNI: '',
+      ultimoIdMotivo: 0,
+      ultimaNotaFletero: '',
+      idComprobanteDevolucion: 0,
+      turno: '',
+      barrioEntrega: '',
+      partidoEntrega: '',
+      avonDayRoute: 0,
+      avonTravelRoute: 0,
+      avonSecuenceRoute: 0,
+      avonInformarInclusion: 0,
+      urlDNIFullPath: '',
+      latitud2: 0,
+      longitud2: 0);
+
+  Seguimiento seguimientoSaved = Seguimiento(
+      id: 0,
+      idenvio: 0,
+      idetapa: 0,
+      estado: 0,
+      idusuario: 0,
+      fecha: 0,
+      hora: '',
+      observaciones: '',
+      motivo: '',
+      notachofer: '');
+
   Position _positionUser = const Position(
       longitude: 0,
       latitude: 0,
@@ -306,30 +414,43 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     Expanded(
                       child: _rutas.isEmpty ? _noContent() : _showRutas(),
-                    )
+                    ),
                   ],
                 ),
 //-------------------------------------------------------------------------
 //-------------------------- 2° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
+
                 Column(
                   children: [
                     AppBar(
                       title: (const Text("Completas")),
                       centerTitle: true,
                       actions: <Widget>[
-                        IconButton(
-                          onPressed: _llenarparadasenvios,
-                          icon: const Icon(Icons.refresh),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 50),
+                          child: IconButton(
+                            onPressed: _llenarparadasenvios,
+                            icon: const Icon(
+                              Icons.cloud_sync,
+                              color: Colors.yellow,
+                              size: 40,
+                            ),
+                          ),
                         )
                       ],
                       backgroundColor: const Color(0xff282886),
                     ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    _showEnviosCount(),
                     Expanded(
                       child: _getContent(),
                     ),
                   ],
                 ),
+
 //-------------------------------------------------------------------------
 //-------------------------- 3° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
@@ -701,7 +822,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                                 Row(
                                   children: [
-                                    const Text("Ruta: ",
+                                    const Text("Ruta N°: ",
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xFF781f1e),
@@ -843,7 +964,7 @@ class _HomeScreenState extends State<HomeScreen>
       scrollDirection: Axis.vertical,
       children: _paradasenviosdb.map((e) {
         return Card(
-          color: Colors.white,
+          color: e.enviado == 1 ? Colors.white : Colors.red[200],
           shadowColor: Colors.white,
           elevation: 10,
           margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -874,19 +995,19 @@ class _HomeScreenState extends State<HomeScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const <Widget>[
-                              Text("Ruta: ",
+                              Text("Ruta N°: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF781f1e),
                                     fontWeight: FontWeight.bold,
                                   )),
-                              Text("Parada: ",
+                              Text("Parada N°: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF781f1e),
                                     fontWeight: FontWeight.bold,
                                   )),
-                              Text("Envío: ",
+                              Text("Remito N°: ",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF781f1e),
@@ -1032,6 +1153,7 @@ class _HomeScreenState extends State<HomeScreen>
                 )));
     if (result == 'yes' || result != 'yes') {
       setState(() {
+        _textComponent = "";
         _showLoader = true;
       });
       await _actualizaParadasEnvios();
@@ -1676,6 +1798,7 @@ class _HomeScreenState extends State<HomeScreen>
 
     if (connectivityResult != ConnectivityResult.none) {
       setState(() {
+        _textComponent = "";
         _showLoader = true;
       });
 
@@ -1713,12 +1836,10 @@ class _HomeScreenState extends State<HomeScreen>
       }
     }
 
-    _paradaGrabada = false;
+    String fec = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String hora = DateFormat('HH:mm').format(DateTime.now());
 
-    do {
-      String fec = DateFormat('yyyy-MM-dd').format(DateTime.now());
-      String hora = DateFormat('HH:mm').format(DateTime.now());
-
+    if (paradaenvio.enviadoparada == 0) {
       Map<String, dynamic> requestParada = {
         'idParada': paradaSelected.idParada,
         'idRuta': paradaSelected.idRuta,
@@ -1747,10 +1868,17 @@ class _HomeScreenState extends State<HomeScreen>
           '/api/Paradas/', paradaSelected.idParada.toString(), requestParada);
 
       if (response.isSuccess) {
-        _paradaGrabada = true;
+        Response response2 = await ApiHelper.getParadaByIDParada(
+            paradaSelected.idParada.toString());
+        if (response2.isSuccess) {
+          //CHEQUEAR SI ESTADO GUARDADO ES IGUAL A ESTADO EN EL CELULAR
+          paradaSaved = response2.result;
+          if (paradaSaved.estado == paradaenvio.estado) {
+            _ponerEnviadoParada1(paradaenvio);
+          }
+        }
       }
-    } while (_paradaGrabada == false);
-
+    }
     await _putEnvio(paradaenvio);
   }
 
@@ -1763,9 +1891,22 @@ class _HomeScreenState extends State<HomeScreen>
       }
     }
 
-    _envioGrabado = false;
+    double lat = 0.0;
+    double long = 0.0;
 
-    do {
+    if (paradaenvio.estado == 4 ||
+        paradaenvio.estado == 7 ||
+        paradaenvio.estado == 10) {
+      await _getPosition();
+      lat = _positionUser.latitude.toString().isNotEmpty
+          ? _positionUser.latitude
+          : 0;
+      long = _positionUser.longitude.toString().isNotEmpty
+          ? _positionUser.longitude
+          : 0;
+    }
+
+    if (paradaenvio.enviadoenvio == 0) {
       Map<String, dynamic> requestEnvio = {
         'idEnvio': envioSelected.idEnvio,
         'idproveedor': envioSelected.idproveedor,
@@ -1841,16 +1982,26 @@ class _HomeScreenState extends State<HomeScreen>
         'avonTravelRoute': envioSelected.avonTravelRoute,
         'avonSecuenceRoute': envioSelected.avonSecuenceRoute,
         'avonInformarInclusion': envioSelected.avonInformarInclusion,
-        'imageArray': paradaenvio.imageArray
+        'imageArray': paradaenvio.imageArray,
+        'latitud2': lat,
+        'longitud2': long,
       };
 
       Response response = await ApiHelper.put(
           '/api/Envios/', envioSelected.idEnvio.toString(), requestEnvio);
-      if (response.isSuccess) {
-        _envioGrabado = true;
-      }
-    } while (_envioGrabado == false);
 
+      if (response.isSuccess) {
+        Response response2 =
+            await ApiHelper.getEnvioByIdEnvio(envioSelected.idEnvio.toString());
+        if (response2.isSuccess) {
+          //CHEQUEAR SI ESTADO GUARDADO ES IGUAL A ESTADO EN EL CELULAR
+          envioSaved = response2.result;
+          if (envioSaved.estado == paradaenvio.estado) {
+            _ponerEnviadoEnvio1(paradaenvio);
+          }
+        }
+      }
+    }
     await _postSeguimiento(paradaenvio);
   }
 
@@ -1858,14 +2009,13 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
-    _seguimientoGrabado = false;
 
-    do {
-      Response response2 = await ApiHelper.getNroRegistroMax();
-      if (response2.isSuccess) {
-        _nroReg = int.parse(response2.result.toString()) + 1;
-      }
+    Response response2 = await ApiHelper.getNroRegistroMax();
+    if (response2.isSuccess) {
+      _nroReg = int.parse(response2.result.toString()) + 1;
+    }
 
+    if (paradaenvio.enviadoseguimiento == 0) {
       Map<String, dynamic> requestSeguimiento = {
         'id': _nroReg,
         'idenvio': paradaenvio.idEnvio,
@@ -1885,58 +2035,62 @@ class _HomeScreenState extends State<HomeScreen>
       );
 
       if (response.isSuccess) {
-        _seguimientoGrabado = true;
+        Response response2 = await ApiHelper.getUltimoSeguimientoByIdEnvio(
+            paradaenvio.idEnvio.toString());
+        if (response2.isSuccess) {
+          //CHEQUEAR SI FECHA GUARDADA ES IGUAL A FECHA EN EL CELULAR
+          seguimientoSaved = response2.result;
+          if (seguimientoSaved.fecha == fec) {
+            _ponerEnviadoSeguimiento1(paradaenvio);
+          }
+        }
       }
-    } while (_seguimientoGrabado == false);
+    }
 
-    await _ponerEnviado1(paradaenvio);
+    if (paradaenvio.enviadoparada == 1 &&
+        paradaenvio.enviadoenvio == 1 &&
+        paradaenvio.enviadoseguimiento == 1) {
+      await _ponerEnviado1(paradaenvio);
+      setState(() {});
+    }
   }
 
   //-------------------------------------------------------------------------
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
-    _puso1 = false;
-    do {
-      ParadaEnvio paradaenvionueva = ParadaEnvio(
-          idParada: paradaenvio.idParada,
-          idRuta: paradaenvio.idRuta,
-          idEnvio: paradaenvio.idEnvio,
-          secuencia: paradaenvio.secuencia,
-          leyenda: paradaenvio.leyenda,
-          latitud: paradaenvio.latitud,
-          longitud: paradaenvio.longitud,
-          idproveedor: paradaenvio.idproveedor,
-          estado: paradaenvio.estado,
-          ordenid: paradaenvio.ordenid,
-          titular: paradaenvio.titular,
-          dni: paradaenvio.dni,
-          domicilio: paradaenvio.domicilio,
-          cp: paradaenvio.cp,
-          entreCalles: paradaenvio.entreCalles,
-          telefonos: paradaenvio.telefonos,
-          localidad: paradaenvio.localidad,
-          bultos: paradaenvio.bultos,
-          proveedor: paradaenvio.proveedor,
-          motivo: paradaenvio.motivo,
-          motivodesc: paradaenvio.motivodesc,
-          notas: paradaenvio.notas,
-          enviado: 1,
-          fecha: paradaenvio.fecha,
-          imageArray: paradaenvio.imageArray,
-          observaciones: paradaenvio.observaciones,
-          enviadoparada: paradaenvio.enviadoparada,
-          enviadoenvio: paradaenvio.enviadoenvio,
-          enviadoseguimiento: paradaenvio.enviadoseguimiento);
+    ParadaEnvio paradaenvionueva = ParadaEnvio(
+        idParada: paradaenvio.idParada,
+        idRuta: paradaenvio.idRuta,
+        idEnvio: paradaenvio.idEnvio,
+        secuencia: paradaenvio.secuencia,
+        leyenda: paradaenvio.leyenda,
+        latitud: paradaenvio.latitud,
+        longitud: paradaenvio.longitud,
+        idproveedor: paradaenvio.idproveedor,
+        estado: paradaenvio.estado,
+        ordenid: paradaenvio.ordenid,
+        titular: paradaenvio.titular,
+        dni: paradaenvio.dni,
+        domicilio: paradaenvio.domicilio,
+        cp: paradaenvio.cp,
+        entreCalles: paradaenvio.entreCalles,
+        telefonos: paradaenvio.telefonos,
+        localidad: paradaenvio.localidad,
+        bultos: paradaenvio.bultos,
+        proveedor: paradaenvio.proveedor,
+        motivo: paradaenvio.motivo,
+        motivodesc: paradaenvio.motivodesc,
+        notas: paradaenvio.notas,
+        enviado: 1,
+        fecha: paradaenvio.fecha,
+        imageArray: paradaenvio.imageArray,
+        observaciones: paradaenvio.observaciones,
+        enviadoparada: paradaenvio.enviadoparada,
+        enviadoenvio: paradaenvio.enviadoenvio,
+        enviadoseguimiento: paradaenvio.enviadoseguimiento);
 
-      await DBParadasEnvios.update(paradaenvionueva);
-      _paradasenviosdb = await DBParadasEnvios.paradasenvios();
-      for (var element in _paradasenviosdb) {
-        if (element.idParada == paradaenvionueva.idParada &&
-            element.enviado == 1) {
-          _puso1 = true;
-        }
-      }
-    } while (_puso1 == false);
+    await DBParadasEnvios.update(paradaenvionueva);
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
   }
 
   _actualizaRutas() async {
@@ -1999,5 +2153,237 @@ class _HomeScreenState extends State<HomeScreen>
       DBRutasCab.update(rutaCabAux);
     }
     _rutas = await DBRutasCab.rutas();
+  }
+
+  //-------------------------------------------------------------------------
+
+  Future<void> _ponerEnviadoParada1(ParadaEnvio paradaenvio) async {
+    ParadaEnvio paradaenvionueva = ParadaEnvio(
+        idParada: paradaenvio.idParada,
+        idRuta: paradaenvio.idRuta,
+        idEnvio: paradaenvio.idEnvio,
+        secuencia: paradaenvio.secuencia,
+        leyenda: paradaenvio.leyenda,
+        latitud: paradaenvio.latitud,
+        longitud: paradaenvio.longitud,
+        idproveedor: paradaenvio.idproveedor,
+        estado: paradaenvio.estado,
+        ordenid: paradaenvio.ordenid,
+        titular: paradaenvio.titular,
+        dni: paradaenvio.dni,
+        domicilio: paradaenvio.domicilio,
+        cp: paradaenvio.cp,
+        entreCalles: paradaenvio.entreCalles,
+        telefonos: paradaenvio.telefonos,
+        localidad: paradaenvio.localidad,
+        bultos: paradaenvio.bultos,
+        proveedor: paradaenvio.proveedor,
+        motivo: paradaenvio.motivo,
+        motivodesc: paradaenvio.motivodesc,
+        notas: paradaenvio.notas,
+        enviado: paradaenvio.enviado,
+        fecha: paradaenvio.fecha,
+        imageArray: paradaenvio.imageArray,
+        observaciones: paradaenvio.observaciones,
+        enviadoparada: 1,
+        enviadoenvio: paradaenvio.enviadoenvio,
+        enviadoseguimiento: paradaenvio.enviadoseguimiento);
+
+    await DBParadasEnvios.update(paradaenvionueva);
+    paradaenvio.enviadoparada = 1;
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+    for (var element in _paradasenviosdb) {
+      if (element.idParada == paradaenvionueva.idParada &&
+          element.enviadoparada == 1) {}
+    }
+  }
+
+  //-------------------------------------------------------------------------
+
+  Future<void> _ponerEnviadoEnvio1(ParadaEnvio paradaenvio) async {
+    ParadaEnvio paradaenvionueva = ParadaEnvio(
+        idParada: paradaenvio.idParada,
+        idRuta: paradaenvio.idRuta,
+        idEnvio: paradaenvio.idEnvio,
+        secuencia: paradaenvio.secuencia,
+        leyenda: paradaenvio.leyenda,
+        latitud: paradaenvio.latitud,
+        longitud: paradaenvio.longitud,
+        idproveedor: paradaenvio.idproveedor,
+        estado: paradaenvio.estado,
+        ordenid: paradaenvio.ordenid,
+        titular: paradaenvio.titular,
+        dni: paradaenvio.dni,
+        domicilio: paradaenvio.domicilio,
+        cp: paradaenvio.cp,
+        entreCalles: paradaenvio.entreCalles,
+        telefonos: paradaenvio.telefonos,
+        localidad: paradaenvio.localidad,
+        bultos: paradaenvio.bultos,
+        proveedor: paradaenvio.proveedor,
+        motivo: paradaenvio.motivo,
+        motivodesc: paradaenvio.motivodesc,
+        notas: paradaenvio.notas,
+        enviado: paradaenvio.enviado,
+        fecha: paradaenvio.fecha,
+        imageArray: paradaenvio.imageArray,
+        observaciones: paradaenvio.observaciones,
+        enviadoparada: paradaenvio.enviadoparada,
+        enviadoenvio: 1,
+        enviadoseguimiento: paradaenvio.enviadoseguimiento);
+
+    await DBParadasEnvios.update(paradaenvionueva);
+    paradaenvio.enviadoenvio = 1;
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+    for (var element in _paradasenviosdb) {
+      if (element.idParada == paradaenvionueva.idParada &&
+          element.enviadoenvio == 1) {}
+    }
+  }
+
+//-------------------------------------------------------------------------
+  Future<void> _ponerEnviadoSeguimiento1(ParadaEnvio paradaenvio) async {
+    ParadaEnvio paradaenvionueva = ParadaEnvio(
+        idParada: paradaenvio.idParada,
+        idRuta: paradaenvio.idRuta,
+        idEnvio: paradaenvio.idEnvio,
+        secuencia: paradaenvio.secuencia,
+        leyenda: paradaenvio.leyenda,
+        latitud: paradaenvio.latitud,
+        longitud: paradaenvio.longitud,
+        idproveedor: paradaenvio.idproveedor,
+        estado: paradaenvio.estado,
+        ordenid: paradaenvio.ordenid,
+        titular: paradaenvio.titular,
+        dni: paradaenvio.dni,
+        domicilio: paradaenvio.domicilio,
+        cp: paradaenvio.cp,
+        entreCalles: paradaenvio.entreCalles,
+        telefonos: paradaenvio.telefonos,
+        localidad: paradaenvio.localidad,
+        bultos: paradaenvio.bultos,
+        proveedor: paradaenvio.proveedor,
+        motivo: paradaenvio.motivo,
+        motivodesc: paradaenvio.motivodesc,
+        notas: paradaenvio.notas,
+        enviado: paradaenvio.enviado,
+        fecha: paradaenvio.fecha,
+        imageArray: paradaenvio.imageArray,
+        observaciones: paradaenvio.observaciones,
+        enviadoparada: paradaenvio.enviadoparada,
+        enviadoenvio: paradaenvio.enviadoenvio,
+        enviadoseguimiento: 1);
+
+    await DBParadasEnvios.update(paradaenvionueva);
+    paradaenvio.enviadoseguimiento = 1;
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+    for (var element in _paradasenviosdb) {
+      if (element.idParada == paradaenvionueva.idParada &&
+          element.enviadoseguimiento == 1) {}
+    }
+  }
+
+//-----------------------------------------------------------------------
+//-------------------------- _showEnviosCount ---------------------------
+//-----------------------------------------------------------------------
+  Widget _showEnviosCount() {
+    int sincronizados = 0;
+    int nosincronizados = 0;
+    for (var paradaenvio in _paradasenviosdb) {
+      if (paradaenvio.enviado == 1) {
+        sincronizados = sincronizados + 1;
+      }
+    }
+    nosincronizados = _paradasenviosdb.length - sincronizados;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0),
+      child: Card(
+          color: Colors.white,
+          margin: EdgeInsets.all(1),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Container(
+              margin: EdgeInsets.all(1),
+              padding: EdgeInsets.all(0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 110,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Sincronizados:',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 25,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  sincronizados.toString(),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 125,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'No sincronizados:',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 45,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  nosincronizados.toString(),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )),
+                ],
+              ),
+            ),
+          )),
+    );
   }
 }

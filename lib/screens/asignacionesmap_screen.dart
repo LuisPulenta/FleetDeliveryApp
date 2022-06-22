@@ -90,7 +90,7 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
                     onTap: (position) {
                       widget.customInfoWindowController.hideInfoWindow!();
                     },
-                    myLocationEnabled: false,
+                    myLocationEnabled: true,
                     initialCameraPosition: _initialPosition,
                     onCameraMove: _onCameraMove,
                     markers: _markers,

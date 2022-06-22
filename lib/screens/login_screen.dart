@@ -32,6 +32,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _rememberme = true;
 
+  Modulo _modulo = Modulo(
+      idModulo: 0,
+      nombre: '',
+      nroVersion: '',
+      link: '',
+      fechaRelease: '',
+      actualizOblig: 0);
+
   String _imeiNo = "";
 
   Usuario _usuarioLogueado = Usuario(
@@ -138,9 +146,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Center(
               child: SingleChildScrollView(
                 child: Card(
-                  color: const Color(
-                    (0xffb3b3b4),
-                  ),
+                  color: Colors.grey,
+
+                  //  const Color(
+                  //   (0xffb3b3b4),
+                  // ),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   elevation: 15,
@@ -291,6 +301,41 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ],
           ),
+          _modulo.nroVersion != '' && _modulo.nroVersion != Constants.version
+              ? const SizedBox(
+                  height: 20,
+                )
+              : Container(),
+          _modulo.nroVersion != '' && _modulo.nroVersion != Constants.version
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Expanded(
+                      child: TextButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text('   Nueva versión disponible   ',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.grey,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onPressed: () => _launchURL2(),
+                      ),
+                    ),
+                  ],
+                )
+              : Container(),
         ],
       ),
     );
@@ -456,14 +501,18 @@ class _LoginScreenState extends State<LoginScreen> {
 //*********************** METODO GETUSUARIOS **********************************
 //*****************************************************************************
   Future<void> _getUsuarios() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult != ConnectivityResult.none) {
+      Response response2 = await ApiHelper.getModulo("4");
+      _modulo = response2.result;
+    }
+
     if ((_ultimaactualizacion == "null") ||
         (DateTime.parse(_ultimaactualizacion)
             .isBefore(DateTime.now().add(const Duration(days: -5))))) {
       setState(() {
         _showLoader = true;
       });
-
-      var connectivityResult = await Connectivity().checkConnectivity();
 
       if (connectivityResult != ConnectivityResult.none) {
         _usuariosConseguidos = false;
@@ -557,6 +606,13 @@ class _LoginScreenState extends State<LoginScreen> {
   void _launchURL() async {
     if (!await launch('http://www.fleetsa.com.ar:99/LoginForm')) {
       throw 'No se puede conectar a la Web de Fleet';
+    }
+  }
+
+  void _launchURL2() async {
+    if (!await launch(
+        'https://play.google.com/store/apps/details?id=com.luisnu.fleetdeliveryapp')) {
+      throw 'No se puede conectar a la tienda';
     }
   }
 

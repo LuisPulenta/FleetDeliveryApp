@@ -48,9 +48,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       CustomInfoWindowController();
 
   bool _showLoader = false;
-  bool _paradaGrabada = false;
-  bool _envioGrabado = false;
-  bool _seguimientoGrabado = false;
   bool _puso1 = false;
   bool _renovoState = false;
 
@@ -153,6 +150,29 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       idLiquidacionFletero: 0,
       turno: '');
 
+  Parada paradaSaved = Parada(
+      idParada: 0,
+      idRuta: 0,
+      idEnvio: 0,
+      tag: 0,
+      secuencia: 0,
+      leyenda: '',
+      latitud: 0,
+      longitud: 0,
+      iconoPropio: '',
+      iDmapa: '',
+      distancia: 0,
+      tiempo: 0,
+      estado: 0,
+      fecha: '',
+      hora: '',
+      idMotivo: 0,
+      notaChofer: '',
+      nuevoOrden: 0,
+      idCabCertificacion: 0,
+      idLiquidacionFletero: 0,
+      turno: '');
+
   Envio envioSelected = Envio(
       idEnvio: 0,
       idproveedor: 0,
@@ -231,6 +251,96 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       latitud2: 0,
       longitud2: 0);
 
+  Envio envioSaved = Envio(
+      idEnvio: 0,
+      idproveedor: 0,
+      agencianr: 0,
+      estado: 0,
+      envia: '',
+      ruta: '',
+      ordenid: '',
+      fecha: 0,
+      hora: '',
+      imei: '',
+      transporte: '',
+      contrato: '',
+      titular: '',
+      dni: '',
+      domicilio: '',
+      cp: '',
+      latitud: 0,
+      longitud: 0,
+      autorizado: '',
+      observaciones: '',
+      idCabCertificacion: 0,
+      idRemitoProveedor: 0,
+      idSubconUsrWeb: 0,
+      fechaAlta: '',
+      fechaEnvio: '',
+      fechaDistribucion: '',
+      entreCalles: '',
+      mail: '',
+      telefonos: '',
+      localidad: '',
+      tag: 0,
+      provincia: '',
+      fechaEntregaCliente: '',
+      scaneadoIn: '',
+      scaneadoOut: '',
+      ingresoDeposito: 0,
+      salidaDistribucion: 0,
+      idRuta: 0,
+      nroSecuencia: 0,
+      fechaHoraOptimoCamino: '',
+      bultos: 0,
+      peso: '',
+      alto: '',
+      ancho: '',
+      largo: '',
+      idComprobante: 0,
+      enviarMailSegunEstado: '',
+      fechaRuta: '',
+      ordenIDparaOC: '',
+      hashUnico: '',
+      bultosPikeados: 0,
+      centroDistribucion: '',
+      fechaUltimaActualizacion: '',
+      volumen: '',
+      avonZoneNumber: 0,
+      avonSectorNumber: 0,
+      avonAccountNumber: '',
+      avonCampaignNumber: 0,
+      avonCampaignYear: 0,
+      domicilioCorregido: '',
+      domicilioCorregidoUsando: 0,
+      urlFirma: '',
+      urlDNI: '',
+      ultimoIdMotivo: 0,
+      ultimaNotaFletero: '',
+      idComprobanteDevolucion: 0,
+      turno: '',
+      barrioEntrega: '',
+      partidoEntrega: '',
+      avonDayRoute: 0,
+      avonTravelRoute: 0,
+      avonSecuenceRoute: 0,
+      avonInformarInclusion: 0,
+      urlDNIFullPath: '',
+      latitud2: 0,
+      longitud2: 0);
+
+  Seguimiento seguimientoSaved = Seguimiento(
+      id: 0,
+      idenvio: 0,
+      idetapa: 0,
+      estado: 0,
+      idusuario: 0,
+      fecha: 0,
+      hora: '',
+      observaciones: '',
+      motivo: '',
+      notachofer: '');
+
   List<ParadaEnvio> _paradasenvios = [];
   List<ParadaEnvio> _paradasenviosdb = [];
 
@@ -260,9 +370,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         centerTitle: true,
       ),
       body: Center(
-        child: _showLoader
-            ? const LoaderComponent(text: 'Por favor espere...')
-            : _getContent(),
+        child: _showLoader ? const LoaderComponent(text: '') : _getContent(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navegartodos(),
@@ -905,12 +1013,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       }
     }
 
-    _paradaGrabada = false;
+    String fec = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String hora = DateFormat('HH:mm').format(DateTime.now());
 
-    do {
-      String fec = DateFormat('yyyy-MM-dd').format(DateTime.now());
-      String hora = DateFormat('HH:mm').format(DateTime.now());
-
+    if (paradaenvio.enviadoparada == 0) {
       Map<String, dynamic> requestParada = {
         'idParada': paradaSelected.idParada,
         'idRuta': paradaSelected.idRuta,
@@ -939,10 +1045,17 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           '/api/Paradas/', paradaSelected.idParada.toString(), requestParada);
 
       if (response.isSuccess) {
-        _paradaGrabada = true;
+        Response response2 = await ApiHelper.getParadaByIDParada(
+            paradaSelected.idParada.toString());
+        if (response2.isSuccess) {
+          //CHEQUEAR SI ESTADO GUARDADO ES IGUAL A ESTADO EN EL CELULAR
+          paradaSaved = response2.result;
+          if (paradaSaved.estado == paradaenvio.estado) {
+            await _ponerEnviadoParada1(paradaenvio);
+          }
+        }
       }
-    } while (_paradaGrabada == false);
-
+    }
     await _putEnvio(paradaenvio);
   }
 
@@ -958,8 +1071,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     double lat = 0.0;
     double long = 0.0;
 
-    _envioGrabado = false;
-
     if (paradaenvio.estado == 4 ||
         paradaenvio.estado == 7 ||
         paradaenvio.estado == 10) {
@@ -972,7 +1083,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           : 0;
     }
 
-    do {
+    if (paradaenvio.enviadoenvio == 0) {
       Map<String, dynamic> requestEnvio = {
         'idEnvio': envioSelected.idEnvio,
         'idproveedor': envioSelected.idproveedor,
@@ -1056,10 +1167,17 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       Response response = await ApiHelper.put(
           '/api/Envios/', envioSelected.idEnvio.toString(), requestEnvio);
       if (response.isSuccess) {
-        _envioGrabado = true;
+        Response response2 =
+            await ApiHelper.getEnvioByIdEnvio(envioSelected.idEnvio.toString());
+        if (response2.isSuccess) {
+          //CHEQUEAR SI ESTADO GUARDADO ES IGUAL A ESTADO EN EL CELULAR
+          envioSaved = response2.result;
+          if (envioSaved.estado == paradaenvio.estado) {
+            await _ponerEnviadoEnvio1(paradaenvio);
+          }
+        }
       }
-    } while (_envioGrabado == false);
-
+    }
     await _postSeguimiento(paradaenvio);
   }
 
@@ -1067,14 +1185,13 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
-    _seguimientoGrabado = false;
 
-    do {
-      Response response2 = await ApiHelper.getNroRegistroMax();
-      if (response2.isSuccess) {
-        _nroReg = int.parse(response2.result.toString()) + 1;
-      }
+    Response response2 = await ApiHelper.getNroRegistroMax();
+    if (response2.isSuccess) {
+      _nroReg = int.parse(response2.result.toString()) + 1;
+    }
 
+    if (paradaenvio.enviadoseguimiento == 0) {
       Map<String, dynamic> requestSeguimiento = {
         'id': _nroReg,
         'idenvio': paradaenvio.idEnvio,
@@ -1094,11 +1211,24 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       );
 
       if (response.isSuccess) {
-        _seguimientoGrabado = true;
+        Response response2 = await ApiHelper.getUltimoSeguimientoByIdEnvio(
+            paradaenvio.idEnvio.toString());
+        if (response2.isSuccess) {
+          //CHEQUEAR SI FECHA GUARDADA ES IGUAL A FECHA EN EL CELULAR
+          seguimientoSaved = response2.result;
+          if (seguimientoSaved.fecha == fec) {
+            await _ponerEnviadoSeguimiento1(paradaenvio);
+          }
+        }
       }
-    } while (_seguimientoGrabado == false);
+    }
 
-    await _ponerEnviado1(paradaenvio);
+    if (paradaenvio.enviadoparada == 1 &&
+        paradaenvio.enviadoenvio == 1 &&
+        paradaenvio.enviadoseguimiento == 1) {
+      await _ponerEnviado1(paradaenvio);
+      setState(() {});
+    }
   }
 
   //-------------------------------------------------------------------------
@@ -1272,5 +1402,133 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
     _positionUser = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
+  }
+
+  //-------------------------------------------------------------------------
+
+  Future<void> _ponerEnviadoParada1(ParadaEnvio paradaenvio) async {
+    ParadaEnvio paradaenvionueva = ParadaEnvio(
+        idParada: paradaenvio.idParada,
+        idRuta: paradaenvio.idRuta,
+        idEnvio: paradaenvio.idEnvio,
+        secuencia: paradaenvio.secuencia,
+        leyenda: paradaenvio.leyenda,
+        latitud: paradaenvio.latitud,
+        longitud: paradaenvio.longitud,
+        idproveedor: paradaenvio.idproveedor,
+        estado: paradaenvio.estado,
+        ordenid: paradaenvio.ordenid,
+        titular: paradaenvio.titular,
+        dni: paradaenvio.dni,
+        domicilio: paradaenvio.domicilio,
+        cp: paradaenvio.cp,
+        entreCalles: paradaenvio.entreCalles,
+        telefonos: paradaenvio.telefonos,
+        localidad: paradaenvio.localidad,
+        bultos: paradaenvio.bultos,
+        proveedor: paradaenvio.proveedor,
+        motivo: paradaenvio.motivo,
+        motivodesc: paradaenvio.motivodesc,
+        notas: paradaenvio.notas,
+        enviado: paradaenvio.enviado,
+        fecha: paradaenvio.fecha,
+        imageArray: paradaenvio.imageArray,
+        observaciones: paradaenvio.observaciones,
+        enviadoparada: 1,
+        enviadoenvio: paradaenvio.enviadoenvio,
+        enviadoseguimiento: paradaenvio.enviadoseguimiento);
+
+    await DBParadasEnvios.update(paradaenvionueva);
+    paradaenvio.enviadoparada = 1;
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+    for (var element in _paradasenviosdb) {
+      if (element.idParada == paradaenvionueva.idParada &&
+          element.enviadoparada == 1) {}
+    }
+  }
+
+  //-------------------------------------------------------------------------
+
+  Future<void> _ponerEnviadoEnvio1(ParadaEnvio paradaenvio) async {
+    ParadaEnvio paradaenvionueva = ParadaEnvio(
+        idParada: paradaenvio.idParada,
+        idRuta: paradaenvio.idRuta,
+        idEnvio: paradaenvio.idEnvio,
+        secuencia: paradaenvio.secuencia,
+        leyenda: paradaenvio.leyenda,
+        latitud: paradaenvio.latitud,
+        longitud: paradaenvio.longitud,
+        idproveedor: paradaenvio.idproveedor,
+        estado: paradaenvio.estado,
+        ordenid: paradaenvio.ordenid,
+        titular: paradaenvio.titular,
+        dni: paradaenvio.dni,
+        domicilio: paradaenvio.domicilio,
+        cp: paradaenvio.cp,
+        entreCalles: paradaenvio.entreCalles,
+        telefonos: paradaenvio.telefonos,
+        localidad: paradaenvio.localidad,
+        bultos: paradaenvio.bultos,
+        proveedor: paradaenvio.proveedor,
+        motivo: paradaenvio.motivo,
+        motivodesc: paradaenvio.motivodesc,
+        notas: paradaenvio.notas,
+        enviado: paradaenvio.enviado,
+        fecha: paradaenvio.fecha,
+        imageArray: paradaenvio.imageArray,
+        observaciones: paradaenvio.observaciones,
+        enviadoparada: paradaenvio.enviadoparada,
+        enviadoenvio: 1,
+        enviadoseguimiento: paradaenvio.enviadoseguimiento);
+
+    await DBParadasEnvios.update(paradaenvionueva);
+    paradaenvio.enviadoenvio = 1;
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+    for (var element in _paradasenviosdb) {
+      if (element.idParada == paradaenvionueva.idParada &&
+          element.enviadoenvio == 1) {}
+    }
+  }
+
+//-------------------------------------------------------------------------
+  Future<void> _ponerEnviadoSeguimiento1(ParadaEnvio paradaenvio) async {
+    ParadaEnvio paradaenvionueva = ParadaEnvio(
+        idParada: paradaenvio.idParada,
+        idRuta: paradaenvio.idRuta,
+        idEnvio: paradaenvio.idEnvio,
+        secuencia: paradaenvio.secuencia,
+        leyenda: paradaenvio.leyenda,
+        latitud: paradaenvio.latitud,
+        longitud: paradaenvio.longitud,
+        idproveedor: paradaenvio.idproveedor,
+        estado: paradaenvio.estado,
+        ordenid: paradaenvio.ordenid,
+        titular: paradaenvio.titular,
+        dni: paradaenvio.dni,
+        domicilio: paradaenvio.domicilio,
+        cp: paradaenvio.cp,
+        entreCalles: paradaenvio.entreCalles,
+        telefonos: paradaenvio.telefonos,
+        localidad: paradaenvio.localidad,
+        bultos: paradaenvio.bultos,
+        proveedor: paradaenvio.proveedor,
+        motivo: paradaenvio.motivo,
+        motivodesc: paradaenvio.motivodesc,
+        notas: paradaenvio.notas,
+        enviado: paradaenvio.enviado,
+        fecha: paradaenvio.fecha,
+        imageArray: paradaenvio.imageArray,
+        observaciones: paradaenvio.observaciones,
+        enviadoparada: paradaenvio.enviadoparada,
+        enviadoenvio: paradaenvio.enviadoenvio,
+        enviadoseguimiento: 1);
+
+    await DBParadasEnvios.update(paradaenvionueva);
+    paradaenvio.enviadoseguimiento = 1;
+    _paradasenviosdb = await DBParadasEnvios.paradasenvios();
+    for (var element in _paradasenviosdb) {
+      if (element.idParada == paradaenvionueva.idParada &&
+          element.enviadoseguimiento == 1) {}
+    }
   }
 }

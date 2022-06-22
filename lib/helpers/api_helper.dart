@@ -427,4 +427,87 @@ class ApiHelper {
     var decodedJson = jsonDecode(body);
     return Response(isSuccess: true, result: decodedJson);
   }
+
+//---------------------------------------------------------------------------
+  static Future<Response> getParadaByIDParada(String codigo) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/Paradas/GetParadaByIDParada/$codigo');
+    var response = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    var decodedJson = jsonDecode(body);
+    return Response(isSuccess: true, result: Parada.fromJson(decodedJson));
+  }
+
+  //---------------------------------------------------------------------------
+  static Future<Response> getEnvioByIdEnvio(String codigo) async {
+    var url =
+        Uri.parse('${Constants.apiUrl}/api/Envios/GetEnvioByIdEnvio/$codigo');
+    var response = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    var decodedJson = jsonDecode(body);
+    return Response(isSuccess: true, result: Envio.fromJson(decodedJson));
+  }
+
+  //---------------------------------------------------------------------------
+  static Future<Response> getUltimoSeguimientoByIdEnvio(String codigo) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/Seguimientos/GetUltimoSeguimientoByIdEnvio/$codigo');
+    var response = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    var decodedJson = jsonDecode(body);
+    return Response(isSuccess: true, result: Seguimiento.fromJson(decodedJson));
+  }
+
+  //---------------------------------------------------------------------------
+  static Future<Response> getModulo(String codigo) async {
+    var url = Uri.parse('${Constants.apiUrl}/api/Modulos/$codigo');
+    var response = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    var decodedJson = jsonDecode(body);
+    return Response(isSuccess: true, result: Modulo.fromJson(decodedJson));
+  }
 }

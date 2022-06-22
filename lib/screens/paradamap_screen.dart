@@ -95,7 +95,7 @@ class _ParadaMapScreenState extends State<ParadaMapScreen> {
                     onTap: (position) {
                       widget.customInfoWindowController.hideInfoWindow!();
                     },
-                    myLocationEnabled: false,
+                    myLocationEnabled: true,
                     initialCameraPosition: _initialPosition,
                     onCameraMove: _onCameraMove,
                     markers: _markers,
