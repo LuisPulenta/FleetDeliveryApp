@@ -1,7 +1,9 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/models/asignacion2.dart';
 import 'package:fleetdeliveryapp/models/controlesequivalencia.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/models/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -459,6 +461,21 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
+      Map<String, dynamic> request = {
+        'idasignacionextra': 0,
+        'idgaos': widget.idgaos,
+        'fechacarga': DateTime.now().toString(),
+        'nrocliente': widget.asignacion.cliente,
+        'idtecnico': widget.user.idUser,
+        'coddeco1': _coddeco1OtroRecupero,
+        'nroserieextra': _nroserieextraOtroRecupero,
+        'proyectomodulo': widget.asignacion.proyectomodulo,
+      };
+
+      Response response = await ApiHelper.post(
+        '/api/AsignacionesOtsEquiposExtra',
+        request,
+      );
       Navigator.pop(context);
     }
   }
