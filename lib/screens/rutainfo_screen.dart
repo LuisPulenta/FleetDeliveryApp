@@ -51,6 +51,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   bool _puso1 = false;
   bool _renovoState = false;
 
+  bool _todas = true;
+
   Position _positionUser = const Position(
       longitude: 0,
       latitude: 0,
@@ -354,6 +356,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   void initState() {
     super.initState();
     _llenarparadasenvios();
+
     setState(() {});
   }
 
@@ -368,6 +371,25 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       appBar: AppBar(
         title: Text(widget.ruta.nombre!),
         centerTitle: true,
+        actions: [
+          Row(
+            children: [
+              const Text(
+                "Todas:",
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+              Switch(
+                  value: _todas,
+                  activeColor: Colors.green,
+                  inactiveThumbColor: Colors.grey,
+                  onChanged: (value) {
+                    _todas = value;
+                    _llenarparadasenvios();
+                    setState(() {});
+                  }),
+            ],
+          ),
+        ],
       ),
       body: Center(
         child: _showLoader ? const LoaderComponent(text: '') : _getContent(),
@@ -470,9 +492,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             elevation: 10,
             margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: InkWell(
-              onTap: () {
+              onTap: () async {
                 paradaenvioSelected = e;
-                _goInfoParada(e);
+                await _goInfoParada(e);
               },
               child: Container(
                 margin: const EdgeInsets.all(0),
@@ -624,7 +646,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 //-------------------------- METODO GOINFOPARADA --------------------------
 //-------------------------------------------------------------------------
 
-  void _goInfoParada(ParadaEnvio e) async {
+  Future<void> _goInfoParada(ParadaEnvio e) async {
     var result = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -638,6 +660,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     if (result == 'yes' || result != 'yes') {
       await _llenarparadasenvios();
     }
+
+    await _llenarparadasenvios();
+    setState(() {});
   }
 
 //-------------------------------------------------------------------------
@@ -933,7 +958,13 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   Future<void> _llenarparadasenvios() async {
     _paradasenvios = [];
     for (var paradasenvio in widget.paradasenvios) {
-      _paradasenvios.add(paradasenvio);
+      if (_todas) {
+        _paradasenvios.add(paradasenvio);
+      } else {
+        if (paradasenvio.estado == 0 || paradasenvio.estado == 3) {
+          _paradasenvios.add(paradasenvio);
+        }
+      }
     }
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
 

@@ -602,9 +602,9 @@ class _HomeScreenState extends State<HomeScreen>
                               _password = '';
                               _result2 = "no";
                               await _borrarMedicionesLocales();
-                              if (_result2 == 'yes') {
-                                await _borrarMedicionesLocales();
-                              }
+                              // if (_result2 == 'yes') {
+                              //   await _borrarMedicionesLocales();
+                              // }
                               setState(() {});
                             },
                           ),
@@ -1662,11 +1662,11 @@ class _HomeScreenState extends State<HomeScreen>
                   ],
                 ),
                 content: SizedBox(
-                  height: 150,
+                  height: 170,
                   child: Column(
                     children: [
-                      const Text(
-                        "Para borrar las mediciones locales de su Usuario debe escribir su contraseña",
+                      Text(
+                        "Para borrar las paradas grabadas en forma local de este teléfono para el Usuario  ${widget.user.apellidonombre} debe escribir su contraseña",
                         style: TextStyle(fontSize: 14),
                       ),
                       const Text(""),
@@ -1718,7 +1718,7 @@ class _HomeScreenState extends State<HomeScreen>
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_password.toLowerCase() !=
                           widget.user.usrcontrasena.toLowerCase()) {
                         _passwordShowError = true;
@@ -1729,6 +1729,15 @@ class _HomeScreenState extends State<HomeScreen>
                           DBParadasEnvios.delete(element);
                         }
                         _paradasenviosdb = [];
+                        await showAlertDialog(
+                            context: context,
+                            title: 'Aviso',
+                            message:
+                                'Las paradas grabadas en forma local en este teléfono para el Usuario  ${widget.user.apellidonombre} han sido eliminadas',
+                            actions: <AlertDialogAction>[
+                              const AlertDialogAction(
+                                  key: null, label: 'Aceptar'),
+                            ]);
                         setState(() {});
                         _result2 = "yes";
                         Navigator.pop(context, 'yes');
