@@ -1110,7 +1110,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           Row(
                             children: [
                               const SizedBox(
-                                width: 100,
+                                width: 90,
                                 child: Text("Id Gaos: ",
                                     style: TextStyle(
                                       fontSize: 12,
@@ -1146,7 +1146,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           Row(
                             children: [
                               const SizedBox(
-                                width: 100,
+                                width: 90,
                                 child: Text("Equipo: ",
                                     style: TextStyle(
                                       fontSize: 12,
@@ -1165,10 +1165,80 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                             ],
                           ),
+                          e.smartcard.toString().length > 0
+                              ? Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 90,
+                                      child: Text("Smartcard: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                    Expanded(
+                                      child: Text(e.smartcard.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    ),
+                                    const SizedBox(
+                                      width: 70,
+                                      child: Text("      Dev. : SI",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                    Checkbox(
+                                        value: e.elegirSI == 1 ? true : false,
+                                        onChanged: (value) {
+                                          for (Asign asign in _asigns) {
+                                            if (asign.autonumerico ==
+                                                e.autonumerico) {
+                                              asign.elegirSI =
+                                                  value == true ? 1 : 0;
+                                              asign.elegirNO =
+                                                  asign.elegirSI == 1 ? 0 : 1;
+                                            }
+                                          }
+                                          setState(() {});
+                                        }),
+                                    const SizedBox(
+                                      width: 25,
+                                      child: Text("NO",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                    Checkbox(
+                                        value: e.elegirNO == 1 ? true : false,
+                                        onChanged: (value) {
+                                          for (Asign asign in _asigns) {
+                                            if (asign.autonumerico ==
+                                                e.autonumerico) {
+                                              asign.elegirNO =
+                                                  value == true ? 1 : 0;
+                                              asign.elegirSI =
+                                                  asign.elegirNO == 1 ? 0 : 1;
+                                            }
+                                          }
+                                          setState(() {});
+                                        }),
+                                    const SizedBox(
+                                      height: 1,
+                                    ),
+                                  ],
+                                )
+                              : Container(),
                           Row(
                             children: [
                               const SizedBox(
-                                width: 100,
+                                width: 90,
                                 child: Text("Descripción: ",
                                     style: TextStyle(
                                       fontSize: 12,
@@ -1177,10 +1247,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     )),
                               ),
                               Expanded(
-                                child: Text(e.codigoequivalencia.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: e.codigoequivalencia != null
+                                    ? Text(e.codigoequivalencia.toString(),
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                        ))
+                                    : Text(""),
                               ),
                             ],
                           ),
@@ -1210,7 +1282,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ? Row(
                                   children: [
                                     const SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       child: Text("Conf. Modelo:   ",
                                           style: TextStyle(
                                             fontSize: 12,
@@ -1262,11 +1334,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           const SizedBox(
                             height: 10,
                           ),
-                          widget.funcionApp.serieObligatoria == 1
+                          widget.funcionApp.serieObligatoria == 1 ||
+                                  (e.proyectomodulo == 'Cable' &&
+                                      e.motivos.toString().contains("VDSL"))
                               ? Row(
                                   children: [
                                     const SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       child: Text("Mac/Serie: ",
                                           style: TextStyle(
                                             fontSize: 12,
@@ -1650,6 +1724,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     Map<String, dynamic> request1 = {
       'reclamoTecnicoID': _asignacion.reclamoTecnicoID,
       'userID': _asignacion.userID,
+      'cliente': _asignacion.cliente
     };
 
     Response response = Response(isSuccess: false);
@@ -2196,7 +2271,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //---------------- Verifica que estén cargados los Mac/Serie ------------------
 
-    if (widget.funcionApp.serieObligatoria == 1) {
+    if (widget.funcionApp.serieObligatoria == 1 ||
+        (widget.asignacion.proyectomodulo == 'Cable' &&
+            widget.asignacion.motivos.toString().contains("VDSL"))) {
       for (Asign asign in _asigns) {
         bool band = false;
 
@@ -2217,6 +2294,49 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       mainAxisSize: MainAxisSize.min,
                       children: const <Widget>[
                         Text('Mac/Serie debe tener al menos 6 caracteres.'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ]),
+                  actions: <Widget>[
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Ok')),
+                  ],
+                );
+              });
+        }
+        setState(() {});
+        if (band) {
+          return;
+        }
+      }
+    }
+
+//-------- Verifica para DTV que se haya elegido SI o NO para la Smartcard ----
+
+    if (widget.asignacion.proyectomodulo == 'DTV') {
+      for (Asign asign in _asigns) {
+        bool band = false;
+
+        if ((estadogaos == 'EJB' &&
+                (asign.elegirSI == null && asign.elegirNO == null)) ||
+            (estadogaos == 'PAR' && asign.elegir == 1) &&
+                (asign.elegirSI == null && asign.elegirNO == null)) {
+          band = true;
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  title: const Text('Aviso'),
+                  content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const <Widget>[
+                        Text(
+                            'Debe seleccionar si se devuelve o no la Smartcard.'),
                         SizedBox(
                           height: 10,
                         ),
@@ -2387,6 +2507,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         'tecasig': asign.tecasig,
         'fechacaptura': asign.fechacaptura,
         'linkFoto': asign.linkFoto,
+        'elegir': asign.elegirSI == 1
+            ? 1
+            : asign.elegirNO == 1
+                ? 0
+                : null,
 
         //----------------- Campos que cambian el valor -----------------
         'estadogaos': asign.estadogaos,

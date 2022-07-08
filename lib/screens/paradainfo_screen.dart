@@ -316,14 +316,19 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                     width: 20,
                   ),
                   IconButton(
-                    icon: const Icon(
-                      Icons.phone_forwarded,
-                      color: Colors.green,
-                      size: 34,
-                    ),
-                    onPressed: () => launch(
-                        'tel://${widget.paradaenvio.telefonos.toString()}'),
-                  ),
+                      icon: const Icon(
+                        Icons.phone_forwarded,
+                        color: Colors.green,
+                        size: 34,
+                      ),
+                      onPressed: () {
+                        String tel = widget.paradaenvio.telefonos != null
+                            ? widget.paradaenvio.telefonos!.trim()
+                            : "";
+                        if (tel != "")
+                          launch(
+                              'tel://${widget.paradaenvio.telefonos.toString()}');
+                      }),
                 ],
               ),
               color: const Color(0xffdadada),
@@ -1148,6 +1153,17 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       }
     }
 
+    if (paradaSelected == null) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error 1',
+          message: "No se ha podido grabar",
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
     String base64Image = '';
     if (_photoChanged) {
       List<int> imageBytes = await _image.readAsBytes();
@@ -1186,7 +1202,19 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       enviadoseguimiento: 0,
     );
 
-    await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
+    var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
+
+    if (parEnvio == null || parEnvio == 0) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error 2',
+          message: "No se ha podido grabar",
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
     _showSnackbar();
   }
 

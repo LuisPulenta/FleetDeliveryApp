@@ -2339,7 +2339,7 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           ),
                           SizedBox(
-                            width: 25,
+                            width: 35,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [

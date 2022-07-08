@@ -76,6 +76,8 @@ class Asign {
   String? idTipoTrabajoRel = '';
   String? motivos = '';
   int? elegir = 0;
+  int? elegirSI = 0;
+  int? elegirNO = 0;
   String? fc_inicio_base = '';
   String? vc_fin_base = '';
   String? fechaCita = '';
@@ -199,6 +201,8 @@ class Asign {
       required this.idTipoTrabajoRel,
       required this.motivos,
       required this.elegir,
+      required this.elegirSI,
+      required this.elegirNO,
       required this.fc_inicio_base,
       required this.vc_fin_base,
       required this.fechaCita,
@@ -321,6 +325,8 @@ class Asign {
     idTipoTrabajoRel = json['idTipoTrabajoRel'];
     motivos = json['motivos'];
     elegir = json['elegir'];
+    elegirSI = json['elegirSI'];
+    elegirNO = json['elegirNO'];
     fc_inicio_base = json['fc_inicio_base'];
     vc_fin_base = json['vc_fin_base'];
     fechaCita = json['fechaCita'];
@@ -445,6 +451,8 @@ class Asign {
     data['idTipoTrabajoRel'] = idTipoTrabajoRel;
     data['motivos'] = motivos;
     data['elegir'] = elegir;
+    data['elegirSI'] = elegirSI;
+    data['elegirNO'] = elegirNO;
     data['fc_inicio_base'] = fc_inicio_base;
     data['vc_fin_base'] = vc_fin_base;
     data['fechaCita'] = fechaCita;
@@ -570,6 +578,8 @@ class Asign {
       'idTipoTrabajoRel': idTipoTrabajoRel,
       'motivos': motivos,
       'elegir': elegir,
+      'elegirSI': elegirSI,
+      'elegirNO': elegirNO,
       'fc_inicio_base': fc_inicio_base,
       'vc_fin_base': vc_fin_base,
       'fechaCita': fechaCita,

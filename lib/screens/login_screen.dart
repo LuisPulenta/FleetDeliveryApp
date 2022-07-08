@@ -57,15 +57,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   List<WebSesion> _webSesionsdb = [];
 
-  //String _email = '*jhollman';
-  //String _email = 'TEST';
   String _email = '';
+  String _password = '';
+
+  //String _email = '*jhollman';
+  //String _password = 'jona';
+
+  //String _email = 'TEST';
+  //String _password = '123456';
+
   String _emailError = '';
   bool _emailShowError = false;
 
-  //String _password = 'jona';
-  //String _password = '123456';
-  String _password = '';
   String _passwordError = '';
   bool _passwordShowError = false;
 
