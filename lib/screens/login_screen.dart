@@ -512,7 +512,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if ((_ultimaactualizacion == "null") ||
         (DateTime.parse(_ultimaactualizacion)
-            .isBefore(DateTime.now().add(const Duration(days: -5))))) {
+            .isBefore(DateTime.now().add(const Duration(days: -1))))) {
       setState(() {
         _showLoader = true;
       });
