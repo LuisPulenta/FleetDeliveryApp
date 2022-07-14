@@ -1027,7 +1027,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                   child: e.fechaCita == null
                                                       ? const Text("")
                                                       : Text(
-                                                          DateFormat('hh:mm')
+                                                          DateFormat('HH:mm')
                                                               .format(DateTime
                                                                   .parse(e
                                                                       .fechaCita

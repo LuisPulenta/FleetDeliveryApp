@@ -31,6 +31,17 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
   List<Asign> _asigns = [];
 
 //*****************************************************************************
+//************************** INIT STATE ***************************************
+//*****************************************************************************
+
+  @override
+  void initState() {
+    super.initState();
+    selectedDate = selectedDate.add(
+        Duration(hours: -selectedTime.hour, minutes: -selectedTime.minute));
+  }
+
+//*****************************************************************************
 //************************** PANTALLA *****************************************
 //*****************************************************************************
 
@@ -464,7 +475,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
   void _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: DateTime.now(),
       firstDate: DateTime(2022),
       lastDate: DateTime(2023),
     );
@@ -576,6 +587,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     Map<String, dynamic> request1 = {
       'reclamoTecnicoID': asignacion.reclamoTecnicoID,
       'userID': asignacion.userID,
+      'cliente': asignacion.cliente
     };
 
     do {
