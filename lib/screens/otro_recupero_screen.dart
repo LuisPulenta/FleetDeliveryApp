@@ -271,7 +271,8 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
 
                                                     _nroserieextraOtroRecupero =
                                                         _nroserieextraOtroRecuperoController
-                                                            .text;
+                                                            .text
+                                                            .toUpperCase();
 
                                                     Navigator.pop(context);
                                                     setState(() {});

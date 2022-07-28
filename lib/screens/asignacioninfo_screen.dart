@@ -1521,7 +1521,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                           if (asign.autonumerico ==
                                                                               e.autonumerico) {
                                                                             asign.estadO3 =
-                                                                                _macserieController.text;
+                                                                                _macserieController.text.toUpperCase();
                                                                             asign.elegir =
                                                                                 1;
                                                                           }
