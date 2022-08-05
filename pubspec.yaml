@@ -58,7 +58,8 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   permission_handler: ^9.2.0
   device_information: ^0.0.4
-  month_year_picker: ^0.1.0+1
+  vertical_barchart: ^2.0.0+1
+  percent_indicator: ^4.2.1
     
 
 flutter_icons:

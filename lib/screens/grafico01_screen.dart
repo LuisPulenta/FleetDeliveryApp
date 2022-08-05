@@ -4,7 +4,9 @@ import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:month_year_picker/month_year_picker.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:vertical_barchart/vertical-barchart.dart';
+import 'package:vertical_barchart/vertical-barchartmodel.dart';
 
 class Grafico01Screen extends StatefulWidget {
   final Usuario user;
@@ -21,6 +23,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
 //*****************************************************************************
   bool _showLoader = false;
   bool bandera = false;
+  bool sebusco = false;
   int intentos = 0;
   List<TipoAsignacion> _tiposasignacion = [];
   String _tipoasignacion = 'Elija un Tipo de Asignación...';
@@ -38,6 +41,8 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
 
   String _optionMesError = '';
   bool _optionMesShowError = false;
+
+  List<VBarChartModel> bardata = [];
 
 //*****************************************************************************
 //************************** INIT STATE ***************************************
@@ -57,19 +62,24 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Asign. vs. Ejecut.'),
+        title: const Text('Asign. vs. Ejecut.'),
         backgroundColor: const Color(0xFF282886),
         centerTitle: true,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(5),
-        color: const Color(0xFFC7C7C8),
-        child: Center(
-          child: _showLoader
-              ? const LoaderComponent(
-                  text: 'Cargando ASIGNACIONES.',
-                )
-              : _getContent(),
+      backgroundColor: const Color(0xFFC7C7C8),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          color: const Color(0xFFC7C7C8),
+          child: Container(
+            child: _showLoader
+                ? const Center(
+                    child: LoaderComponent(
+                      text: 'Espere...',
+                    ),
+                  )
+                : _getContent(),
+          ),
         ),
       ),
     );
@@ -93,10 +103,9 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                     flex: 4,
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 5),
-                          child: const Text(('Mes: ')),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+                          child: Text(('Mes: ')),
                         ),
                         Container(
                           padding: const EdgeInsets.only(
@@ -128,8 +137,8 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                   width: 60,
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0, bottom: 24),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 5.0, bottom: 24),
                         child: Text(('Año: ')),
                       ),
                       Container(
@@ -146,14 +155,14 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                           _anio.toString(),
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            color: const Color(0xFF282886),
+                            color: Color(0xFF282886),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Center(
@@ -184,7 +193,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Row(
@@ -211,10 +220,222 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
             ),
           ],
         ),
-        Text("Asignados:"),
-        Text(_asignados.toString()),
-        Text("Ejecutados:"),
-        Text(_ejecutados.toString()),
+
+        (sebusco == true)
+            ? Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: _asignados > 0
+                    ? Container(
+                        child: _buildGrafik(bardata),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(0)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                      )
+                    : Center(
+                        child: Text(
+                            "No se encontraron datos de " +
+                                _tipoasignacion +
+                                " para el mes seleccionado.",
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold)),
+                      ),
+              )
+            : Container(),
+        _asignados > 0
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  //---------- Ud está al xx% -------------
+                  Column(
+                    children: [
+                      Container(
+                        width: 150,
+                        height: 20,
+                        child: const Text(
+                          "Ud. está al...",
+                          textAlign: TextAlign.center,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 133, 230, 243),
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                      ),
+                      Container(
+                        width: 150,
+                        height: 140,
+                        child: CircularPercentIndicator(
+                          radius: 60.0,
+                          lineWidth: 5.0,
+                          percent: _ejecutados / _asignados,
+                          center: Text(
+                              (_ejecutados / _asignados * 100)
+                                      .toString()
+                                      .substring(0, 4) +
+                                  "%",
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold)),
+                          progressColor: Colors.green,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                  //---------- Objetivo 60% -------------
+                  Column(
+                    children: [
+                      Container(
+                        width: 150,
+                        height: 20,
+                        child: const Text(
+                          "Obj. 60% - Faltan...",
+                          textAlign: TextAlign.center,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 133, 230, 243),
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                      ),
+                      Container(
+                        width: 150,
+                        height: 140,
+                        child: Center(
+                          child: Text(
+                              ((_asignados * 0.65 - _ejecutados).round())
+                                  .toString(),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            : Container(),
+        const SizedBox(
+          height: 20,
+        ),
+
+        //************************************************************ */
+
+        _asignados > 0
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  //---------- Objetivo 70% -------------
+                  Column(
+                    children: [
+                      Container(
+                        width: 150,
+                        height: 20,
+                        child: const Text(
+                          "Obj. 70% - Faltan...",
+                          textAlign: TextAlign.center,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 133, 230, 243),
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                      ),
+                      Container(
+                        width: 150,
+                        height: 140,
+                        child: Center(
+                          child: Text(
+                              ((_asignados * 0.7 - _ejecutados).round())
+                                  .toString(),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                  //---------- Objetivo 75% -------------
+                  Column(
+                    children: [
+                      Container(
+                        width: 150,
+                        height: 20,
+                        child: const Text(
+                          "Obj. 75% - Faltan...",
+                          textAlign: TextAlign.center,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 133, 230, 243),
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                      ),
+                      Container(
+                        width: 150,
+                        height: 140,
+                        child: Center(
+                          child: Text(
+                              ((_asignados * 0.75 - _ejecutados).round())
+                                  .toString(),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            : Container(),
       ],
     );
   }
@@ -248,7 +469,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
 
     bandera = false;
     intentos = 0;
-
+    _showLoader = true;
     do {
       Response response = Response(isSuccess: false);
       response = await ApiHelper.getTipoAsignaciones(widget.user.idUser);
@@ -258,7 +479,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
         _tiposasignacion = response.result;
       }
     } while (bandera == false);
-
+    _showLoader = false;
     setState(() {});
   }
 
@@ -398,7 +619,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
       builder: (context) {
         final Size size = MediaQuery.of(context).size;
         return AlertDialog(
-          title: Text('Seleccione el año'),
+          title: const Text('Seleccione el año'),
           // Changing default contentPadding to make the content looks better
 
           contentPadding: const EdgeInsets.symmetric(horizontal: 5),
@@ -434,7 +655,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                           child: Text(
                               // Showing the year text, it starts from 2022 and ends in 1900 (you can modify this as you like)
                               (DateTime.now().year - index).toString(),
-                              style: TextStyle(color: Colors.white)),
+                              style: const TextStyle(color: Colors.white)),
                         ),
                       ),
                     ),
@@ -448,7 +669,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
     );
   }
 //*****************************************************************************
-//************************** METODO SAVE **************************************
+//************************** _grafico01 ***************************************
 //*****************************************************************************
 
   _grafico01() async {
@@ -503,14 +724,18 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
       'Proyecto': _tipoasignacion,
     };
 
+    _showLoader = true;
+
     var response = await ApiHelper.post2(
         '/api/AsignacionesOTs/GetGrafico01Asignados', request);
 
     var response2 = await ApiHelper.post2(
         '/api/AsignacionesOTs/GetGrafico01Ejecutados', request);
 
+    sebusco = true;
     _asignados = 0;
     _ejecutados = 0;
+    _showLoader = false;
 
     List<CantidadEntera> asign = response.result;
     List<CantidadEntera> ejec = response2.result;
@@ -523,6 +748,62 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
       _ejecutados = ejec[0].cantidad!;
     }
 
+    bardata = [];
+
+    bardata.add(VBarChartModel(
+      index: 0,
+      label: "Asignados",
+      colors: [Colors.orange, Colors.deepOrange],
+      jumlah: _asignados.toDouble(),
+      tooltip: _asignados.toString(),
+      description: const Text(
+        "",
+        style: TextStyle(fontSize: 20),
+      ),
+    ));
+
+    bardata.add(
+      VBarChartModel(
+        index: 1,
+        label: "Ejecutados",
+        colors: [Colors.teal, Colors.indigo],
+        jumlah: _ejecutados.toDouble(),
+        tooltip: _ejecutados.toString(),
+        description: const Text(
+          "",
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
     setState(() {});
+  }
+
+//*****************************************************************************
+//************************** _buildGrafik *************************************
+//*****************************************************************************
+
+  Widget _buildGrafik(List<VBarChartModel> bardata) {
+    return VerticalBarchart(
+      maxX: _asignados > _ejecutados
+          ? _asignados.toDouble()
+          : _ejecutados.toDouble(),
+      data: bardata,
+      showLegend: true,
+      showBackdrop: true,
+      barStyle: BarStyle.DEFAULT,
+      alwaysShowDescription: true,
+      // legend: [
+      //   Vlegend(
+      //     isSquare: false,
+      //     color: Colors.orange,
+      //     text: "Asignados",
+      //   ),
+      //   Vlegend(
+      //     isSquare: false,
+      //     color: Colors.teal,
+      //     text: "Ejecutados",
+      //   )
+      // ],
+    );
   }
 }
