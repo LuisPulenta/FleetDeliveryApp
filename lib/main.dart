@@ -4,6 +4,7 @@ import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(const MyApp());
@@ -33,7 +34,9 @@ class _MyAppState extends State<MyApp> {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     return MaterialApp(
-      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+      ],
       supportedLocales: const [Locale('en'), Locale('es')],
       debugShowCheckedModeBanner: false,
       title: 'Fleet Delivery App',

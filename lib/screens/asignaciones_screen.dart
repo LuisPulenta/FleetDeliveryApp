@@ -44,6 +44,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   bool _prioridad = false;
   bool _citaHoy = false;
 
+  bool _ordenarPorCliente = true;
+  bool _ordenarPorFecha = false;
+
   List<TipoAsignacion> _tiposasignacion = [];
   List<Zona> _zonas = [];
   List<Cartera> _carteras = [];
@@ -602,6 +605,27 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   onChanged: (value) {
                     _citaHoy = value!;
                     _filter();
+                  }),
+              ElevatedButton(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.sort_by_alpha),
+                      SizedBox(
+                        width: 5,
+                      ),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xFF282886),
+                    minimumSize: const Size(50, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    _orderMethod();
                   }),
             ],
           ),
@@ -1308,12 +1332,24 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     }
 
     _asignaciones = response.result;
-    _asignaciones.sort((a, b) {
-      return a.cliente
-          .toString()
-          .toLowerCase()
-          .compareTo(b.cliente.toString().toLowerCase());
-    });
+
+    if (_ordenarPorCliente) {
+      _asignaciones.sort((a, b) {
+        return a.cliente
+            .toString()
+            .toLowerCase()
+            .compareTo(b.cliente.toString().toLowerCase());
+      });
+    }
+
+    if (_ordenarPorFecha) {
+      _asignaciones.sort((a, b) {
+        return a.fechaAsignada
+            .toString()
+            .toLowerCase()
+            .compareTo(b.fechaAsignada.toString().toLowerCase());
+      });
+    }
 
     _funcionesApp = response2.result;
 
@@ -1810,5 +1846,116 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
             const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
     }
+  }
+
+//*****************************************************************************
+//************************** METODO _orderMethod ********************************
+//*****************************************************************************
+
+  void _orderMethod() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Ordenar por'),
+            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              const Text('Elija Criterio de ordenación'),
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'N° Cliente ascendente',
+                      style: TextStyle(color: Color(0xffFFFFFF)),
+                    ),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: const Color(0xff282886),
+                  minimumSize: const Size(double.infinity, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                onPressed: () {
+                  _ordenarPorCliente = true;
+                  _ordenarPorFecha = false;
+                  Navigator.pop(context);
+                  _ordenar();
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Fechas más antiguas primero',
+                      style: TextStyle(color: Color(0xffFFFFFF)),
+                    ),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: const Color(0xff282886),
+                  minimumSize: const Size(double.infinity, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                onPressed: () {
+                  _ordenarPorCliente = false;
+                  _ordenarPorFecha = true;
+                  Navigator.pop(context);
+                  _ordenar();
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ]),
+          );
+        });
+  }
+
+  void _ordenar() {
+    if (_ordenarPorCliente) {
+      _asignaciones.sort((a, b) {
+        return a.cliente
+            .toString()
+            .toLowerCase()
+            .compareTo(b.cliente.toString().toLowerCase());
+      });
+      _asignaciones2.sort((a, b) {
+        return a.cliente
+            .toString()
+            .toLowerCase()
+            .compareTo(b.cliente.toString().toLowerCase());
+      });
+    }
+
+    if (_ordenarPorFecha) {
+      _asignaciones.sort((a, b) {
+        return a.fechaAsignada
+            .toString()
+            .toLowerCase()
+            .compareTo(b.fechaAsignada.toString().toLowerCase());
+      });
+      _asignaciones2.sort((a, b) {
+        return a.fechaAsignada
+            .toString()
+            .toLowerCase()
+            .compareTo(b.fechaAsignada.toString().toLowerCase());
+      });
+    }
+
+    setState(() {});
   }
 }

@@ -46,6 +46,34 @@ class ApiHelper {
   }
 
 //---------------------------------------------------------------------------
+  static Future<Response> post2(
+      String controller, Map<String, dynamic> request) async {
+    var url = Uri.parse('${Constants.apiUrl}$controller');
+    var response = await http.post(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+      body: jsonEncode(request),
+    );
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: response.body);
+    }
+
+    var body = response.body;
+    List<CantidadEntera> list = [];
+    var decodedJson = jsonDecode(body);
+    if (decodedJson != null) {
+      for (var item in decodedJson) {
+        list.add(CantidadEntera.fromJson(item));
+      }
+    }
+    return Response(isSuccess: true, result: list);
+  }
+
+//---------------------------------------------------------------------------
   static Future<Response> delete(String controller, String id) async {
     var url = Uri.parse('${Constants.apiUrl}$controller$id');
     var response = await http.delete(

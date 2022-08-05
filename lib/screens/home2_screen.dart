@@ -185,8 +185,12 @@ class _Home2ScreenState extends State<Home2Screen> {
                   style: TextStyle(fontSize: 15, color: Color(0xff0e4888))),
               tileColor: const Color(0xff8c8c94),
               onTap: () {
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => SeguridadScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Grafico01Screen(
+                              user: widget.user,
+                            )));
               },
             ),
             const Divider(
