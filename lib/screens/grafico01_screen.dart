@@ -7,11 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
+import 'dart:math' as math;
+
+import 'package:vertical_barchart/vertical-legend.dart';
 
 class Grafico01Screen extends StatefulWidget {
   final Usuario user;
 
-  Grafico01Screen({Key? key, required this.user}) : super(key: key);
+  const Grafico01Screen({Key? key, required this.user}) : super(key: key);
 
   @override
   State<Grafico01Screen> createState() => _Grafico01ScreenState();
@@ -31,9 +34,9 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
   bool _tipoasignacionShowError = false;
   List<DropdownMenuItem<int>> _meses = [];
   List<Option> _listoptions = [];
-  DateTime _selectedDate = DateTime.now();
   int _optionMes = DateTime.now().month;
   int _mes = 0;
+  String _nombreMes = '';
   int _anio = DateTime.now().year;
 
   int _asignados = 0;
@@ -41,8 +44,9 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
 
   String _optionMesError = '';
   bool _optionMesShowError = false;
-
   List<VBarChartModel> bardata = [];
+
+  String _porcentaje = '';
 
 //*****************************************************************************
 //************************** INIT STATE ***************************************
@@ -75,7 +79,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
             child: _showLoader
                 ? const Center(
                     child: LoaderComponent(
-                      text: 'Espere...',
+                      text: '',
                     ),
                   )
                 : _getContent(),
@@ -115,8 +119,47 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                               value: _optionMes,
                               onChanged: (option) {
                                 setState(() {
+                                  _asignados = 0;
+                                  _ejecutados = 0;
+                                  sebusco = false;
                                   _optionMes = option as int;
                                   _mes = option;
+                                  if (_mes == 1) {
+                                    _nombreMes = "Enero";
+                                  }
+                                  if (_mes == 2) {
+                                    _nombreMes = "Febrero";
+                                  }
+                                  if (_mes == 3) {
+                                    _nombreMes = "Marzo";
+                                  }
+                                  if (_mes == 4) {
+                                    _nombreMes = "Abril";
+                                  }
+                                  if (_mes == 5) {
+                                    _nombreMes = "Mayo";
+                                  }
+                                  if (_mes == 6) {
+                                    _nombreMes = "Junio";
+                                  }
+                                  if (_mes == 7) {
+                                    _nombreMes = "Julio";
+                                  }
+                                  if (_mes == 8) {
+                                    _nombreMes = "Agosto";
+                                  }
+                                  if (_mes == 9) {
+                                    _nombreMes = "Setiembre";
+                                  }
+                                  if (_mes == 10) {
+                                    _nombreMes = "Octubre";
+                                  }
+                                  if (_mes == 11) {
+                                    _nombreMes = "Noviembre";
+                                  }
+                                  if (_mes == 12) {
+                                    _nombreMes = "Diciembre";
+                                  }
                                 });
                               },
                               decoration: InputDecoration(
@@ -133,7 +176,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                         ),
                       ],
                     )),
-                Container(
+                SizedBox(
                   width: 60,
                   child: Column(
                     children: [
@@ -204,8 +247,11 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
               child: ElevatedButton(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.equalizer),
+                  children: [
+                    Transform.rotate(
+                      angle: math.pi / 2,
+                      child: const Icon(Icons.equalizer),
+                    ),
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
@@ -276,11 +322,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                           radius: 60.0,
                           lineWidth: 5.0,
                           percent: _ejecutados / _asignados,
-                          center: Text(
-                              (_ejecutados / _asignados * 100)
-                                      .toString()
-                                      .substring(0, 4) +
-                                  "%",
+                          center: Text(_porcentaje,
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 28,
@@ -304,7 +346,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                         width: 150,
                         height: 20,
                         child: const Text(
-                          "Obj. 60% - Faltan...",
+                          "Obj. 60%",
                           textAlign: TextAlign.center,
                         ),
                         decoration: BoxDecoration(
@@ -319,14 +361,43 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                         width: 150,
                         height: 140,
                         child: Center(
-                          child: Text(
-                              ((_asignados * 0.65 - _ejecutados).round())
-                                  .toString(),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold)),
+                          child: (_asignados * 0.65 - _ejecutados).round() > 0
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text("Faltan",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                        ((_asignados * 0.65 - _ejecutados)
+                                                .round())
+                                            .toString(),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 28,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                      size: 40,
+                                    ),
+                                    Text("Cumplido",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
                         ),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -358,7 +429,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                         width: 150,
                         height: 20,
                         child: const Text(
-                          "Obj. 70% - Faltan...",
+                          "Obj. 70%",
                           textAlign: TextAlign.center,
                         ),
                         decoration: BoxDecoration(
@@ -373,14 +444,43 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                         width: 150,
                         height: 140,
                         child: Center(
-                          child: Text(
-                              ((_asignados * 0.7 - _ejecutados).round())
-                                  .toString(),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold)),
+                          child: (_asignados * 0.7 - _ejecutados).round() > 0
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text("Faltan",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                        ((_asignados * 0.7 - _ejecutados)
+                                                .round())
+                                            .toString(),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 28,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                      size: 40,
+                                    ),
+                                    Text("Cumplido",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
                         ),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -399,7 +499,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                         width: 150,
                         height: 20,
                         child: const Text(
-                          "Obj. 75% - Faltan...",
+                          "Obj. 75%",
                           textAlign: TextAlign.center,
                         ),
                         decoration: BoxDecoration(
@@ -414,14 +514,43 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                         width: 150,
                         height: 140,
                         child: Center(
-                          child: Text(
-                              ((_asignados * 0.75 - _ejecutados).round())
-                                  .toString(),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold)),
+                          child: (_asignados * 0.75 - _ejecutados).round() > 0
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text("Faltan",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                        ((_asignados * 0.75 - _ejecutados)
+                                                .round())
+                                            .toString(),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 28,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                      size: 40,
+                                    ),
+                                    Text("Cumplido",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
                         ),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -518,7 +647,11 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                     ),
                     items: _getComboTiposAsignacion(),
                     onChanged: (value) {
+                      _asignados = 0;
+                      _ejecutados = 0;
+                      sebusco = false;
                       _tipoasignacion = value.toString();
+                      setState(() {});
                     },
                   ),
           ),
@@ -748,6 +881,18 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
       _ejecutados = ejec[0].cantidad!;
     }
 
+    if (_asignados > 0) {
+      _porcentaje = (_ejecutados / _asignados * 100).toString();
+    } else {
+      _porcentaje = "0";
+    }
+
+    if (_porcentaje == "0" || _porcentaje == "0.0") {
+      _porcentaje = "0.00 %";
+    } else {
+      _porcentaje = _porcentaje.substring(0, 4) + " %";
+    }
+
     bardata = [];
 
     bardata.add(VBarChartModel(
@@ -771,7 +916,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
         tooltip: _ejecutados.toString(),
         description: const Text(
           "",
-          style: TextStyle(fontSize: 20),
         ),
       ),
     );
@@ -792,18 +936,19 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
       showBackdrop: true,
       barStyle: BarStyle.DEFAULT,
       alwaysShowDescription: true,
-      // legend: [
-      //   Vlegend(
-      //     isSquare: false,
-      //     color: Colors.orange,
-      //     text: "Asignados",
-      //   ),
-      //   Vlegend(
-      //     isSquare: false,
-      //     color: Colors.teal,
-      //     text: "Ejecutados",
-      //   )
-      // ],
+      legend: [
+        // Vlegend(
+        //   isSquare: false,
+        //   color: Colors.orange,
+        //   text: "Asignados",
+        // ),
+        Vlegend(
+          isSquare: false,
+          color: Colors.transparent,
+          size: 14,
+          text: _tipoasignacion + " - " + _nombreMes + "/" + _anio.toString(),
+        )
+      ],
     );
   }
 }
