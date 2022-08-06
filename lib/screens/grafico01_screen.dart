@@ -339,14 +339,14 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                       ),
                     ],
                   ),
-                  //---------- Objetivo 60% -------------
+                  //---------- Objetivo 65% -------------
                   Column(
                     children: [
                       Container(
                         width: 150,
                         height: 20,
                         child: const Text(
-                          "Obj. 60%",
+                          "Obj. 65%",
                           textAlign: TextAlign.center,
                         ),
                         decoration: BoxDecoration(
