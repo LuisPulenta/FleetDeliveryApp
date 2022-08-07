@@ -30,7 +30,7 @@ class LoaderComponent extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const Text("Por favor espere...", style: TextStyle(fontSize: 15)),
+            //const Text("Por favor espere...", style: TextStyle(fontSize: 15)),
           ],
         ),
       ),
