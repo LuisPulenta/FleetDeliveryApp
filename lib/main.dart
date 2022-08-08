@@ -35,6 +35,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: const [Locale('en'), Locale('es')],
       debugShowCheckedModeBanner: false,
