@@ -5,10 +5,9 @@ import 'package:fleetdeliveryapp/helpers/api_helper.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'dart:math' as math;
 import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
-import 'dart:math' as math;
-
 import 'package:vertical_barchart/vertical-legend.dart';
 
 class Grafico01Screen extends StatefulWidget {
@@ -42,8 +41,9 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
   int _asignados = 0;
   int _ejecutados = 0;
 
-  String _optionMesError = '';
-  bool _optionMesShowError = false;
+  final String _optionMesError = '';
+  final bool _optionMesShowError = false;
+
   List<VBarChartModel> bardata = [];
 
   String _porcentaje = '';
@@ -71,19 +71,17 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
         centerTitle: true,
       ),
       backgroundColor: const Color(0xFFC7C7C8),
-      body: SingleChildScrollView(
+      body: Container(
+        padding: const EdgeInsets.all(5),
+        color: const Color(0xFFC7C7C8),
         child: Container(
-          padding: const EdgeInsets.all(5),
-          color: const Color(0xFFC7C7C8),
-          child: Container(
-            child: _showLoader
-                ? const Center(
-                    child: LoaderComponent(
-                      text: '',
-                    ),
-                  )
-                : _getContent(),
-          ),
+          child: _showLoader
+              ? const Center(
+                  child: LoaderComponent(
+                    text: '',
+                  ),
+                )
+              : _getContent(),
         ),
       ),
     );
@@ -209,26 +207,23 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                   width: 10,
                 ),
                 Center(
-                  child: Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 36),
-                      child: ElevatedButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.calendar_month),
-                          ],
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: const Color(0xFF282886),
-                          minimumSize: const Size(40, 40),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        onPressed: () => _selectDate(context),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 36),
+                    child: ElevatedButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.calendar_month),
+                        ],
                       ),
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xFF282886),
+                        minimumSize: const Size(40, 40),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      onPressed: () => _selectDate(context),
                     ),
                   ),
                 )
