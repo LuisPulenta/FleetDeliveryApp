@@ -316,7 +316,9 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                         child: CircularPercentIndicator(
                           radius: 60.0,
                           lineWidth: 5.0,
-                          percent: _ejecutados / _asignados,
+                          percent: ((_ejecutados / _asignados) < 1)
+                              ? _ejecutados / _asignados
+                              : 1,
                           center: Text(_porcentaje,
                               style: const TextStyle(
                                   color: Colors.black,
