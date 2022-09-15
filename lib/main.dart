@@ -76,6 +76,8 @@ class _MyAppState extends State<MyApp> {
       String date = prefs.getString('date').toString();
       String dateAlmacenada = date.substring(0, 10);
       String dateActual = DateTime.now().toString().substring(0, 10);
+      bool usuariosConseguidos = prefs.getBool('usuariosconseguidos') ?? false;
+
       if (usuario != null) {
         var decodedJson = jsonDecode(usuario);
         _user = Usuario.fromJson(decodedJson);
@@ -83,7 +85,7 @@ class _MyAppState extends State<MyApp> {
         var decodedJson2 = jsonDecode(webs!);
         _webSesion = WebSesion.fromJson(decodedJson2);
 
-        if (dateAlmacenada != dateActual) {
+        if (dateAlmacenada != dateActual || !usuariosConseguidos) {
           _showLoginPage = true;
         } else {
           _showLoginPage = false;

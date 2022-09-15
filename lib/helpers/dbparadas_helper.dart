@@ -22,6 +22,11 @@ class DBParadas {
     return database.delete("paradas");
   }
 
+  static Future<int> deleteall() async {
+    Database database = await _openDBParadas();
+    return database.delete("paradas");
+  }
+
   static Future<List<Parada>> paradas() async {
     Database database = await _openDBParadas();
     final List<Map<String, dynamic>> paradasMap =

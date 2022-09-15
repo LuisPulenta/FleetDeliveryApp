@@ -22,6 +22,11 @@ class DBEnvios {
     return database.delete("envios");
   }
 
+  static Future<int> deleteall() async {
+    Database database = await _openDBEnvios();
+    return database.delete("envios");
+  }
+
   static Future<List<Envio>> envios() async {
     Database database = await _openDBEnvios();
     final List<Map<String, dynamic>> enviosMap = await database.query("envios");

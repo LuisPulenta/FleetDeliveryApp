@@ -635,25 +635,63 @@ class _HomeScreenState extends State<HomeScreen>
                             height: 25,
                           ),
                           ElevatedButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.exit_to_app),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text('CERRAR SESION'),
-                              ],
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              primary: const Color(0xff282886),
-                              minimumSize: const Size(double.infinity, 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.exit_to_app),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Text('CERRAR SESION'),
+                                ],
                               ),
-                            ),
-                            onPressed: () => _logOut(),
-                          ),
+                              style: ElevatedButton.styleFrom(
+                                primary: const Color(0xff282886),
+                                minimumSize: const Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () async {
+                                await DBEnvios.deleteall();
+                                await DBMotivos.deleteall();
+                                await DBParadas.deleteall();
+                                await DBParadasEnvios.deleteall();
+                                await DBProveedores.deleteall();
+                                await DBRutasCab.deleteall();
+                                //await DBUsuarios.deleteall();
+                                await DBWebSesions.deleteall();
+                                _logOut();
+                              }),
+                          // ElevatedButton(
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.center,
+                          //     children: const [
+                          //       Icon(Icons.delete),
+                          //       SizedBox(
+                          //         width: 15,
+                          //       ),
+                          //       Text('BORRAR REGISTROS DE LA BASE'),
+                          //     ],
+                          //   ),
+                          //   style: ElevatedButton.styleFrom(
+                          //     primary: Colors.red,
+                          //     minimumSize: const Size(double.infinity, 50),
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(5),
+                          //     ),
+                          //   ),
+                          //   onPressed: () async {
+                          //     await DBEnvios.deleteall();
+                          //     await DBMotivos.deleteall();
+                          //     await DBParadas.deleteall();
+                          //     await DBParadasEnvios.deleteall();
+                          //     await DBProveedores.deleteall();
+                          //     await DBRutasCab.deleteall();
+                          //     await DBUsuarios.deleteall();
+                          //     await DBWebSesions.deleteall();
+                          //   },
+                          // ),
                         ]),
                       ),
                     ],
@@ -1359,7 +1397,9 @@ class _HomeScreenState extends State<HomeScreen>
     return;
   }
 
+//------------------ _getTablaRutas ----------------------
   void _getTablaRutas() async {
+    //..............  _insertRutas ................
     void _insertRutas() async {
       if (_rutasApi.isNotEmpty) {
         DBRutasCab.delete();
@@ -1394,6 +1434,7 @@ class _HomeScreenState extends State<HomeScreen>
       }
     }
 
+//...........................................
     if (_hayInternet) {
       _insertRutas();
     }
@@ -1541,10 +1582,13 @@ class _HomeScreenState extends State<HomeScreen>
           context: context,
           title: 'Error',
           message:
-              "La tabla Rutas local está vacía. No se pudieron sincronizar las Rutas de su Usuario. Por favor intente de nuevo. ",
+              "No se encontraron Rutas activas para su Usuario. Comuníquese con el Administrador.",
           actions: <AlertDialogAction>[
             const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('usuariosconseguidos', false);
       SystemNavigator.pop();
       return;
     }

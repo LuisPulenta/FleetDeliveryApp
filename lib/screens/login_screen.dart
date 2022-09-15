@@ -57,11 +57,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   List<WebSesion> _webSesionsdb = [];
 
-  String _email = '';
-  String _password = '';
+  //String _email = '';
+  //String _password = '';
 
-  //String _email = '*jhollman';
-  //String _password = 'jona';
+  String _email = '*jhollman';
+  String _password = 'jona';
 
   //String _email = 'TEST';
   //String _password = '123456';
@@ -706,5 +706,6 @@ class _LoginScreenState extends State<LoginScreen> {
     await prefs.setString('usuario', body);
     await prefs.setString('websesion', wsesion);
     await prefs.setString('date', DateTime.now().toString());
+    await prefs.setBool('usuariosconseguidos', _usuariosConseguidos);
   }
 }

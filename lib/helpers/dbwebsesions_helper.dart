@@ -22,6 +22,11 @@ class DBWebSesions {
     return database.delete("websesions");
   }
 
+  static Future<int> deleteall() async {
+    Database database = await _openDBWebSesions();
+    return database.delete("websesions");
+  }
+
   static Future<int> update(WebSesion websesion) async {
     Database database = await _openDBWebSesions();
     return database.update("websesions", websesion.toMap(),

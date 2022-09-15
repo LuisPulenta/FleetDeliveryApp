@@ -22,6 +22,11 @@ class DBProveedores {
     return database.delete("proveedores");
   }
 
+  static Future<int> deleteall() async {
+    Database database = await _openDBProveedores();
+    return database.delete("proveedores");
+  }
+
   static Future<List<Proveedor>> proveedores() async {
     Database database = await _openDBProveedores();
     final List<Map<String, dynamic>> proveedoresMap =

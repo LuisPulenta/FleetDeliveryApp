@@ -22,6 +22,11 @@ class DBUsuarios {
     return database.delete("usuarios");
   }
 
+  static Future<int> deleteall() async {
+    Database database = await _openDBUsuarios();
+    return database.delete("usuarios");
+  }
+
   static Future<List<Usuario>> usuarios() async {
     Database database = await _openDBUsuarios();
     final List<Map<String, dynamic>> usuariosMap =

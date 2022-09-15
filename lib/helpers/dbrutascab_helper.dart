@@ -22,6 +22,11 @@ class DBRutasCab {
     return database.delete("rutascab");
   }
 
+  static Future<int> deleteall() async {
+    Database database = await _openDBRutas();
+    return database.delete("rutascab");
+  }
+
   static Future<int> update(RutaCab ruta) async {
     Database database = await _openDBRutas();
     return database.update("rutascab", ruta.toMap(),
