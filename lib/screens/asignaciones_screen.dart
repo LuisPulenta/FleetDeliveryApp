@@ -817,7 +817,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                            '${e.localidad.toString()}-${e.partido.toString()}',
+                                            'CP: ${e.cp.toString()} - ${e.localidad.toString()} - ${e.partido.toString()}',
                                             style: const TextStyle(
                                               fontSize: 12,
                                             )),
@@ -908,9 +908,11 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       Expanded(
                                         child: Text(
                                           e.cantAsign.toString(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 12,
-                                            color: Colors.red,
+                                            color: e.cantAsign! > 1
+                                                ? Colors.red
+                                                : Colors.blue,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -1565,6 +1567,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           asignacion.domicilio
               .toString()
               .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.cp
+              .toString()
+              .toLowerCase()
               .contains(_search.toLowerCase()));
 //------------------------------------------------------------------------
       condicionAntig = DateTime.now()
@@ -1664,121 +1670,125 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         }
 
         _markers.add(Marker(
-          markerId: MarkerId(asign.reclamoTecnicoID.toString()),
-          position: LatLng(lat, long),
-          // infoWindow: InfoWindow(
-          //   title: '${asign.cliente.toString()} - ${asign.nombre.toString()}',
-          //   snippet: asign.domicilio.toString(),
-          // ),
-          onTap: () {
-            // CameraPosition(
-            //     target: LatLng(element.latitud!.toDouble(),
-            //         element.longitud!.toDouble()),
-            //     zoom: 16.0);
-            _customInfoWindowController.addInfoWindow!(
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  width: 300,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.info),
-                      const SizedBox(
-                        width: 8.0,
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                child: Text(
-                              '${asign.cliente.toString()} - ${asign.nombre.toString()}',
-                              style: const TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            )),
-                            Expanded(
-                                child: Text(asign.domicilio.toString(),
-                                    style: const TextStyle(fontSize: 12))),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(Icons.map,
-                                            color: Color(0xff282886)),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          'Navegar',
-                                          style: TextStyle(
-                                              color: Color(0xff282886)),
-                                        ),
-                                      ],
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: const Color(0xFFb3b3b4),
-                                      minimumSize:
-                                          const Size(double.infinity, 30),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                    ),
-                                    onPressed: () => _navegar(asign),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Text(
-                                          'Abrir',
-                                          style: TextStyle(
-                                              color: Color(0xff282886)),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Icon(Icons.arrow_forward_ios,
-                                            color: Color(0xff282886)),
-                                      ],
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: const Color(0xFFb3b3b4),
-                                      minimumSize:
-                                          const Size(double.infinity, 30),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                    ),
-                                    onPressed: () => _goInfoAsignacion(asign),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+            markerId: MarkerId(asign.reclamoTecnicoID.toString()),
+            position: LatLng(lat, long),
+            // infoWindow: InfoWindow(
+            //   title: '${asign.cliente.toString()} - ${asign.nombre.toString()}',
+            //   snippet: asign.domicilio.toString(),
+            // ),
+            onTap: () {
+              // CameraPosition(
+              //     target: LatLng(element.latitud!.toDouble(),
+              //         element.longitud!.toDouble()),
+              //     zoom: 16.0);
+              _customInfoWindowController.addInfoWindow!(
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.info),
+                        const SizedBox(
+                          width: 8.0,
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                  child: Text(
+                                '${asign.cliente.toString()} - ${asign.nombre.toString()}',
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              )),
+                              Expanded(
+                                  child: Text(asign.domicilio.toString(),
+                                      style: const TextStyle(fontSize: 12))),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(Icons.map,
+                                              color: Color(0xff282886)),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            'Navegar',
+                                            style: TextStyle(
+                                                color: Color(0xff282886)),
+                                          ),
+                                        ],
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: const Color(0xFFb3b3b4),
+                                        minimumSize:
+                                            const Size(double.infinity, 30),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () => _navegar(asign),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Text(
+                                            'Abrir',
+                                            style: TextStyle(
+                                                color: Color(0xff282886)),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Icon(Icons.arrow_forward_ios,
+                                              color: Color(0xff282886)),
+                                        ],
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: const Color(0xFFb3b3b4),
+                                        minimumSize:
+                                            const Size(double.infinity, 30),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () => _goInfoAsignacion(asign),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                LatLng(lat, long));
-          },
-          icon: BitmapDescriptor.defaultMarker,
-        ));
+                  LatLng(lat, long));
+            },
+            icon: (asign.codigoCierre == 0)
+                ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)
+                : BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueOrange)));
       }
     }
     latcenter = (latmin + latmax) / 2;

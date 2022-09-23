@@ -15,6 +15,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 
 class AsignacionInfoScreen extends StatefulWidget {
   final Usuario user;
@@ -316,25 +317,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             ),
                             Row(
                               children: [
-                                const Text("Obs. Cliente: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text('${_asignacion.observacion}',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
                                 const Text("Cartera: ",
                                     style: TextStyle(
                                       fontSize: 12,
@@ -351,6 +333,22 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             ),
                             const SizedBox(
                               height: 20,
+                            ),
+                            Row(
+                              children: [
+                                const Text("Obs. Cliente: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Expanded(
+                                  child: Text('${_asignacion.observacion}',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                ),
+                              ],
                             ),
                           ],
                         )),
@@ -1885,174 +1883,283 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           const Divider(
                             color: Colors.black,
                           ),
-                          Row(
-                            children: [
-                              const Text("Teléfono: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Expanded(
-                                child: Text(_asignacion.telefono.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.phone_forwarded,
-                                  size: 34,
-                                ),
-                                color: Colors.green,
-                                onPressed: () => launch(
-                                    'tel://${_asignacion.telefono.toString()}'),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Row(
-                            children: [
-                              const Text("Tel. Alt. 1: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Expanded(
-                                child: Text(
-                                    _asignacion.telefAlternativo1.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.phone_forwarded,
-                                  size: 34,
-                                ),
-                                color: Colors.green,
-                                onPressed: () {
-                                  if (_asignacion.telefAlternativo1
-                                          .toString() !=
-                                      "Sin Dato") {
-                                    launch(
-                                        'tel://${_asignacion.telefAlternativo1.toString()}');
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Row(
-                            children: [
-                              const Text("Tel. Alt. 2: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Expanded(
-                                child: Text(
-                                    _asignacion.telefAlternativo2.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.phone_forwarded,
-                                  size: 34,
-                                ),
-                                color: Colors.green,
-                                onPressed: () {
-                                  if (_asignacion.telefAlternativo2
-                                          .toString() !=
-                                      "Sin Dato") {
-                                    launch(
-                                        'tel://${_asignacion.telefAlternativo2.toString()}');
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Row(
-                            children: [
-                              const Text("Tel. Alt. 3: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Expanded(
-                                child: Text(
-                                    _asignacion.telefAlternativo3.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.phone_forwarded,
-                                  size: 34,
-                                ),
-                                color: Colors.green,
-                                onPressed: () {
-                                  if (_asignacion.telefAlternativo3
-                                          .toString() !=
-                                      "Sin Dato") {
-                                    launch(
-                                        'tel://${_asignacion.telefAlternativo3.toString()}');
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Row(
-                            children: [
-                              const Text("Tel. Alt. 4: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Expanded(
-                                child: Text(
-                                    _asignacion.telefAlternativo4.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.phone_forwarded,
-                                  size: 34,
-                                ),
-                                color: Colors.green,
-                                onPressed: () {
-                                  if (_asignacion.telefAlternativo4
-                                          .toString() !=
-                                      "Sin Dato") {
-                                    launch(
-                                        'tel://${_asignacion.telefAlternativo4.toString()}');
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
+                          _asignacion.telefono.toString().length > 0
+                              ? Row(
+                                  children: [
+                                    const Text("Teléfono: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      child:
+                                          Text(_asignacion.telefono.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                              )),
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        color: Colors.green,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.insert_comment,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () => _sendMessage(
+                                              _asignacion.telefono.toString()),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.phone_forwarded,
+                                        size: 34,
+                                      ),
+                                      color: Colors.green,
+                                      onPressed: () => launch(
+                                          'tel://${_asignacion.telefono.toString()}'),
+                                    ),
+                                  ],
+                                )
+                              : Container(),
+                          _asignacion.telefono.toString().length > 0
+                              ? const Divider(
+                                  color: Colors.black,
+                                )
+                              : Container(),
+                          _asignacion.telefAlternativo1.toString().length > 0
+                              ? Row(
+                                  children: [
+                                    const Text("Tel. Alt. 1: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      child: Text(
+                                          _asignacion.telefAlternativo1
+                                              .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        color: Colors.green,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.insert_comment,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () => _sendMessage(
+                                              _asignacion.telefAlternativo1
+                                                  .toString()),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.phone_forwarded,
+                                        size: 34,
+                                      ),
+                                      color: Colors.green,
+                                      onPressed: () {
+                                        if (_asignacion.telefAlternativo1
+                                                .toString() !=
+                                            "Sin Dato") {
+                                          launch(
+                                              'tel://${_asignacion.telefAlternativo1.toString()}');
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : Container(),
+                          _asignacion.telefAlternativo1.toString().length > 0
+                              ? const Divider(
+                                  color: Colors.black,
+                                )
+                              : Container(),
+                          _asignacion.telefAlternativo2.toString().length > 0
+                              ? Row(
+                                  children: [
+                                    const Text("Tel. Alt. 2: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      child: Text(
+                                          _asignacion.telefAlternativo2
+                                              .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        color: Colors.green,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.insert_comment,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () => _sendMessage(
+                                              _asignacion.telefAlternativo2
+                                                  .toString()),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.phone_forwarded,
+                                        size: 34,
+                                      ),
+                                      color: Colors.green,
+                                      onPressed: () {
+                                        if (_asignacion.telefAlternativo2
+                                                .toString() !=
+                                            "Sin Dato") {
+                                          launch(
+                                              'tel://${_asignacion.telefAlternativo2.toString()}');
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : Container(),
+                          _asignacion.telefAlternativo2.toString().length > 0
+                              ? const Divider(
+                                  color: Colors.black,
+                                )
+                              : Container(),
+                          _asignacion.telefAlternativo3.toString().length > 0
+                              ? Row(
+                                  children: [
+                                    const Text("Tel. Alt. 3: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      child: Text(
+                                          _asignacion.telefAlternativo3
+                                              .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        color: Colors.green,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.insert_comment,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () => _sendMessage(
+                                              _asignacion.telefAlternativo3
+                                                  .toString()),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.phone_forwarded,
+                                        size: 34,
+                                      ),
+                                      color: Colors.green,
+                                      onPressed: () {
+                                        if (_asignacion.telefAlternativo3
+                                                .toString() !=
+                                            "Sin Dato") {
+                                          launch(
+                                              'tel://${_asignacion.telefAlternativo3.toString()}');
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : Container(),
+                          _asignacion.telefAlternativo3.toString().length > 0
+                              ? const Divider(
+                                  color: Colors.black,
+                                )
+                              : Container(),
+                          _asignacion.telefAlternativo4.toString().length > 0
+                              ? Row(
+                                  children: [
+                                    const Text("Tel. Alt. 4: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      child: Text(
+                                          _asignacion.telefAlternativo4
+                                              .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        color: Colors.green,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.insert_comment,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () => _sendMessage(
+                                              _asignacion.telefAlternativo4
+                                                  .toString()),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.phone_forwarded,
+                                        size: 34,
+                                      ),
+                                      color: Colors.green,
+                                      onPressed: () {
+                                        if (_asignacion.telefAlternativo4
+                                                .toString() !=
+                                            "Sin Dato") {
+                                          launch(
+                                              'tel://${_asignacion.telefAlternativo4.toString()}');
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : Container(),
+                          _asignacion.telefAlternativo4.toString().length > 0
+                              ? const Divider(
+                                  color: Colors.black,
+                                )
+                              : Container(),
                         ],
                       ),
                     ),
@@ -2708,5 +2815,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         _image = image;
       });
     }
+  }
+
+  void _sendMessage(String number) async {
+    final link = WhatsAppUnilink(
+      phoneNumber: number,
+      text: 'Hola soy ${widget.user.apellidonombre} de la Empresa Fleet. ',
+    );
+    await launch('$link');
   }
 }
