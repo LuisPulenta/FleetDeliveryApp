@@ -1120,6 +1120,21 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                               fontSize: 12,
                                             )),
                                       ),
+                                      e.observacion != ""
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              child: Container(
+                                                height: 22,
+                                                width: 22,
+                                                color: Colors.yellow,
+                                                child: const Icon(
+                                                  Icons.chat,
+                                                  size: 16,
+                                                ),
+                                              ),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ],
@@ -1446,7 +1461,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   funcionApp: _funcionApp,
                   controlesEquivalencia: _controlesEquivalencia,
                 )));
-    if (result == 'Yes') {
+    if (result == 'Yes' || result != 'Yes') {
       _getObras();
       setState(() {});
     }

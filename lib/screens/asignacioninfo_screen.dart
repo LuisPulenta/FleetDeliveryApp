@@ -53,6 +53,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   String codCierre = '';
   String codCierreGenerico = '';
 
+  bool _editar = false;
+
   String descCodCierreEJB = '';
   String descCodCierreINC = '';
 
@@ -64,6 +66,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   final String _observacionesError = '';
   final bool _observacionesShowError = false;
   final TextEditingController _observacionesController =
+      TextEditingController();
+
+  String _observaciones2 = '';
+  final String _observaciones2Error = '';
+  final bool _observaciones2ShowError = false;
+  final TextEditingController _observaciones2Controller =
       TextEditingController();
 
   final String _macserieError = '';
@@ -223,8 +231,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   child: Column(
                     children: <Widget>[
                       AppBar(
-                        title: (Text(
-                            'Asignación ${widget.asignacion.proyectomodulo}')),
+                        title:
+                            (Text('Asignación ${_asignacion.proyectomodulo}')),
                         centerTitle: true,
                         backgroundColor: const Color(0xff282886),
                       ),
@@ -350,6 +358,141 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 ),
                               ],
                             ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            !_editar
+                                ? ElevatedButton(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Icon(Icons.edit),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Text(
+                                          'Editar Observaciones',
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color.fromARGB(255, 242, 84, 5),
+                                      minimumSize:
+                                          const Size(double.infinity, 60),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      _editar = true;
+                                      _observaciones2Controller.text =
+                                          _asignacion.observacion.toString();
+                                      setState(() {});
+                                    },
+                                  )
+                                : Container(),
+                            _editar
+                                ? TextField(
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w300),
+                                    controller: _observaciones2Controller,
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      hintText: 'Ingresa observaciones...',
+                                      labelText: 'Observaciones',
+                                      errorText: _observaciones2ShowError
+                                          ? _observaciones2Error
+                                          : null,
+                                      prefixIcon: const Icon(Icons.notes),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    keyboardType: TextInputType.multiline,
+                                    minLines: 1,
+                                    maxLines: 6,
+                                    onChanged: (value) {
+                                      _observaciones2 = value;
+                                    },
+                                  )
+                                : Container(),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            _editar
+                                ? Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: ElevatedButton(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(Icons.save),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text('Guardar',
+                                                    style: TextStyle(
+                                                        fontSize: 12)),
+                                              ],
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: const Color(0xFF282886),
+                                              minimumSize: const Size(
+                                                  double.infinity, 60),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              _guardar2();
+                                            }),
+                                      ),
+                                      const SizedBox(
+                                        width: 15,
+                                      ),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              Icon(Icons.cancel),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text('Cancelar',
+                                                  style:
+                                                      TextStyle(fontSize: 12)),
+                                            ],
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: const Color(0xffdf281e),
+                                            minimumSize:
+                                                const Size(double.infinity, 60),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            _editar = false;
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
                           ],
                         )),
                       ),
@@ -928,9 +1071,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             isExpanded: true,
             value: _codigocierre,
             decoration: InputDecoration(
+              filled: true,
               fillColor: Colors.white,
               hintMaxLines: 2,
-              filled: true,
               hintText: 'Elija Código de Cierre',
               labelText: 'Código de Cierre',
               errorText: _codigocierreShowError ? _codigocierreError : null,
@@ -1061,7 +1204,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             MaterialPageRoute(
                               builder: (context) => OtroRecuperoScreen(
                                   user: widget.user,
-                                  asignacion: widget.asignacion,
+                                  asignacion: _asignacion,
                                   idgaos: _asigns[0].idregistro,
                                   controlesEquivalencia:
                                       widget.controlesEquivalencia),
@@ -2379,8 +2522,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //---------------- Verifica que estén cargados los Mac/Serie ------------------
 
     if (widget.funcionApp.serieObligatoria == 1 ||
-        (widget.asignacion.proyectomodulo == 'Cable' &&
-            widget.asignacion.motivos.toString().contains("VDSL"))) {
+        (_asignacion.proyectomodulo == 'Cable' &&
+            _asignacion.motivos.toString().contains("VDSL"))) {
       for (Asign asign in _asigns) {
         bool band = false;
 
@@ -2422,14 +2565,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //-------- Verifica para DTV que se haya elegido SI o NO para la Smartcard ----
 
-    if (widget.asignacion.proyectomodulo == 'DTV') {
+    if (_asignacion.proyectomodulo == 'DTV') {
       for (Asign asign in _asigns) {
         bool band = false;
 
         if ((estadogaos == 'EJB' &&
-                (asign.elegirSI == null && asign.elegirNO == null)) ||
+                (asign.elegirSI == null &&
+                    asign.elegirNO == null &&
+                    asign.smartcard != "")) ||
             (estadogaos == 'PAR' && asign.elegir == 1) &&
-                (asign.elegirSI == null && asign.elegirNO == null)) {
+                (asign.elegirSI == null &&
+                    asign.elegirNO == null &&
+                    asign.smartcard != "")) {
           band = true;
           showDialog(
               context: context,
@@ -2666,6 +2813,160 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     setState(() {});
     Navigator.pop(context, "Yes");
+  }
+
+//*****************************************************************************
+//************************** METODO GUARDAR2 ***********************************
+//*****************************************************************************
+
+  void _guardar2() async {
+//---------------- Establece valores para grabar -----------------------------
+
+    for (Asign asign in _asigns) {
+      Map<String, dynamic> request = {
+        //----------------- Campos que mantienen el valor -----------------
+        'idregistro': asign.idregistro,
+        'subagentemercado': asign.subagentemercado,
+        'recupidjobcard': asign.recupidjobcard,
+        'cliente': asign.cliente,
+        'nombre': asign.nombre,
+        'domicilio': asign.domicilio,
+        'entrecallE1': asign.entrecallE1,
+        'entrecallE2': asign.entrecallE2,
+        'cp': asign.cp,
+        'ztecnico': asign.ztecnico,
+        'provincia': asign.provincia,
+        'localidad': asign.localidad,
+        'telefono': asign.telefono,
+        'grxx': asign.grxx,
+        'gryy': asign.gryy,
+        'decO1': asign.decO1,
+        'cmodeM1': asign.cmodeM1,
+        'estado': asign.estado,
+        'zona': asign.zona,
+        'idr': asign.idr,
+        'modelo': asign.modelo,
+        'smartcard': asign.smartcard,
+        'ruta': asign.ruta,
+        'tarifa': asign.tarifa,
+        'proyectomodulo': asign.proyectomodulo,
+        'bajasistema': asign.bajasistema,
+        'idcabeceracertif': asign.idcabeceracertif,
+        'subcon': asign.subcon,
+        'causantec': asign.causantec,
+        'pasaDefinitiva': asign.pasaDefinitiva,
+        'fechaAsignada': asign.fechaAsignada,
+        'hsCaptura': asign.hsCaptura,
+        'hsAsignada': asign.hsAsignada,
+        'userID': asign.userID,
+        'terminalAsigna': asign.terminalAsigna,
+        'esCR': asign.esCR,
+        'autonumerico': asign.autonumerico,
+        'reclamoTecnicoID': asign.reclamoTecnicoID,
+        'clienteTipoId': asign.clienteTipoId,
+        'documento': asign.documento,
+        'partido': asign.partido,
+        'emailCliente': asign.emailCliente,
+        'observacionCaptura': asign.observacionCaptura,
+        'fechaInicio': asign.fechaInicio,
+        'fechaEnvio': asign.fechaEnvio,
+        'enviado': asign.enviado,
+        'cancelado': asign.cancelado,
+        'recupero': asign.recupero,
+        'visitaTecnica': asign.visitaTecnica,
+        'novedades': asign.novedades,
+        'pdfGenerado': asign.pdfGenerado,
+        'fechaCumplidaTecnico': asign.fechaCumplidaTecnico,
+        'archivoOutGenerado': asign.archivoOutGenerado,
+        'idSuscripcion': asign.idSuscripcion,
+        'itemsID': asign.itemsID,
+        'sectorOperativo': asign.sectorOperativo,
+        'idTipoTrabajoRel': asign.idTipoTrabajoRel,
+        'motivos': asign.motivos,
+        'fc_inicio_base': asign.fc_inicio_base,
+        'vc_fin_base': asign.vc_fin_base,
+        'fechaCita': asign.fechaCita,
+        'medioCita': asign.medioCita,
+        'nroSeriesExtras': asign.nroSeriesExtras,
+        'escames': asign.escames,
+        'escaanio': asign.escaanio,
+        'estado4': asign.estado4,
+        'loteNro': asign.loteNro,
+        'fechabaja': asign.fechabaja,
+        'tipocliente': asign.tipocliente,
+        'incentivo': asign.incentivo,
+        'desconexion': asign.desconexion,
+        'quincena': asign.quincena,
+        'impreso': asign.impreso,
+        'idusercambio': asign.idusercambio,
+        'franjaentrega': asign.franjaentrega,
+        'telefAlternativo1': asign.telefAlternativo1,
+        'telefAlternativo2': asign.telefAlternativo2,
+        'telefAlternativo3': asign.telefAlternativo3,
+        'telefAlternativo4': asign.telefAlternativo4,
+        'tag1': asign.tag1,
+        'tipotel1': asign.tipotel1,
+        'tipotel2': asign.tipotel2,
+        'tipotel3': asign.tipotel3,
+        'tipotel4': asign.tipotel4,
+        'valorunico': asign.valorunico,
+        'clienteCompleto': asign.clienteCompleto,
+        'entreCalles': asign.entreCalles,
+        'descripcion': asign.descripcion,
+        'cierraenapp': asign.cierraenapp,
+        'nomostrarapp': asign.nomostrarapp,
+        'urlDni2': asign.urlDni2,
+        'urlFirma2': asign.urlFirma2,
+        'fechacarga': asign.fechacarga,
+        'fechaent': asign.fechaent,
+        'tecasig': asign.tecasig,
+        'fechacaptura': asign.fechacaptura,
+        'linkFoto': asign.linkFoto,
+        'elegir': asign.elegir,
+        'estadogaos': asign.estadogaos,
+        'estadO3': asign.estadO3,
+        'marcaModeloId': asign.marcaModeloId,
+
+        'evento4': asign.evento4,
+        'fechaEvento4': asign.fechaEvento4,
+        'evento3': asign.evento3,
+        'fechaEvento3': asign.fechaEvento3,
+        'evento2': asign.evento2,
+        'fechaEvento2': asign.fechaEvento2,
+        'evento1': asign.evento1,
+        'fechaEvento1': asign.fechaEvento1,
+        'estadO2': asign.estadO2,
+        'codigoCierre': asign.codigoCierre,
+        'urlDni': asign.urlDni,
+        'urlFirma': asign.urlFirma,
+        'fechacumplida': asign.fechacumplida,
+        'hsCumplida': asign.hsCumplida,
+        'hsCumplidaTime': asign.hsCumplidaTime,
+        'imageArrayDni': '',
+        'imageArrayFirma': '',
+
+        //----------------- Campos que cambian el valor -----------------
+        'observacion': _observaciones2Controller.text,
+      };
+
+      Response response = await ApiHelper.put(
+          '/api/AsignacionesOTs/', asign.idregistro.toString(), request);
+
+      if (!response.isSuccess) {
+        await showAlertDialog(
+            context: context,
+            title: 'Error',
+            message: response.message,
+            actions: <AlertDialogAction>[
+              const AlertDialogAction(key: null, label: 'Aceptar'),
+            ]);
+        return;
+      }
+      _asignacion.observacion = _observaciones2Controller.text;
+    }
+    _editar = false;
+    setState(() {});
+    //Navigator.pop(context, "Yes");
   }
 
 //*****************************************************************************
