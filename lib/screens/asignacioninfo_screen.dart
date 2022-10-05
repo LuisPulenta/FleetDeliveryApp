@@ -55,6 +55,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   bool _editar = false;
 
+  bool _enviarRecibo = false;
+  String _mensajeRecibo = '';
+
   String descCodCierreEJB = '';
   String descCodCierreINC = '';
 
@@ -2610,6 +2613,43 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
     }
 
+//---------------- Pregunta si se envía recibo (sólo en DTV) --------------
+    _mensajeRecibo = '';
+    if (widget.asignacion.proyectomodulo == 'DTV') {
+      await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text(''),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('¿Desea enviarle un Recibo al Cliente?'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      _enviarRecibo = false;
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('NO')),
+                TextButton(
+                    onPressed: () {
+                      _enviarRecibo = true;
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('SI')),
+              ],
+            );
+          });
+    }
+
 //---------------- Establece valores para grabar -----------------------------
 
 //----- Fecha -----
@@ -2648,6 +2688,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           asign.estadogaos = 'INC';
           evento1 = descCodCierreINC;
         }
+      }
+
+      if (asign.estadogaos == 'EJB') {
+        _mensajeRecibo =
+            _mensajeRecibo + "Equipo: " + asign.decO1.toString() + "\n";
       }
 
       String base64imageDNI = '';
@@ -2811,8 +2856,24 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
     }
 
+    String message = '';
+
+    message = 'Recibimos del cliente ' +
+        _asignacion.nombre.toString() +
+        ' los equipos detallados a continuación: ' +
+        "\n" +
+        _mensajeRecibo +
+        "\n" +
+        'Atentamente' +
+        "\n" +
+        widget.user.apellidonombre.toString() +
+        " - Empresa Fleet.";
+
     setState(() {});
     Navigator.pop(context, "Yes");
+    if (_enviarRecibo) {
+      _sendMessage2(_asignacion.telefono.toString(), message);
+    }
   }
 
 //*****************************************************************************
@@ -3194,6 +3255,121 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         phoneNumber: _number2,
                         text:
                             'Hola soy ${widget.user.apellidonombre} de la Empresa Fleet. ',
+                      );
+                      await launch('$link');
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.cancel),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('Cancelar'),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      return;
+                    },
+                  ),
+                ],
+                shape: Border.all(
+                    color: Colors.green, width: 5, style: BorderStyle.solid),
+                backgroundColor: Colors.white,
+              );
+            },
+          );
+        });
+  }
+
+//*****************************************************************************
+//************************** _sendMessage2 ************************************
+//*****************************************************************************
+
+  void _sendMessage2(String number, message) async {
+    String _number2 = number;
+    TextEditingController _phoneController = TextEditingController();
+    _phoneController.text = number;
+
+    await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: const [
+                    Text(
+                      "Atención!!",
+                      style: TextStyle(color: Colors.green, fontSize: 20),
+                    ),
+                  ],
+                ),
+                content: SizedBox(
+                  height: 170,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      const Text(""),
+                      TextField(
+                        controller: _phoneController,
+                        decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: 'Teléfono...',
+                            labelText: 'Teléfono',
+                            //errorText:_passwordShowError ? _passwordError : null,
+                            prefixIcon: const Icon(Icons.phone),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onChanged: (value) {
+                          _number2 = value;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  ElevatedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.insert_comment),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('Continuar'),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () async {
+                      final link = WhatsAppUnilink(
+                        phoneNumber: _number2,
+                        text: message,
                       );
                       await launch('$link');
                     },
