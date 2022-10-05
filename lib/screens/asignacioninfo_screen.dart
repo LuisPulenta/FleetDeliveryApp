@@ -3118,11 +3118,119 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
+//*****************************************************************************
+//************************** _sendMessage *************************************
+//*****************************************************************************
+
   void _sendMessage(String number) async {
-    final link = WhatsAppUnilink(
-      phoneNumber: number,
-      text: 'Hola soy ${widget.user.apellidonombre} de la Empresa Fleet. ',
-    );
-    await launch('$link');
+    String _number2 = number;
+    TextEditingController _phoneController = TextEditingController();
+    _phoneController.text = number;
+
+    await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: const [
+                    Text(
+                      "Atención!!",
+                      style: TextStyle(color: Colors.green, fontSize: 20),
+                    ),
+                  ],
+                ),
+                content: SizedBox(
+                  height: 170,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      const Text(""),
+                      TextField(
+                        controller: _phoneController,
+                        decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: 'Teléfono...',
+                            labelText: 'Teléfono',
+                            //errorText:_passwordShowError ? _passwordError : null,
+                            prefixIcon: const Icon(Icons.phone),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onChanged: (value) {
+                          _number2 = value;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  ElevatedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.insert_comment),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('Continuar'),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () async {
+                      final link = WhatsAppUnilink(
+                        phoneNumber: _number2,
+                        text:
+                            'Hola soy ${widget.user.apellidonombre} de la Empresa Fleet. ',
+                      );
+                      await launch('$link');
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.cancel),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('Cancelar'),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      return;
+                    },
+                  ),
+                ],
+                shape: Border.all(
+                    color: Colors.green, width: 5, style: BorderStyle.solid),
+                backgroundColor: Colors.white,
+              );
+            },
+          );
+        });
   }
 }
