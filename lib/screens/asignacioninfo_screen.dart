@@ -2615,7 +2615,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //---------------- Pregunta si se envía recibo (sólo en DTV) --------------
     _mensajeRecibo = '';
-    if (widget.asignacion.proyectomodulo == 'DTV') {
+    if (widget.asignacion.proyectomodulo == 'DTV' ||
+        widget.asignacion.proyectomodulo == 'Tasa') {
       await showDialog(
           context: context,
           builder: (context) {
@@ -2627,7 +2628,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: const <Widget>[
-                    Text('¿Desea enviarle un Recibo al Cliente?'),
+                    Text('¿Desea enviarle un Comprobante al Cliente?'),
                     SizedBox(
                       height: 10,
                     ),
@@ -2691,8 +2692,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
 
       if (asign.estadogaos == 'EJB') {
-        _mensajeRecibo =
-            _mensajeRecibo + "Equipo: " + asign.decO1.toString() + "\n";
+        String mm = asign.proyectomodulo.toString() == 'DTV'
+            ? asign.decO1.toString()
+            : asign.estadO3.toString();
+        _mensajeRecibo = _mensajeRecibo + "Equipo: " + mm + "\n";
       }
 
       String base64imageDNI = '';
@@ -2858,8 +2861,27 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     String message = '';
 
+    String empresa = _asignacion.proyectomodulo.toString();
+    if (empresa == 'Otro' || empresa == 'TLC') {
+      empresa = 'Telecentro';
+    }
+
+    if (empresa == 'Cable') {
+      empresa = 'Cablevisión';
+    }
+
+    if (empresa == 'Tasa') {
+      empresa = 'Movistar';
+    }
+
+    if (empresa == 'DTV') {
+      empresa = 'DirecTV';
+    }
+
     message = 'Recibimos del cliente ' +
         _asignacion.nombre.toString() +
+        " - " +
+        _asignacion.domicilio.toString() +
         ' los equipos detallados a continuación: ' +
         "\n" +
         _mensajeRecibo +
@@ -2867,7 +2889,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         'Atentamente' +
         "\n" +
         widget.user.apellidonombre.toString() +
-        " - Empresa Fleet.";
+        " - Empresa Fleet al servicio de " +
+        empresa;
 
     setState(() {});
     Navigator.pop(context, "Yes");
@@ -3251,10 +3274,27 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       ),
                     ),
                     onPressed: () async {
+                      String empresa = _asignacion.proyectomodulo.toString();
+                      if (empresa == 'Otro' || empresa == 'TLC') {
+                        empresa = 'Telecentro';
+                      }
+
+                      if (empresa == 'Cable') {
+                        empresa = 'Cablevisión';
+                      }
+
+                      if (empresa == 'Tasa') {
+                        empresa = 'Movistar';
+                      }
+
+                      if (empresa == 'DTV') {
+                        empresa = 'DirecTV';
+                      }
+
                       final link = WhatsAppUnilink(
                         phoneNumber: _number2,
                         text:
-                            'Hola soy ${widget.user.apellidonombre} de la Empresa Fleet. ',
+                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} equipos a nombre de ${_asignacion.nombre} en el domicilio ${_asignacion.domicilio}. Mañana por la mañana podría pasar a retirarlo?. Muchas gracias. ',
                       );
                       await launch('$link');
                     },
