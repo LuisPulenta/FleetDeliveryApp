@@ -3251,6 +3251,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           _number2 = value;
                         },
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                            child: Text("+549"),
+                            onPressed: () async {
+                              _phoneController.text =
+                                  "549" + _phoneController.text;
+                            }),
+                      ),
                     ],
                   ),
                 ),

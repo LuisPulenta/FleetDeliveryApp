@@ -1583,6 +1583,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               .toString()
               .toLowerCase()
               .contains(_search.toLowerCase()) ||
+          asignacion.localidad
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
           asignacion.cp
               .toString()
               .toLowerCase()

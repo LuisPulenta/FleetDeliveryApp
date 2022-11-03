@@ -635,6 +635,29 @@ class _HomeScreenState extends State<HomeScreen>
                             height: 25,
                           ),
                           ElevatedButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.password),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text('CAMBIAR CONTRASEÑA'),
+                              ],
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: const Color(0xff282886),
+                              minimumSize: const Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () => _cambiarPassword(),
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          ElevatedButton(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [
@@ -1163,6 +1186,23 @@ class _HomeScreenState extends State<HomeScreen>
   void _contacto() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const ContactoScreen()));
+  }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO _cambiarPassword ----------------------
+//-------------------------------------------------------------------------
+
+  void _cambiarPassword() async {
+    String? result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ChangePasswordScreen(
+                  user: widget.user,
+                )));
+
+    if (result == 'yes') {
+      _logOut();
+    }
   }
 
 //-------------------------------------------------------------------------

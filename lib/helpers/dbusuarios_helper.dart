@@ -27,6 +27,12 @@ class DBUsuarios {
     return database.delete("usuarios");
   }
 
+  static Future<int> update(Usuario usuario) async {
+    Database database = await _openDBUsuarios();
+    return database.update("usuarios", usuario.toMap(),
+        where: "idUser = ?", whereArgs: [usuario.idUser]);
+  }
+
   static Future<List<Usuario>> usuarios() async {
     Database database = await _openDBUsuarios();
     final List<Map<String, dynamic>> usuariosMap =
