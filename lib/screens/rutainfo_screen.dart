@@ -51,6 +51,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   bool _puso1 = false;
   bool _renovoState = false;
 
+  bool _isFiltered = false;
+  String _search = '';
+
   bool _todas = true;
 
   Position _positionUser = const Position(
@@ -344,6 +347,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       notachofer: '');
 
   List<ParadaEnvio> _paradasenvios = [];
+  List<ParadaEnvio> _paradasenviosfiltered = [];
   List<ParadaEnvio> _paradasenviosdb = [];
 
   int _nroReg = 0;
@@ -370,7 +374,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       backgroundColor: const Color(0xffdadada),
       appBar: AppBar(
         title: Text(widget.ruta.nombre!),
-        centerTitle: true,
+        centerTitle: false,
         actions: [
           Row(
             children: [
@@ -394,13 +398,33 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       body: Center(
         child: _showLoader ? const LoaderComponent(text: '') : _getContent(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _navegartodos(),
-        child: const Icon(
-          Icons.map,
-          size: 30,
-        ),
-        backgroundColor: const Color(0xff282886),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: "1",
+            onPressed: () => _navegartodos(),
+            child: _isFiltered
+                ? IconButton(
+                    onPressed: _removeFilter,
+                    icon: const Icon(Icons.filter_none))
+                : IconButton(
+                    onPressed: _showFilter, icon: const Icon(Icons.filter_alt)),
+            backgroundColor: const Color(0xff282886),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          FloatingActionButton(
+            heroTag: "2",
+            onPressed: () => _navegartodos(),
+            child: const Icon(
+              Icons.map,
+              size: 30,
+            ),
+            backgroundColor: const Color(0xff282886),
+          ),
+        ],
       ),
     );
   }
@@ -444,7 +468,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                 color: Color(0xff282886),
                 fontWeight: FontWeight.bold,
               )),
-          Text(_paradasenvios.length.toString(),
+          Text(_paradasenviosfiltered.length.toString(),
               style: const TextStyle(
                 fontSize: 14,
                 color: Color(0xff282886),
@@ -485,7 +509,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     return RefreshIndicator(
       onRefresh: _llenarparadasenvios,
       child: ListView(
-        children: _paradasenvios.map((e) {
+        children: _paradasenviosfiltered.map((e) {
           return Card(
             color: Colors.white60,
             shadowColor: Colors.white,
@@ -1030,6 +1054,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       return a.secuencia!.toInt().compareTo(b.secuencia!.toInt());
     });
 
+    _paradasenviosfiltered = _paradasenvios;
     setState(() {});
   }
 
@@ -1561,5 +1586,85 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       if (element.idParada == paradaenvionueva.idParada &&
           element.enviadoseguimiento == 1) {}
     }
+  }
+
+//*****************************************************************************
+//************************** METODO REMOVEFILTER ******************************
+//*****************************************************************************
+
+  void _removeFilter() {
+    setState(() {
+      _search = '';
+      _isFiltered = false;
+    });
+    _paradasenviosfiltered = _paradasenvios;
+    _filter();
+  }
+
+//*****************************************************************************
+//************************** METODO SHOWFILTER ********************************
+//*****************************************************************************
+
+  void _showFilter() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: Text('Filtrar Paradas'),
+            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              Text('Escriba texto a buscar en Nombre o Dirección'),
+              SizedBox(
+                height: 10,
+              ),
+              TextField(
+                autofocus: true,
+                decoration: InputDecoration(
+                    hintText: 'Criterio de búsqueda...',
+                    labelText: 'Buscar',
+                    suffixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                onChanged: (value) {
+                  _search = value;
+                },
+              ),
+            ]),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Cancelar')),
+              TextButton(onPressed: () => _filter(), child: Text('Filtrar')),
+            ],
+          );
+        });
+  }
+
+//*****************************************************************************
+//************************** METODO FILTER ************************************
+//*****************************************************************************
+
+  _filter() {
+    if (_search.isEmpty) {
+      return;
+    }
+    List<ParadaEnvio> filteredList = [];
+    for (var paradasenvio in _paradasenvios) {
+      if (paradasenvio.domicilio!
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          paradasenvio.titular!.toLowerCase().contains(_search.toLowerCase())) {
+        filteredList.add(paradasenvio);
+      }
+    }
+
+    setState(() {
+      _paradasenviosfiltered = filteredList;
+      _isFiltered = true;
+    });
+
+    Navigator.of(context).pop();
   }
 }

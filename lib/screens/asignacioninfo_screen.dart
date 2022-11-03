@@ -1403,77 +1403,76 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           const SizedBox(
                             height: 1,
                           ),
-                          // Row(
-                          //   children: [
-                          //     Text("Modelo: ",
-                          //         style: TextStyle(
-                          //           fontSize: 12,
-                          //           color: Color(0xFF0e4888),
-                          //           fontWeight: FontWeight.bold,
-                          //         )),
-                          //     Expanded(
-                          //       child: Text(e.marcaModeloId.toString(),
-                          //           style: TextStyle(
-                          //             fontSize: 12,
-                          //           )),
-                          //     ),
-                          //   ],
-                          // ),
-                          // SizedBox(
-                          //   height: 1,
-                          // ),
                           widget.funcionApp.habilitaCambioModelo == 1
-                              ? Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 90,
-                                      child: Text("Conf. Modelo:   ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        height: 40,
-                                        child: DropdownButtonFormField(
-                                          value: e.marcaModeloId, //_equipo,
-                                          isExpanded: true,
-                                          isDense: true,
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black),
-                                          decoration: InputDecoration(
-                                            fillColor: Colors.white,
-                                            filled: true,
-                                            hintText: 'Elija un Modelo...',
-                                            errorText: _equipoShowError
-                                                ? _equipoError
-                                                : null,
-                                          ),
-                                          items: _getComboEquipos(),
-                                          onChanged: (value) {
-                                            _equipo = value.toString();
-
-                                            for (Asign asign in _asigns) {
-                                              if (asign.autonumerico ==
-                                                  e.autonumerico) {
-                                                asign.marcaModeloId = _equipo;
-                                              }
-                                            }
-                                          },
+                              ? !(widget.asignacion.proyectomodulo == 'DTV' ||
+                                      widget.asignacion.proyectomodulo ==
+                                          'Cable')
+                                  ? Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 90,
+                                          child: Text("Conf. Modelo:   ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF0e4888),
+                                                fontWeight: FontWeight.bold,
+                                              )),
                                         ),
-                                      ),
-                                    ),
-                                    const Text("        ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                  ],
-                                )
+                                        Expanded(
+                                          child: SizedBox(
+                                            height: 40,
+                                            child: DropdownButtonFormField(
+                                              value: e.marcaModeloId, //_equipo,
+                                              isExpanded: true,
+                                              isDense: true,
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black),
+                                              decoration: InputDecoration(
+                                                fillColor: Colors.white,
+                                                filled: true,
+                                                hintText: 'Elija un Modelo...',
+                                                errorText: _equipoShowError
+                                                    ? _equipoError
+                                                    : null,
+                                              ),
+                                              items: _getComboEquipos(),
+                                              onChanged: (value) {
+                                                _equipo = value.toString();
+
+                                                for (Asign asign in _asigns) {
+                                                  if (asign.autonumerico ==
+                                                      e.autonumerico) {
+                                                    asign.marcaModeloId =
+                                                        _equipo;
+                                                  }
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        const Text("        ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ],
+                                    )
+                                  : Row(
+                                      children: [
+                                        Text('Modelo:            ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                        Text(e.modelo.toString(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ],
+                                    )
                               : Container(),
                           const SizedBox(
                             height: 10,
