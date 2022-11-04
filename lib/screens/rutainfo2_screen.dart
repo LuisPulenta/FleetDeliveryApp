@@ -1,21 +1,20 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
-import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 
-class RutaInfoScreen extends StatefulWidget {
+class RutaInfo2Screen extends StatefulWidget {
   final Usuario user;
   final RutaCab ruta;
   final List<Parada> paradas;
@@ -24,7 +23,7 @@ class RutaInfoScreen extends StatefulWidget {
   final Position positionUser;
   final List<Motivo> motivos;
 
-  const RutaInfoScreen(
+  const RutaInfo2Screen(
       {Key? key,
       required this.user,
       required this.ruta,
@@ -36,10 +35,10 @@ class RutaInfoScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _RutaInfoScreenState createState() => _RutaInfoScreenState();
+  _RutaInfo2ScreenState createState() => _RutaInfo2ScreenState();
 }
 
-class _RutaInfoScreenState extends State<RutaInfoScreen> {
+class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 //*****************************************************************************
 //************************** DEFINICION DE VARIABLES **************************
 //*****************************************************************************
@@ -54,8 +53,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   bool _isFiltered = false;
   String _search = '';
 
-  bool _todas = true;
-
   Position _positionUser = const Position(
       longitude: 0,
       latitude: 0,
@@ -65,40 +62,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       heading: 0,
       speed: 0,
       speedAccuracy: 0);
-
-  LatLng _center = const LatLng(0, 0);
-  final Set<Marker> _markers = {};
-  ParadaEnvio paradaenvioSelected = ParadaEnvio(
-    idParada: 0,
-    idRuta: 0,
-    idEnvio: 0,
-    secuencia: 0,
-    leyenda: '',
-    latitud: 0,
-    longitud: 0,
-    idproveedor: 0,
-    estado: 0,
-    ordenid: '',
-    titular: '',
-    dni: '',
-    domicilio: '',
-    cp: '',
-    entreCalles: '',
-    telefonos: '',
-    localidad: '',
-    bultos: 0,
-    proveedor: '',
-    motivo: 0,
-    motivodesc: '',
-    notas: '',
-    enviado: 0,
-    fecha: '',
-    imageArray: '',
-    observaciones: '',
-    enviadoparada: 0,
-    enviadoenvio: 0,
-    enviadoseguimiento: 0,
-  );
 
   ParadaEnvio parenv = ParadaEnvio(
     idParada: 0,
@@ -377,55 +340,33 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         title: Text(widget.ruta.nombre!),
         centerTitle: false,
         actions: [
-          Row(
-            children: [
-              const Text(
-                "Todas:",
-                style: TextStyle(color: Colors.white, fontSize: 14),
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.save,
+                  color: Color(0xff282886),
+                ),
+                onPressed: () => _guardar(),
               ),
-              Switch(
-                  value: _todas,
-                  activeColor: Colors.green,
-                  inactiveThumbColor: Colors.grey,
-                  onChanged: (value) {
-                    _todas = value;
-                    _llenarparadasenvios();
-                    setState(() {});
-                  }),
-            ],
+            ),
           ),
         ],
       ),
       body: Center(
         child: _showLoader ? const LoaderComponent(text: '') : _getContent(),
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            heroTag: "1",
-            onPressed: () => _navegartodos(),
-            child: _isFiltered
-                ? IconButton(
-                    onPressed: _removeFilter,
-                    icon: const Icon(Icons.filter_none))
-                : IconButton(
-                    onPressed: _showFilter, icon: const Icon(Icons.filter_alt)),
-            backgroundColor: const Color(0xff282886),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          FloatingActionButton(
-            heroTag: "2",
-            onPressed: () => _navegartodos(),
-            child: const Icon(
-              Icons.map,
-              size: 30,
-            ),
-            backgroundColor: const Color(0xff282886),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        heroTag: "1",
+        onPressed: () {},
+        child: _isFiltered
+            ? IconButton(
+                onPressed: _removeFilter, icon: const Icon(Icons.filter_none))
+            : IconButton(
+                onPressed: _showFilter, icon: const Icon(Icons.filter_alt)),
+        backgroundColor: const Color(0xff282886),
       ),
     );
   }
@@ -516,464 +457,127 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             shadowColor: Colors.white,
             elevation: 10,
             margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-            child: InkWell(
-              onTap: () async {
-                paradaenvioSelected = e;
-                await _goInfoParada(e);
-              },
-              child: Container(
-                margin: const EdgeInsets.all(0),
-                padding: const EdgeInsets.all(5),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(e.secuencia.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 24,
-                                                color: Color(0xffbc2b51),
-                                                fontWeight: FontWeight.bold)),
-                                      ),
-                                      (e.estado == 4)
-                                          ? const Text(
-                                              "ENTREGADO",
-                                              style: TextStyle(
-                                                  color: Colors.green,
-                                                  fontWeight: FontWeight.bold),
-                                            )
-                                          : (e.estado == 10)
-                                              ? const Text(
-                                                  "NO ENTREGADO",
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              : (e.estado == 7)
-                                                  ? const Text(
-                                                      "RECHAZADO",
-                                                      style: TextStyle(
-                                                          color: Colors.purple,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  : const Text(
-                                                      "PENDIENTE",
-                                                      style: TextStyle(
-                                                          color: Colors.blue,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Text("Nombre: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF781f1e),
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Expanded(
-                                        child: Text(e.titular.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold)),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Text("Dirección: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF781f1e),
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Expanded(
-                                        child: Text(e.leyenda.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 135,
-                                        child: ElevatedButton(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: const [
-                                              Icon(Icons.map,
-                                                  color: Color(0xff282886)),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Text(
-                                                'Navegar',
+            child: Container(
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(5),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(e.secuencia.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 24,
+                                              color: Color(0xffbc2b51),
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    (e.estado == 4)
+                                        ? const Text(
+                                            "ENTREGADO",
+                                            style: TextStyle(
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        : (e.estado == 10)
+                                            ? const Text(
+                                                "NO ENTREGADO",
                                                 style: TextStyle(
-                                                    color: Color(0xff282886)),
-                                              ),
-                                            ],
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: const Color(0xFFb3b3b4),
-                                            minimumSize:
-                                                const Size(double.infinity, 30),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                            ),
-                                          ),
-                                          onPressed: () => _navegar(e),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                                    color: Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            : (e.estado == 7)
+                                                ? const Text(
+                                                    "RECHAZADO",
+                                                    style: TextStyle(
+                                                        color: Colors.purple,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                                : const Text(
+                                                    "PENDIENTE",
+                                                    style: TextStyle(
+                                                        color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text("Nombre: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF781f1e),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      child: Text(e.titular.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text("Dirección: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF781f1e),
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Expanded(
+                                      child: Text(e.leyenda.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios),
-                  ],
-                ),
+                  ),
+                  e.estado == 0
+                      ? Checkbox(
+                          value: e.enviado == 1 ? true : false,
+                          onChanged: (value) {
+                            for (ParadaEnvio paradaEnvio
+                                in _paradasenviosfiltered) {
+                              if (paradaEnvio.idEnvio == e.idEnvio &&
+                                  paradaEnvio.estado == 0) {
+                                paradaEnvio.enviado = value == true ? 1 : 0;
+                              }
+                            }
+                            setState(() {});
+                          })
+                      : Container()
+                ],
               ),
             ),
           );
         }).toList(),
       ),
     );
-  }
-
-//-------------------------------------------------------------------------
-//-------------------------- METODO GOINFOPARADA --------------------------
-//-------------------------------------------------------------------------
-
-  Future<void> _goInfoParada(ParadaEnvio e) async {
-    var result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ParadaInfoScreen(
-                user: widget.user,
-                paradaenvio: e,
-                positionUser: widget.positionUser,
-                motivos: widget.motivos,
-                paradas: widget.paradas,
-                envios: widget.envios)));
-    if (result == 'yes' || result != 'yes') {
-      await _llenarparadasenvios();
-    }
-
-    await _llenarparadasenvios();
-    setState(() {});
-  }
-
-//-------------------------------------------------------------------------
-//-------------------------- METODO NAVEGAR -------------------------------
-//-------------------------------------------------------------------------
-
-  _navegar(e) async {
-    if (e.latitud == 0 ||
-        e.longitud == 0 ||
-        isNullOrEmpty(e.latitud) ||
-        isNullOrEmpty(e.longitud)) {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message: "Esta parada no tiene coordenadas cargadas.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
-      return;
-    }
-
-    _center = LatLng(e.latitud!.toDouble(), e.longitud!.toDouble());
-    _markers.clear();
-    _markers.add(Marker(
-      markerId: MarkerId(e.secuencia.toString()),
-      position: _center,
-      infoWindow: InfoWindow(
-        title: e.titular.toString(),
-        snippet: e.domicilio.toString(),
-      ),
-      icon: BitmapDescriptor.defaultMarker,
-    ));
-
-    var connectivityResult = await Connectivity().checkConnectivity();
-
-    if (connectivityResult != ConnectivityResult.none) {
-      var uri = Uri.parse(
-          "google.navigation:q=${e.latitud!.toDouble()},${e.longitud!.toDouble()}&mode=d");
-      if (await canLaunch(uri.toString())) {
-        await launch(uri.toString());
-      } else {
-        throw 'Could not launch ${uri.toString()}';
-      }
-
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => ParadaMapScreen(
-      //       user: widget.user,
-      //       positionUser: widget.positionUser,
-      //       paradaenvio: e,
-      //       markers: _markers,
-      //     ),
-      //   ),
-      // );
-    } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso!',
-          message: "Necesita estar conectado a Internet para acceder al mapa",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
-    }
-  }
-
-//-------------------------------------------------------------------------
-//-------------------------- METODO NAVEGARTODOS --------------------------
-//-------------------------------------------------------------------------
-
-  _navegartodos() async {
-    _markers.clear();
-
-    Uint8List markerIcon = await getBytesFromCanvas(1, 20, 20, 3);
-
-    for (ParadaEnvio element in _paradasenvios) {
-      if (!isNullOrEmpty(element.latitud) && !isNullOrEmpty(element.longitud)) {
-        _markers.add(
-          Marker(
-            markerId: MarkerId(element.secuencia.toString()),
-            position: LatLng(
-                element.latitud!.toDouble(), element.longitud!.toDouble()),
-            // infoWindow: InfoWindow(
-            //   title: element.titular.toString(),
-            //   snippet: element.domicilio.toString(),
-            // ),
-
-            icon: (element.estado == 3)
-                ? BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueBlue)
-                : (element.estado == 4)
-                    ? BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueGreen)
-                    : (element.estado == 10)
-                        ? BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueRed)
-                        : (element.estado == 7)
-                            ? BitmapDescriptor.defaultMarkerWithHue(
-                                BitmapDescriptor.hueViolet)
-                            : BitmapDescriptor.defaultMarkerWithHue(
-                                BitmapDescriptor.hueBlue),
-          ),
-        );
-      }
-    }
-
-    for (ParadaEnvio element in _paradasenvios) {
-      if (!isNullOrEmpty(element.latitud) && !isNullOrEmpty(element.longitud)) {
-        markerIcon = await getBytesFromCanvas(
-            element.secuencia!.toInt(), 100, 100, element.estado!.toInt());
-        _markers.add(
-          Marker(
-            markerId: MarkerId(element.secuencia.toString()),
-            position: LatLng(
-                element.latitud!.toDouble(), element.longitud!.toDouble()),
-            // infoWindow: InfoWindow(
-            //   title: element.titular.toString(),
-            //   snippet: element.domicilio.toString(),
-            // ),
-            onTap: () {
-              // CameraPosition(
-              //     target: LatLng(element.latitud!.toDouble(),
-              //         element.longitud!.toDouble()),
-              //     zoom: 16.0);
-              _customInfoWindowController.addInfoWindow!(
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: (element.estado == 3)
-                              ? const Color(0xff3933f2)
-                              : (element.estado == 4)
-                                  ? const Color(0xff31eb2f)
-                                  : (element.estado == 10)
-                                      ? const Color(0xffe9353a)
-                                      : (element.estado == 7)
-                                          ? const Color(0xff8a36e4)
-                                          : const Color(0xff3933f2),
-                          child: Text(
-                            element.secuencia.toString(),
-                            style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8.0,
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                  child: Text(
-                                element.titular.toString(),
-                                style: const TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold),
-                              )),
-                              Expanded(
-                                  child: Text(element.domicilio.toString(),
-                                      style: const TextStyle(fontSize: 12))),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Icon(Icons.map,
-                                              color: Color(0xff282886)),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            'Navegar',
-                                            style: TextStyle(
-                                                color: Color(0xff282886)),
-                                          ),
-                                        ],
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _navegar(element),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Text(
-                                            'Abrir',
-                                            style: TextStyle(
-                                                color: Color(0xff282886)),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Icon(Icons.arrow_forward_ios,
-                                              color: Color(0xff282886)),
-                                        ],
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _goInfoParada(element),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  LatLng(element.latitud!.toDouble(),
-                      element.longitud!.toDouble()));
-            },
-            icon: BitmapDescriptor.fromBytes(markerIcon),
-          ),
-        );
-      }
-    }
-
-    var connectivityResult = await Connectivity().checkConnectivity();
-
-    if (connectivityResult != ConnectivityResult.none) {
-      bool band = true;
-      for (var pe in _paradasenvios) {
-        if (band) {
-          if (pe.latitud != null && pe.longitud != null) {
-            parenv = pe;
-            band = false;
-          }
-        }
-      }
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ParadaMapScreen(
-            user: widget.user,
-            positionUser: widget.positionUser,
-            paradaenvio: parenv,
-            markers: _markers,
-            customInfoWindowController: _customInfoWindowController,
-          ),
-        ),
-      );
-    } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso!',
-          message: "Necesita estar conectado a Internet para acceder al mapa",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
-    }
   }
 
 //*****************************************************************************
@@ -983,13 +587,13 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   Future<void> _llenarparadasenvios() async {
     _paradasenvios = [];
     for (var paradasenvio in widget.paradasenvios) {
-      if (_todas) {
+      // if (_todas) {
+      //   _paradasenvios.add(paradasenvio);
+      // } else {
+      if (paradasenvio.estado == 0 || paradasenvio.estado == 3) {
         _paradasenvios.add(paradasenvio);
-      } else {
-        if (paradasenvio.estado == 0 || paradasenvio.estado == 3) {
-          _paradasenvios.add(paradasenvio);
-        }
       }
+      // }
     }
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
 
@@ -1616,10 +1220,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            title: Text('Filtrar Paradas'),
+            title: const Text('Filtrar Paradas'),
             content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              Text('Escriba texto a buscar en Nombre o Dirección'),
-              SizedBox(
+              const Text('Escriba texto a buscar en Nombre o Dirección'),
+              const SizedBox(
                 height: 10,
               ),
               TextField(
@@ -1627,7 +1231,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                 decoration: InputDecoration(
                     hintText: 'Criterio de búsqueda...',
                     labelText: 'Buscar',
-                    suffixIcon: Icon(Icons.search),
+                    suffixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
                 onChanged: (value) {
@@ -1638,8 +1242,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             actions: <Widget>[
               TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Cancelar')),
-              TextButton(onPressed: () => _filter(), child: Text('Filtrar')),
+                  child: const Text('Cancelar')),
+              TextButton(
+                  onPressed: () => _filter(), child: const Text('Filtrar')),
             ],
           );
         });
@@ -1669,5 +1274,66 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     });
 
     Navigator.of(context).pop();
+  }
+
+//------------------------------------------------------------------------
+//------------------------------- _guardar -------------------------------
+//------------------------------------------------------------------------
+
+  _guardar() async {
+    int cantidad = 0;
+    for (var paradaenvio in _paradasenviosfiltered) {
+      if (paradaenvio.enviado == 1) {
+        cantidad++;
+      }
+    }
+
+    if (cantidad == 0) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Debe seleccionar al menos un envío!!',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    String palabra = '';
+    if (cantidad == 1) {
+      palabra = 'envío';
+    } else {
+      palabra = 'envíos';
+    }
+
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text(''),
+            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              Text(
+                  '¿Está seguro de guardar ${cantidad} ${palabra} como entregado en casa de líder?'),
+              const SizedBox(
+                height: 10,
+              ),
+            ]),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('NO')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('SI')),
+            ],
+          );
+        });
   }
 }

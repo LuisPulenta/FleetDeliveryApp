@@ -822,157 +822,183 @@ class _HomeScreenState extends State<HomeScreen>
           shadowColor: Colors.white,
           elevation: 10,
           margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-          child: InkWell(
-            onTap: () {
-              rutaSelected = e;
-              _goInfoRuta(e);
-            },
-            child: Container(
-              margin: const EdgeInsets.all(0),
-              padding: const EdgeInsets.all(5),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    const Text("Fecha: ",
-                                        style: TextStyle(
+          child: Container(
+            margin: const EdgeInsets.all(0),
+            padding: const EdgeInsets.all(5),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Text("Fecha: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  Expanded(
+                                    child: Text(
+                                        DateFormat('dd/MM/yyyy').format(
+                                            DateTime.parse(e.fechaAlta!)),
+                                        style: const TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF781f1e),
-                                          fontWeight: FontWeight.bold,
                                         )),
-                                    Expanded(
-                                      child: Text(
-                                          DateFormat('dd/MM/yyyy').format(
-                                              DateTime.parse(e.fechaAlta!)),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text("Nombre: ",
-                                        style: TextStyle(
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  const Text("Nombre: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  Expanded(
+                                    child: Text(e.nombre!,
+                                        style: const TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF781f1e),
-                                          fontWeight: FontWeight.bold,
                                         )),
-                                    Expanded(
-                                      child: Text(e.nombre!,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text("Ruta N°: ",
-                                        style: TextStyle(
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  const Text("Ruta N°: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  Expanded(
+                                    child: Text(e.idRuta.toString(),
+                                        style: const TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF781f1e),
-                                          fontWeight: FontWeight.bold,
                                         )),
-                                    Expanded(
-                                      child: Text(e.idRuta.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    e.pendientes == 0
-                                        ? const Text(('COMPLETADA'),
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.green,
-                                              fontWeight: FontWeight.bold,
-                                            ))
-                                        : const Text(' '),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text("Paradas: ",
-                                        style: TextStyle(
+                ),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  e.pendientes == 0
+                                      ? const Text(('COMPLETADA'),
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ))
+                                      : const Text(' '),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  const Text("Paradas: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  Expanded(
+                                    child: Text(e.totalParadas.toString(),
+                                        style: const TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF781f1e),
-                                          fontWeight: FontWeight.bold,
                                         )),
-                                    Expanded(
-                                      child: Text(e.totalParadas.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text("Pendientes: ",
-                                        style: TextStyle(
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  const Text("Pendientes: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF781f1e),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  Expanded(
+                                    child: Text(e.pendientes.toString(),
+                                        style: const TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF781f1e),
-                                          fontWeight: FontWeight.bold,
                                         )),
-                                    Expanded(
-                                      child: Text(e.pendientes.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios),
-                ],
-              ),
+                ),
+                Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: const Color(0xff282886),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          rutaSelected = e;
+                          _goInfoRuta(e);
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    CircleAvatar(
+                      backgroundColor: const Color(0xff282886),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.keyboard_double_arrow_right,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          rutaSelected = e;
+                          _goInfoRuta2(e);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         );
@@ -1221,6 +1247,43 @@ class _HomeScreenState extends State<HomeScreen>
         context,
         MaterialPageRoute(
             builder: (context) => RutaInfoScreen(
+                  user: widget.user,
+                  ruta: ruta,
+                  paradas: _paradas,
+                  envios: _envios,
+                  paradasenvios: _paradasenviosselected,
+                  positionUser: _positionUser,
+                  motivos: _motivos,
+                )));
+    if (result == 'yes' || result != 'yes') {
+      setState(() {
+        _textComponent = "";
+        _showLoader = true;
+      });
+      await _actualizaParadasEnvios();
+      await _actualizaRutas();
+      setState(() {
+        _showLoader = false;
+      });
+    }
+  }
+
+//-------------------------------------------------------------------------
+//-------------------------- METODO GOINFORUTA2 ---------------------------
+//-------------------------------------------------------------------------
+
+  void _goInfoRuta2(RutaCab ruta) async {
+    _paradasenviosselected = [];
+    for (var element in _paradasenvios) {
+      if (element.idRuta == ruta.idRuta) {
+        _paradasenviosselected.add(element);
+      }
+    }
+
+    String? result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RutaInfo2Screen(
                   user: widget.user,
                   ruta: ruta,
                   paradas: _paradas,
@@ -1751,7 +1814,7 @@ class _HomeScreenState extends State<HomeScreen>
                     children: [
                       Text(
                         "Para borrar las paradas grabadas en forma local de este teléfono para el Usuario  ${widget.user.apellidonombre} debe escribir su contraseña",
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                       ),
                       const Text(""),
                       TextField(
@@ -2152,35 +2215,36 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
-        idParada: paradaenvio.idParada,
-        idRuta: paradaenvio.idRuta,
-        idEnvio: paradaenvio.idEnvio,
-        secuencia: paradaenvio.secuencia,
-        leyenda: paradaenvio.leyenda,
-        latitud: paradaenvio.latitud,
-        longitud: paradaenvio.longitud,
-        idproveedor: paradaenvio.idproveedor,
-        estado: paradaenvio.estado,
-        ordenid: paradaenvio.ordenid,
-        titular: paradaenvio.titular,
-        dni: paradaenvio.dni,
-        domicilio: paradaenvio.domicilio,
-        cp: paradaenvio.cp,
-        entreCalles: paradaenvio.entreCalles,
-        telefonos: paradaenvio.telefonos,
-        localidad: paradaenvio.localidad,
-        bultos: paradaenvio.bultos,
-        proveedor: paradaenvio.proveedor,
-        motivo: paradaenvio.motivo,
-        motivodesc: paradaenvio.motivodesc,
-        notas: paradaenvio.notas,
-        enviado: 1,
-        fecha: paradaenvio.fecha,
-        imageArray: paradaenvio.imageArray,
-        observaciones: paradaenvio.observaciones,
-        enviadoparada: paradaenvio.enviadoparada,
-        enviadoenvio: paradaenvio.enviadoenvio,
-        enviadoseguimiento: paradaenvio.enviadoseguimiento);
+      idParada: paradaenvio.idParada,
+      idRuta: paradaenvio.idRuta,
+      idEnvio: paradaenvio.idEnvio,
+      secuencia: paradaenvio.secuencia,
+      leyenda: paradaenvio.leyenda,
+      latitud: paradaenvio.latitud,
+      longitud: paradaenvio.longitud,
+      idproveedor: paradaenvio.idproveedor,
+      estado: paradaenvio.estado,
+      ordenid: paradaenvio.ordenid,
+      titular: paradaenvio.titular,
+      dni: paradaenvio.dni,
+      domicilio: paradaenvio.domicilio,
+      cp: paradaenvio.cp,
+      entreCalles: paradaenvio.entreCalles,
+      telefonos: paradaenvio.telefonos,
+      localidad: paradaenvio.localidad,
+      bultos: paradaenvio.bultos,
+      proveedor: paradaenvio.proveedor,
+      motivo: paradaenvio.motivo,
+      motivodesc: paradaenvio.motivodesc,
+      notas: paradaenvio.notas,
+      enviado: 1,
+      fecha: paradaenvio.fecha,
+      imageArray: paradaenvio.imageArray,
+      observaciones: paradaenvio.observaciones,
+      enviadoparada: paradaenvio.enviadoparada,
+      enviadoenvio: paradaenvio.enviadoenvio,
+      enviadoseguimiento: paradaenvio.enviadoseguimiento,
+    );
 
     await DBParadasEnvios.update(paradaenvionueva);
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
@@ -2252,35 +2316,36 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future<void> _ponerEnviadoParada1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
-        idParada: paradaenvio.idParada,
-        idRuta: paradaenvio.idRuta,
-        idEnvio: paradaenvio.idEnvio,
-        secuencia: paradaenvio.secuencia,
-        leyenda: paradaenvio.leyenda,
-        latitud: paradaenvio.latitud,
-        longitud: paradaenvio.longitud,
-        idproveedor: paradaenvio.idproveedor,
-        estado: paradaenvio.estado,
-        ordenid: paradaenvio.ordenid,
-        titular: paradaenvio.titular,
-        dni: paradaenvio.dni,
-        domicilio: paradaenvio.domicilio,
-        cp: paradaenvio.cp,
-        entreCalles: paradaenvio.entreCalles,
-        telefonos: paradaenvio.telefonos,
-        localidad: paradaenvio.localidad,
-        bultos: paradaenvio.bultos,
-        proveedor: paradaenvio.proveedor,
-        motivo: paradaenvio.motivo,
-        motivodesc: paradaenvio.motivodesc,
-        notas: paradaenvio.notas,
-        enviado: paradaenvio.enviado,
-        fecha: paradaenvio.fecha,
-        imageArray: paradaenvio.imageArray,
-        observaciones: paradaenvio.observaciones,
-        enviadoparada: 1,
-        enviadoenvio: paradaenvio.enviadoenvio,
-        enviadoseguimiento: paradaenvio.enviadoseguimiento);
+      idParada: paradaenvio.idParada,
+      idRuta: paradaenvio.idRuta,
+      idEnvio: paradaenvio.idEnvio,
+      secuencia: paradaenvio.secuencia,
+      leyenda: paradaenvio.leyenda,
+      latitud: paradaenvio.latitud,
+      longitud: paradaenvio.longitud,
+      idproveedor: paradaenvio.idproveedor,
+      estado: paradaenvio.estado,
+      ordenid: paradaenvio.ordenid,
+      titular: paradaenvio.titular,
+      dni: paradaenvio.dni,
+      domicilio: paradaenvio.domicilio,
+      cp: paradaenvio.cp,
+      entreCalles: paradaenvio.entreCalles,
+      telefonos: paradaenvio.telefonos,
+      localidad: paradaenvio.localidad,
+      bultos: paradaenvio.bultos,
+      proveedor: paradaenvio.proveedor,
+      motivo: paradaenvio.motivo,
+      motivodesc: paradaenvio.motivodesc,
+      notas: paradaenvio.notas,
+      enviado: paradaenvio.enviado,
+      fecha: paradaenvio.fecha,
+      imageArray: paradaenvio.imageArray,
+      observaciones: paradaenvio.observaciones,
+      enviadoparada: 1,
+      enviadoenvio: paradaenvio.enviadoenvio,
+      enviadoseguimiento: paradaenvio.enviadoseguimiento,
+    );
 
     await DBParadasEnvios.update(paradaenvionueva);
     paradaenvio.enviadoparada = 1;
@@ -2295,35 +2360,36 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future<void> _ponerEnviadoEnvio1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
-        idParada: paradaenvio.idParada,
-        idRuta: paradaenvio.idRuta,
-        idEnvio: paradaenvio.idEnvio,
-        secuencia: paradaenvio.secuencia,
-        leyenda: paradaenvio.leyenda,
-        latitud: paradaenvio.latitud,
-        longitud: paradaenvio.longitud,
-        idproveedor: paradaenvio.idproveedor,
-        estado: paradaenvio.estado,
-        ordenid: paradaenvio.ordenid,
-        titular: paradaenvio.titular,
-        dni: paradaenvio.dni,
-        domicilio: paradaenvio.domicilio,
-        cp: paradaenvio.cp,
-        entreCalles: paradaenvio.entreCalles,
-        telefonos: paradaenvio.telefonos,
-        localidad: paradaenvio.localidad,
-        bultos: paradaenvio.bultos,
-        proveedor: paradaenvio.proveedor,
-        motivo: paradaenvio.motivo,
-        motivodesc: paradaenvio.motivodesc,
-        notas: paradaenvio.notas,
-        enviado: paradaenvio.enviado,
-        fecha: paradaenvio.fecha,
-        imageArray: paradaenvio.imageArray,
-        observaciones: paradaenvio.observaciones,
-        enviadoparada: paradaenvio.enviadoparada,
-        enviadoenvio: 1,
-        enviadoseguimiento: paradaenvio.enviadoseguimiento);
+      idParada: paradaenvio.idParada,
+      idRuta: paradaenvio.idRuta,
+      idEnvio: paradaenvio.idEnvio,
+      secuencia: paradaenvio.secuencia,
+      leyenda: paradaenvio.leyenda,
+      latitud: paradaenvio.latitud,
+      longitud: paradaenvio.longitud,
+      idproveedor: paradaenvio.idproveedor,
+      estado: paradaenvio.estado,
+      ordenid: paradaenvio.ordenid,
+      titular: paradaenvio.titular,
+      dni: paradaenvio.dni,
+      domicilio: paradaenvio.domicilio,
+      cp: paradaenvio.cp,
+      entreCalles: paradaenvio.entreCalles,
+      telefonos: paradaenvio.telefonos,
+      localidad: paradaenvio.localidad,
+      bultos: paradaenvio.bultos,
+      proveedor: paradaenvio.proveedor,
+      motivo: paradaenvio.motivo,
+      motivodesc: paradaenvio.motivodesc,
+      notas: paradaenvio.notas,
+      enviado: paradaenvio.enviado,
+      fecha: paradaenvio.fecha,
+      imageArray: paradaenvio.imageArray,
+      observaciones: paradaenvio.observaciones,
+      enviadoparada: paradaenvio.enviadoparada,
+      enviadoenvio: 1,
+      enviadoseguimiento: paradaenvio.enviadoseguimiento,
+    );
 
     await DBParadasEnvios.update(paradaenvionueva);
     paradaenvio.enviadoenvio = 1;
@@ -2337,35 +2403,36 @@ class _HomeScreenState extends State<HomeScreen>
 //-------------------------------------------------------------------------
   Future<void> _ponerEnviadoSeguimiento1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
-        idParada: paradaenvio.idParada,
-        idRuta: paradaenvio.idRuta,
-        idEnvio: paradaenvio.idEnvio,
-        secuencia: paradaenvio.secuencia,
-        leyenda: paradaenvio.leyenda,
-        latitud: paradaenvio.latitud,
-        longitud: paradaenvio.longitud,
-        idproveedor: paradaenvio.idproveedor,
-        estado: paradaenvio.estado,
-        ordenid: paradaenvio.ordenid,
-        titular: paradaenvio.titular,
-        dni: paradaenvio.dni,
-        domicilio: paradaenvio.domicilio,
-        cp: paradaenvio.cp,
-        entreCalles: paradaenvio.entreCalles,
-        telefonos: paradaenvio.telefonos,
-        localidad: paradaenvio.localidad,
-        bultos: paradaenvio.bultos,
-        proveedor: paradaenvio.proveedor,
-        motivo: paradaenvio.motivo,
-        motivodesc: paradaenvio.motivodesc,
-        notas: paradaenvio.notas,
-        enviado: paradaenvio.enviado,
-        fecha: paradaenvio.fecha,
-        imageArray: paradaenvio.imageArray,
-        observaciones: paradaenvio.observaciones,
-        enviadoparada: paradaenvio.enviadoparada,
-        enviadoenvio: paradaenvio.enviadoenvio,
-        enviadoseguimiento: 1);
+      idParada: paradaenvio.idParada,
+      idRuta: paradaenvio.idRuta,
+      idEnvio: paradaenvio.idEnvio,
+      secuencia: paradaenvio.secuencia,
+      leyenda: paradaenvio.leyenda,
+      latitud: paradaenvio.latitud,
+      longitud: paradaenvio.longitud,
+      idproveedor: paradaenvio.idproveedor,
+      estado: paradaenvio.estado,
+      ordenid: paradaenvio.ordenid,
+      titular: paradaenvio.titular,
+      dni: paradaenvio.dni,
+      domicilio: paradaenvio.domicilio,
+      cp: paradaenvio.cp,
+      entreCalles: paradaenvio.entreCalles,
+      telefonos: paradaenvio.telefonos,
+      localidad: paradaenvio.localidad,
+      bultos: paradaenvio.bultos,
+      proveedor: paradaenvio.proveedor,
+      motivo: paradaenvio.motivo,
+      motivodesc: paradaenvio.motivodesc,
+      notas: paradaenvio.notas,
+      enviado: paradaenvio.enviado,
+      fecha: paradaenvio.fecha,
+      imageArray: paradaenvio.imageArray,
+      observaciones: paradaenvio.observaciones,
+      enviadoparada: paradaenvio.enviadoparada,
+      enviadoenvio: paradaenvio.enviadoenvio,
+      enviadoseguimiento: 1,
+    );
 
     await DBParadasEnvios.update(paradaenvionueva);
     paradaenvio.enviadoseguimiento = 1;
