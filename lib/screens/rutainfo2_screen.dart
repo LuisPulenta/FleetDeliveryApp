@@ -53,6 +53,40 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   bool _isFiltered = false;
   String _search = '';
 
+  List<ParadaEnvio> _paradasEnvios = [];
+
+  ParadaEnvio _paradaEnvioSelected = ParadaEnvio(
+    idParada: 0,
+    idRuta: 0,
+    idEnvio: 0,
+    secuencia: 0,
+    leyenda: '',
+    latitud: 0,
+    longitud: 0,
+    idproveedor: 0,
+    estado: 0,
+    ordenid: '',
+    titular: '',
+    dni: '',
+    domicilio: '',
+    cp: '',
+    entreCalles: '',
+    telefonos: '',
+    localidad: '',
+    bultos: 0,
+    proveedor: '',
+    motivo: 0,
+    motivodesc: '',
+    notas: '',
+    enviado: 0,
+    fecha: '',
+    imageArray: '',
+    observaciones: '',
+    enviadoparada: 0,
+    enviadoenvio: 0,
+    enviadoseguimiento: 0,
+  );
+
   Position _positionUser = const Position(
       longitude: 0,
       latitude: 0,
@@ -311,6 +345,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
   List<ParadaEnvio> _paradasenvios = [];
   List<ParadaEnvio> _paradasenviosfiltered = [];
+  List<ParadaEnvio> _paradasenviosfiltered2 = [];
   List<ParadaEnvio> _paradasenviosdb = [];
 
   int _nroReg = 0;
@@ -1327,13 +1362,116 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                     Navigator.of(context).pop();
                   },
                   child: const Text('NO')),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('SI')),
+              TextButton(onPressed: _saveRecords, child: const Text('SI')),
             ],
           );
         });
+  }
+
+//*****************************************************************************
+//************************** METODO SAVERECORDS *******************************
+//*****************************************************************************
+
+  Future<void> _saveRecords() async {
+    _paradasenviosfiltered2 = _paradasenviosfiltered;
+
+    for (var paradaenviofiltered in _paradasenviosfiltered2) {
+      if (paradaenviofiltered.enviado == 1) {
+        _paradasEnvios = await DBParadasEnvios.paradasenvios();
+        for (ParadaEnvio paradaenvio in _paradasEnvios) {
+          if (paradaenviofiltered.idParada == paradaenvio.idParada) {
+            _paradaEnvioSelected = paradaenvio;
+          }
+        }
+
+        await DBParadasEnvios.delete(_paradaEnvioSelected);
+        await _guardaParadaEnBDLocal(paradaenviofiltered);
+      }
+    }
+    _showSnackbar();
+    Navigator.of(context).pop();
+    Navigator.pop(context, 'yes');
+  }
+
+//*****************************************************************************
+//************************** METODO GUARDARPARADAENBDLOCAL ********************
+//*****************************************************************************
+
+  Future<void> _guardaParadaEnBDLocal(ParadaEnvio paradaenvio) async {
+    for (var element in widget.paradas) {
+      if (element.idParada == paradaenvio.idParada) {
+        paradaSelected = element;
+      }
+    }
+
+    if (paradaSelected == null) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error 1',
+          message: "No se ha podido grabar",
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    ParadaEnvio requestParadaEnvio = ParadaEnvio(
+      idParada: paradaenvio.idParada,
+      idRuta: paradaenvio.idRuta,
+      idEnvio: paradaenvio.idEnvio,
+      secuencia: paradaenvio.secuencia,
+      leyenda: paradaenvio.leyenda,
+      latitud: paradaenvio.latitud,
+      longitud: paradaenvio.longitud,
+      idproveedor: paradaenvio.idproveedor,
+      estado: 4,
+      ordenid: paradaenvio.ordenid,
+      titular: paradaenvio.titular,
+      dni: paradaenvio.dni,
+      domicilio: paradaenvio.domicilio,
+      cp: paradaenvio.cp,
+      entreCalles: paradaenvio.entreCalles,
+      telefonos: paradaenvio.telefonos,
+      localidad: paradaenvio.localidad,
+      bultos: paradaenvio.bultos,
+      proveedor: paradaenvio.proveedor,
+      motivo: 14,
+      motivodesc: '50 - Entregado en casa de lider',
+      notas: '',
+      enviado: 0,
+      fecha: DateTime.now().toString(),
+      imageArray: '',
+      observaciones: paradaenvio.observaciones,
+      enviadoparada: 0,
+      enviadoenvio: 0,
+      enviadoseguimiento: 0,
+    );
+
+    var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
+
+    if (parEnvio == null || parEnvio == 0) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error 2',
+          message: "No se ha podido grabar",
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+  }
+
+//*****************************************************************************
+//************************** METODO SHOWSNACKBAR ******************************
+//*****************************************************************************
+
+  void _showSnackbar() {
+    SnackBar snackbar = const SnackBar(
+      content: Text("Envíos grabados con éxito"),
+      backgroundColor: Colors.lightGreen,
+      //duration: Duration(seconds: 3),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    //ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 }
