@@ -1297,8 +1297,16 @@ class _HomeScreenState extends State<HomeScreen>
         _textComponent = "";
         _showLoader = true;
       });
-      await _actualizaParadasEnvios();
-      await _actualizaRutas();
+
+      for (int i = 0; i < 5; i++) {
+        await _actualizaParadasEnvios();
+        await _actualizaRutas();
+      }
+
+      for (int i = 0; i < 5; i++) {
+        await _llenarparadasenvios();
+      }
+
       setState(() {
         _showLoader = false;
       });
