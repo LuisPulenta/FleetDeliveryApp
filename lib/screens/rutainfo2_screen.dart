@@ -1467,7 +1467,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
   void _showSnackbar() {
     SnackBar snackbar = const SnackBar(
-      content: Text("Envíos grabados con éxito"),
+      content: Text("Envíos grabados con éxito en base de datos local"),
       backgroundColor: Colors.lightGreen,
       //duration: Duration(seconds: 3),
     );

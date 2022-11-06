@@ -26,7 +26,11 @@ class LoaderComponent extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            Text(text, style: const TextStyle(fontSize: 15)),
+            Text(
+              text,
+              style: const TextStyle(fontSize: 15),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(
               height: 20,
             ),

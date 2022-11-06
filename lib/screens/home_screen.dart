@@ -1294,16 +1294,20 @@ class _HomeScreenState extends State<HomeScreen>
                 )));
     if (result == 'yes' || result != 'yes') {
       setState(() {
-        _textComponent = "";
+        _textComponent = "Actualizando envíos en el Servidor";
         _showLoader = true;
       });
 
-      for (int i = 0; i < 5; i++) {
+      // await _actualizaParadasEnvios();
+      // await _actualizaRutas();
+      // await _llenarparadasenvios();
+
+      for (int i = 0; i < 2; i++) {
         await _actualizaParadasEnvios();
         await _actualizaRutas();
       }
 
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < 4; i++) {
         await _llenarparadasenvios();
       }
 
@@ -1962,7 +1966,7 @@ class _HomeScreenState extends State<HomeScreen>
 
     if (connectivityResult != ConnectivityResult.none) {
       setState(() {
-        _textComponent = "";
+        _textComponent = "Actualizando envíos en el Servidor";
         _showLoader = true;
       });
 
