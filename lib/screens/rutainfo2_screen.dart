@@ -436,29 +436,40 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
     return Container(
       padding: const EdgeInsets.all(10),
-      height: 40,
-      child: Row(
-        children: [
-          const Text("Cantidad de Paradas: ",
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xff282886),
-                fontWeight: FontWeight.bold,
-              )),
-          Text(_paradasenviosfiltered.length.toString(),
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xff282886),
-                fontWeight: FontWeight.bold,
-              )),
-          Text((' (Pendientes: $pendientes)'),
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xff282886),
-                fontWeight: FontWeight.bold,
-              )),
-        ],
-      ),
+      height: pendientes > 0 ? 40 : 80,
+      child: pendientes > 0
+          ? Row(
+              children: [
+                const Text("Cantidad de Paradas: ",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xff282886),
+                      fontWeight: FontWeight.bold,
+                    )),
+                Text(_paradasenviosfiltered.length.toString(),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xff282886),
+                      fontWeight: FontWeight.bold,
+                    )),
+                Text((' (Pendientes: $pendientes)'),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xff282886),
+                      fontWeight: FontWeight.bold,
+                    )),
+              ],
+            )
+          : const Center(
+              child: Text(
+                  "No existen envíos que cumplan las condiciones necesarias para entregas masivas.",
+                  maxLines: 2,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: const Color(0xff282886),
+                    fontWeight: FontWeight.bold,
+                  )),
+            ),
     );
   }
 
@@ -492,123 +503,133 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
             shadowColor: Colors.white,
             elevation: 10,
             margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-            child: Container(
-              margin: const EdgeInsets.all(0),
-              padding: const EdgeInsets.all(5),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
+            child: e.estado == 3
+                ? Container(
+                    margin: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(5),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(e.secuencia.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 24,
-                                              color: Color(0xffbc2b51),
-                                              fontWeight: FontWeight.bold)),
-                                    ),
-                                    (e.estado == 4)
-                                        ? const Text(
-                                            "ENTREGADO",
-                                            style: TextStyle(
-                                                color: Colors.green,
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        : (e.estado == 10)
-                                            ? const Text(
-                                                "NO ENTREGADO",
-                                                style: TextStyle(
-                                                    color: Colors.red,
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(e.secuencia.toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 24,
+                                                    color: Color(0xffbc2b51),
                                                     fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            : (e.estado == 7)
-                                                ? const Text(
-                                                    "RECHAZADO",
-                                                    style: TextStyle(
-                                                        color: Colors.purple,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                                : const Text(
-                                                    "PENDIENTE",
-                                                    style: TextStyle(
-                                                        color: Colors.blue,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text("Nombre: ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF781f1e),
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                    Expanded(
-                                      child: Text(e.titular.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold)),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text("Dirección: ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF781f1e),
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                    Expanded(
-                                      child: Text(e.leyenda.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
-                                    ),
-                                  ],
+                                                        FontWeight.bold)),
+                                          ),
+                                          (e.estado == 4)
+                                              ? const Text(
+                                                  "ENTREGADO",
+                                                  style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              : (e.estado == 10)
+                                                  ? const Text(
+                                                      "NO ENTREGADO",
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  : (e.estado == 7)
+                                                      ? const Text(
+                                                          "RECHAZADO",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.purple,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )
+                                                      : const Text(
+                                                          "PENDIENTE",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.blue,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Text("Nombre: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF781f1e),
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          Expanded(
+                                            child: Text(e.titular.toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Text("Dirección: ",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF781f1e),
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          Expanded(
+                                            child: Text(e.leyenda.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        e.estado == 3 //En Fletero
+                            ? Checkbox(
+                                value: e.enviado == 1 ? true : false,
+                                onChanged: (value) {
+                                  for (ParadaEnvio paradaEnvio
+                                      in _paradasenviosfiltered) {
+                                    if (paradaEnvio.idEnvio == e.idEnvio &&
+                                        paradaEnvio.estado == 3) {
+                                      paradaEnvio.enviado =
+                                          value == true ? 1 : 0;
+                                    }
+                                  }
+                                  setState(() {});
+                                })
+                            : Container()
+                      ],
                     ),
-                  ),
-                  e.estado == 0
-                      ? Checkbox(
-                          value: e.enviado == 1 ? true : false,
-                          onChanged: (value) {
-                            for (ParadaEnvio paradaEnvio
-                                in _paradasenviosfiltered) {
-                              if (paradaEnvio.idEnvio == e.idEnvio &&
-                                  paradaEnvio.estado == 0) {
-                                paradaEnvio.enviado = value == true ? 1 : 0;
-                              }
-                            }
-                            setState(() {});
-                          })
-                      : Container()
-                ],
-              ),
-            ),
+                  )
+                : Container(),
           );
         }).toList(),
       ),
