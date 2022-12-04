@@ -540,12 +540,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
             color: const Color(0xffdadada),
             width: double.infinity,
           ),
-          (_optionEstado == 10 || _optionEstado == 7)
+          (_optionEstado == 10 || _optionEstado == 7 || _optionEstado == 4)
               ? const Divider(
                   height: 3,
                 )
               : Container(),
-          (_optionEstado == 10 || _optionEstado == 7)
+          (_optionEstado == 10 || _optionEstado == 7 || _optionEstado == 4)
               ? Container(
                   padding: const EdgeInsets.all(10),
                   height: 145,
@@ -984,17 +984,39 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
   List<DropdownMenuItem<int>> _getOptions2() {
     List<DropdownMenuItem<int>> list = [];
-    list.add(const DropdownMenuItem(
-      child: Text('Seleccione un Motivo...'),
-      value: 0,
-    ));
 
-    for (var element in widget.motivos) {
-      list.add(DropdownMenuItem(
-        child: Text(element.motivo.toString()),
-        value: element.id,
+    if (_optionEstado == 7 || _optionEstado == 10) {
+      list.add(const DropdownMenuItem(
+        child: Text('Seleccione un Motivo...'),
+        value: 0,
       ));
+
+      for (var element in widget.motivos) {
+        if (element.muestraParaEntregado == 0) {
+          list.add(DropdownMenuItem(
+            child: Text(element.motivo.toString()),
+            value: element.id,
+          ));
+        }
+      }
     }
+
+    if (_optionEstado == 4) {
+      list.add(const DropdownMenuItem(
+        child: Text('Seleccione un Motivo...'),
+        value: 0,
+      ));
+
+      for (var element in widget.motivos) {
+        if (element.muestraParaEntregado == 1) {
+          list.add(DropdownMenuItem(
+            child: Text(element.motivo.toString()),
+            value: element.id,
+          ));
+        }
+      }
+    }
+
     return list;
   }
 

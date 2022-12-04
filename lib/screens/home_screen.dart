@@ -1745,7 +1745,10 @@ class _HomeScreenState extends State<HomeScreen>
       if (_motivosApi.isNotEmpty) {
         DBMotivos.delete();
         for (var element in _motivosApi) {
-          Motivo mot = Motivo(id: element.id, motivo: element.motivo);
+          Motivo mot = Motivo(
+              id: element.id,
+              motivo: element.motivo,
+              muestraParaEntregado: element.muestraParaEntregado);
 
           DBMotivos.insertMotivo(mot);
         }

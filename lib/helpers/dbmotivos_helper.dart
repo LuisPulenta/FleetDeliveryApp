@@ -7,9 +7,9 @@ class DBMotivos {
     return openDatabase(join(await getDatabasesPath(), 'motivos.db'),
         onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE motivos(id INTEGER , motivo TEXT)",
+        "CREATE TABLE motivos(id INTEGER , motivo TEXT,muestraParaEntregado INTEGER)",
       );
-    }, version: 1);
+    }, version: 2);
   }
 
   static Future<int> insertMotivo(Motivo motivo) async {
@@ -36,6 +36,7 @@ class DBMotivos {
         (i) => Motivo(
               id: motivosMap[i]['id'],
               motivo: motivosMap[i]['motivo'],
+              muestraParaEntregado: motivosMap[i]['muestraParaEntregado'],
             ));
   }
 }
