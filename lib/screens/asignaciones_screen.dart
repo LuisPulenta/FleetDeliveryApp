@@ -17,8 +17,14 @@ import 'package:url_launcher/url_launcher.dart';
 class AsignacionesScreen extends StatefulWidget {
   final Usuario user;
   final Position positionUser;
+  final int opcion;
+  final Asignacion2 asignacion;
   const AsignacionesScreen(
-      {Key? key, required this.user, required this.positionUser})
+      {Key? key,
+      required this.user,
+      required this.positionUser,
+      required this.opcion,
+      required this.asignacion})
       : super(key: key);
 
   @override
@@ -143,6 +149,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   void initState() {
     super.initState();
     _loadData();
+    if (widget.opcion == 2) {
+      _loadData2();
+    }
   }
 
 //*****************************************************************************
@@ -1161,6 +1170,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   void _loadData() async {
     await _getTiposAsignaciones();
+  }
+
+//*****************************************************************************
+//************************** METODO LOADDATA2 *********************************
+//*****************************************************************************
+
+  void _loadData2() async {
+    _tipoasignacion = widget.asignacion.proyectomodulo.toString();
+    await _getObras();
+    _searchController.text = widget.asignacion.cliente.toString();
+    _search = widget.asignacion.cliente.toString();
+    await _filter();
   }
 
 //*****************************************************************************

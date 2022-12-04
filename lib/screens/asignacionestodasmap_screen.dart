@@ -4,6 +4,7 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
+import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -342,9 +343,8 @@ class _AsignacionesTodasMapScreenState
                                                 BorderRadius.circular(5),
                                           ),
                                         ),
-                                        onPressed: () => () {
-                                          print("Hola");
-                                        }, //_goInfoAsignacion(asign),
+                                        onPressed: () =>
+                                            _goInfoAsignacion(asign),
                                       ),
                                     ),
                                   ],
@@ -462,5 +462,21 @@ class _AsignacionesTodasMapScreenState
 
   static double _toRadians(double degree) {
     return degree * pi / 180;
+  }
+
+//---------------------------------------------
+//----------------- _goInfoAsignacion ----------------
+//---------------------------------------------
+
+  void _goInfoAsignacion(Asignacion2 asignacion) async {
+    String? result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AsignacionesScreen(
+                  user: widget.user,
+                  positionUser: widget.positionUser,
+                  opcion: 2,
+                  asignacion: asignacion,
+                )));
   }
 }
