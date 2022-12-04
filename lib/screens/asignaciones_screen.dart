@@ -1307,6 +1307,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     }
 
     Response response = Response(isSuccess: false);
+
     response =
         await ApiHelper.getAsignaciones(widget.user.idUser, _tipoasignacion);
 
@@ -1348,6 +1349,12 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       return;
     }
 
+    _funcionesApp = response2.result;
+
+    _controlesEquivalencia = response3.result;
+
+    _funcionApp = _funcionesApp[0];
+
     _asignaciones = response.result;
 
     if (_ordenarPorCliente) {
@@ -1368,21 +1375,24 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       });
     }
 
-    _funcionesApp = response2.result;
-
-    _controlesEquivalencia = response3.result;
-
-    _funcionApp = _funcionesApp[0];
-
     _asignaciones2 = _asignaciones;
 
-    await _getCodigosCierre();
-    await _getZonas();
-    await _getCarteras();
+    if (_tipoasignacion != 'Todos') {
+      await _getCodigosCierre();
+      await _getZonas();
+      await _getCarteras();
+    }
+
     setState(() {
       _showLoader = false;
     });
   }
+
+// getFuncionesApp(_tipoasignacion);
+// getControlesEquivalencia(_tipoasignacion);
+// _getCodigosCierre();
+// _getZonas();
+// _getCarteras();//SIRVE PARA TODO
 
 //*****************************************************************************
 //************************** METODO LOADOBRAS *********************************
@@ -1720,6 +1730,12 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Expanded(
+                                  child: Text(
+                                '${asign.proyectomodulo.toString()}',
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              )),
                               Expanded(
                                   child: Text(
                                 '${asign.cliente.toString()} - ${asign.nombre.toString()}',

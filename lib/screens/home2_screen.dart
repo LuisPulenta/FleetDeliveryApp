@@ -178,6 +178,28 @@ class _Home2ScreenState extends State<Home2Screen> {
             ),
             ListTile(
               leading: const Icon(
+                Icons.map,
+                color: Color(0xff0e4888),
+              ),
+              title: const Text('Asignaciones cercanas (mapa)',
+                  style: TextStyle(fontSize: 15, color: Color(0xff0e4888))),
+              tileColor: const Color(0xff0e4888),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AsignacionesTodasMapScreen(
+                              user: widget.user,
+                              positionUser: _positionUser,
+                            )));
+              },
+            ),
+            const Divider(
+              color: Color(0xff0e4888),
+              height: 1,
+            ),
+            ListTile(
+              leading: const Icon(
                 Icons.equalizer,
                 color: Color(0xff0e4888),
               ),

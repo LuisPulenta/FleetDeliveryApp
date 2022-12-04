@@ -1,6 +1,7 @@
 export 'package:fleetdeliveryapp/screens/agendarcita_screen.dart';
 export 'package:fleetdeliveryapp/screens/asignaciones_screen.dart';
 export 'package:fleetdeliveryapp/screens/asignacionesmap_screen.dart';
+export 'package:fleetdeliveryapp/screens/asignacionestodasmap_screen.dart';
 export 'package:fleetdeliveryapp/screens/asignacioninfo_screen.dart';
 export 'package:fleetdeliveryapp/screens/asignacionmap_screen.dart';
 export 'package:fleetdeliveryapp/screens/change_password_screen.dart';

@@ -327,6 +327,33 @@ class ApiHelper {
   }
 
 //---------------------------------------------------------------------------
+  static Future<Response> getAsignacionesTodas(int codigo) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/Usuarios/getAsignacionesTodas/$codigo');
+    var response = await http.post(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    List<Asignacion2> list = [];
+    var decodedJson = jsonDecode(body);
+    if (decodedJson != null) {
+      for (var item in decodedJson) {
+        list.add(Asignacion2.fromJson(item));
+      }
+    }
+    return Response(isSuccess: true, result: list);
+  }
+
+//---------------------------------------------------------------------------
   static Future<Response> getCodigosCierre(String proyectomodulo) async {
     var url = Uri.parse(
         '${Constants.apiUrl}/api/Usuarios/GetCodigosCierre/$proyectomodulo');

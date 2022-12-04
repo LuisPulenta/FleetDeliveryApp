@@ -2615,7 +2615,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //---------------- Pregunta si se envía recibo (sólo en DTV) --------------
     _mensajeRecibo = '';
     if (widget.asignacion.proyectomodulo == 'DTV' ||
-        widget.asignacion.proyectomodulo == 'Tasa') {
+        widget.asignacion.proyectomodulo == 'Tasa' ||
+        widget.asignacion.proyectomodulo == 'Cable' ||
+        widget.asignacion.proyectomodulo == 'TLC') {
       await showDialog(
           context: context,
           builder: (context) {
@@ -2691,9 +2693,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
 
       if (asign.estadogaos == 'EJB') {
-        String mm = asign.proyectomodulo.toString() == 'DTV'
-            ? asign.decO1.toString()
-            : asign.estadO3.toString();
+        String mm = (asign.proyectomodulo.toString() == 'DTV' ||
+                asign.proyectomodulo.toString() == 'Cable' ||
+                asign.proyectomodulo.toString() == 'TLC')
+            ? asign.decO1.toString() //campo deco1 de la base.
+            : asign.estadO3
+                .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
         _mensajeRecibo = _mensajeRecibo + "Equipo: " + mm + "\n";
       }
 
