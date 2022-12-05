@@ -232,7 +232,7 @@ class _Home2ScreenState extends State<Home2Screen> {
                 Icons.map,
                 color: Color(0xff0e4888),
               ),
-              title: const Text('Asignaciones cercanas (mapa)',
+              title: const Text('Asignaciones radio 20 km (mapa)',
                   style: TextStyle(fontSize: 15, color: Color(0xff0e4888))),
               tileColor: const Color(0xff0e4888),
               onTap: () {

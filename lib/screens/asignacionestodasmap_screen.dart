@@ -89,7 +89,7 @@ class _AsignacionesTodasMapScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(('Asignaciones cercanas')),
+        title: Text(('Asignaciones radio 20 km')),
         centerTitle: true,
       ),
       body: Stack(
@@ -236,10 +236,12 @@ class _AsignacionesTodasMapScreenState
         }
 
         double distancia = 0;
+        double dist = 0;
 
         distancia = _distanciaMarker(asign, widget.positionUser);
+        dist = (distancia * 100).floorToDouble() / 100;
 
-        if (distancia <= 5) {
+        if (distancia <= 20) {
           _markers.add(Marker(
               markerId: MarkerId(asign.reclamoTecnicoID.toString()),
               position: LatLng(lat, long),
@@ -280,6 +282,10 @@ class _AsignacionesTodasMapScreenState
                                 )),
                                 Expanded(
                                     child: Text(asign.domicilio.toString(),
+                                        style: const TextStyle(fontSize: 10))),
+                                Expanded(
+                                    child: Text(
+                                        "Distancia: " + dist.toString() + " km",
                                         style: const TextStyle(fontSize: 12))),
                                 Row(
                                   children: [
@@ -357,6 +363,7 @@ class _AsignacionesTodasMapScreenState
                     ),
                     LatLng(lat, long));
               },
+              //Coloresa de los pines según la empresa
               icon: (asign.proyectomodulo == 'Cable')
                   ? BitmapDescriptor.defaultMarkerWithHue(
                       BitmapDescriptor.hueRed)
@@ -375,8 +382,13 @@ class _AsignacionesTodasMapScreenState
                                   : (asign.proyectomodulo == 'Teco')
                                       ? BitmapDescriptor.defaultMarkerWithHue(
                                           BitmapDescriptor.hueOrange)
-                                      : BitmapDescriptor.defaultMarkerWithHue(
-                                          BitmapDescriptor.hueRose)));
+                                      : (asign.proyectomodulo == 'SuperC')
+                                          ? BitmapDescriptor
+                                              .defaultMarkerWithHue(
+                                                  BitmapDescriptor.hueAzure)
+                                          : BitmapDescriptor
+                                              .defaultMarkerWithHue(
+                                                  BitmapDescriptor.hueRose)));
         }
       }
     }
