@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_brace_in_string_interps
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
@@ -23,7 +21,7 @@ class RutaInfo2Screen extends StatefulWidget {
   final Position positionUser;
   final List<Motivo> motivos;
 
-  const RutaInfo2Screen(
+  RutaInfo2Screen(
       {Key? key,
       required this.user,
       required this.ruta,
@@ -45,6 +43,19 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
+
+  List<String> _estados = [];
+  String _estado = 'Elija un Estado...';
+  final String _estadoError = '';
+  final bool _estadoShowError = false;
+
+  List<DropdownMenuItem<String>> motivosEntregados = [];
+  List<DropdownMenuItem<String>> motivosNoEntregados = [];
+  List<DropdownMenuItem<String>> motivos = [];
+
+  String _motivo = 'Elija un Motivo...';
+  final String _motivoError = '';
+  final bool _motivoShowError = false;
 
   bool _showLoader = false;
   bool _puso1 = false;
@@ -357,9 +368,29 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   @override
   void initState() {
     super.initState();
+    _loadData();
     _llenarparadasenvios();
 
     setState(() {});
+  }
+
+//*****************************************************************************
+//************************** METODO LOADDATA **********************************
+//*****************************************************************************
+
+  void _loadData() async {
+    await _getEstados();
+    _getComboMotivos();
+  }
+
+//**************************************************************
+//************************** _getEstados ***********************
+//**************************************************************
+
+  Future<void> _getEstados() async {
+    _estados = [];
+    _estados.add('Entregado');
+    _estados.add('No Entregado');
   }
 
 //*****************************************************************************
@@ -371,37 +402,32 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     return Scaffold(
       backgroundColor: const Color(0xffdadada),
       appBar: AppBar(
-        backgroundColor: const Color(0xff282886),
-        title: Text(widget.ruta.nombre!),
-        centerTitle: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: IconButton(
-                icon: const Icon(
-                  Icons.save,
-                  color: Color(0xff282886),
-                ),
-                onPressed: () => _guardar(),
+          backgroundColor: const Color(0xff282886),
+          title: Text(widget.ruta.nombre!),
+          centerTitle: false,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: CircleAvatar(
+                backgroundColor: Color(0xff282886),
+                child: _isFiltered
+                    ? IconButton(
+                        onPressed: _removeFilter,
+                        icon: const Icon(
+                          Icons.filter_none,
+                          color: Colors.white,
+                        ))
+                    : IconButton(
+                        onPressed: _showFilter,
+                        icon: const Icon(
+                          Icons.filter_alt,
+                          color: Colors.white,
+                        )),
               ),
             ),
-          ),
-        ],
-      ),
+          ]),
       body: Center(
         child: _showLoader ? const LoaderComponent(text: '') : _getContent(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: "1",
-        onPressed: () {},
-        child: _isFiltered
-            ? IconButton(
-                onPressed: _removeFilter, icon: const Icon(Icons.filter_none))
-            : IconButton(
-                onPressed: _showFilter, icon: const Icon(Icons.filter_alt)),
-        backgroundColor: const Color(0xff282886),
       ),
     );
   }
@@ -466,7 +492,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                   maxLines: 2,
                   style: TextStyle(
                     fontSize: 14,
-                    color: const Color(0xff282886),
+                    color: Color(0xff282886),
                     fontWeight: FontWeight.bold,
                   )),
             ),
@@ -494,145 +520,165 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 //-------------------------------------------------------------------------
 
   Widget _getListView() {
-    return RefreshIndicator(
-      onRefresh: _llenarparadasenvios,
-      child: ListView(
-        children: _paradasenviosfiltered.map((e) {
-          return Card(
-            color: Colors.white60,
-            shadowColor: Colors.white,
-            elevation: 10,
-            margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-            child: e.estado == 3
-                ? Container(
-                    margin: const EdgeInsets.all(0),
-                    padding: const EdgeInsets.all(5),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
+    return Column(
+      children: [
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: _llenarparadasenvios,
+            child: ListView(
+              children: _paradasenviosfiltered.map((e) {
+                return Card(
+                  color: Colors.white60,
+                  shadowColor: Colors.white,
+                  elevation: 10,
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                  child: e.estado == 3
+                      ? Container(
+                          margin: const EdgeInsets.all(0),
+                          padding: const EdgeInsets.all(5),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(e.secuencia.toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 24,
-                                                    color: Color(0xffbc2b51),
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ),
-                                          (e.estado == 4)
-                                              ? const Text(
-                                                  "ENTREGADO",
-                                                  style: TextStyle(
-                                                      color: Colors.green,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              : (e.estado == 10)
-                                                  ? const Text(
-                                                      "NO ENTREGADO",
-                                                      style: TextStyle(
-                                                          color: Colors.red,
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                      e.secuencia.toString(),
+                                                      style: const TextStyle(
+                                                          fontSize: 24,
+                                                          color:
+                                                              Color(0xffbc2b51),
                                                           fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  : (e.estado == 7)
-                                                      ? const Text(
-                                                          "RECHAZADO",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.purple,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        )
-                                                      : const Text(
-                                                          "PENDIENTE",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.blue,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text("Nombre: ",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF781f1e),
-                                                fontWeight: FontWeight.bold,
-                                              )),
-                                          Expanded(
-                                            child: Text(e.titular.toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text("Dirección: ",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF781f1e),
-                                                fontWeight: FontWeight.bold,
-                                              )),
-                                          Expanded(
-                                            child: Text(e.leyenda.toString(),
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                )),
-                                          ),
-                                        ],
+                                                              FontWeight.bold)),
+                                                ),
+                                                (e.estado == 4)
+                                                    ? const Text(
+                                                        "ENTREGADO",
+                                                        style: TextStyle(
+                                                            color: Colors.green,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      )
+                                                    : (e.estado == 10)
+                                                        ? const Text(
+                                                            "NO ENTREGADO",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          )
+                                                        : (e.estado == 7)
+                                                            ? const Text(
+                                                                "RECHAZADO",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .purple,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )
+                                                            : const Text(
+                                                                "PENDIENTE",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .blue,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text("Nombre: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF781f1e),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Expanded(
+                                                  child: Text(
+                                                      e.titular.toString(),
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text("Dirección: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF781f1e),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Expanded(
+                                                  child: Text(
+                                                      e.leyenda.toString(),
+                                                      style: const TextStyle(
+                                                        fontSize: 12,
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              e.estado == 3 //En Fletero
+                                  ? Checkbox(
+                                      value: e.enviado == 1 ? true : false,
+                                      onChanged: (value) {
+                                        for (ParadaEnvio paradaEnvio
+                                            in _paradasenviosfiltered) {
+                                          if (paradaEnvio.idEnvio ==
+                                                  e.idEnvio &&
+                                              paradaEnvio.estado == 3) {
+                                            paradaEnvio.enviado =
+                                                value == true ? 1 : 0;
+                                          }
+                                        }
+                                        setState(() {});
+                                      })
+                                  : Container()
+                            ],
                           ),
-                        ),
-                        e.estado == 3 //En Fletero
-                            ? Checkbox(
-                                value: e.enviado == 1 ? true : false,
-                                onChanged: (value) {
-                                  for (ParadaEnvio paradaEnvio
-                                      in _paradasenviosfiltered) {
-                                    if (paradaEnvio.idEnvio == e.idEnvio &&
-                                        paradaEnvio.estado == 3) {
-                                      paradaEnvio.enviado =
-                                          value == true ? 1 : 0;
-                                    }
-                                  }
-                                  setState(() {});
-                                })
-                            : Container()
-                      ],
-                    ),
-                  )
-                : Container(),
-          );
-        }).toList(),
-      ),
+                        )
+                      : Container(),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+        _showEstados(),
+        _showMotivos(),
+        _showButton(),
+      ],
     );
   }
 
@@ -1362,6 +1408,28 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       palabra = 'envíos';
     }
 
+    if (_estado == "Elija un Estado...") {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Debe seleccionar un Estado!!',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    if (_motivo == "Elija un Motivo...") {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Debe seleccionar un Motivo!!',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
     await showDialog(
         context: context,
         builder: (context) {
@@ -1371,8 +1439,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
             ),
             title: const Text(''),
             content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              Text(
-                  '¿Está seguro de guardar ${cantidad} ${palabra} como entregado en casa de líder?'),
+              Text('¿Está seguro de guardar ${cantidad} ${palabra}?'),
               const SizedBox(
                 height: 10,
               ),
@@ -1387,6 +1454,159 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
             ],
           );
         });
+  }
+
+//-----------------------------------------------------------------------------
+//------------------------------ _showMotivos----------------------------------
+//-----------------------------------------------------------------------------
+
+  Widget _showMotivos() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+            height: 66,
+            child: DropdownButtonFormField(
+              value: _motivo,
+              isExpanded: true,
+              isDense: true,
+              style: const TextStyle(fontSize: 14, color: Colors.black),
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                hintText: 'Elija un Motivo...',
+                labelText: 'Motivo',
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                errorText: _motivoShowError ? _motivoError : null,
+              ),
+              items: motivos,
+              onChanged: (value) {
+                _motivo = value.toString();
+
+                if (_estado != 'Elija un Estado...' ||
+                    _motivo != 'Elija un Motivo...') {
+                  _isFiltered = true;
+                } else {
+                  _isFiltered = false;
+                }
+                setState(() {});
+                _filter();
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _getComboMotivos() {
+    motivosEntregados.add(const DropdownMenuItem(
+      child: Text('Elija un Motivo...'),
+      value: 'Elija un Motivo...',
+    ));
+
+    motivosNoEntregados.add(const DropdownMenuItem(
+      child: Text('Elija un Motivo...'),
+      value: 'Elija un Motivo...',
+    ));
+
+    for (var motivo in widget.motivos) {
+      if (motivo.muestraParaEntregado == 1) {
+        motivosEntregados.add(DropdownMenuItem(
+          child: Text(motivo.motivo.toString()),
+          value: motivo.motivo.toString(),
+        ));
+      }
+    }
+
+    for (var motivo in widget.motivos) {
+      if (motivo.muestraParaEntregado != 1) {
+        motivosNoEntregados.add(DropdownMenuItem(
+          child: Text(motivo.motivo.toString()),
+          value: motivo.motivo.toString(),
+        ));
+      }
+    }
+
+    var a = 1;
+  }
+
+//-----------------------------------------------------------------------------
+//------------------------------ SHOWESTADOS ----------------------------------
+//-----------------------------------------------------------------------------
+
+  Widget _showEstados() {
+    //_estado = 'Elija un Estado...';
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            height: 66,
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
+            child: _estados.isEmpty
+                ? Row(
+                    children: const [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Cargando Estados...'),
+                    ],
+                  )
+                : DropdownButtonFormField(
+                    value: _estado,
+                    isExpanded: true,
+                    isDense: true,
+                    style: const TextStyle(fontSize: 14, color: Colors.black),
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Elija un Estado...',
+                      labelText: 'Estado',
+                      errorText: _estadoShowError ? _estadoError : null,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                    items: _getComboEstados(),
+                    onChanged: (value) {
+                      _estado = value.toString();
+                      _motivo = 'Elija un Motivo...';
+
+                      _estado == 'Entregado'
+                          ? motivos = motivosEntregados
+                          : _estado == 'No Entregado'
+                              ? motivos = motivosNoEntregados
+                              : motivos = [];
+
+                      setState(() {});
+                    },
+                  ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<DropdownMenuItem<String>> _getComboEstados() {
+    List<DropdownMenuItem<String>> list = [];
+    list.add(const DropdownMenuItem(
+      child: Text('Elija un Estado...'),
+      value: 'Elija un Estado...',
+    ));
+
+    list.add(const DropdownMenuItem(
+      child: Text('Entregado'),
+      value: 'Entregado',
+    ));
+
+    list.add(const DropdownMenuItem(
+      child: Text('No Entregado'),
+      value: 'No Entregado',
+    ));
+
+    return list;
   }
 
 //*****************************************************************************
@@ -1494,5 +1714,47 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
     //ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO SHOWBUTTONS ------------------------
+//-----------------------------------------------------------------
+
+  Widget _showButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            child: ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.save),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    Text('Guardar')
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: const Color(0xFF282886),
+                  minimumSize: const Size(50, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                onPressed: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  _guardar();
+                }),
+          ),
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+      ],
+    );
   }
 }

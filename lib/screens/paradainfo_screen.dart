@@ -516,6 +516,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                             value: _optionEstado,
                             onChanged: (option) {
                               setState(() {
+                                _optionMotivo = 0;
                                 _optionEstado = option as int;
                                 _estado = option;
                               });
