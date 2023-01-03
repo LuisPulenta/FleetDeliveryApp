@@ -476,8 +476,8 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2022),
-      lastDate: DateTime(2023),
+      firstDate: DateTime(DateTime.now().year),
+      lastDate: DateTime(DateTime.now().year + 2),
     );
     if (selected != null && selected != selectedDate) {
       setState(() {
