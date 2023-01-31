@@ -402,6 +402,7 @@ class _LoginScreenState extends State<LoginScreen> {
     await prefs.setString('conectadodesde', DateTime.now().toString());
     await prefs.setString('validohasta',
         DateTime.now().add(const Duration(hours: 12)).toString());
+    await prefs.setBool('sincronizar', true);
 
     // Agregar registro a bd local websesion
 

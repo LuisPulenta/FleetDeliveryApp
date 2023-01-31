@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen>
   TabController? _tabController;
 
   int paraSincronizar = 0;
+  bool _sincronizar = true;
 
   List<Ruta> _rutasApi = [];
   List<RutaCab> _rutas = [];
@@ -409,6 +410,29 @@ class _HomeScreenState extends State<HomeScreen>
                   children: <Widget>[
                     AppBar(
                       title: (const Text("Delivery")),
+                      actions: [
+                        Row(
+                          children: [
+                            const Text(
+                              "Sincr:",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                            Switch(
+                                value: _sincronizar,
+                                activeColor: Colors.green,
+                                inactiveThumbColor: Colors.grey,
+                                onChanged: (value) async {
+                                  _sincronizar = value;
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  await prefs.setBool('sincronizar', value);
+
+                                  setState(() {});
+                                }),
+                          ],
+                        ),
+                      ],
                       centerTitle: true,
                       backgroundColor: const Color(0xff282886),
                     ),
@@ -984,16 +1008,19 @@ class _HomeScreenState extends State<HomeScreen>
                       height: 5,
                     ),
                     CircleAvatar(
-                      backgroundColor: const Color(0xff282886),
+                      backgroundColor:
+                          _sincronizar ? const Color(0xff282886) : Colors.grey,
                       child: IconButton(
                         icon: const Icon(
                           Icons.keyboard_double_arrow_right,
                           color: Colors.white,
                         ),
-                        onPressed: () {
-                          rutaSelected = e;
-                          _goInfoRuta2(e);
-                        },
+                        onPressed: _sincronizar
+                            ? () {
+                                rutaSelected = e;
+                                _goInfoRuta2(e);
+                              }
+                            : null,
                       ),
                     ),
                   ],

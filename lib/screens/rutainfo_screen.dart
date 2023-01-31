@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
@@ -55,6 +56,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   String _search = '';
 
   bool _todas = true;
+  bool _sincronizar = true;
 
   Position _positionUser = const Position(
       longitude: 0,
@@ -981,6 +983,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 //*****************************************************************************
 
   Future<void> _llenarparadasenvios() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _sincronizar = prefs.getBool('sincronizar') ?? false;
+
     _paradasenvios = [];
     for (var paradasenvio in widget.paradasenvios) {
       if (_todas) {
@@ -1019,36 +1024,38 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       }
     }
 
-    var connectivityResult = await Connectivity().checkConnectivity();
+    if (_sincronizar) {
+      var connectivityResult = await Connectivity().checkConnectivity();
 
-    if (connectivityResult != ConnectivityResult.none) {
-      _renovoState = false;
+      if (connectivityResult != ConnectivityResult.none) {
+        _renovoState = false;
 
-      do {
-        setState(() {
-          _showLoader = true;
-        });
-        _renovoState = true;
-      } while (_renovoState == false);
+        do {
+          setState(() {
+            _showLoader = true;
+          });
+          _renovoState = true;
+        } while (_renovoState == false);
 
-      // for (ParadaEnvio paradaenvio in _paradasenviosdb) {
-      //   if (paradaenvio.enviado == 0) {
-      //     await _putParada(paradaenvio);
-      //   }
-      // }
+        // for (ParadaEnvio paradaenvio in _paradasenviosdb) {
+        //   if (paradaenvio.enviado == 0) {
+        //     await _putParada(paradaenvio);
+        //   }
+        // }
 
-      for (var paradaenvio in _paradasenviosdb) {
-        if (paradaenvio.enviado == 0) {
-          await _putParada(paradaenvio);
+        for (var paradaenvio in _paradasenviosdb) {
+          if (paradaenvio.enviado == 0) {
+            await _putParada(paradaenvio);
+          }
         }
-      }
 
-      do {
-        setState(() {
-          _showLoader = false;
-        });
-        _renovoState = true;
-      } while (_renovoState == false);
+        do {
+          setState(() {
+            _showLoader = false;
+          });
+          _renovoState = true;
+        } while (_renovoState == false);
+      }
     }
 
     _paradasenvios.sort((a, b) {
