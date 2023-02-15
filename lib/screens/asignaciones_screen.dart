@@ -92,6 +92,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   Asignacion2 asignacionSelected = Asignacion2(
       cliente: '',
+      documento: '',
       nombre: '',
       domicilio: '',
       cp: '',
@@ -730,6 +731,28 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       Expanded(
                                         child: Text(
                                             '${e.cliente.toString()} - ${e.nombre.toString()}',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 80,
+                                        child: Text("DNI: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
+                                      Expanded(
+                                        child: Text('${e.documento.toString()}',
                                             style: const TextStyle(
                                               fontSize: 12,
                                             )),
@@ -1615,6 +1638,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               .toLowerCase()
               .contains(_search.toLowerCase()) ||
           asignacion.localidad
+              .toString()
+              .toLowerCase()
+              .contains(_search.toLowerCase()) ||
+          asignacion.partido
               .toString()
               .toLowerCase()
               .contains(_search.toLowerCase()) ||

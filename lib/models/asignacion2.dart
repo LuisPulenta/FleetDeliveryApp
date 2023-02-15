@@ -1,5 +1,6 @@
 class Asignacion2 {
   String? cliente = '';
+  String? documento = '';
   String? nombre = '';
   String? domicilio = '';
   String? cp = '';
@@ -49,6 +50,7 @@ class Asignacion2 {
 
   Asignacion2(
       {required this.cliente,
+      required this.documento,
       required this.nombre,
       required this.domicilio,
       required this.cp,
@@ -98,6 +100,7 @@ class Asignacion2 {
 
   Asignacion2.fromJson(Map<String, dynamic> json) {
     cliente = json['cliente'];
+    documento = json['documento'];
     nombre = json['nombre'];
     domicilio = json['domicilio'];
     cp = json['cp'];
@@ -149,6 +152,7 @@ class Asignacion2 {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['cliente'] = cliente;
+    data['documento'] = documento;
     data['nombre'] = nombre;
     data['domicilio'] = domicilio;
     data['cp'] = cp;
@@ -202,6 +206,7 @@ class Asignacion2 {
     return {
       'cliente': cliente,
       'nombre': nombre,
+      'documento': documento,
       'domicilio': domicilio,
       'cp': cp,
       'entrecallE1': entrecallE1,

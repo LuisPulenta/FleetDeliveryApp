@@ -35,6 +35,7 @@ class _Home2ScreenState extends State<Home2Screen> {
 
   final Asignacion2 _asignacionVacia = Asignacion2(
       cliente: '',
+      documento: '',
       nombre: '',
       domicilio: '',
       cp: '',

@@ -107,6 +107,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   Asignacion2 _asignacion = Asignacion2(
       cliente: '',
+      documento: '',
       nombre: '',
       domicilio: '',
       cp: '',
@@ -623,6 +624,30 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                             ],
                           ),
+                          const SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                width: 80,
+                                child: Text("DNI: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
+                              Expanded(
+                                child:
+                                    Text('${_asignacion.documento.toString()}',
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                        )),
+                              ),
+                            ],
+                          ),
+
                           const SizedBox(
                             height: 1,
                           ),
@@ -1309,7 +1334,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                             ],
                           ),
-                          e.smartcard.toString().length > 0
+                          e.smartcard.toString().isNotEmpty
                               ? Row(
                                   children: [
                                     const SizedBox(
@@ -1973,6 +1998,26 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           Row(
                             children: [
+                              const Text("DNI: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child:
+                                    Text('${_asignacion.documento.toString()}',
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                        )),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
                               const Text("Dirección: ",
                                   style: TextStyle(
                                     fontSize: 12,
@@ -2028,7 +2073,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           const Divider(
                             color: Colors.black,
                           ),
-                          _asignacion.telefono.toString().length > 0
+                          _asignacion.telefono.toString().isNotEmpty
                               ? Row(
                                   children: [
                                     const Text("Teléfono: ",
@@ -2066,18 +2111,27 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         size: 34,
                                       ),
                                       color: Colors.green,
-                                      onPressed: () => launch(
-                                          'tel://${_asignacion.telefono.toString()}'),
+                                      onPressed: () {
+                                        if (_asignacion.telefono.toString() !=
+                                                "Sin Dato" &&
+                                            _asignacion.telefono.toString() !=
+                                                "xxx" &&
+                                            _asignacion.telefono.toString() !=
+                                                "XXX") {
+                                          launch(
+                                              'tel://${_asignacion.telefono.toString()}');
+                                        }
+                                      },
                                     ),
                                   ],
                                 )
                               : Container(),
-                          _asignacion.telefono.toString().length > 0
+                          _asignacion.telefono.toString().isNotEmpty
                               ? const Divider(
                                   color: Colors.black,
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo1.toString().length > 0
+                          _asignacion.telefAlternativo1.toString().isNotEmpty
                               ? Row(
                                   children: [
                                     const Text("Tel. Alt. 1: ",
@@ -2119,8 +2173,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       color: Colors.green,
                                       onPressed: () {
                                         if (_asignacion.telefAlternativo1
-                                                .toString() !=
-                                            "Sin Dato") {
+                                                    .toString() !=
+                                                "Sin Dato" &&
+                                            _asignacion.telefAlternativo1
+                                                    .toString() !=
+                                                "xxx" &&
+                                            _asignacion.telefAlternativo1
+                                                    .toString() !=
+                                                "XXX") {
                                           launch(
                                               'tel://${_asignacion.telefAlternativo1.toString()}');
                                         }
@@ -2129,12 +2189,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo1.toString().length > 0
+                          _asignacion.telefAlternativo1.toString().isNotEmpty
                               ? const Divider(
                                   color: Colors.black,
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo2.toString().length > 0
+                          _asignacion.telefAlternativo2.toString().isNotEmpty
                               ? Row(
                                   children: [
                                     const Text("Tel. Alt. 2: ",
@@ -2176,8 +2236,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       color: Colors.green,
                                       onPressed: () {
                                         if (_asignacion.telefAlternativo2
-                                                .toString() !=
-                                            "Sin Dato") {
+                                                    .toString() !=
+                                                "Sin Dato" &&
+                                            _asignacion.telefAlternativo2
+                                                    .toString() !=
+                                                "xxx" &&
+                                            _asignacion.telefAlternativo2
+                                                    .toString() !=
+                                                "XXX") {
                                           launch(
                                               'tel://${_asignacion.telefAlternativo2.toString()}');
                                         }
@@ -2186,12 +2252,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo2.toString().length > 0
+                          _asignacion.telefAlternativo2.toString().isNotEmpty
                               ? const Divider(
                                   color: Colors.black,
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo3.toString().length > 0
+                          _asignacion.telefAlternativo3.toString().isNotEmpty
                               ? Row(
                                   children: [
                                     const Text("Tel. Alt. 3: ",
@@ -2233,8 +2299,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       color: Colors.green,
                                       onPressed: () {
                                         if (_asignacion.telefAlternativo3
-                                                .toString() !=
-                                            "Sin Dato") {
+                                                    .toString() !=
+                                                "Sin Dato" &&
+                                            _asignacion.telefAlternativo3
+                                                    .toString() !=
+                                                "xxx" &&
+                                            _asignacion.telefAlternativo3
+                                                    .toString() !=
+                                                "XXX") {
                                           launch(
                                               'tel://${_asignacion.telefAlternativo3.toString()}');
                                         }
@@ -2243,12 +2315,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo3.toString().length > 0
+                          _asignacion.telefAlternativo3.toString().isNotEmpty
                               ? const Divider(
                                   color: Colors.black,
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo4.toString().length > 0
+                          _asignacion.telefAlternativo4.toString().isNotEmpty
                               ? Row(
                                   children: [
                                     const Text("Tel. Alt. 4: ",
@@ -2290,8 +2362,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       color: Colors.green,
                                       onPressed: () {
                                         if (_asignacion.telefAlternativo4
-                                                .toString() !=
-                                            "Sin Dato") {
+                                                    .toString() !=
+                                                "Sin Dato" &&
+                                            _asignacion.telefAlternativo4
+                                                    .toString() !=
+                                                "xxx" &&
+                                            _asignacion.telefAlternativo4
+                                                    .toString() !=
+                                                "XXX") {
                                           launch(
                                               'tel://${_asignacion.telefAlternativo4.toString()}');
                                         }
@@ -2300,7 +2378,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo4.toString().length > 0
+                          _asignacion.telefAlternativo4.toString().isNotEmpty
                               ? const Divider(
                                   color: Colors.black,
                                 )
@@ -3217,6 +3295,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     TextEditingController _phoneController = TextEditingController();
     _phoneController.text = number;
 
+    if (number == 'xxx' || number == 'XXX') return;
+
     await showDialog(
         barrierDismissible: false,
         context: context,
@@ -3309,10 +3389,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         empresa = 'DirecTV';
                       }
 
+                      if (empresa == 'SuperC') {
+                        empresa = 'Supercanal';
+                      }
+
                       final link = WhatsAppUnilink(
                         phoneNumber: _number2,
+                        //***** MENSAJE DE CONTACTO *****
                         text:
-                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} equipos a nombre de ${_asignacion.nombre} en el domicilio ${_asignacion.domicilio}. Mañana por la mañana podría pasar a retirarlo?. Muchas gracias. ',
+                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} equipos a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo esta semana?. Muchas gracias.',
                       );
                       await launch('$link');
                     },
