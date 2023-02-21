@@ -2,17 +2,20 @@
     package="com.luisnu.fleetdeliveryapp">
    <application
         android:label="Fleet Delivery App"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        >
 
          <meta-data android:name="com.google.android.maps.v2.API_KEY" 
          android:exported="true"
                android:value="AIzaSyAtxvXVhbzV9OTwZh8UxVsW2A58WYf-Btc" 
+
+
                />
 
-                 <service android:name="com.example.app.backgroundService"
+                 <service android:name="com.luisnu.fleetdeliveryapp.backgroundService"
          android:exported="false">
     <intent-filter>
-        <action android:name="com.example.app.START_BACKGROUND" />
+        <action android:name="com.luisnu.fleetdeliveryapp.START_BACKGROUND" />
     </intent-filter>
 </service>
 
@@ -51,10 +54,25 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+            <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.luisnu.fleetdeliveryapp.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+
     
 <queries>
 		<package android:name="com.google.android.apps.maps" />
