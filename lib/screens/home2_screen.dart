@@ -273,6 +273,27 @@ class _Home2ScreenState extends State<Home2Screen> {
             ),
             ListTile(
               leading: const Icon(
+                Icons.description,
+                color: Color(0xff0e4888),
+              ),
+              title: const Text('Mis Datos',
+                  style: TextStyle(fontSize: 15, color: Color(0xff0e4888))),
+              tileColor: const Color(0xff8c8c94),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MisDatosScreen(
+                              user: widget.user,
+                            )));
+              },
+            ),
+            const Divider(
+              color: Color(0xff0e4888),
+              height: 1,
+            ),
+            ListTile(
+              leading: const Icon(
                 Icons.contact_page,
                 color: Color(0xff0e4888),
               ),

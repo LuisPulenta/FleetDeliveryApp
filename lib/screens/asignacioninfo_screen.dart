@@ -2977,7 +2977,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
         //----------------- Campos que cambian el valor -----------------
         'estadogaos': asign.estadogaos,
-        'estadO3': asign.decO1 == 'SinDatos'
+        'estadO3': (asign.decO1 == 'SinDatos' ||
+                asign.decO1 == "" ||
+                asign.decO1 == "xxx")
             ? asign.estadO3
             : widget.funcionApp.serieObligatoria == 1
                 ? asign.estadO3

@@ -1,0 +1,906 @@
+import 'dart:io';
+
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:camera/camera.dart';
+import 'package:fleetdeliveryapp/models/models.dart';
+import 'package:fleetdeliveryapp/screens/screens.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class MisDatosScreen extends StatefulWidget {
+  final Usuario user;
+  const MisDatosScreen({Key? key, required this.user}) : super(key: key);
+
+  @override
+  State<MisDatosScreen> createState() => _MisDatosScreenState();
+}
+
+class _MisDatosScreenState extends State<MisDatosScreen> {
+//-----------------------------------------------------------------------------
+//---------------------------- Variable ---------------------------------------
+//-----------------------------------------------------------------------------
+  bool _photoChangedDNIFrente = false;
+  bool _photoChangedDNIDorso = false;
+  bool _photoChangedCarnetConducir = false;
+  late XFile _imageDNIFrente;
+  late XFile _imageDNIDorso;
+  late XFile _imageCarnetConducir;
+  int cualFoto = 0;
+  bool _gas = false;
+
+  DateTime? fechaVencCarnetConducir;
+  DateTime? fechaVencVTV;
+  DateTime? fechaVencObleaGNC;
+
+  String _numcha = '';
+  String _numchaError = '';
+  bool _numchaShowError = false;
+  final TextEditingController _numchaController = TextEditingController();
+
+  String _modelo = '';
+  String _modeloError = '';
+  bool _modeloShowError = false;
+  final TextEditingController _modeloController = TextEditingController();
+
+  String _marca = '';
+  String _marcaError = '';
+  bool _marcaShowError = false;
+  final TextEditingController _marcaController = TextEditingController();
+
+//-----------------------------------------------------------------------------
+//---------------------------- Pantalla ---------------------------------------
+//-----------------------------------------------------------------------------
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFC7C7C8),
+      appBar: AppBar(
+        title: const Text('Mis Datos'),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF282886),
+      ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 5,
+                ),
+                const Text('DNI Frente',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+                _showDNIFrente(),
+                const Divider(
+                  color: Colors.black,
+                ),
+                const Text('DNI Dorso',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+                _showDNIDorso(),
+                const Divider(
+                  color: Colors.black,
+                ),
+                const Text('Carnet de Conducir',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+                _showCarnetConducir(),
+                _showFechaCarnetConducir(),
+                const Divider(
+                  color: Colors.black,
+                ),
+                const Text('Vehículo',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+                Row(
+                  children: [
+                    Expanded(flex: 3, child: _showNumcha()),
+                    Expanded(flex: 2, child: _showModelo()),
+                  ],
+                ),
+                _showMarca(),
+                _showFechaVencVTV(),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: SwitchListTile.adaptive(
+                      title: const Text(
+                        "Tiene GNC:",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      activeColor: const Color(0xFF282886),
+                      value: _gas,
+                      onChanged: (value) {
+                        _gas = value;
+                        setState(() {});
+                      }),
+                ),
+                _showFechaVencObleaGNC(),
+                const Divider(
+                  color: Colors.black,
+                ),
+                _showButtonGuardar(),
+                const SizedBox(
+                  height: 15,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showDNIFrente --------------------
+//-----------------------------------------------------------------
+
+  Widget _showDNIFrente() {
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: InkWell(
+              child: Stack(children: <Widget>[
+                Container(
+                  child: !_photoChangedDNIFrente
+                      ? const Center(
+                          child: Image(
+                              image: AssetImage('assets/dni.png'),
+                              width: 200,
+                              height: 160,
+                              fit: BoxFit.contain),
+                        )
+                      : Center(
+                          child: Image.file(
+                            File(_imageDNIFrente.path),
+                            width: 200,
+                            height: 160,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                ),
+                Positioned(
+                    bottom: 60,
+                    right: 20,
+                    child: InkWell(
+                      onTap: () {
+                        cualFoto = 1;
+                        _takePicture();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.photo_camera,
+                            size: 30,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+                Positioned(
+                    bottom: 60,
+                    left: 20,
+                    child: InkWell(
+                      onTap: () {
+                        cualFoto = 1;
+                        _selectPicture();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.image,
+                            size: 30,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+              ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showDNIDorso --------------------
+//-----------------------------------------------------------------
+
+  Widget _showDNIDorso() {
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: InkWell(
+              child: Stack(children: <Widget>[
+                Container(
+                  child: !_photoChangedDNIDorso
+                      ? const Center(
+                          child: Image(
+                              image: AssetImage('assets/dni.png'),
+                              width: 200,
+                              height: 160,
+                              fit: BoxFit.contain),
+                        )
+                      : Center(
+                          child: Image.file(
+                            File(_imageDNIDorso.path),
+                            width: 200,
+                            height: 160,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                ),
+                Positioned(
+                    bottom: 60,
+                    right: 20,
+                    child: InkWell(
+                      onTap: () {
+                        cualFoto = 2;
+                        _takePicture();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.photo_camera,
+                            size: 30,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+                Positioned(
+                    bottom: 60,
+                    left: 20,
+                    child: InkWell(
+                      onTap: () {
+                        cualFoto = 2;
+                        _selectPicture();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.image,
+                            size: 30,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+              ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showCarnetConducir --------------------
+//-----------------------------------------------------------------
+
+  Widget _showCarnetConducir() {
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: InkWell(
+              child: Stack(children: <Widget>[
+                Container(
+                  child: !_photoChangedCarnetConducir
+                      ? const Center(
+                          child: Image(
+                              image: AssetImage('assets/dni.png'),
+                              width: 200,
+                              height: 160,
+                              fit: BoxFit.contain),
+                        )
+                      : Center(
+                          child: Image.file(
+                            File(_imageCarnetConducir.path),
+                            width: 200,
+                            height: 160,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                ),
+                Positioned(
+                    bottom: 60,
+                    right: 20,
+                    child: InkWell(
+                      onTap: () {
+                        cualFoto = 3;
+                        _takePicture();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.photo_camera,
+                            size: 30,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+                Positioned(
+                    bottom: 60,
+                    left: 20,
+                    child: InkWell(
+                      onTap: () {
+                        cualFoto = 3;
+                        _selectPicture();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.image,
+                            size: 30,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+              ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showNumcha ------------------------
+//-----------------------------------------------------------------
+
+  Widget _showNumcha() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      child: TextField(
+        controller: _numchaController,
+        decoration: InputDecoration(
+            fillColor: Colors.white,
+            filled: true,
+            hintText: 'Patente',
+            labelText: 'Patente',
+            errorText: _numchaShowError ? _numchaError : null,
+            suffixIcon: const Icon(Icons.abc),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        onChanged: (value) {
+          _numcha = value;
+        },
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showModelo ------------------------
+//-----------------------------------------------------------------
+
+  Widget _showModelo() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      child: TextField(
+        controller: _modeloController,
+        decoration: InputDecoration(
+            fillColor: Colors.white,
+            filled: true,
+            hintText: 'Modelo',
+            labelText: 'Modelo',
+            errorText: _modeloShowError ? _modeloError : null,
+            suffixIcon: const Icon(Icons.numbers),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        onChanged: (value) {
+          _modelo = value;
+        },
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showMarca -------------------------
+//-----------------------------------------------------------------
+
+  Widget _showMarca() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      child: TextField(
+        controller: _marcaController,
+        maxLines: 2,
+        decoration: InputDecoration(
+            fillColor: Colors.white,
+            filled: true,
+            hintText: 'Marca',
+            labelText: 'Marca',
+            errorText: _marcaShowError ? _marcaError : null,
+            suffixIcon: const Icon(Icons.notes),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        onChanged: (value) {
+          _marca = value;
+        },
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _takePicture -----------------------
+//-----------------------------------------------------------------
+
+  void _takePicture() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final cameras = await availableCameras();
+    var firstCamera = cameras.first;
+    var response1 = await showAlertDialog(
+        context: context,
+        title: 'Seleccionar cámara',
+        message: '¿Qué cámara desea utilizar?',
+        actions: <AlertDialogAction>[
+          const AlertDialogAction(key: 'no', label: 'Trasera'),
+          const AlertDialogAction(key: 'yes', label: 'Delantera'),
+          const AlertDialogAction(key: 'cancel', label: 'Cancelar'),
+        ]);
+    if (response1 == 'yes') {
+      firstCamera = cameras.first;
+    }
+    if (response1 == 'no') {
+      firstCamera = cameras.last;
+    }
+
+    if (response1 != 'cancel') {
+      Response? response = await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => TakePictureScreen(
+                    camera: firstCamera,
+                  )));
+      if (response != null) {
+        setState(() {
+          if (cualFoto == 1) {
+            _photoChangedDNIFrente = true;
+            _imageDNIFrente = response.result;
+          }
+          if (cualFoto == 2) {
+            _photoChangedDNIDorso = true;
+            _imageDNIDorso = response.result;
+          }
+          if (cualFoto == 3) {
+            _photoChangedCarnetConducir = true;
+            _imageCarnetConducir = response.result;
+          }
+        });
+        cualFoto = 0;
+      }
+    }
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _selectPicture ---------------------
+//-----------------------------------------------------------------
+
+  void _selectPicture() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        if (cualFoto == 1) {
+          _photoChangedDNIFrente = true;
+          _imageDNIFrente = image;
+        }
+        if (cualFoto == 2) {
+          _photoChangedDNIDorso = true;
+          _imageDNIDorso = image;
+        }
+        if (cualFoto == 3) {
+          _photoChangedCarnetConducir = true;
+          _imageCarnetConducir = image;
+        }
+      });
+      cualFoto = 0;
+    }
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showFechaCarnetConducir -----------
+//-----------------------------------------------------------------
+
+  Widget _showFechaCarnetConducir() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Row(
+                  children: const [],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 5,
+                child: Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerRight,
+                      width: 150,
+                      height: 30,
+                      child: const Text(
+                        'Fecha Venc. Carnet:',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 100,
+                        height: 30,
+                        child: Text(
+                          fechaVencCarnetConducir != null
+                              ? "    ${fechaVencCarnetConducir!.day}/${fechaVencCarnetConducir!.month}/${fechaVencCarnetConducir!.year}"
+                              : "",
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.calendar_month),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xFF282886),
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onPressed: () => fechaVencCarnet(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  //---------------------------------------------------------------------------
+  //------------------------------ fechaVencCarnet-----------------------------
+  //---------------------------------------------------------------------------
+
+  fechaVencCarnet() async {
+    FocusScope.of(context).unfocus();
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 1),
+      lastDate: DateTime(DateTime.now().year + 1),
+    );
+    if (selected != null && selected != fechaVencCarnetConducir) {
+      setState(() {
+        fechaVencCarnetConducir = selected;
+      });
+    }
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showFechaVencVTV ------------------
+//-----------------------------------------------------------------
+
+  Widget _showFechaVencVTV() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Row(
+                  children: const [],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 5,
+                child: Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerRight,
+                      width: 150,
+                      height: 30,
+                      child: const Text(
+                        'Fecha Venc. VTV:',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 100,
+                        height: 30,
+                        child: Text(
+                          fechaVencVTV != null
+                              ? "    ${fechaVencVTV!.day}/${fechaVencVTV!.month}/${fechaVencVTV!.year}"
+                              : "",
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.calendar_month),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xFF282886),
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onPressed: () => fechaVVTV(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  //---------------------------------------------------------------------------
+  //------------------------------ fechaVencVTV-----------------------------
+  //---------------------------------------------------------------------------
+
+  fechaVVTV() async {
+    FocusScope.of(context).unfocus();
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 1),
+      lastDate: DateTime(DateTime.now().year + 1),
+    );
+    if (selected != null && selected != fechaVencVTV) {
+      setState(() {
+        fechaVencVTV = selected;
+      });
+    }
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showFechaVencObleaGNC -------------
+//-----------------------------------------------------------------
+
+  Widget _showFechaVencObleaGNC() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Row(
+                  children: const [],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 7,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        width: 150,
+                        height: 30,
+                        child: const Text(
+                          'Fecha Venc. Oblea:',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 80,
+                        height: 30,
+                        child: Text(
+                          fechaVencObleaGNC != null
+                              ? "    ${fechaVencObleaGNC!.day}/${fechaVencObleaGNC!.month}/${fechaVencObleaGNC!.year}"
+                              : "",
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.calendar_month),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xFF282886),
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onPressed: () => fechaVGNC(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  //---------------------------------------------------------------------------
+  //------------------------------ fechaVGNC-----------------------------------
+  //---------------------------------------------------------------------------
+
+  fechaVGNC() async {
+    FocusScope.of(context).unfocus();
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 1),
+      lastDate: DateTime(DateTime.now().year + 1),
+    );
+    if (selected != null && selected != fechaVencVTV) {
+      setState(() {
+        fechaVencObleaGNC = selected;
+      });
+    }
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showButtonGuardar -----------------
+//-----------------------------------------------------------------
+
+  Widget _showButtonGuardar() {
+    return Container(
+      margin: const EdgeInsets.only(left: 10, right: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(
+            child: ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.save),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text('Guardar'),
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: const Color(0xFF282886),
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              onPressed: _save,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------------------
+//-------------------------------- _save --------------------------------------
+//-----------------------------------------------------------------------------
+
+  _save() {
+    // if (!validateFields()) {
+    //   setState(() {});
+    //   return;
+    // }
+    // _addRecord();
+  }
+}
