@@ -20,6 +20,9 @@ class SubContratistasUsrVehiculo {
   String gas;
   DateTime fechaObleaGas;
   DateTime ultimaActualizacion;
+  String dniFrenteFullPath = '';
+  String dniDorsoFullPath = '';
+  String carnetConducirFullPath = '';
 
   SubContratistasUsrVehiculo({
     required this.id,
@@ -35,6 +38,9 @@ class SubContratistasUsrVehiculo {
     required this.gas,
     required this.fechaObleaGas,
     required this.ultimaActualizacion,
+    required this.dniFrenteFullPath,
+    required this.dniDorsoFullPath,
+    required this.carnetConducirFullPath,
   });
 
   factory SubContratistasUsrVehiculo.fromMap(Map<String, dynamic> json) =>
@@ -52,6 +58,9 @@ class SubContratistasUsrVehiculo {
         gas: json["gas"],
         fechaObleaGas: DateTime.parse(json["fechaObleaGas"]),
         ultimaActualizacion: DateTime.parse(json["ultimaActualizacion"]),
+        dniFrenteFullPath: json["dniFrenteFullPath"],
+        dniDorsoFullPath: json["dniDorsoFullPath"],
+        carnetConducirFullPath: json["carnetConducirFullPath"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -68,5 +77,8 @@ class SubContratistasUsrVehiculo {
         "gas": gas,
         "fechaObleaGas": fechaObleaGas.toIso8601String(),
         "ultimaActualizacion": ultimaActualizacion.toIso8601String(),
+        "dniFrenteFullPath": dniFrenteFullPath,
+        "dniDorsoFullPath": dniDorsoFullPath,
+        "carnetConducirFullPath": carnetConducirFullPath,
       };
 }

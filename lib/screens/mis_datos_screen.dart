@@ -22,7 +22,7 @@ class MisDatosScreen extends StatefulWidget {
 
 class _MisDatosScreenState extends State<MisDatosScreen> {
 //-----------------------------------------------------------------------------
-//---------------------------- Variable ---------------------------------------
+//---------------------------- Variables --------------------------------------
 //-----------------------------------------------------------------------------
   bool _showLoader = false;
 
@@ -54,6 +54,20 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
   String _marcaError = '';
   bool _marcaShowError = false;
   final TextEditingController _marcaController = TextEditingController();
+
+  late SubContratistasUsrVehiculo _misDatos;
+
+  bool editMode = false;
+
+//-----------------------------------------------------------------------------
+//--------------------------- initState ---------------------------------------
+//-----------------------------------------------------------------------------
+
+  @override
+  void initState() {
+    super.initState();
+    _getMisDatos();
+  }
 
 //-----------------------------------------------------------------------------
 //---------------------------- Pantalla ---------------------------------------
@@ -169,12 +183,15 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
               child: Stack(children: <Widget>[
                 Container(
                   child: !_photoChangedDNIFrente
-                      ? const Center(
-                          child: Image(
-                              image: AssetImage('assets/dni.png'),
-                              width: 200,
-                              height: 160,
-                              fit: BoxFit.contain),
+                      ? Center(
+                          child: !editMode
+                              ? const Image(
+                                  image: AssetImage('assets/dni.png'),
+                                  width: 200,
+                                  height: 160,
+                                  fit: BoxFit.contain)
+                              : Image.network(_misDatos.dniFrenteFullPath,
+                                  width: 200, height: 160, fit: BoxFit.contain),
                         )
                       : Center(
                           child: Image.file(
@@ -252,12 +269,15 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
               child: Stack(children: <Widget>[
                 Container(
                   child: !_photoChangedDNIDorso
-                      ? const Center(
-                          child: Image(
-                              image: AssetImage('assets/dni.png'),
-                              width: 200,
-                              height: 160,
-                              fit: BoxFit.contain),
+                      ? Center(
+                          child: !editMode
+                              ? const Image(
+                                  image: AssetImage('assets/dni.png'),
+                                  width: 200,
+                                  height: 160,
+                                  fit: BoxFit.contain)
+                              : Image.network(_misDatos.dniDorsoFullPath,
+                                  width: 200, height: 160, fit: BoxFit.contain),
                         )
                       : Center(
                           child: Image.file(
@@ -335,12 +355,15 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
               child: Stack(children: <Widget>[
                 Container(
                   child: !_photoChangedCarnetConducir
-                      ? const Center(
-                          child: Image(
-                              image: AssetImage('assets/dni.png'),
-                              width: 200,
-                              height: 160,
-                              fit: BoxFit.contain),
+                      ? Center(
+                          child: !editMode
+                              ? const Image(
+                                  image: AssetImage('assets/dni.png'),
+                                  width: 200,
+                                  height: 160,
+                                  fit: BoxFit.contain)
+                              : Image.network(_misDatos.carnetConducirFullPath,
+                                  width: 200, height: 160, fit: BoxFit.contain),
                         )
                       : Center(
                           child: Image.file(
@@ -925,7 +948,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
   bool validateFields() {
     bool isValid = true;
 
-    if (!_photoChangedDNIFrente) {
+    if (!_photoChangedDNIFrente && !editMode) {
       isValid = false;
       showDialog(
           context: context,
@@ -952,7 +975,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
           });
     }
 
-    if (!_photoChangedDNIDorso) {
+    if (!_photoChangedDNIDorso && !editMode) {
       isValid = false;
       showDialog(
           context: context,
@@ -979,7 +1002,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
           });
     }
 
-    if (!_photoChangedCarnetConducir) {
+    if (!_photoChangedCarnetConducir && !editMode) {
       isValid = false;
       showDialog(
           context: context,
@@ -1187,7 +1210,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     String ahora = DateTime.now().toString();
 
     Map<String, dynamic> request = {
-      'ID': 0,
+      'ID': editMode ? _misDatos.id : 0,
       'IdUser': widget.user.idUser,
       'DNIFrente': '',
       'DNIDorso': '',
@@ -1206,8 +1229,79 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       'CarnetConducirImageArray': base64imageCarnetConducir,
     };
 
-    Response response =
-        await ApiHelper.post('/api/SubContratistasUsrVehiculos', request);
+    if (editMode == false) {
+      Response response =
+          await ApiHelper.post('/api/SubContratistasUsrVehiculos', request);
+
+      setState(() {
+        _showLoader = false;
+      });
+
+      if (!response.isSuccess) {
+        await showAlertDialog(
+            context: context,
+            title: 'Error',
+            message: response.message,
+            actions: <AlertDialogAction>[
+              const AlertDialogAction(key: null, label: 'Aceptar'),
+            ]);
+        return;
+      }
+    }
+
+    if (editMode == true) {
+      Response response = await ApiHelper.put(
+          '/api/SubContratistasUsrVehiculos/',
+          _misDatos.id.toString(),
+          request);
+
+      setState(() {
+        _showLoader = false;
+      });
+
+      if (!response.isSuccess) {
+        await showAlertDialog(
+            context: context,
+            title: 'Error',
+            message: response.message,
+            actions: <AlertDialogAction>[
+              const AlertDialogAction(key: null, label: 'Aceptar'),
+            ]);
+        return;
+      }
+    }
+
+    Navigator.pop(context, 'yes');
+  }
+
+//----------------------------------------------------------------------------
+//--------------------------- _getMisDatos -----------------------------------
+//----------------------------------------------------------------------------
+
+  Future<void> _getMisDatos() async {
+    setState(() {
+      _showLoader = true;
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _showLoader = false;
+      });
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    Response response = Response(isSuccess: false);
+
+    response = await ApiHelper.getMisDatos(widget.user.idUser.toString());
 
     setState(() {
       _showLoader = false;
@@ -1223,6 +1317,37 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
           ]);
       return;
     }
-    Navigator.pop(context, 'yes');
+
+    setState(() {
+      _misDatos = response.result;
+    });
+
+    if (_misDatos != null) {
+      editMode = true;
+      _loadFields();
+    }
+  }
+
+//-----------------------------------------------------------------------------
+//-------------------- _loadFields --------------------------------------------
+//-----------------------------------------------------------------------------
+
+  void _loadFields() async {
+    _numcha = _misDatos.dominio;
+    _numchaController.text = _misDatos.dominio;
+
+    _modelo = _misDatos.modeloAnio.toString();
+    _modeloController.text = _misDatos.modeloAnio.toString();
+
+    _marca = _misDatos.marca;
+    _marcaController.text = _misDatos.marca;
+
+    _gas = _misDatos.gas == 'SI' ? true : false;
+
+    fechaVencCarnetConducir = _misDatos.fechaVencCarnet;
+    fechaVencVTV = _misDatos.fechaVencVtv;
+    fechaVencObleaGNC = _misDatos.fechaObleaGas;
+
+    setState(() {});
   }
 }
