@@ -1,11 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../helpers/api_helper.dart';
 
 class MisDatosScreen extends StatefulWidget {
   final Usuario user;
@@ -19,6 +24,8 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
 //-----------------------------------------------------------------------------
 //---------------------------- Variable ---------------------------------------
 //-----------------------------------------------------------------------------
+  bool _showLoader = false;
+
   bool _photoChangedDNIFrente = false;
   bool _photoChangedDNIDorso = false;
   bool _photoChangedCarnetConducir = false;
@@ -26,6 +33,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
   late XFile _imageDNIDorso;
   late XFile _imageCarnetConducir;
   int cualFoto = 0;
+
   bool _gas = false;
 
   DateTime? fechaVencCarnetConducir;
@@ -136,6 +144,11 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
               ],
             ),
           ),
+          _showLoader
+              ? const LoaderComponent(
+                  text: 'Por favor espere...',
+                )
+              : Container(),
         ],
       ),
     );
@@ -424,6 +437,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       child: TextField(
         controller: _modeloController,
+        keyboardType: TextInputType.number,
         decoration: InputDecoration(
             fillColor: Colors.white,
             filled: true,
@@ -848,7 +862,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       firstDate: DateTime(DateTime.now().year - 1),
       lastDate: DateTime(DateTime.now().year + 1),
     );
-    if (selected != null && selected != fechaVencVTV) {
+    if (selected != null && selected != fechaVencObleaGNC) {
       setState(() {
         fechaVencObleaGNC = selected;
       });
@@ -897,10 +911,318 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
 //-----------------------------------------------------------------------------
 
   _save() {
-    // if (!validateFields()) {
-    //   setState(() {});
-    //   return;
-    // }
-    // _addRecord();
+    if (!validateFields()) {
+      setState(() {});
+      return;
+    }
+    _addRecord();
+  }
+
+//-----------------------------------------------------------------------------
+//-------------------------------- validateFields -----------------------------
+//-----------------------------------------------------------------------------
+
+  bool validateFields() {
+    bool isValid = true;
+
+    if (!_photoChangedDNIFrente) {
+      isValid = false;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('Debe cargar Frente del DNI'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+    }
+
+    if (!_photoChangedDNIDorso) {
+      isValid = false;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('Debe cargar Dorso del DNI'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+    }
+
+    if (!_photoChangedCarnetConducir) {
+      isValid = false;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('Debe cargar Carnet de Conducir'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+    }
+
+    if (_numcha == "") {
+      isValid = false;
+      _numchaShowError = true;
+      _numchaError = 'Debe ingresar una Patente';
+    } else {
+      if (_numcha.length > 7) {
+        isValid = false;
+        _numchaShowError = true;
+        _numchaError = 'Máximo 7 caracteres';
+      } else {
+        _numchaShowError = false;
+      }
+    }
+
+    if (_modelo.isEmpty) {
+      isValid = false;
+      _modeloShowError = true;
+      _modeloError = 'Ingrese año';
+    } else {
+      if (_modelo.length > 4) {
+        isValid = false;
+        _modeloShowError = true;
+        _modeloError = 'Máx 4 carac.';
+      } else {
+        _modeloShowError = false;
+      }
+    }
+
+    if (_marca.isEmpty) {
+      isValid = false;
+      _marcaShowError = true;
+      _marcaError = 'Debe ingresar la marca del vehículo';
+    } else {
+      if (_marca.length > 30) {
+        isValid = false;
+        _marcaShowError = true;
+        _marcaError = 'La Marca no puede tener más de 30 caracteres';
+      } else {
+        _marcaShowError = false;
+      }
+    }
+
+    if (fechaVencCarnetConducir == null) {
+      isValid = false;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso!'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text(
+                        'Debe ingresar Fecha de Vencimiento del Carnet de Conducir.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+      setState(() {});
+    }
+
+    if (fechaVencVTV == null) {
+      isValid = false;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso!'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('Debe ingresar Fecha de Vencimiento del VTV.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+      setState(() {});
+    }
+
+    if (fechaVencObleaGNC == null && _gas) {
+      isValid = false;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso!'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text(
+                        'Debe ingresar Fecha de Vencimiento de la Oblea de GNC.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+      setState(() {});
+    }
+
+    setState(() {});
+
+    return isValid;
+  }
+
+  //--------------------------------------------------------------------------
+  //---------------------------- _addRecord ----------------------------------
+  //--------------------------------------------------------------------------
+
+  void _addRecord() async {
+    setState(() {
+      _showLoader = true;
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _showLoader = false;
+      });
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    String base64imageDNIFrente = '';
+    String base64imageDNIDorso = '';
+    String base64imageCarnetConducir = '';
+
+    if (_photoChangedDNIFrente) {
+      List<int> imageBytesDNIFrente = await _imageDNIFrente.readAsBytes();
+      base64imageDNIFrente = base64Encode(imageBytesDNIFrente);
+    }
+
+    if (_photoChangedDNIDorso) {
+      List<int> imageBytesDNIDorso = await _imageDNIDorso.readAsBytes();
+      base64imageDNIDorso = base64Encode(imageBytesDNIDorso);
+    }
+
+    if (_photoChangedCarnetConducir) {
+      List<int> imageBytesCarnetConducir =
+          await _imageCarnetConducir.readAsBytes();
+      base64imageCarnetConducir = base64Encode(imageBytesCarnetConducir);
+    }
+
+    String ahora = DateTime.now().toString();
+
+    Map<String, dynamic> request = {
+      'ID': 0,
+      'IdUser': widget.user.idUser,
+      'DNIFrente': '',
+      'DNIDorso': '',
+      'CarnetConducir': '',
+      'FechaVencCarnet': fechaVencCarnetConducir.toString(),
+      'Dominio': _numcha.toUpperCase(),
+      'ModeloAnio': _modelo,
+      'Marca': _marca,
+      'FechaVencVTV': fechaVencVTV.toString(),
+      'Gas': _gas ? "SI" : "NO",
+      'FechaObleaGas':
+          fechaVencObleaGNC != null ? fechaVencObleaGNC.toString() : '',
+      'UltimaActualizacion': ahora,
+      'DNIFrenteImageArray': base64imageDNIFrente,
+      'DNIDorsoImageArray': base64imageDNIDorso,
+      'CarnetConducirImageArray': base64imageCarnetConducir,
+    };
+
+    Response response =
+        await ApiHelper.post('/api/SubContratistasUsrVehiculos', request);
+
+    setState(() {
+      _showLoader = false;
+    });
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    Navigator.pop(context, 'yes');
   }
 }
