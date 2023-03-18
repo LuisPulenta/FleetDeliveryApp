@@ -6,6 +6,7 @@ export 'package:fleetdeliveryapp/models/cartera.dart';
 export 'package:fleetdeliveryapp/models/codigocierre.dart';
 export 'package:fleetdeliveryapp/models/controlesequivalencia.dart';
 export 'package:fleetdeliveryapp/models/envio.dart';
+export 'package:fleetdeliveryapp/models/equipos_sin_devolver.dart';
 export 'package:fleetdeliveryapp/models/funcionesapp.dart';
 export 'package:fleetdeliveryapp/models/modulo.dart';
 export 'package:fleetdeliveryapp/models/motivo.dart';

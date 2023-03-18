@@ -7,6 +7,7 @@ export 'package:fleetdeliveryapp/screens/asignacionmap_screen.dart';
 export 'package:fleetdeliveryapp/screens/change_password_screen.dart';
 export 'package:fleetdeliveryapp/screens/contacto_screen.dart';
 export 'package:fleetdeliveryapp/screens/display_picture_screen.dart';
+export 'package:fleetdeliveryapp/screens/equipos_para_devolver_screen.dart';
 export 'package:fleetdeliveryapp/screens/firma_screen.dart';
 export 'package:fleetdeliveryapp/screens/grafico01_screen.dart';
 export 'package:fleetdeliveryapp/screens/home_screen.dart';

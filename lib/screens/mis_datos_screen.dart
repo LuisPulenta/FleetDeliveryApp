@@ -1322,7 +1322,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       _misDatos = response.result;
     });
 
-    if (_misDatos != null) {
+    if (_misDatos.idUser != 0) {
       editMode = true;
       _loadFields();
     }

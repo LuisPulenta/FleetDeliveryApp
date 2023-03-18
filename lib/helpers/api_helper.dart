@@ -42,10 +42,67 @@ class ApiHelper {
       return Response(isSuccess: false, message: body);
     }
 
-    var decodedJson = jsonDecode(body);
-    return Response(
-        isSuccess: true,
-        result: SubContratistasUsrVehiculo.fromMap(decodedJson));
+    SubContratistasUsrVehiculo subContratistasUsrVehiculo =
+        SubContratistasUsrVehiculo(
+            id: 0,
+            idUser: 0,
+            dniFrente: '',
+            dniDorso: '',
+            carnetConducir: '',
+            fechaVencCarnet: DateTime.now(),
+            dominio: '',
+            modeloAnio: 0,
+            marca: '',
+            fechaVencVtv: DateTime.now(),
+            gas: '',
+            fechaObleaGas: DateTime.now(),
+            ultimaActualizacion: DateTime.now(),
+            dniFrenteFullPath: '',
+            dniDorsoFullPath: '',
+            carnetConducirFullPath: '');
+
+    if (body != "") {
+      var decodedJson = jsonDecode(body);
+      subContratistasUsrVehiculo =
+          SubContratistasUsrVehiculo.fromMap(decodedJson);
+    }
+    return Response(isSuccess: true, result: subContratistasUsrVehiculo);
+  }
+
+//---------------------------------------------------------------------------
+  static Future<Response> getEquiposSinDevolver(String id) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/Vista_AcumuladosEquiposSinDevolvers/GetEquiposSinDevolver/$id');
+    var response = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    EquiposSinDevolver equiposSinDevolver = EquiposSinDevolver(
+        userID: 0,
+        apellidonombre: '',
+        sinIngresoDeposito: 0,
+        dtv: 0,
+        cable: 0,
+        tasa: 0,
+        tlc: 0,
+        prisma: 0,
+        teco: 0,
+        superC: 0);
+
+    if (body != "") {
+      var decodedJson = jsonDecode(body);
+      equiposSinDevolver = EquiposSinDevolver.fromJson(decodedJson);
+    }
+    return Response(isSuccess: true, result: equiposSinDevolver);
   }
 
 //---------------------------------------------------------------------------
