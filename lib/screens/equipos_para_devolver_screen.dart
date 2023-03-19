@@ -4,6 +4,7 @@ import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class EquiposParaDevolverScreen extends StatefulWidget {
   final Usuario user;
@@ -26,6 +27,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
 
   DateTime? fechaTurno;
   int? horaTurno;
+
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
 
 //-----------------------------------------------------------------------------
 //--------------------------- initState ---------------------------------------
@@ -234,7 +238,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                                 ? _equiposSinDevolver.sinIngresoDeposito
                                     .toString()
                                 : '',
-                            color: Color.fromARGB(255, 33, 172, 236),
+                            color: const Color.fromARGB(255, 33, 172, 236),
                           ),
                         ],
                       ),
@@ -255,17 +259,160 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
               const SizedBox(
                 height: 20,
               ),
-              _turno.idUser == 0 && mostrar
-                  ? const Text('No tiene ningún Turno en gestión',
+              _equiposSinDevolver.sinIngresoDeposito! == 0
+                  ? const Text('No tiene equipos para devolver',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.red,
                           fontSize: 20,
                           fontWeight: FontWeight.bold))
                   : Container(),
+              _turno.idUser == 0 &&
+                      mostrar &&
+                      _equiposSinDevolver.sinIngresoDeposito! > 0
+                  ? Column(
+                      children: [
+                        const Text(
+                            'No tiene ningún Turno en gestión. Debería Solicitar un Turno.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: _getFecha(context),
+                        ),
+                      ],
+                    )
+                  : Container(),
               const SizedBox(
                 height: 20,
               ),
-              _turno.idUser == 0 && mostrar ? _showButtonTurno() : Container(),
+              _turno.idUser == 0 &&
+                      mostrar &&
+                      _equiposSinDevolver.sinIngresoDeposito! > 0
+                  ? _showButtonTurno()
+                  : Container(),
+              _turno.idUser == widget.user.idUser &&
+                      _turno.fechaConfirmaTurno == null &&
+                      mostrar
+                  ? Column(
+                      children: [
+                        const Text(
+                          'Usted tiene un turno pendiente de confirmación',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Card(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                const Text(' '),
+                                Row(
+                                  children: [
+                                    const Text('  Fecha: ',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                        DateFormat('dd/MM/yyyy').format(
+                                            DateTime.parse(
+                                                _turno.fechaTurno.toString())),
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal)),
+                                    const Text('  -  Hora: ',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(_turno.horaTurno.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal)),
+                                  ],
+                                ),
+                                const Text(' '),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
+              _turno.idUser == widget.user.idUser &&
+                      _turno.fechaConfirmaTurno != null &&
+                      mostrar
+                  ? Column(
+                      children: [
+                        const Text('Usted tiene un turno confirmado',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Card(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                const Text(' '),
+                                Row(
+                                  children: [
+                                    const Text('  Fecha: ',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                        DateFormat('dd/MM/yyyy').format(
+                                            DateTime.parse(
+                                                _turno.fechaTurno.toString())),
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal)),
+                                    const Text('  -  Hora: ',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(_turno.horaTurno.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal)),
+                                  ],
+                                ),
+                                const Text(' '),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    )
+                  : Container(),
+              _turno.idUser == widget.user.idUser &&
+                      _turno.fechaConfirmaTurno != null &&
+                      mostrar
+                  ? _showButtonConfirma()
+                  : Container(),
+              const SizedBox(
+                height: 20,
+              ),
             ],
           ),
           _showLoader
@@ -429,7 +576,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     _addRecord();
   }
 
-  //-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 //-------------------------------- validateFields -----------------------------
 //-----------------------------------------------------------------------------
 
@@ -529,6 +676,164 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
 
     Navigator.pop(context, 'yes');
   }
+
+//-----------------------------------------------------------------
+//---------------------  _showButtonConfirma ----------------------
+//-----------------------------------------------------------------
+
+  Widget _showButtonConfirma() {
+    return Container(
+      margin: const EdgeInsets.only(left: 10, right: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(
+            child: ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.save),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text('Turno cumplido'),
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: const Color(0xFF282886),
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              onPressed: () {},
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+//----------------------------------------------------------------------------
+//------------------------------- _getFecha ----------------------------------
+//----------------------------------------------------------------------------
+
+  Widget _getFecha(context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          height: 80,
+        ),
+        Positioned(
+          bottom: 0,
+          child: Row(
+            children: [
+              const Icon(Icons.calendar_today),
+              const SizedBox(
+                width: 20,
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                      child: InkWell(
+                        child: Text(
+                            "    ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"),
+                      ),
+                    ),
+                  ],
+                ),
+                width: 110,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(color: Colors.black, width: 1.0),
+                ),
+              ),
+              const SizedBox(
+                width: 40,
+              ),
+              const Icon(Icons.schedule),
+              const SizedBox(
+                width: 20,
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _selectTime(context);
+                      },
+                      child: InkWell(
+                        child: Text(
+                            "        ${selectedTime.hour}:${selectedTime.minute}"),
+                      ),
+                    ),
+                  ],
+                ),
+                width: 110,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(color: Colors.black, width: 1.0),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          left: 50,
+          bottom: 50,
+          child: Container(
+              child: const Text(
+            ' Fecha Turno: ',
+            style: TextStyle(fontSize: 12),
+          )),
+        ),
+        Positioned(
+          left: 244,
+          bottom: 50,
+          child: Container(
+              child: const Text(
+            ' Hora Turno: ',
+            style: TextStyle(fontSize: 12),
+          )),
+        )
+      ],
+    );
+  }
+
+  void _selectDate(BuildContext context) async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year),
+      lastDate: DateTime(DateTime.now().year + 2),
+    );
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
+      });
+    }
+  }
+
+  void _selectTime(BuildContext context) async {
+    final TimeOfDay? selected = await showTimePicker(
+      initialTime: TimeOfDay.now(),
+      context: context,
+    );
+    if (selected != null && selected != selectedTime) {
+      setState(() {
+        selectedTime = selected;
+      });
+    }
+  }
 }
 
 //-------------------------------------------------------------------------
@@ -548,10 +853,10 @@ class _celda extends StatelessWidget {
     return Container(
       color: color,
       child: Padding(
-        padding: EdgeInsets.only(left: 8.0),
+        padding: const EdgeInsets.only(left: 8.0),
         child: Text(valor,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
       ),
     );
   }
