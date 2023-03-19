@@ -21,6 +21,11 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
 //-----------------------------------------------------------------------------
   bool _showLoader = false;
   late EquiposSinDevolver _equiposSinDevolver;
+  late Turno _turno;
+  bool mostrar = false;
+
+  DateTime? fechaTurno;
+  int? horaTurno;
 
 //-----------------------------------------------------------------------------
 //--------------------------- initState ---------------------------------------
@@ -40,6 +45,20 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         prisma: 0,
         teco: 0,
         superC: 0);
+
+    _turno = Turno(
+      idTurno: 0,
+      idUser: 0,
+      fechaCarga: '',
+      fechaTurno: '',
+      horaTurno: 0,
+      fechaConfirmaTurno: '',
+      idUserConfirma: 0,
+      fechaTurnoConfirmado: '',
+      horaTurnoConfirmado: 0,
+      concluido: '',
+    );
+
     _getEquiposParaDevolver();
   }
 
@@ -58,282 +77,196 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
       ),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Container(
-              color: Colors.white,
-              child: Table(
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                columnWidths: const {
-                  0: FractionColumnWidth(0.3),
-                  1: FractionColumnWidth(0.2),
-                  2: FractionColumnWidth(0.3),
-                  3: FractionColumnWidth(0.2),
-                },
-                border: TableBorder.all(),
-                children: [
-                  //---------------- Título -----------------------------
-                  TableRow(
+          Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: Container(
+                  color: Colors.white,
+                  child: Table(
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    columnWidths: const {
+                      0: FractionColumnWidth(0.3),
+                      1: FractionColumnWidth(0.2),
+                      2: FractionColumnWidth(0.3),
+                      3: FractionColumnWidth(0.2),
+                    },
+                    border: TableBorder.all(),
                     children: [
-                      Container(
-                        color: const Color.fromARGB(255, 33, 172, 236),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("Empresa",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold)),
-                        ),
+                      //---------------- Título -----------------------------
+                      TableRow(
+                        children: [
+                          Container(
+                            color: const Color.fromARGB(255, 33, 172, 236),
+                            child: const Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: Text("Empresa",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                          Container(
+                            color: const Color.fromARGB(255, 33, 172, 236),
+                            child: const Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: Text("Cantidad",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                          Container(
+                            color: const Color.fromARGB(255, 33, 172, 236),
+                            child: const Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: Text("Empresa",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                          Container(
+                            color: const Color.fromARGB(255, 33, 172, 236),
+                            child: const Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: Text("Cantidad",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        color: const Color.fromARGB(255, 33, 172, 236),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("Cantidad",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      Container(
-                        color: const Color.fromARGB(255, 33, 172, 236),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("Empresa",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      Container(
-                        color: const Color.fromARGB(255, 33, 172, 236),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("Cantidad",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                    ],
-                  ),
 
-                  //----------------- Primera Fila --------------------------------
-                  TableRow(
-                    children: [
-                      Container(
-                        color: Color.fromARGB(255, 130, 205, 239),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("DTV",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold)),
-                        ),
+                      //----------------- Primera Fila --------------------------------
+                      TableRow(
+                        children: [
+                          const _celda(
+                              valor: "DTV",
+                              color: Color.fromARGB(255, 130, 205, 239)),
+                          _celda(
+                            valor: _equiposSinDevolver.dtv! > 0
+                                ? _equiposSinDevolver.dtv.toString()
+                                : '',
+                            color: Colors.white,
+                          ),
+                          const _celda(
+                              valor: "Tasa",
+                              color: Color.fromARGB(255, 130, 205, 239)),
+                          _celda(
+                            valor: _equiposSinDevolver.tasa! > 0
+                                ? _equiposSinDevolver.tasa.toString()
+                                : '',
+                            color: Colors.white,
+                          ),
+                        ],
                       ),
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                              _equiposSinDevolver.dtv! > 0
-                                  ? _equiposSinDevolver.dtv.toString()
-                                  : '',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                              )),
-                        ),
+                      //----------------- Segunda Fila --------------------------------
+                      TableRow(
+                        children: [
+                          const _celda(
+                              valor: "Cable",
+                              color: Color.fromARGB(255, 130, 205, 239)),
+                          _celda(
+                            valor: _equiposSinDevolver.cable! > 0
+                                ? _equiposSinDevolver.cable.toString()
+                                : '',
+                            color: Colors.white,
+                          ),
+                          const _celda(
+                              valor: "TLC",
+                              color: Color.fromARGB(255, 130, 205, 239)),
+                          _celda(
+                            valor: _equiposSinDevolver.tlc! > 0
+                                ? _equiposSinDevolver.tlc.toString()
+                                : '',
+                            color: Colors.white,
+                          ),
+                        ],
                       ),
-                      Container(
-                        color: Color.fromARGB(255, 130, 205, 239),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("Tasa",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold)),
-                        ),
+                      //----------------- Tercera Fila --------------------------------
+                      TableRow(
+                        children: [
+                          const _celda(
+                              valor: "Prisma",
+                              color: Color.fromARGB(255, 130, 205, 239)),
+                          _celda(
+                            valor: _equiposSinDevolver.prisma! > 0
+                                ? _equiposSinDevolver.prisma.toString()
+                                : '',
+                            color: Colors.white,
+                          ),
+                          const _celda(
+                              valor: "Teco",
+                              color: Color.fromARGB(255, 130, 205, 239)),
+                          _celda(
+                            valor: _equiposSinDevolver.teco! > 0
+                                ? _equiposSinDevolver.teco.toString()
+                                : '',
+                            color: Colors.white,
+                          ),
+                        ],
                       ),
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                              _equiposSinDevolver.tasa! > 0
-                                  ? _equiposSinDevolver.tasa.toString()
-                                  : '',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
-                  //----------------- Segunda Fila --------------------------------
-                  TableRow(
-                    children: [
-                      Container(
-                        color: Color.fromARGB(255, 130, 205, 239),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("Cable",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                              _equiposSinDevolver.cable! > 0
-                                  ? _equiposSinDevolver.cable.toString()
-                                  : '',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                              )),
-                        ),
-                      ),
-                      Container(
-                        color: Color.fromARGB(255, 130, 205, 239),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("TLC",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                              _equiposSinDevolver.tlc! > 0
-                                  ? _equiposSinDevolver.tlc.toString()
-                                  : '',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                              )),
-                        ),
+                      //----------------- Cuarta Fila --------------------------------
+                      TableRow(
+                        children: [
+                          const _celda(
+                              valor: "SuperC",
+                              color: Color.fromARGB(255, 130, 205, 239)),
+                          _celda(
+                            valor: _equiposSinDevolver.superC! > 0
+                                ? _equiposSinDevolver.superC.toString()
+                                : '',
+                            color: Colors.white,
+                          ),
+                          const _celda(
+                            valor: "TOTAL",
+                            color: Color.fromARGB(255, 130, 205, 239),
+                          ),
+                          _celda(
+                            valor: _equiposSinDevolver.sinIngresoDeposito! > 0
+                                ? _equiposSinDevolver.sinIngresoDeposito
+                                    .toString()
+                                : '',
+                            color: Color.fromARGB(255, 33, 172, 236),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  //----------------- Tercera Fila --------------------------------
-                  TableRow(
-                    children: [
-                      Container(
-                        color: Color.fromARGB(255, 130, 205, 239),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("Prisma",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                              _equiposSinDevolver.prisma! > 0
-                                  ? _equiposSinDevolver.prisma.toString()
-                                  : '',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                              )),
-                        ),
-                      ),
-                      Container(
-                        color: Color.fromARGB(255, 130, 205, 239),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("Teco",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                              _equiposSinDevolver.teco! > 0
-                                  ? _equiposSinDevolver.teco.toString()
-                                  : '',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
-                  //----------------- Cuarta Fila --------------------------------
-                  TableRow(
-                    children: [
-                      Container(
-                        color: Color.fromARGB(255, 130, 205, 239),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("SuperC",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                              _equiposSinDevolver.superC! > 0
-                                  ? _equiposSinDevolver.superC.toString()
-                                  : '',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                              )),
-                        ),
-                      ),
-                      Container(
-                        color: Color.fromARGB(255, 130, 205, 239),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Text("TOTAL",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      Container(
-                        color: Color.fromARGB(255, 33, 172, 236),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                              _equiposSinDevolver.sinIngresoDeposito! > 0
-                                  ? _equiposSinDevolver.sinIngresoDeposito
-                                      .toString()
-                                  : '',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
-            ),
+              const Divider(
+                color: Colors.black,
+              ),
+              const Text(
+                'TURNO PARA DEVOLUCION',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              _turno.idUser == 0 && mostrar
+                  ? const Text('No tiene ningún Turno en gestión',
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold))
+                  : Container(),
+              const SizedBox(
+                height: 20,
+              ),
+              _turno.idUser == 0 && mostrar ? _showButtonTurno() : Container(),
+            ],
           ),
           _showLoader
               ? const LoaderComponent(
@@ -393,5 +326,233 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     setState(() {
       _equiposSinDevolver = response.result;
     });
+
+    _getTurnos();
+  }
+
+//----------------------------------------------------------------------------
+//--------------------------- _getTurnos -------------------------------------
+//----------------------------------------------------------------------------
+
+  Future<void> _getTurnos() async {
+    setState(() {
+      _showLoader = true;
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _showLoader = false;
+      });
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    Response response = Response(isSuccess: false);
+
+    response = await ApiHelper.getTurnos(widget.user.idUser.toString());
+
+    setState(() {
+      _showLoader = false;
+    });
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    setState(() {
+      _turno = response.result;
+      mostrar = true;
+    });
+  }
+
+//-----------------------------------------------------------------
+//---------------------  _showButtonTurno -----------------
+//-----------------------------------------------------------------
+
+  Widget _showButtonTurno() {
+    return Container(
+      margin: const EdgeInsets.only(left: 10, right: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(
+            child: ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.save),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text('Solicitar Turno'),
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: const Color(0xFF282886),
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              onPressed: _save,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------------------
+//-------------------------------- _save --------------------------------------
+//-----------------------------------------------------------------------------
+
+  _save() {
+    if (!validateFields()) {
+      setState(() {});
+      return;
+    }
+    _addRecord();
+  }
+
+  //-----------------------------------------------------------------------------
+//-------------------------------- validateFields -----------------------------
+//-----------------------------------------------------------------------------
+
+  bool validateFields() {
+    bool isValid = true;
+
+    if (fechaTurno == null) {
+      isValid = false;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso!'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('Debe ingresar Fecha del Turno.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+      setState(() {});
+    }
+
+    setState(() {});
+
+    return isValid;
+  }
+
+  //--------------------------------------------------------------------------
+  //---------------------------- _addRecord ----------------------------------
+  //--------------------------------------------------------------------------
+
+  void _addRecord() async {
+    setState(() {
+      _showLoader = true;
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _showLoader = false;
+      });
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    String ahora = DateTime.now().toString();
+
+    Map<String, dynamic> request = {
+      'IDTurno': 0,
+      'IdUser': widget.user.idUser,
+      'FechaCarga': ahora,
+      'FechaTurno': fechaTurno,
+      'HoraTurno': horaTurno,
+      'FechaConfirmaTurno': '',
+      'IDUserConfirma': null,
+      'FechaTurnoConfirmado': null,
+      'HoraTurnoConfirmado': null,
+      'Concluido': "NO",
+    };
+
+    Response response = await ApiHelper.put(
+        '/api/AsignacionesOtsTurnos/', _turno.idUser.toString(), request);
+
+    setState(() {
+      _showLoader = false;
+    });
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    Navigator.pop(context, 'yes');
+  }
+}
+
+//-------------------------------------------------------------------------
+//------------------------------ _celda -----------------------------------
+//-------------------------------------------------------------------------
+class _celda extends StatelessWidget {
+  final String valor;
+  final Color color;
+  const _celda({
+    Key? key,
+    required this.valor,
+    required this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: color,
+      child: Padding(
+        padding: EdgeInsets.only(left: 8.0),
+        child: Text(valor,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+      ),
+    );
   }
 }

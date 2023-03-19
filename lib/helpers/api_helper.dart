@@ -106,6 +106,42 @@ class ApiHelper {
   }
 
 //---------------------------------------------------------------------------
+  static Future<Response> getTurnos(String id) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/AsignacionesOtsTurnos/GetTurnos/$id');
+    var response = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    Turno turno = Turno(
+        idTurno: 0,
+        idUser: 0,
+        fechaCarga: '',
+        fechaTurno: '',
+        horaTurno: 0,
+        fechaConfirmaTurno: '',
+        idUserConfirma: 0,
+        fechaTurnoConfirmado: '',
+        horaTurnoConfirmado: 0,
+        concluido: '');
+
+    if (body != "") {
+      var decodedJson = jsonDecode(body);
+      turno = Turno.fromJson(decodedJson);
+    }
+    return Response(isSuccess: true, result: turno);
+  }
+
+//---------------------------------------------------------------------------
   static Future<Response> post(
       String controller, Map<String, dynamic> request) async {
     var url = Uri.parse('${Constants.apiUrl}$controller');
