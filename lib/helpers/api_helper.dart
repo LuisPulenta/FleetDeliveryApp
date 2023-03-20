@@ -44,22 +44,26 @@ class ApiHelper {
 
     SubContratistasUsrVehiculo subContratistasUsrVehiculo =
         SubContratistasUsrVehiculo(
-            id: 0,
-            idUser: 0,
-            dniFrente: '',
-            dniDorso: '',
-            carnetConducir: '',
-            fechaVencCarnet: DateTime.now(),
-            dominio: '',
-            modeloAnio: 0,
-            marca: '',
-            fechaVencVtv: DateTime.now(),
-            gas: '',
-            fechaObleaGas: DateTime.now(),
-            ultimaActualizacion: DateTime.now(),
-            dniFrenteFullPath: '',
-            dniDorsoFullPath: '',
-            carnetConducirFullPath: '');
+      id: 0,
+      idUser: 0,
+      dniFrente: '',
+      dniDorso: '',
+      carnetConducir: '',
+      fechaVencCarnet: DateTime.now(),
+      dominio: '',
+      modeloAnio: 0,
+      marca: '',
+      fechaVencVtv: DateTime.now(),
+      gas: '',
+      fechaObleaGas: DateTime.now(),
+      ultimaActualizacion: DateTime.now(),
+      dniFrenteFullPath: '',
+      dniDorsoFullPath: '',
+      carnetConducirFullPath: '',
+      nroPolizaSeguro: '',
+      fechaVencPoliza: DateTime.now(),
+      compania: '',
+    );
 
     if (body != "") {
       var decodedJson = jsonDecode(body);

@@ -25,10 +25,10 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
   late Turno _turno;
   bool mostrar = false;
 
-  DateTime? fechaTurno;
-  int? horaTurno;
+  // DateTime? fechaTurno;
+  // int? horaTurno;
 
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime.now().add(const Duration(days: 1));
   TimeOfDay selectedTime = TimeOfDay.now();
 
 //-----------------------------------------------------------------------------
@@ -307,6 +307,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
                         ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Card(
@@ -334,7 +337,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                                             color: Colors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold)),
-                                    Text(_turno.horaTurno.toString(),
+                                    Text(_HoraMinuto(_turno.horaTurno!),
                                         style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -350,6 +353,11 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                     )
                   : Container(),
               _turno.idUser == widget.user.idUser &&
+                      _turno.fechaConfirmaTurno == null &&
+                      mostrar
+                  ? _showButtonDeleteTurno()
+                  : Container(),
+              _turno.idUser == widget.user.idUser &&
                       _turno.fechaConfirmaTurno != null &&
                       mostrar
                   ? Column(
@@ -360,6 +368,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                                 color: Colors.red,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold)),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Card(
@@ -376,8 +387,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                                             fontWeight: FontWeight.bold)),
                                     Text(
                                         DateFormat('dd/MM/yyyy').format(
-                                            DateTime.parse(
-                                                _turno.fechaTurno.toString())),
+                                            DateTime.parse(_turno
+                                                .fechaConfirmaTurno
+                                                .toString())),
                                         style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -387,7 +399,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                                             color: Colors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold)),
-                                    Text(_turno.horaTurno.toString(),
+                                    Text(
+                                        _HoraMinuto(
+                                            _turno.horaTurnoConfirmado!),
                                         style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -399,7 +413,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                       ],
@@ -564,6 +578,43 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     );
   }
 
+//-----------------------------------------------------------------
+//---------------------  _showButtonDeleteTurno -------------------
+//-----------------------------------------------------------------
+
+  Widget _showButtonDeleteTurno() {
+    return Container(
+      margin: const EdgeInsets.only(left: 10, right: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(
+            child: ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.delete_forever),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text('Borrar Turno'),
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              onPressed: _delete,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 //-----------------------------------------------------------------------------
 //-------------------------------- _save --------------------------------------
 //-----------------------------------------------------------------------------
@@ -583,7 +634,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
   bool validateFields() {
     bool isValid = true;
 
-    if (fechaTurno == null) {
+    if (selectedDate == null) {
       isValid = false;
       showDialog(
           context: context,
@@ -647,17 +698,17 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
       'IDTurno': 0,
       'IdUser': widget.user.idUser,
       'FechaCarga': ahora,
-      'FechaTurno': fechaTurno,
-      'HoraTurno': horaTurno,
-      'FechaConfirmaTurno': '',
+      'FechaTurno': selectedDate.toString(),
+      'HoraTurno': selectedTime.hour * 3600 + selectedTime.minute * 60,
+      'FechaConfirmaTurno': null,
       'IDUserConfirma': null,
       'FechaTurnoConfirmado': null,
       'HoraTurnoConfirmado': null,
       'Concluido': "NO",
     };
 
-    Response response = await ApiHelper.put(
-        '/api/AsignacionesOtsTurnos/', _turno.idUser.toString(), request);
+    Response response =
+        await ApiHelper.post('/api/AsignacionesOtsTurnos/', request);
 
     setState(() {
       _showLoader = false;
@@ -674,7 +725,196 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
       return;
     }
 
-    Navigator.pop(context, 'yes');
+    //Navigator.pop(context, 'yes');
+    _getTurnos();
+    setState(() {});
+  }
+
+  //--------------------------------------------------------------------------
+  //---------------------------- _delete -----------------------------------
+  //------------------------------------------------------------------------
+
+  void _delete() async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text(''),
+            content:
+                Column(mainAxisSize: MainAxisSize.min, children: const <Widget>[
+              Text('¿Está seguro de borrar el turno?'),
+              SizedBox(
+                height: 10,
+              ),
+            ]),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('NO')),
+              TextButton(
+                  child: const Text('SI'),
+                  onPressed: () {
+                    _deleteRecord();
+                    Navigator.of(context).pop();
+                  }),
+            ],
+          );
+        });
+  }
+
+  //--------------------------------------------------------------------------
+  //---------------------------- _deleteRecord -------------------------------
+  //--------------------------------------------------------------------------
+
+  void _deleteRecord() async {
+    setState(() {
+      _showLoader = true;
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _showLoader = false;
+      });
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    String ahora = DateTime.now().toString();
+
+    Response response = await ApiHelper.delete(
+        '/api/AsignacionesOtsTurnos/', _turno.idTurno.toString());
+
+    setState(() {
+      _showLoader = false;
+    });
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    //Navigator.pop(context, 'yes');
+    _getTurnos();
+    setState(() {});
+  }
+
+  //--------------------------------------------------------------------------
+  //---------------------------- _confirma ---------------------------------
+  //------------------------------------------------------------------------
+
+  void _confirma() async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text(''),
+            content:
+                Column(mainAxisSize: MainAxisSize.min, children: const <Widget>[
+              Text('¿Está seguro de dar por cumplido este Turno?'),
+              SizedBox(
+                height: 10,
+              ),
+            ]),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('NO')),
+              TextButton(
+                  child: const Text('SI'),
+                  onPressed: () {
+                    _confirmaRecord();
+                    Navigator.of(context).pop();
+                  }),
+            ],
+          );
+        });
+  }
+
+  //--------------------------------------------------------------------------
+  //---------------------------- _confirmaRecord -----------------------------
+  //--------------------------------------------------------------------------
+
+  void _confirmaRecord() async {
+    setState(() {
+      _showLoader = true;
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _showLoader = false;
+      });
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    String ahora = DateTime.now().toString();
+
+    Map<String, dynamic> request = {
+      'IDTurno': _turno.idTurno,
+      'IdUser': _turno.idUser,
+      'FechaCarga': _turno.fechaCarga.toString(),
+      'FechaTurno': _turno.fechaTurno.toString(),
+      'HoraTurno': _turno.horaTurno,
+      'FechaConfirmaTurno': _turno.fechaConfirmaTurno.toString(),
+      'IDUserConfirma': _turno.idUserConfirma,
+      'FechaTurnoConfirmado': _turno.fechaTurnoConfirmado.toString(),
+      'HoraTurnoConfirmado': _turno.horaTurnoConfirmado,
+      'Concluido': "SI",
+    };
+
+    Response response = await ApiHelper.put(
+        '/api/AsignacionesOtsTurnos/', _turno.idTurno.toString(), request);
+
+    setState(() {
+      _showLoader = false;
+    });
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    //Navigator.pop(context, 'yes');
+    _getTurnos();
+    setState(() {});
   }
 
 //-----------------------------------------------------------------
@@ -706,7 +946,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                _confirma();
+              },
             ),
           ),
         ],
@@ -833,6 +1075,21 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         selectedTime = selected;
       });
     }
+  }
+
+//----------------------------------------------------------------------------
+//----------------------------- _HoraMinuto ----------------------------------
+//----------------------------------------------------------------------------
+
+  String _HoraMinuto(int valor) {
+    String hora = (valor / 3600).floor().toString();
+    String minutos =
+        ((valor - ((valor / 3600).floor()) * 3600) / 60).round().toString();
+
+    if (minutos.length == 1) {
+      minutos = "0" + minutos;
+    }
+    return hora.toString() + ':' + minutos.toString();
   }
 }
 

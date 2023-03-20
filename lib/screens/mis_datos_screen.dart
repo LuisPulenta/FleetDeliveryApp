@@ -39,6 +39,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
   DateTime? fechaVencCarnetConducir;
   DateTime? fechaVencVTV;
   DateTime? fechaVencObleaGNC;
+  DateTime? fechaVencPoliza;
 
   String _numcha = '';
   String _numchaError = '';
@@ -58,6 +59,17 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
   late SubContratistasUsrVehiculo _misDatos;
 
   bool editMode = false;
+
+  String _numpolizaseguro = '';
+  String _numpolizaseguroError = '';
+  bool _numpolizaseguroShowError = false;
+  final TextEditingController _numpolizaseguroController =
+      TextEditingController();
+
+  String _compania = '';
+  String _companiaError = '';
+  bool _companiaShowError = false;
+  final TextEditingController _companiaController = TextEditingController();
 
 //-----------------------------------------------------------------------------
 //--------------------------- initState ---------------------------------------
@@ -151,6 +163,18 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                 const Divider(
                   color: Colors.black,
                 ),
+                const Text('Seguro Vehículo',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+                Row(
+                  children: [
+                    Expanded(flex: 1, child: _showCompania()),
+                    Expanded(flex: 1, child: _showNroPoliza()),
+                  ],
+                ),
+                _showFechaVencSeguro(),
                 _showButtonGuardar(),
                 const SizedBox(
                   height: 15,
@@ -446,6 +470,56 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
         onChanged: (value) {
           _numcha = value;
+        },
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showCompania ----------------------
+//-----------------------------------------------------------------
+
+  Widget _showCompania() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      child: TextField(
+        controller: _companiaController,
+        decoration: InputDecoration(
+            fillColor: Colors.white,
+            filled: true,
+            hintText: 'Compañía',
+            labelText: 'Compañía',
+            errorText: _companiaShowError ? _companiaError : null,
+            suffixIcon: const Icon(Icons.abc),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        onChanged: (value) {
+          _compania = value;
+        },
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showNroPoliza ---------------------
+//-----------------------------------------------------------------
+
+  Widget _showNroPoliza() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      child: TextField(
+        controller: _numpolizaseguroController,
+        decoration: InputDecoration(
+            fillColor: Colors.white,
+            filled: true,
+            hintText: 'N° Póliza',
+            labelText: 'N° Póliza',
+            errorText: _numpolizaseguroShowError ? _numpolizaseguroError : null,
+            suffixIcon: const Icon(Icons.numbers),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        onChanged: (value) {
+          _numpolizaseguro = value;
         },
       ),
     );
@@ -893,6 +967,112 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
   }
 
 //-----------------------------------------------------------------
+//--------------------- METODO _showFechaVencSeguro ---------------
+//-----------------------------------------------------------------
+
+  Widget _showFechaVencSeguro() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Row(
+                  children: const [],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 7,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        width: 150,
+                        height: 30,
+                        child: const Text(
+                          'Fecha Venc. Seguro:',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 80,
+                        height: 30,
+                        child: Text(
+                          fechaVencPoliza != null
+                              ? "    ${fechaVencPoliza!.day}/${fechaVencPoliza!.month}/${fechaVencPoliza!.year}"
+                              : "",
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.calendar_month),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xFF282886),
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onPressed: () => fechaSeguro(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  //---------------------------------------------------------------------------
+  //------------------------------ fechaSeguro---------------------------------
+  //---------------------------------------------------------------------------
+
+  fechaSeguro() async {
+    FocusScope.of(context).unfocus();
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 1),
+      lastDate: DateTime(DateTime.now().year + 1),
+    );
+    if (selected != null && selected != fechaVencPoliza) {
+      setState(() {
+        fechaVencPoliza = selected;
+      });
+    }
+  }
+
+//-----------------------------------------------------------------
 //--------------------- METODO _showButtonGuardar -----------------
 //-----------------------------------------------------------------
 
@@ -1071,6 +1251,35 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       }
     }
 
+    if (_compania.isEmpty) {
+      isValid = false;
+      _companiaShowError = true;
+      _companiaError = 'Debe ingresar la Compañía de Seguro';
+    } else {
+      if (_compania.length > 30) {
+        isValid = false;
+        _companiaShowError = true;
+        _companiaError = 'La Compañía no puede tener más de 30 caracteres';
+      } else {
+        _companiaShowError = false;
+      }
+    }
+
+    if (_numpolizaseguro.isEmpty) {
+      isValid = false;
+      _numpolizaseguroShowError = true;
+      _numpolizaseguroError = 'Debe ingresar el N° de Póliza';
+    } else {
+      if (_numpolizaseguro.length > 30) {
+        isValid = false;
+        _numpolizaseguroShowError = true;
+        _numpolizaseguroError =
+            'El N° de Póliza no puede tener más de 30 caracteres';
+      } else {
+        _numpolizaseguroShowError = false;
+      }
+    }
+
     if (fechaVencCarnetConducir == null) {
       isValid = false;
       showDialog(
@@ -1157,6 +1366,34 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       setState(() {});
     }
 
+    if (fechaVencPoliza == null) {
+      isValid = false;
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso!'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('Debe ingresar Fecha de Vencimiento del Seguro.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+      setState(() {});
+    }
+
     setState(() {});
 
     return isValid;
@@ -1227,6 +1464,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       'DNIFrenteImageArray': base64imageDNIFrente,
       'DNIDorsoImageArray': base64imageDNIDorso,
       'CarnetConducirImageArray': base64imageCarnetConducir,
+      'NroPolizaSeguro': _numpolizaseguro,
+      'FechaVencPoliza':
+          fechaVencPoliza != null ? fechaVencPoliza.toString() : '',
+      'Compania': _compania,
     };
 
     if (editMode == false) {
@@ -1347,6 +1588,13 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     fechaVencCarnetConducir = _misDatos.fechaVencCarnet;
     fechaVencVTV = _misDatos.fechaVencVtv;
     fechaVencObleaGNC = _misDatos.fechaObleaGas;
+    fechaVencPoliza = _misDatos.fechaVencPoliza;
+
+    _compania = _misDatos.compania;
+    _companiaController.text = _misDatos.compania;
+
+    _numpolizaseguro = _misDatos.nroPolizaSeguro;
+    _numpolizaseguroController.text = _misDatos.nroPolizaSeguro;
 
     setState(() {});
   }
