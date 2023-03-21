@@ -231,14 +231,14 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                           ),
                           const _celda(
                             valor: "TOTAL",
-                            color: Color.fromARGB(255, 130, 205, 239),
+                            color: Colors.yellow,
                           ),
                           _celda(
                             valor: _equiposSinDevolver.sinIngresoDeposito! > 0
                                 ? _equiposSinDevolver.sinIngresoDeposito
                                     .toString()
                                 : '',
-                            color: const Color.fromARGB(255, 33, 172, 236),
+                            color: Colors.yellow,
                           ),
                         ],
                       ),
@@ -388,7 +388,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                                     Text(
                                         DateFormat('dd/MM/yyyy').format(
                                             DateTime.parse(_turno
-                                                .fechaConfirmaTurno
+                                                .fechaTurnoConfirmado
                                                 .toString())),
                                         style: const TextStyle(
                                             color: Colors.black,
