@@ -747,8 +747,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year - 1),
-      lastDate: DateTime(DateTime.now().year + 1),
+      firstDate: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      lastDate: DateTime(
+          DateTime.now().year + 5, DateTime.now().month, DateTime.now().day),
     );
     if (selected != null && selected != fechaVencCarnetConducir) {
       setState(() {
@@ -850,8 +852,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year - 1),
-      lastDate: DateTime(DateTime.now().year + 1),
+      firstDate: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      lastDate: DateTime(
+          DateTime.now().year + 5, DateTime.now().month, DateTime.now().day),
     );
     if (selected != null && selected != fechaVencVTV) {
       setState(() {
@@ -956,8 +960,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year - 1),
-      lastDate: DateTime(DateTime.now().year + 1),
+      firstDate: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      lastDate: DateTime(
+          DateTime.now().year + 5, DateTime.now().month, DateTime.now().day),
     );
     if (selected != null && selected != fechaVencObleaGNC) {
       setState(() {
@@ -1062,8 +1068,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year - 1),
-      lastDate: DateTime(DateTime.now().year + 1),
+      firstDate: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      lastDate: DateTime(
+          DateTime.now().year + 5, DateTime.now().month, DateTime.now().day),
     );
     if (selected != null && selected != fechaVencPoliza) {
       setState(() {
