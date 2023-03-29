@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
+import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../helpers/api_helper.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MisDatosScreen extends StatefulWidget {
   final Usuario user;
@@ -29,10 +30,29 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
   bool _photoChangedDNIFrente = false;
   bool _photoChangedDNIDorso = false;
   bool _photoChangedCarnetConducir = false;
+  bool _photoChangedVTV = false;
+  bool _photoChangedObleaGas = false;
+  bool _photoChangedPoliza = false;
+  bool _photoChangedCedula = false;
+  bool _photoChangedAntecedentes = false;
+
   late XFile _imageDNIFrente;
   late XFile _imageDNIDorso;
   late XFile _imageCarnetConducir;
+  late XFile _imageVTV;
+  late XFile _imageObleaGas;
   int cualFoto = 0;
+
+  List<int> imageBytesPdfPoliza = [];
+  List<int> imageBytesPdfCedula = [];
+  List<int> imageBytesPdfAntecedentes = [];
+
+  String base64imagePoliza = '';
+  String base64imageCedula = '';
+  String base64imageAntecedentes = '';
+  String namePdfPoliza = '';
+  String namePdfCedula = '';
+  String namePdfAntecedentes = '';
 
   bool _gas = false;
 
@@ -141,9 +161,18 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                   ],
                 ),
                 _showMarca(),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text('VTV:',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold)),
+                _showVTV(),
                 _showFechaVencVTV(),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: SwitchListTile.adaptive(
                       title: const Text(
                         "Tiene GNC:",
@@ -160,6 +189,12 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                       }),
                 ),
                 _showFechaVencObleaGNC(),
+                const Text('Oblea Gas:',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold)),
+                _showObleaGas(),
                 const Divider(
                   color: Colors.black,
                 ),
@@ -175,6 +210,250 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                   ],
                 ),
                 _showFechaVencSeguro(),
+                SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Icon(Icons.picture_as_pdf),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text((base64imagePoliza == '')
+                                    ? 'Cargar Póliza'
+                                    : 'Borrar'),
+                              ],
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(80, 50),
+                              primary: base64imagePoliza != ''
+                                  ? Colors.red
+                                  : const Color(0xFF282886),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () {
+                              if (base64imagePoliza != '') {
+                                base64imagePoliza = '';
+                                namePdfPoliza = '';
+                                setState(() {});
+                              } else {
+                                _loadPdf(1);
+                              }
+                            }),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Text(namePdfPoliza),
+                        editMode &&
+                                _misDatos.linkPolizaSeguroFullPath.length > 1 &&
+                                namePdfPoliza == ''
+                            ? Expanded(
+                                child: ElevatedButton(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: const [
+                                      Icon(Icons.picture_as_pdf),
+                                      Text('Póliza guardada'),
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color.fromARGB(255, 200, 14, 241),
+                                    minimumSize:
+                                        const Size(double.infinity, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    if (!await launch(
+                                        _misDatos.linkPolizaSeguroFullPath)) {
+                                      throw 'No se puede conectar al Servidor';
+                                    }
+                                  },
+                                ),
+                              )
+                            : Container()
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(
+                  color: Colors.black,
+                ),
+                const Text('Cédula',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+                SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Icon(Icons.picture_as_pdf),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text((base64imageCedula == '')
+                                    ? 'Cargar Cédula'
+                                    : 'Borrar'),
+                              ],
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(80, 50),
+                              primary: base64imageCedula != ''
+                                  ? Colors.red
+                                  : const Color(0xFF282886),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () {
+                              if (base64imageCedula != '') {
+                                base64imageCedula = '';
+                                namePdfCedula = '';
+                                setState(() {});
+                              } else {
+                                _loadPdf(2);
+                              }
+                            }),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Text(namePdfCedula),
+                        editMode &&
+                                _misDatos.linkCedulaFullPath.length > 1 &&
+                                namePdfCedula == ''
+                            ? Expanded(
+                                child: ElevatedButton(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: const [
+                                      Icon(Icons.picture_as_pdf),
+                                      Text('Cédula guardada'),
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color.fromARGB(255, 200, 14, 241),
+                                    minimumSize:
+                                        const Size(double.infinity, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    if (!await launch(
+                                        _misDatos.linkCedulaFullPath)) {
+                                      throw 'No se puede conectar al Servidor';
+                                    }
+                                  },
+                                ),
+                              )
+                            : Container()
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(
+                  color: Colors.black,
+                ),
+                const Text('Antecedentes',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+                SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Icon(Icons.picture_as_pdf),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text((base64imageAntecedentes == '')
+                                    ? 'Cargar Anteced.'
+                                    : 'Borrar'),
+                              ],
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(80, 50),
+                              primary: base64imageAntecedentes != ''
+                                  ? Colors.red
+                                  : const Color(0xFF282886),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () {
+                              if (base64imageAntecedentes != '') {
+                                base64imageAntecedentes = '';
+                                namePdfAntecedentes = '';
+                                setState(() {});
+                              } else {
+                                _loadPdf(3);
+                              }
+                            }),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Text(namePdfAntecedentes),
+                        editMode &&
+                                _misDatos.linkAntecedentesFullPath.length > 1 &&
+                                namePdfAntecedentes == ''
+                            ? Expanded(
+                                child: ElevatedButton(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: const [
+                                      Icon(Icons.picture_as_pdf),
+                                      Text('Anteced. guardados'),
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color.fromARGB(255, 200, 14, 241),
+                                    minimumSize:
+                                        const Size(double.infinity, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    if (!await launch(
+                                        _misDatos.linkAntecedentesFullPath)) {
+                                      throw 'No se puede conectar al Servidor';
+                                    }
+                                  },
+                                ),
+                              )
+                            : Container()
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(
+                  color: Colors.black,
+                ),
                 _showButtonGuardar(),
                 const SizedBox(
                   height: 15,
@@ -451,6 +730,178 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
   }
 
 //-----------------------------------------------------------------
+//--------------------- METODO _showVTV ---------------------------
+//-----------------------------------------------------------------
+
+  Widget _showVTV() {
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: InkWell(
+              child: Stack(children: <Widget>[
+                Container(
+                  child: !_photoChangedVTV
+                      ? Center(
+                          child: !editMode
+                              ? const Image(
+                                  image: AssetImage('assets/noimage.png'),
+                                  width: 200,
+                                  height: 160,
+                                  fit: BoxFit.contain)
+                              : Image.network(_misDatos.linkVtvFullPath,
+                                  width: 200, height: 160, fit: BoxFit.contain),
+                        )
+                      : Center(
+                          child: Image.file(
+                            File(_imageVTV.path),
+                            width: 200,
+                            height: 160,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                ),
+                Positioned(
+                    bottom: 60,
+                    right: 20,
+                    child: InkWell(
+                      onTap: () {
+                        cualFoto = 4;
+                        _takePicture();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.photo_camera,
+                            size: 30,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+                Positioned(
+                    bottom: 60,
+                    left: 20,
+                    child: InkWell(
+                      onTap: () {
+                        cualFoto = 4;
+                        _selectPicture();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.image,
+                            size: 30,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+              ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
+//--------------------- METODO _showObleaGas ----------------------
+//-----------------------------------------------------------------
+
+  Widget _showObleaGas() {
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: InkWell(
+              child: Stack(children: <Widget>[
+                Container(
+                  child: !_photoChangedObleaGas
+                      ? Center(
+                          child: !editMode
+                              ? const Image(
+                                  image: AssetImage('assets/noimage.png'),
+                                  width: 200,
+                                  height: 160,
+                                  fit: BoxFit.contain)
+                              : Image.network(_misDatos.linkObleaGasFullPath,
+                                  width: 200, height: 160, fit: BoxFit.contain),
+                        )
+                      : Center(
+                          child: Image.file(
+                            File(_imageObleaGas.path),
+                            width: 200,
+                            height: 160,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                ),
+                Positioned(
+                    bottom: 60,
+                    right: 20,
+                    child: InkWell(
+                      onTap: () {
+                        cualFoto = 5;
+                        _takePicture();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.photo_camera,
+                            size: 30,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+                Positioned(
+                    bottom: 60,
+                    left: 20,
+                    child: InkWell(
+                      onTap: () {
+                        cualFoto = 5;
+                        _selectPicture();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 40,
+                          height: 40,
+                          child: const Icon(
+                            Icons.image,
+                            size: 30,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+              ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//-----------------------------------------------------------------
 //--------------------- METODO _showNumcha ------------------------
 //-----------------------------------------------------------------
 
@@ -622,6 +1073,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
             _photoChangedCarnetConducir = true;
             _imageCarnetConducir = response.result;
           }
+          if (cualFoto == 4) {
+            _photoChangedVTV = true;
+            _imageVTV = response.result;
+          }
+          if (cualFoto == 5) {
+            _photoChangedObleaGas = true;
+            _imageObleaGas = response.result;
+          }
         });
         cualFoto = 0;
       }
@@ -648,6 +1107,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         if (cualFoto == 3) {
           _photoChangedCarnetConducir = true;
           _imageCarnetConducir = image;
+        }
+        if (cualFoto == 4) {
+          _photoChangedVTV = true;
+          _imageVTV = image;
+        }
+        if (cualFoto == 5) {
+          _photoChangedObleaGas = true;
+          _imageObleaGas = image;
         }
       });
       cualFoto = 0;
@@ -1432,9 +1899,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       return;
     }
 
-    String base64imageDNIFrente = '';
-    String base64imageDNIDorso = '';
-    String base64imageCarnetConducir = '';
+    String base64imageDNIFrente = "";
+    String base64imageDNIDorso = "";
+    String base64imageCarnetConducir = "";
+    String base64imageVTV = "";
+    String base64imageObleaGas = "";
+    String base64imagePolizaParaSubir = "";
+    String base64imageCedulaParaSubir = "";
+    String base64imageAntecedentesParaSubir = "";
 
     if (_photoChangedDNIFrente) {
       List<int> imageBytesDNIFrente = await _imageDNIFrente.readAsBytes();
@@ -1450,6 +1922,28 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       List<int> imageBytesCarnetConducir =
           await _imageCarnetConducir.readAsBytes();
       base64imageCarnetConducir = base64Encode(imageBytesCarnetConducir);
+    }
+
+    if (_photoChangedVTV) {
+      List<int> imageBytesVTV = await _imageVTV.readAsBytes();
+      base64imageVTV = base64Encode(imageBytesVTV);
+    }
+
+    if (_photoChangedObleaGas) {
+      List<int> imageBytesObleaGas = await _imageObleaGas.readAsBytes();
+      base64imageObleaGas = base64Encode(imageBytesObleaGas);
+    }
+
+    if (base64imagePoliza != '') {
+      base64imagePolizaParaSubir = base64imagePoliza;
+    }
+
+    if (base64imageCedula != '') {
+      base64imageCedulaParaSubir = base64imageCedula;
+    }
+
+    if (base64imageAntecedentes != '') {
+      base64imageAntecedentesParaSubir = base64imageAntecedentes;
     }
 
     String ahora = DateTime.now().toString();
@@ -1476,6 +1970,11 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       'FechaVencPoliza':
           fechaVencPoliza != null ? fechaVencPoliza.toString() : '',
       'Compania': _compania,
+      'LinkVtvImageArray': base64imageVTV,
+      'LinkObleaGasImageArray': base64imageObleaGas,
+      'LinkPolizaSeguroImageArray': base64imagePolizaParaSubir,
+      'LinkCedulaImageArray': base64imageCedulaParaSubir,
+      'LinkAntecedentesImageArray': base64imageAntecedentesParaSubir,
     };
 
     if (editMode == false) {
@@ -1605,5 +2104,42 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     _numpolizaseguroController.text = _misDatos.nroPolizaSeguro;
 
     setState(() {});
+  }
+
+//-----------------------------------------------------------------------
+//-------------------- _loadPdf -----------------------------------------
+//-----------------------------------------------------------------------
+
+  Future<void> _loadPdf(int opcion) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: false,
+      withData: true,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      Uint8List? fileBytes = result.files.first.bytes;
+      String fileName = result.files.first.name;
+
+      //await FirebaseStorage.instance.ref('uploads/$fileName').putData(fileBytes);
+
+      if (opcion == 1) {
+        imageBytesPdfPoliza = fileBytes!.buffer.asUint8List();
+        base64imagePoliza = base64Encode(imageBytesPdfPoliza);
+        namePdfPoliza = fileName;
+      }
+      if (opcion == 2) {
+        imageBytesPdfCedula = fileBytes!.buffer.asUint8List();
+        base64imageCedula = base64Encode(imageBytesPdfCedula);
+        namePdfCedula = fileName;
+      }
+      if (opcion == 3) {
+        imageBytesPdfAntecedentes = fileBytes!.buffer.asUint8List();
+        base64imageAntecedentes = base64Encode(imageBytesPdfAntecedentes);
+        namePdfAntecedentes = fileName;
+      }
+      setState(() {});
+    }
   }
 }

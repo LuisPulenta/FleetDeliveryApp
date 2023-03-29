@@ -650,12 +650,35 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     )),
                               ),
                               Expanded(
+                                flex: 1,
                                 child:
                                     Text('${_asignacion.documento.toString()}',
                                         style: const TextStyle(
                                           fontSize: 12,
                                         )),
                               ),
+                              _asignacion.proyectomodulo == 'Cable'
+                                  ? const SizedBox(
+                                      width: 30,
+                                      child: Text("OT: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    )
+                                  : Container(),
+                              _asignacion.proyectomodulo == 'Cable'
+                                  ? Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                          _asignacion.reclamoTecnicoID
+                                              .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    )
+                                  : Container(),
                             ],
                           ),
 

@@ -752,11 +752,34 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             )),
                                       ),
                                       Expanded(
-                                        child: Text('${e.documento.toString()}',
+                                        flex: 1,
+                                        child: Text(e.documento.toString(),
                                             style: const TextStyle(
                                               fontSize: 12,
                                             )),
                                       ),
+                                      e.proyectomodulo == 'Cable'
+                                          ? const SizedBox(
+                                              width: 30,
+                                              child: const Text("OT: ",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color:
+                                                        const Color(0xFF0e4888),
+                                                    fontWeight: FontWeight.bold,
+                                                  )),
+                                            )
+                                          : Container(),
+                                      e.proyectomodulo == 'Cable'
+                                          ? Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                  e.reclamoTecnicoID.toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                  )),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                   const SizedBox(
@@ -1780,7 +1803,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                             children: [
                               Expanded(
                                   child: Text(
-                                '${asign.proyectomodulo.toString()}',
+                                asign.proyectomodulo.toString(),
                                 style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.bold),
                               )),

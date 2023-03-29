@@ -63,6 +63,7 @@ dependencies:
   whatsapp_unilink: ^2.0.0  
   syncfusion_flutter_pdf: ^19.4.48
   whatsapp_share2: ^2.0.2
+  file_picker: ^4.6.1
   
     
 

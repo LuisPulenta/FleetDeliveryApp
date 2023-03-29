@@ -26,6 +26,16 @@ class SubContratistasUsrVehiculo {
   String nroPolizaSeguro = '';
   DateTime fechaVencPoliza;
   String compania = '';
+  String linkVtv;
+  String linkObleaGas;
+  String linkPolizaSeguro;
+  String linkCedula;
+  String linkAntecedentes;
+  String linkVtvFullPath;
+  String linkObleaGasFullPath;
+  String linkPolizaSeguroFullPath;
+  String linkCedulaFullPath;
+  String linkAntecedentesFullPath;
 
   SubContratistasUsrVehiculo({
     required this.id,
@@ -47,6 +57,16 @@ class SubContratistasUsrVehiculo {
     required this.nroPolizaSeguro,
     required this.fechaVencPoliza,
     required this.compania,
+    required this.linkVtv,
+    required this.linkObleaGas,
+    required this.linkPolizaSeguro,
+    required this.linkCedula,
+    required this.linkAntecedentes,
+    required this.linkVtvFullPath,
+    required this.linkObleaGasFullPath,
+    required this.linkPolizaSeguroFullPath,
+    required this.linkCedulaFullPath,
+    required this.linkAntecedentesFullPath,
   });
 
   factory SubContratistasUsrVehiculo.fromMap(Map<String, dynamic> json) =>
@@ -70,6 +90,16 @@ class SubContratistasUsrVehiculo {
         nroPolizaSeguro: json["nroPolizaSeguro"],
         fechaVencPoliza: DateTime.parse(json["fechaVencPoliza"]),
         compania: json["compania"],
+        linkVtv: json["linkVtv"],
+        linkObleaGas: json["linkObleaGas"],
+        linkPolizaSeguro: json["linkPolizaSeguro"],
+        linkCedula: json["linkCedula"],
+        linkAntecedentes: json["linkAntecedentes"],
+        linkVtvFullPath: json["linkVtvFullPath"],
+        linkObleaGasFullPath: json["linkObleaGasFullPath"],
+        linkPolizaSeguroFullPath: json["linkPolizaSeguroFullPath"],
+        linkCedulaFullPath: json["linkCedulaFullPath"],
+        linkAntecedentesFullPath: json["linkAntecedentesFullPath"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -92,5 +122,15 @@ class SubContratistasUsrVehiculo {
         "nroPolizaSeguro": nroPolizaSeguro,
         "fechaVencPoliza": fechaVencPoliza,
         "compania": compania,
+        "linkVtv": linkVtv,
+        "linkObleaGas": linkObleaGas,
+        "linkPolizaSeguro": linkPolizaSeguro,
+        "linkCedula": linkCedula,
+        "linkAntecedentes": linkAntecedentes,
+        "linkVtvFullPath": linkVtvFullPath,
+        "linkObleaGasFullPath": linkObleaGasFullPath,
+        "linkPolizaSeguroFullPath": linkPolizaSeguroFullPath,
+        "linkCedulaFullPath": linkCedulaFullPath,
+        "linkAntecedentesFullPath": linkAntecedentesFullPath,
       };
 }
