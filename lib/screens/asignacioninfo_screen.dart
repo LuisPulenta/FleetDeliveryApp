@@ -117,6 +117,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
 
   Asignacion2 _asignacion = Asignacion2(
+      recupidjobcard: '',
       cliente: '',
       documento: '',
       nombre: '',
@@ -672,8 +673,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ? Expanded(
                                       flex: 1,
                                       child: Text(
-                                          _asignacion.reclamoTecnicoID
-                                              .toString(),
+                                          _asignacion.recupidjobcard.toString(),
                                           style: const TextStyle(
                                             fontSize: 12,
                                           )),

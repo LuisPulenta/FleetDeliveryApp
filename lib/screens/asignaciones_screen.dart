@@ -91,6 +91,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   int intentos = 0;
 
   Asignacion2 asignacionSelected = Asignacion2(
+      recupidjobcard: '',
       cliente: '',
       documento: '',
       nombre: '',
@@ -774,7 +775,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                           ? Expanded(
                                               flex: 1,
                                               child: Text(
-                                                  e.reclamoTecnicoID.toString(),
+                                                  e.recupidjobcard.toString(),
                                                   style: const TextStyle(
                                                     fontSize: 12,
                                                   )),

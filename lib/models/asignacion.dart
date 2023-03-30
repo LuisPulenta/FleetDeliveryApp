@@ -1,4 +1,5 @@
 class Asignacion {
+  String? recupidjobcard = '';
   String? cliente = '';
   String? documento = '';
   String? nombre = '';
@@ -43,7 +44,8 @@ class Asignacion {
   int? cantAsign = 0;
 
   Asignacion(
-      {required this.cliente,
+      {required this.recupidjobcard,
+      required this.cliente,
       required this.documento,
       required this.nombre,
       required this.domicilio,
@@ -87,6 +89,7 @@ class Asignacion {
       required this.zona});
 
   Asignacion.fromJson(Map<String, dynamic> json) {
+    recupidjobcard = json['recupidjobcard'];
     cliente = json['cliente'];
     nombre = json['nombre'];
     documento = json['documento'];
@@ -133,6 +136,7 @@ class Asignacion {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['recupidjobcard'] = recupidjobcard;
     data['cliente'] = cliente;
     data['nombre'] = nombre;
     data['documento'] = documento;
@@ -180,6 +184,7 @@ class Asignacion {
 
   Map<String, dynamic> toMap() {
     return {
+      'recupidjobcard': recupidjobcard,
       'cliente': cliente,
       'documento': documento,
       'nombre': nombre,
