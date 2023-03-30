@@ -252,7 +252,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         ),
                         Text(namePdfPoliza),
                         editMode &&
-                                _misDatos.linkPolizaSeguroFullPath.length > 1 &&
+                                _misDatos.linkPolizaSeguro.length > 1 &&
                                 namePdfPoliza == ''
                             ? Expanded(
                                 child: ElevatedButton(
@@ -335,7 +335,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         ),
                         Text(namePdfCedula),
                         editMode &&
-                                _misDatos.linkCedulaFullPath.length > 1 &&
+                                _misDatos.linkCedula.length > 1 &&
                                 namePdfCedula == ''
                             ? Expanded(
                                 child: ElevatedButton(
@@ -418,7 +418,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         ),
                         Text(namePdfAntecedentes),
                         editMode &&
-                                _misDatos.linkAntecedentesFullPath.length > 1 &&
+                                _misDatos.linkAntecedentes.length > 1 &&
                                 namePdfAntecedentes == ''
                             ? Expanded(
                                 child: ElevatedButton(
@@ -2094,7 +2094,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
 
     fechaVencCarnetConducir = _misDatos.fechaVencCarnet;
     fechaVencVTV = _misDatos.fechaVencVtv;
-    fechaVencObleaGNC = _misDatos.fechaObleaGas;
+    fechaVencObleaGNC = _misDatos.fechaObleaGas != null
+        ? DateTime.parse(_misDatos.fechaObleaGas!)
+        : null;
     fechaVencPoliza = _misDatos.fechaVencPoliza;
 
     _compania = _misDatos.compania;

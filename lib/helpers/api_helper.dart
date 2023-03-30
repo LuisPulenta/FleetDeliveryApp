@@ -55,7 +55,7 @@ class ApiHelper {
             marca: '',
             fechaVencVtv: DateTime.now(),
             gas: '',
-            fechaObleaGas: DateTime.now(),
+            fechaObleaGas: DateTime.now().toString(),
             ultimaActualizacion: DateTime.now(),
             dniFrenteFullPath: '',
             dniDorsoFullPath: '',

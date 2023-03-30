@@ -18,7 +18,7 @@ class SubContratistasUsrVehiculo {
   String marca;
   DateTime fechaVencVtv;
   String gas;
-  DateTime fechaObleaGas;
+  String? fechaObleaGas = '';
   DateTime ultimaActualizacion;
   String dniFrenteFullPath = '';
   String dniDorsoFullPath = '';
@@ -82,7 +82,7 @@ class SubContratistasUsrVehiculo {
         marca: json["marca"],
         fechaVencVtv: DateTime.parse(json["fechaVencVTV"]),
         gas: json["gas"],
-        fechaObleaGas: DateTime.parse(json["fechaObleaGas"]),
+        fechaObleaGas: json["fechaObleaGas"],
         ultimaActualizacion: DateTime.parse(json["ultimaActualizacion"]),
         dniFrenteFullPath: json["dniFrenteFullPath"],
         dniDorsoFullPath: json["dniDorsoFullPath"],
@@ -114,7 +114,7 @@ class SubContratistasUsrVehiculo {
         "marca": marca,
         "fechaVencVTV": fechaVencVtv.toIso8601String(),
         "gas": gas,
-        "fechaObleaGas": fechaObleaGas.toIso8601String(),
+        "fechaObleaGas": fechaObleaGas,
         "ultimaActualizacion": ultimaActualizacion.toIso8601String(),
         "dniFrenteFullPath": dniFrenteFullPath,
         "dniDorsoFullPath": dniDorsoFullPath,
