@@ -82,7 +82,8 @@ class _Home2ScreenState extends State<Home2Screen> {
       deco1descripcion: '',
       elegir: 0,
       observacionCaptura: '',
-      zona: '');
+      zona: '',
+      modificadoAPP: 0);
 
 //*****************************************************************************
 //************************** INIT STATE ***************************************

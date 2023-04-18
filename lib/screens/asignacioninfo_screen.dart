@@ -165,7 +165,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       deco1descripcion: '',
       elegir: 0,
       observacionCaptura: '',
-      zona: '');
+      zona: '',
+      modificadoAPP: 0);
 
   LatLng _center = const LatLng(0, 0);
 
@@ -314,6 +315,26 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       style: const TextStyle(
                                         fontSize: 12,
                                       )),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                const Text("Observación Captura: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                Expanded(
+                                  child:
+                                      Text('${_asignacion.observacionCaptura}',
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          )),
                                 ),
                               ],
                             ),
@@ -2781,7 +2802,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Icon(Icons.whatsapp),
+                      Icon(Icons.chat),
                       SizedBox(
                         width: 15,
                       ),

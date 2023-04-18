@@ -139,7 +139,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       deco1descripcion: '',
       elegir: 0,
       observacionCaptura: '',
-      zona: '');
+      zona: '',
+      modificadoAPP: 0);
 
   final Set<Marker> _markers = {};
 

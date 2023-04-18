@@ -48,6 +48,7 @@ class Asignacion2 {
   int? elegir = 0;
   String? observacionCaptura = '';
   String? zona = '';
+  int? modificadoAPP = 0;
 
   Asignacion2(
       {required this.recupidjobcard,
@@ -98,7 +99,8 @@ class Asignacion2 {
       required this.deco1descripcion,
       required this.elegir,
       required this.observacionCaptura,
-      required this.zona});
+      required this.zona,
+      required this.modificadoAPP});
 
   Asignacion2.fromJson(Map<String, dynamic> json) {
     cliente = json['cliente'];
@@ -150,6 +152,7 @@ class Asignacion2 {
     elegir = json['elegir'];
     observacionCaptura = json['observacionCaptura'];
     zona = json['zona'];
+    modificadoAPP = json['modificadoAPP'];
   }
 
   Map<String, dynamic> toJson() {
@@ -203,6 +206,7 @@ class Asignacion2 {
     data['elegir'] = elegir;
     data['observacionCaptura'] = observacionCaptura;
     data['zona'] = zona;
+    data['modificadoAPP'] = modificadoAPP;
     return data;
   }
 
@@ -257,6 +261,7 @@ class Asignacion2 {
       'elegir': elegir,
       'observacionCaptura': observacionCaptura,
       'zona': zona,
+      'modificadoAPP': modificadoAPP,
     };
   }
 }
