@@ -321,26 +321,26 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             const SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              children: [
-                                const Text("Observación Captura: ",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child:
-                                      Text('${_asignacion.observacionCaptura}',
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
+                            // Row(
+                            //   children: [
+                            //     const Text("Observación Captura: ",
+                            //         style: TextStyle(
+                            //           fontSize: 12,
+                            //           color: Color(0xFF0e4888),
+                            //           fontWeight: FontWeight.bold,
+                            //         )),
+                            //     Expanded(
+                            //       child:
+                            //           Text('${_asignacion.observacionCaptura}',
+                            //               style: const TextStyle(
+                            //                 fontSize: 12,
+                            //               )),
+                            //     ),
+                            //   ],
+                            // ),
+                            // const SizedBox(
+                            //   height: 20,
+                            // ),
                             Row(
                               children: [
                                 const Text("N° Series Extras: ",
@@ -415,7 +415,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       ],
                                     ),
                                     style: ElevatedButton.styleFrom(
-                                      primary: Color.fromARGB(255, 242, 84, 5),
+                                      primary:
+                                          const Color.fromARGB(255, 242, 84, 5),
                                       minimumSize:
                                           const Size(double.infinity, 60),
                                       shape: RoundedRectangleBorder(
@@ -432,7 +433,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 : Container(),
                             _editar
                                 ? TextField(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 12,
                                         fontWeight: FontWeight.w300),
@@ -1476,7 +1477,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         style: const TextStyle(
                                           fontSize: 12,
                                         ))
-                                    : Text(""),
+                                    : const Text(""),
                               ),
                             ],
                           ),
@@ -1541,14 +1542,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     )
                                   : Row(
                                       children: [
-                                        Text('Modelo:            ',
+                                        const Text('Modelo:            ',
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: Color(0xFF0e4888),
                                               fontWeight: FontWeight.bold,
                                             )),
                                         Text(e.modelo.toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 12,
                                             )),
                                       ],
@@ -1831,6 +1832,33 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
+                          const SizedBox(
+                            height: 1,
+                          ),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                width: 90,
+                                child: Text("Obs. Captura: ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF0e4888),
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
+                              Expanded(
+                                child: e.observacionCaptura != null
+                                    ? Text(
+                                        e.observacionCaptura
+                                            .toString()
+                                            .substring(0, 44),
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                        ))
+                                    : const Text(""),
+                              ),
+                            ],
+                          ),
                           const SizedBox(
                             height: 1,
                           ),
@@ -2795,7 +2823,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     Navigator.of(context).pop();
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 ElevatedButton(
@@ -2821,7 +2849,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     Navigator.of(context).pop();
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 ElevatedButton(
@@ -3465,13 +3493,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           _number2 = value;
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Expanded(
                         flex: 1,
                         child: ElevatedButton(
-                            child: Text("+549"),
+                            child: const Text("+549"),
                             onPressed: () async {
                               _phoneController.text =
                                   "549" + _phoneController.text;
@@ -3842,7 +3870,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     final Size pageSize = page.getClientSize();
 
     page.graphics.drawImage(PdfBitmap(await _readImageData('logo2.png')),
-        Rect.fromLTWH(20, 20, 200, 50));
+        const Rect.fromLTWH(20, 20, 200, 50));
 
     page.graphics.drawString(DateFormat('dd/MM/yyyy').format(DateTime.now()),
         PdfStandardFont(PdfFontFamily.helvetica, 12),
