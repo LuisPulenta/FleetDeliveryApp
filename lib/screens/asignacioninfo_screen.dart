@@ -1851,7 +1851,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     ? Text(
                                         e.observacionCaptura
                                             .toString()
-                                            .substring(0, 44),
+                                            .substring(
+                                                0,
+                                                e.observacionCaptura!.length >
+                                                        45
+                                                    ? 45
+                                                    : e.observacionCaptura!
+                                                        .length),
                                         style: const TextStyle(
                                           fontSize: 12,
                                         ))
