@@ -1353,8 +1353,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       _tipoasignacionShowError = false;
     }
 
-    _prioridad = false;
-
     setState(() {
       _showLoader = true;
     });
@@ -1445,6 +1443,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     }
 
     _asignaciones2 = _asignaciones;
+    _filter();
 
     if (_tipoasignacion != 'Todos') {
       await _getCodigosCierre();
@@ -1540,9 +1539,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   funcionApp: _funcionApp,
                   controlesEquivalencia: _controlesEquivalencia,
                 )));
-    if (result == 'Yes' || result != 'Yes') {
-      _getObras();
-      setState(() {});
+    if (result == 'Yes') {
+      await _getObras();
     }
   }
 
