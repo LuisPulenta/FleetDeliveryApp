@@ -1818,6 +1818,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                               Expanded(
                                   child: Text(asign.domicilio.toString(),
                                       style: const TextStyle(fontSize: 12))),
+                              asign.fechaCita != null
+                                  ? Expanded(
+                                      child: Text(
+                                          'Fecha Cita: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(asign.fechaCita.toString()))}',
+                                          style: const TextStyle(fontSize: 12)))
+                                  : Container(),
+                              asign.fechaCita != null
+                                  ? Expanded(
+                                      child: Text(
+                                          'Hora Cita: ${DateFormat('HH:mm').format(DateTime.parse(asign.fechaCita.toString()))}',
+                                          style: const TextStyle(fontSize: 12)))
+                                  : Container(),
                               Row(
                                 children: [
                                   Expanded(
@@ -1893,10 +1905,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   ),
                   LatLng(lat, long));
             },
-            icon: (asign.codigoCierre == 0)
-                ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)
-                : BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueOrange)));
+            icon: asign.proyectomodulo == 'Otro' && asign.fechaCita != null
+                ? BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueBlue)
+                : (asign.codigoCierre == 0)
+                    ? BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed)
+                    : BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueOrange)));
       }
     }
     latcenter = (latmin + latmax) / 2;
