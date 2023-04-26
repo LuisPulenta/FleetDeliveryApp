@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:whatsapp_share2/whatsapp_share2.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
@@ -54,6 +55,23 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
+
+  final List<String> cuandos = [
+    "esta semana",
+    "mañana",
+    "pasado mañana",
+    "el día lunes por la mañana",
+    "el día lunes por la tarde",
+    "el día martes por la mañana",
+    "el día martes por la tarde",
+    "el día miércoles por la mañana",
+    "el día miércoles por la tarde",
+    "el día jueves por la mañana",
+    "el día jueves por la tarde",
+    "el día viernes por la mañana",
+    "el día viernes por la tarde",
+    "el día sábado por la mañana",
+  ];
 
   String codCierre = '';
   String codCierreGenerico = '';
@@ -3438,6 +3456,23 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   }
 
 //*****************************************************************************
+//************************** _getComboCuandos *********************************
+//*****************************************************************************
+
+  List<DropdownMenuItem<String>> _getComboCuandos() {
+    List<DropdownMenuItem<String>> list = [];
+
+    cuandos.forEach((cuando) {
+      list.add(DropdownMenuItem(
+        child: Text(cuando),
+        value: cuando,
+      ));
+    });
+
+    return list;
+  }
+
+//*****************************************************************************
 //************************** SELECTPICTURE ************************************
 //*****************************************************************************
   void _selectPicture() async {
@@ -3456,11 +3491,38 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //*****************************************************************************
 
   void _sendMessage(String number) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String _cuando = prefs.getString('cuando') ?? "esta semana";
+
     String _number2 = number;
     TextEditingController _phoneController = TextEditingController();
     _phoneController.text = number;
 
     if (number == 'xxx' || number == 'XXX') return;
+
+    String empresa = _asignacion.proyectomodulo.toString();
+    if (empresa == 'Otro' || empresa == 'TLC') {
+      empresa = 'Telecentro';
+    }
+
+    if (empresa == 'Cable') {
+      empresa = 'Cablevisión';
+    }
+
+    if (empresa == 'Tasa') {
+      empresa = 'Movistar';
+    }
+
+    if (empresa == 'DTV') {
+      empresa = 'DirecTV';
+    }
+
+    if (empresa == 'SuperC') {
+      empresa = 'Supercanal';
+    }
+
+    String palabraEquipo = _asignacion.cantAsign == 1 ? "equipo" : "equipos";
 
     await showDialog(
         barrierDismissible: false,
@@ -3473,128 +3535,154 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: const [
                     Text(
-                      "Atención!!",
+                      "Mensaje a enviar",
                       style: TextStyle(color: Colors.green, fontSize: 20),
                     ),
                   ],
                 ),
-                content: SizedBox(
-                  height: 170,
-                  child: Column(
-                    children: [
-                      const Text(
-                        "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      const Text(""),
-                      TextField(
-                        controller: _phoneController,
-                        decoration: InputDecoration(
-                            fillColor: Colors.white,
+                content: SingleChildScrollView(
+                  child: SizedBox(
+                    height: 380,
+                    child: Column(
+                      children: [
+                        DropdownButtonFormField(
+                          key: _key,
+                          isExpanded: true,
+                          value: _cuando,
+                          decoration: InputDecoration(
                             filled: true,
-                            hintText: 'Teléfono...',
-                            labelText: 'Teléfono',
-                            //errorText:_passwordShowError ? _passwordError : null,
-                            prefixIcon: const Icon(Icons.phone),
+                            fillColor: Colors.white,
+                            hintMaxLines: 2,
+                            labelText: 'Cuándo...',
+                            errorText: _codigocierreShowError
+                                ? _codigocierreError
+                                : null,
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        onChanged: (value) {
-                          _number2 = value;
-                        },
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          items: _getComboCuandos(),
+                          onChanged: (value) {
+                            _cuando = value.toString();
+
+                            prefs.setString('cuando', _cuando);
+                            setState(() {});
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
+                            style: TextStyle(color: Colors.blue, fontSize: 12)),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Divider(
+                          color: Colors.black,
+                        ),
+                        const Text(
+                          "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        const Text(""),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextField(
+                          controller: _phoneController,
+                          decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: 'Teléfono...',
+                              labelText: 'Teléfono',
+                              //errorText:_passwordShowError ? _passwordError : null,
+                              prefixIcon: const Icon(Icons.phone),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          onChanged: (value) {
+                            _number2 = value;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: ElevatedButton(
+                              child: const Text("+549"),
+                              onPressed: () async {
+                                _phoneController.text =
+                                    "549" + _phoneController.text;
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                actions: <Widget>[
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.cancel),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text('Cancelar'),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.red,
+                            minimumSize: const Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            return;
+                          },
+                        ),
                       ),
                       const SizedBox(
-                        height: 10,
+                        width: 10,
                       ),
                       Expanded(
                         flex: 1,
                         child: ElevatedButton(
-                            child: const Text("+549"),
-                            onPressed: () async {
-                              _phoneController.text =
-                                  "549" + _phoneController.text;
-                            }),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.insert_comment),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text('Continuar'),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.green,
+                            minimumSize: const Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          onPressed: () async {
+                            final link = WhatsAppUnilink(
+                              phoneNumber: _number2,
+                              //***** MENSAJE DE CONTACTO *****
+                              text:
+                                  'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
+                            );
+                            await launch('$link');
+                          },
+                        ),
                       ),
                     ],
-                  ),
-                ),
-                actions: <Widget>[
-                  ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.insert_comment),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Continuar'),
-                      ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onPressed: () async {
-                      String empresa = _asignacion.proyectomodulo.toString();
-                      if (empresa == 'Otro' || empresa == 'TLC') {
-                        empresa = 'Telecentro';
-                      }
-
-                      if (empresa == 'Cable') {
-                        empresa = 'Cablevisión';
-                      }
-
-                      if (empresa == 'Tasa') {
-                        empresa = 'Movistar';
-                      }
-
-                      if (empresa == 'DTV') {
-                        empresa = 'DirecTV';
-                      }
-
-                      if (empresa == 'SuperC') {
-                        empresa = 'Supercanal';
-                      }
-
-                      String palabraEquipo =
-                          _asignacion.cantAsign == 1 ? "equipo" : "equipos";
-
-                      final link = WhatsAppUnilink(
-                        phoneNumber: _number2,
-                        //***** MENSAJE DE CONTACTO *****
-                        text:
-                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo esta semana?. Muchas gracias.',
-                      );
-                      await launch('$link');
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.cancel),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Cancelar'),
-                      ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      return;
-                    },
                   ),
                 ],
                 shape: Border.all(
