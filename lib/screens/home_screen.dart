@@ -602,7 +602,7 @@ class _HomeScreenState extends State<HomeScreen>
                             ],
                           ),
                           const SizedBox(
-                            height: 25,
+                            height: 15,
                           ),
                           ElevatedButton(
                             child: Row(
@@ -633,7 +633,30 @@ class _HomeScreenState extends State<HomeScreen>
                             },
                           ),
                           const SizedBox(
-                            height: 25,
+                            height: 15,
+                          ),
+                          ElevatedButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.storage),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text('DATOS EN BD LOCALES'),
+                              ],
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: const Color(0xff282886),
+                              minimumSize: const Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () => _storage(),
+                          ),
+                          const SizedBox(
+                            height: 15,
                           ),
                           ElevatedButton(
                             child: Row(
@@ -656,7 +679,7 @@ class _HomeScreenState extends State<HomeScreen>
                             onPressed: () => _contacto(),
                           ),
                           const SizedBox(
-                            height: 25,
+                            height: 15,
                           ),
                           ElevatedButton(
                             child: Row(
@@ -679,7 +702,7 @@ class _HomeScreenState extends State<HomeScreen>
                             onPressed: () => _cambiarPassword(),
                           ),
                           const SizedBox(
-                            height: 25,
+                            height: 15,
                           ),
                           ElevatedButton(
                               child: Row(
@@ -1239,6 +1262,15 @@ class _HomeScreenState extends State<HomeScreen>
   void _contacto() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const ContactoScreen()));
+  }
+
+//-------------------------------------------------------------------------
+//-------------------------- _storage -------------------------------------
+//-------------------------------------------------------------------------
+
+  void _storage() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const StorageScreen()));
   }
 
 //-------------------------------------------------------------------------

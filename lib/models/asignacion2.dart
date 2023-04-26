@@ -264,4 +264,42 @@ class Asignacion2 {
       'modificadoAPP': modificadoAPP,
     };
   }
+
+  get hayTelefono {
+    return telefono != null && telefono != "" && telefono != "Sin Dato"
+        ? true
+        : false;
+  }
+
+  get hayTelefAlternativo1 {
+    return telefAlternativo1 != null &&
+            telefAlternativo1 != "" &&
+            telefAlternativo1 != "Sin Dato"
+        ? true
+        : false;
+  }
+
+  get hayTelefAlternativo2 {
+    return telefAlternativo2 != null &&
+            telefAlternativo2 != "" &&
+            telefAlternativo2 != "Sin Dato"
+        ? true
+        : false;
+  }
+
+  get hayTelefAlternativo3 {
+    return telefAlternativo3 != null &&
+            telefAlternativo3 != "" &&
+            telefAlternativo3 != "Sin Dato"
+        ? true
+        : false;
+  }
+
+  get hayTelefAlternativo4 {
+    return telefAlternativo4 != null &&
+            telefAlternativo4 != "" &&
+            telefAlternativo4 != "Sin Dato"
+        ? true
+        : false;
+  }
 }

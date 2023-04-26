@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.45+45
+version: 1.1.46+46
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -39,7 +39,7 @@ dependencies:
   http: ^0.13.3                   # Para consumir APIs 
   intl: ^0.17.0                   # Para ver formato moneda
   adaptive_dialog: ^1.1.0         # Para cuadros de diálogo
-  camera: ^0.9.4                  # Para acceder a la cámara
+  camera: ^0.9.8+1                # Para acceder a la cámara
   path: ^1.8.0                    # Para acceder a la cámara
   cached_network_image: ^3.1.0    # Para mejorar el rendimiento de imágenes
   image_picker: ^0.8.4+2          # Para acceder a la galería de imágenes

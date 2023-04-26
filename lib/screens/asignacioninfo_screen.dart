@@ -90,6 +90,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   final bool _macserieShowError = false;
   final TextEditingController _macserieController = TextEditingController();
 
+  String _telefono = 'Elija un Teléfono...';
+  String _telefonoError = '';
+  bool _telefonoShowError = false;
+
   List<CodigoCierre> __codigoscierre = [];
   bool _photoChangedDNI = false;
   bool _signatureChanged = false;
@@ -2161,7 +2165,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           const Divider(
                             color: Colors.black,
                           ),
-                          _asignacion.telefono.toString().isNotEmpty
+                          _asignacion.hayTelefono
                               ? Row(
                                   children: [
                                     const Text("Teléfono: ",
@@ -2214,12 +2218,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
-                          _asignacion.telefono.toString().isNotEmpty
+                          _asignacion.hayTelefono
                               ? const Divider(
                                   color: Colors.black,
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo1.toString().isNotEmpty
+                          _asignacion.hayTelefAlternativo1
                               ? Row(
                                   children: [
                                     const Text("Tel. Alt. 1: ",
@@ -2277,12 +2281,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo1.toString().isNotEmpty
+                          _asignacion.hayTelefAlternativo1
                               ? const Divider(
                                   color: Colors.black,
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo2.toString().isNotEmpty
+                          _asignacion.hayTelefAlternativo2
                               ? Row(
                                   children: [
                                     const Text("Tel. Alt. 2: ",
@@ -2340,12 +2344,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo2.toString().isNotEmpty
+                          _asignacion.hayTelefAlternativo2
                               ? const Divider(
                                   color: Colors.black,
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo3.toString().isNotEmpty
+                          _asignacion.hayTelefAlternativo3
                               ? Row(
                                   children: [
                                     const Text("Tel. Alt. 3: ",
@@ -2403,12 +2407,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo3.toString().isNotEmpty
+                          _asignacion.hayTelefAlternativo3
                               ? const Divider(
                                   color: Colors.black,
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo4.toString().isNotEmpty
+                          _asignacion.hayTelefAlternativo4
                               ? Row(
                                   children: [
                                     const Text("Tel. Alt. 4: ",
@@ -2466,7 +2470,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ],
                                 )
                               : Container(),
-                          _asignacion.telefAlternativo4.toString().isNotEmpty
+                          _asignacion.hayTelefAlternativo4
                               ? const Divider(
                                   color: Colors.black,
                                 )
@@ -3136,11 +3140,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
     Navigator.pop(context, "Yes");
     if (_enviarRecibo == 1) {
-      _sendMessage2(_asignacion.telefono.toString(), message);
+      _sendMessage2(message);
     }
 
     if (_enviarRecibo == 2) {
-      _sendMessage3(_asignacion.telefono.toString(), message);
+      _sendMessage3(message);
     }
   }
 
@@ -3554,11 +3558,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         empresa = 'Supercanal';
                       }
 
+                      String palabraEquipo =
+                          _asignacion.cantAsign == 1 ? "equipo" : "equipos";
+
                       final link = WhatsAppUnilink(
                         phoneNumber: _number2,
                         //***** MENSAJE DE CONTACTO *****
                         text:
-                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} equipos a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo esta semana?. Muchas gracias.',
+                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo esta semana?. Muchas gracias.',
                       );
                       await launch('$link');
                     },
@@ -3603,10 +3610,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //************************** _sendMessage2 ************************************
 //*****************************************************************************
 
-  void _sendMessage2(String number, message) async {
-    String _number2 = number;
+  void _sendMessage2(String message) async {
+    String _number2 = "";
     TextEditingController _phoneController = TextEditingController();
-    _phoneController.text = number;
+    _phoneController.text = "";
 
     await showDialog(
         barrierDismissible: false,
@@ -3624,31 +3631,76 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     ),
                   ],
                 ),
-                content: SizedBox(
-                  height: 170,
-                  child: Column(
-                    children: [
-                      const Text(
-                        "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      const Text(""),
-                      TextField(
-                        controller: _phoneController,
-                        decoration: InputDecoration(
+                content: SingleChildScrollView(
+                  child: SizedBox(
+                    height: 250,
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        const Text(""),
+                        DropdownButtonFormField(
+                          value: _telefono,
+                          decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
-                            hintText: 'Teléfono...',
+                            hintText: 'Elija un Teléfono...',
                             labelText: 'Teléfono',
+                            errorText:
+                                _telefonoShowError ? _telefonoError : null,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          items: _getComboTelefonos(),
+                          onChanged: (value) {
+                            _telefono = value.toString();
+                            _number2 = value.toString();
+                            _phoneController.text = _number2;
+                            setState(() {});
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextField(
+                          controller: _phoneController,
+                          //enabled: false,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: 'Teléfono seleccionado...',
+                            labelText: 'Teléfono seleccionado',
                             //errorText:_passwordShowError ? _passwordError : null,
                             prefixIcon: const Icon(Icons.phone),
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        onChanged: (value) {
-                          _number2 = value;
-                        },
-                      ),
-                    ],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            _number2 = value;
+                            //_phoneController.text = _number2;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: ElevatedButton(
+                              child: const Text("+549"),
+                              onPressed: () async {
+                                if (_number2.length > 1) {
+                                  _number2 = "549" + _number2;
+                                  _phoneController.text =
+                                      "549" + _phoneController.text;
+                                  setState(() {});
+                                }
+                              }),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 actions: <Widget>[
@@ -3670,13 +3722,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    onPressed: () async {
-                      final link = WhatsAppUnilink(
-                        phoneNumber: _number2,
-                        text: message,
-                      );
-                      await launch('$link');
-                    },
+                    onPressed: _number2 != ""
+                        ? () async {
+                            final link = WhatsAppUnilink(
+                              phoneNumber: _number2,
+                              text: message,
+                            );
+                            await launch('$link');
+                          }
+                        : null,
                   ),
                   const SizedBox(
                     height: 10,
@@ -3718,10 +3772,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //************************** _sendMessage3 ************************************
 //*****************************************************************************
 
-  void _sendMessage3(String number, message) async {
-    String _number2 = number;
+  void _sendMessage3(String message) async {
+    String _number2 = "";
     TextEditingController _phoneController = TextEditingController();
-    _phoneController.text = number;
+    _phoneController.text = "";
     _existeChat = false;
 
     await showDialog(
@@ -3740,31 +3794,72 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     ),
                   ],
                 ),
-                content: SizedBox(
-                  height: 170,
-                  child: Column(
-                    children: [
-                      const Text(
-                        "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      const Text(""),
-                      TextField(
-                        controller: _phoneController,
-                        decoration: InputDecoration(
+                content: SingleChildScrollView(
+                  child: SizedBox(
+                    height: 250,
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        const Text(""),
+                        DropdownButtonFormField(
+                          value: _telefono,
+                          decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
-                            hintText: 'Teléfono...',
+                            hintText: 'Elija un Teléfono...',
                             labelText: 'Teléfono',
-                            //errorText:_passwordShowError ? _passwordError : null,
-                            prefixIcon: const Icon(Icons.phone),
+                            errorText:
+                                _telefonoShowError ? _telefonoError : null,
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        onChanged: (value) {
-                          _number2 = value;
-                        },
-                      ),
-                    ],
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          items: _getComboTelefonos(),
+                          onChanged: (value) {
+                            _telefono = value.toString();
+                            _number2 = value.toString();
+                            _phoneController.text = _number2;
+                            setState(() {});
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextField(
+                          controller: _phoneController,
+                          decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: 'Teléfono seleccionado...',
+                              labelText: 'Teléfono seleccionado',
+                              //errorText:_passwordShowError ? _passwordError : null,
+                              prefixIcon: const Icon(Icons.phone),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          onChanged: (value) {
+                            _number2 = value;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: ElevatedButton(
+                              child: const Text("+549"),
+                              onPressed: () async {
+                                if (_number2.length > 1) {
+                                  _number2 = "549" + _number2;
+                                  _phoneController.text =
+                                      "549" + _phoneController.text;
+                                  setState(() {});
+                                }
+                              }),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 actions: <Widget>[
@@ -3786,16 +3881,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    onPressed: _existeChat == false
-                        ? () async {
-                            _number2.substring(0, 3) != '549'
-                                ? _number2 = '549' + _number2
-                                : _number2 = _number2;
+                    onPressed: _number2 != ""
+                        ? _existeChat == false
+                            ? () async {
+                                _number2.substring(0, 3) != '549'
+                                    ? _number2 = '549' + _number2
+                                    : _number2 = _number2;
 
-                            await _creaChat(_number2);
-                            setState(() {});
-                            return;
-                          }
+                                await _creaChat(_number2);
+                                setState(() {});
+                                return;
+                              }
+                            : null
                         : null,
                   ),
                   const SizedBox(
@@ -4041,5 +4138,46 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         }
       } else {}
     }
+  }
+
+  List<DropdownMenuItem<String>> _getComboTelefonos() {
+    List<DropdownMenuItem<String>> list = [];
+    list.add(const DropdownMenuItem(
+      child: Text('Elija un Teléfono...'),
+      value: 'Elija un Teléfono...',
+    ));
+
+    if (widget.asignacion.hayTelefono) {
+      list.add(DropdownMenuItem(
+        child: Text(widget.asignacion.telefono.toString()),
+        value: widget.asignacion.telefono.toString(),
+      ));
+    }
+    if (widget.asignacion.hayTelefAlternativo1) {
+      list.add(DropdownMenuItem(
+        child: Text(widget.asignacion.telefAlternativo1.toString()),
+        value: widget.asignacion.telefAlternativo1.toString(),
+      ));
+    }
+    if (widget.asignacion.hayTelefAlternativo2) {
+      list.add(DropdownMenuItem(
+        child: Text(widget.asignacion.telefAlternativo2.toString()),
+        value: widget.asignacion.telefAlternativo2.toString(),
+      ));
+    }
+    if (widget.asignacion.hayTelefAlternativo3) {
+      list.add(DropdownMenuItem(
+        child: Text(widget.asignacion.telefAlternativo3.toString()),
+        value: widget.asignacion.telefAlternativo3.toString(),
+      ));
+    }
+    if (widget.asignacion.hayTelefAlternativo4) {
+      list.add(DropdownMenuItem(
+        child: Text(widget.asignacion.telefAlternativo4.toString()),
+        value: widget.asignacion.telefAlternativo4.toString(),
+      ));
+    }
+
+    return list;
   }
 }
