@@ -187,7 +187,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       elegir: 0,
       observacionCaptura: '',
       zona: '',
-      modificadoAPP: 0);
+      modificadoAPP: 0,
+      hsCumplidaTime: 0);
 
   LatLng _center = const LatLng(0, 0);
 
@@ -3573,11 +3574,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         ),
                         Text(
                             'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
-                            style: TextStyle(color: Colors.blue, fontSize: 12)),
+                            style: const TextStyle(
+                                color: Colors.blue, fontSize: 12)),
                         const SizedBox(
                           height: 10,
                         ),
-                        Divider(
+                        const Divider(
                           color: Colors.black,
                         ),
                         const Text(

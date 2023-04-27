@@ -140,7 +140,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       elegir: 0,
       observacionCaptura: '',
       zona: '',
-      modificadoAPP: 0);
+      modificadoAPP: 0,
+      hsCumplidaTime: 0);
 
   final Set<Marker> _markers = {};
 

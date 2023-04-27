@@ -83,7 +83,8 @@ class _Home2ScreenState extends State<Home2Screen> {
       elegir: 0,
       observacionCaptura: '',
       zona: '',
-      modificadoAPP: 0);
+      modificadoAPP: 0,
+      hsCumplidaTime: 0);
 
 //*****************************************************************************
 //************************** INIT STATE ***************************************
@@ -245,6 +246,27 @@ class _Home2ScreenState extends State<Home2Screen> {
                         builder: (context) => AsignacionesTodasMapScreen(
                               user: widget.user,
                               positionUser: _positionUser,
+                            )));
+              },
+            ),
+            const Divider(
+              color: Color(0xff0e4888),
+              height: 1,
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.upload_file_outlined,
+                color: Color(0xff0e4888),
+              ),
+              title: const Text('Envío de Comprobantes',
+                  style: TextStyle(fontSize: 15, color: Color(0xff0e4888))),
+              tileColor: const Color(0xff0e4888),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EnvioComprobantesScreen(
+                              user: widget.user,
                             )));
               },
             ),
