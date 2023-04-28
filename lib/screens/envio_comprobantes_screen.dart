@@ -27,6 +27,7 @@ class _EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
 //*****************************************************************************
 
   bool _showLoader = false;
+  List<Asignacion2> _asignaciones = [];
   List<Asignacion2> _asignaciones2 = [];
   Asignacion2 asignacionSelected = Asignacion2(
       recupidjobcard: '',
@@ -79,7 +80,7 @@ class _EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
       observacionCaptura: '',
       zona: '',
       modificadoAPP: 0,
-      hsCumplidaTime: 0);
+      hsCumplidaTime: '');
 
 //*****************************************************************************
 //************************** INIT STATE ***************************************
@@ -193,8 +194,7 @@ class _EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
                                             )),
                                       ),
                                       Expanded(
-                                        child: Text(
-                                            '${e.proyectomodulo.toString()}',
+                                        child: Text(e.proyectomodulo.toString(),
                                             style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold,
@@ -211,8 +211,9 @@ class _EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
                                             )),
                                       ),
                                       Text(
-                                          DateFormat('HH:mm')
-                                              .format(DateTime.now()),
+                                          DateFormat('HH:mm').format(
+                                              DateTime.parse(
+                                                  e.hsCumplidaTime.toString())),
                                           style: const TextStyle(fontSize: 12)),
                                     ],
                                   ),
@@ -469,7 +470,18 @@ class _EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
       return;
     }
 
-    _asignaciones2 = response.result;
+    _asignaciones = response.result;
+    _asignaciones2 = [];
+
+    //Guardo en _asignaciones2 solamente las asignaciones de Proyectos que llevan Comprobantes
+    _asignaciones.forEach((asignacion) {
+      if (asignacion.proyectomodulo == 'DTV' ||
+          asignacion.proyectomodulo == 'Cable' ||
+          asignacion.proyectomodulo == 'Tasa' ||
+          asignacion.proyectomodulo == 'TLC') {
+        _asignaciones2.add(asignacion);
+      }
+    });
 
     _asignaciones2.sort((b, a) {
       return a.hsCumplidaTime

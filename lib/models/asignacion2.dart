@@ -49,7 +49,7 @@ class Asignacion2 {
   String? observacionCaptura = '';
   String? zona = '';
   int? modificadoAPP = 0;
-  int? hsCumplidaTime = 0;
+  String? hsCumplidaTime = '';
 
   Asignacion2(
       {required this.recupidjobcard,

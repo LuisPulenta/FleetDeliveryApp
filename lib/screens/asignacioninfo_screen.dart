@@ -188,7 +188,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       observacionCaptura: '',
       zona: '',
       modificadoAPP: 0,
-      hsCumplidaTime: 0);
+      hsCumplidaTime: '');
 
   LatLng _center = const LatLng(0, 0);
 

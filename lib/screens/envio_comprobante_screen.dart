@@ -122,7 +122,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
       observacionCaptura: '',
       zona: '',
       modificadoAPP: 0,
-      hsCumplidaTime: 0);
+      hsCumplidaTime: '');
 
 //*****************************************************************************
 //************************** INIT STATE ***************************************
@@ -353,7 +353,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                       fontWeight: FontWeight.bold,
                                     )),
                               ),
-                              Text(DateFormat('HH:mm').format(DateTime.now()),
+                              Text(
+                                  DateFormat('HH:mm').format(DateTime.parse(
+                                      _asignacion.hsCumplidaTime.toString())),
                                   style: const TextStyle(fontSize: 12)),
                             ],
                           ),
