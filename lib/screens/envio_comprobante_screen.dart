@@ -1,17 +1,10 @@
-import 'dart:io';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
-import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:whatsapp_share2/whatsapp_share2.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
@@ -196,8 +189,256 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               ),
                             ),
                             onPressed: () async {
-                              _enviarRecibo = 1;
-                              Navigator.of(context).pop();
+                              String message = '';
+
+                              String empresa =
+                                  _asignacion.proyectomodulo.toString();
+                              if (empresa == 'Otro' || empresa == 'TLC') {
+                                empresa = 'Telecentro';
+                              }
+
+                              if (empresa == 'Cable') {
+                                empresa = 'Cablevisión';
+                              }
+
+                              if (empresa == 'Tasa') {
+                                empresa = 'Movistar';
+                              }
+
+                              if (empresa == 'DTV') {
+                                empresa = 'DirecTV';
+                              }
+
+                              for (Asign asign in _asigns) {
+                                String mm = (asign.proyectomodulo.toString() ==
+                                            'DTV' ||
+                                        asign.proyectomodulo.toString() ==
+                                            'Cable' ||
+                                        asign.proyectomodulo.toString() ==
+                                            'TLC')
+                                    ? asign.decO1
+                                        .toString() //campo deco1 de la base.
+                                    : asign.estadO3
+                                        .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
+                                _mensajeRecibo =
+                                    _mensajeRecibo + "Equipo: " + mm + "\n";
+                              }
+
+                              message = 'Recibimos del cliente ' +
+                                  _asignacion.nombre.toString() +
+                                  " - " +
+                                  _asignacion.domicilio.toString() +
+                                  ' los equipos detallados a continuación: ' +
+                                  "\n" +
+                                  _mensajeRecibo +
+                                  "\n" +
+                                  'Atentamente' +
+                                  "\n" +
+                                  widget.user.apellidonombre.toString() +
+                                  " - Empresa Fleet al servicio de " +
+                                  empresa;
+
+                              //_sendMessage2(message);
+
+                              //------------------------------------------------
+                              String _number2 = "";
+                              TextEditingController _phoneController =
+                                  TextEditingController();
+                              _phoneController.text = "";
+
+                              await showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return StatefulBuilder(
+                                      builder: (context, setState) {
+                                        return AlertDialog(
+                                          title: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: const [
+                                              Text(
+                                                "Atención!!",
+                                                style: TextStyle(
+                                                    color: Colors.green,
+                                                    fontSize: 20),
+                                              ),
+                                            ],
+                                          ),
+                                          content: SingleChildScrollView(
+                                            child: SizedBox(
+                                              height: 250,
+                                              child: Column(
+                                                children: [
+                                                  const Text(
+                                                    "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                                                    style:
+                                                        TextStyle(fontSize: 14),
+                                                  ),
+                                                  const Text(""),
+                                                  DropdownButtonFormField(
+                                                    value: _telefono,
+                                                    decoration: InputDecoration(
+                                                      fillColor: Colors.white,
+                                                      filled: true,
+                                                      hintText:
+                                                          'Elija un Teléfono...',
+                                                      labelText: 'Teléfono',
+                                                      errorText:
+                                                          _telefonoShowError
+                                                              ? _telefonoError
+                                                              : null,
+                                                      border:
+                                                          OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                    ),
+                                                    items: _getComboTelefonos(),
+                                                    onChanged: (value) {
+                                                      _telefono =
+                                                          value.toString();
+                                                      _number2 =
+                                                          value.toString();
+                                                      _phoneController.text =
+                                                          _number2;
+                                                      setState(() {});
+                                                    },
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  TextField(
+                                                    controller:
+                                                        _phoneController,
+                                                    //enabled: false,
+                                                    decoration: InputDecoration(
+                                                      fillColor: Colors.white,
+                                                      filled: true,
+                                                      hintText:
+                                                          'Teléfono seleccionado...',
+                                                      labelText:
+                                                          'Teléfono seleccionado',
+                                                      //errorText:_passwordShowError ? _passwordError : null,
+                                                      prefixIcon: const Icon(
+                                                          Icons.phone),
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                    ),
+                                                    onChanged: (value) {
+                                                      _number2 = value;
+                                                      //_phoneController.text = _number2;
+                                                    },
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: ElevatedButton(
+                                                        child:
+                                                            const Text("+549"),
+                                                        onPressed: () async {
+                                                          if (_number2.length >
+                                                              1) {
+                                                            _number2 = "549" +
+                                                                _number2;
+                                                            _phoneController
+                                                                    .text =
+                                                                "549" +
+                                                                    _phoneController
+                                                                        .text;
+                                                            setState(() {});
+                                                          }
+                                                        }),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            ElevatedButton(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  Icon(Icons.insert_comment),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Text('Continuar'),
+                                                ],
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Colors.green,
+                                                minimumSize: const Size(
+                                                    double.infinity, 50),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                              ),
+                                              onPressed: _number2 != ""
+                                                  ? () async {
+                                                      final link =
+                                                          WhatsAppUnilink(
+                                                        phoneNumber: _number2,
+                                                        text: message,
+                                                      );
+                                                      await launch('$link');
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    }
+                                                  : null,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            ElevatedButton(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  Icon(Icons.cancel),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Text('Cancelar'),
+                                                ],
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Colors.red,
+                                                minimumSize: const Size(
+                                                    double.infinity, 50),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                return;
+                                              },
+                                            ),
+                                          ],
+                                          shape: Border.all(
+                                              color: Colors.green,
+                                              width: 5,
+                                              style: BorderStyle.solid),
+                                          backgroundColor: Colors.white,
+                                        );
+                                      },
+                                    );
+                                  });
+
+                              //------------------------------------------------
                             },
                           ),
                         ),
@@ -275,7 +516,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
     Response response = Response(isSuccess: false);
     do {
-      response = await ApiHelper.getAutonumericos(request1);
+      response = await ApiHelper.getAutonumericosEjb(request1);
       if (response.isSuccess) {
         bandera = true;
         _asigns = response.result;
@@ -298,6 +539,8 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     setState(() {
       _asigns = response.result;
     });
+
+    var a = 1;
   }
 
 //*****************************************************************************
@@ -564,5 +807,59 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
         ),
       ),
     );
+  }
+
+  //------------------------------------------------------------
+  //--------------------- _sendMessage2 ------------------------
+  //------------------------------------------------------------
+
+  void _sendMessage2(String message) async {}
+
+  //------------------------------------------------------------
+  //------------------------- _getComboTelefonos ---------------
+  //------------------------------------------------------------
+
+  List<DropdownMenuItem<String>> _getComboTelefonos() {
+    List<DropdownMenuItem<String>> list = [];
+    list.add(const DropdownMenuItem(
+      child: Text('Elija un Teléfono...'),
+      value: 'Elija un Teléfono...',
+    ));
+
+    if (widget.asignacion.hayTelefono) {
+      list.add(DropdownMenuItem(
+        child: Text(widget.asignacion.telefono.toString()),
+        value: widget.asignacion.telefono.toString(),
+      ));
+    }
+    if (widget.asignacion.hayTelefAlternativo1) {
+      list.add(DropdownMenuItem(
+        child: Text(widget.asignacion.telefAlternativo1.toString()),
+        value: widget.asignacion.telefAlternativo1.toString(),
+      ));
+    }
+    if (widget.asignacion.hayTelefAlternativo2) {
+      list.add(DropdownMenuItem(
+        child: Text(widget.asignacion.telefAlternativo2.toString()),
+        value: widget.asignacion.telefAlternativo2.toString(),
+      ));
+    }
+    if (widget.asignacion.hayTelefAlternativo3) {
+      list.add(DropdownMenuItem(
+        child: Text(widget.asignacion.telefAlternativo3.toString()),
+        value: widget.asignacion.telefAlternativo3.toString(),
+      ));
+    }
+    if (widget.asignacion.hayTelefAlternativo4) {
+      list.add(DropdownMenuItem(
+        child: Text(widget.asignacion.telefAlternativo4.toString()),
+        value: widget.asignacion.telefAlternativo4.toString(),
+      ));
+    }
+
+    var set = list.toSet();
+    list = set.toList();
+
+    return list;
   }
 }

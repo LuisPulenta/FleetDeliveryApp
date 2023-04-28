@@ -565,6 +565,35 @@ class ApiHelper {
   }
 
 //---------------------------------------------------------------------------
+  static Future<Response> getAutonumericosEjb(
+      Map<String, dynamic> request) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/AsignacionesOTs/GetAutonumericosEjb');
+    var response = await http.post(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+      body: jsonEncode(request),
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    List<Asign> list = [];
+    var decodedJson = jsonDecode(body);
+    if (decodedJson != null) {
+      for (var item in decodedJson) {
+        list.add(Asign.fromJson(item));
+      }
+    }
+    return Response(isSuccess: true, result: list);
+  }
+
+//---------------------------------------------------------------------------
   static Future<Response> getFuncionesApp(String proyectomodulo) async {
     var url = Uri.parse(
         '${Constants.apiUrl}/api/Usuarios/GetFuncionesApps/$proyectomodulo');
