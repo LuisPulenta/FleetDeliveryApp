@@ -820,45 +820,43 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
   //------------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboTelefonos() {
+    List<String> telefonos = [];
+
+    if (widget.asignacion.hayTelefono) {
+      telefonos.add(widget.asignacion.telefono!);
+    }
+
+    if (widget.asignacion.hayTelefAlternativo1) {
+      telefonos.add(widget.asignacion.telefAlternativo1!);
+    }
+
+    if (widget.asignacion.hayTelefAlternativo2) {
+      telefonos.add(widget.asignacion.telefAlternativo2!);
+    }
+
+    if (widget.asignacion.hayTelefAlternativo3) {
+      telefonos.add(widget.asignacion.telefAlternativo3!);
+    }
+
+    if (widget.asignacion.hayTelefAlternativo4) {
+      telefonos.add(widget.asignacion.telefAlternativo4!);
+    }
+
+    var set = telefonos.toSet();
+    telefonos = set.toList();
+
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
       child: Text('Elija un Teléfono...'),
       value: 'Elija un Teléfono...',
     ));
 
-    if (widget.asignacion.hayTelefono) {
+    for (var telefono in telefonos) {
       list.add(DropdownMenuItem(
-        child: Text(widget.asignacion.telefono.toString()),
-        value: widget.asignacion.telefono.toString(),
+        child: Text(telefono),
+        value: telefono,
       ));
     }
-    if (widget.asignacion.hayTelefAlternativo1) {
-      list.add(DropdownMenuItem(
-        child: Text(widget.asignacion.telefAlternativo1.toString()),
-        value: widget.asignacion.telefAlternativo1.toString(),
-      ));
-    }
-    if (widget.asignacion.hayTelefAlternativo2) {
-      list.add(DropdownMenuItem(
-        child: Text(widget.asignacion.telefAlternativo2.toString()),
-        value: widget.asignacion.telefAlternativo2.toString(),
-      ));
-    }
-    if (widget.asignacion.hayTelefAlternativo3) {
-      list.add(DropdownMenuItem(
-        child: Text(widget.asignacion.telefAlternativo3.toString()),
-        value: widget.asignacion.telefAlternativo3.toString(),
-      ));
-    }
-    if (widget.asignacion.hayTelefAlternativo4) {
-      list.add(DropdownMenuItem(
-        child: Text(widget.asignacion.telefAlternativo4.toString()),
-        value: widget.asignacion.telefAlternativo4.toString(),
-      ));
-    }
-
-    var set = list.toSet();
-    list = set.toList();
 
     return list;
   }
