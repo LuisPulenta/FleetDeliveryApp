@@ -10,6 +10,7 @@ class Usuario {
   String? celular = '';
   int? orden = 0;
   int? centroDistribucion = 0;
+  String? dni = '';
 
   Usuario(
       {required this.idUser,
@@ -22,7 +23,8 @@ class Usuario {
       required this.dominio,
       required this.celular,
       required this.orden,
-      required this.centroDistribucion});
+      required this.centroDistribucion,
+      required this.dni});
 
   Usuario.fromJson(Map<String, dynamic> json) {
     idUser = json['idUser'];
@@ -36,6 +38,7 @@ class Usuario {
     celular = json['celular'];
     orden = json['orden'];
     centroDistribucion = json['centroDistribucion'];
+    dni = json['dni'];
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +54,7 @@ class Usuario {
     data['celular'] = celular;
     data['orden'] = orden;
     data['centroDistribucion'] = centroDistribucion;
+    data['dni'] = dni;
     return data;
   }
 
@@ -67,6 +71,7 @@ class Usuario {
       'celular': celular,
       'orden': orden,
       'centroDistribucion': centroDistribucion,
+      'dni': dni,
     };
   }
 }

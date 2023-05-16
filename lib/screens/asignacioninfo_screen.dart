@@ -3993,48 +3993,48 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     height: 10,
                   ),
                   ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.picture_as_pdf),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text('Enviar PDF'),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.picture_as_pdf),
+                        SizedBox(
+                          width: 15,
                         ),
+                        Text('Enviar PDF'),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                      onPressed: () async {
-                        await _createPDF(_number2, message);
-                        Navigator.pop(context);
-                        if (ruta != '') {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PdfScreen(
-                                ruta: ruta,
-                              ),
-                            ),
-                          );
-                          ruta = '';
-                        }
-                        return;
-                      }
+                    ),
+                    // onPressed: () async {
+                    //   await _createPDF(_number2, message);
+                    //   Navigator.pop(context);
+                    //   if (ruta != '') {
+                    //     await Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => PdfScreen(
+                    //           ruta: ruta,
+                    //         ),
+                    //       ),
+                    //     );
+                    //     ruta = '';
+                    //   }
+                    //   return;
+                    // }
 
-                      // onPressed: _existeChat
-                      //     ? () async {
-                      //         await _createPDF(_number2, message);
-                      //         Navigator.pop(context);
-                      //         return;
-                      //       }
-                      //     : null,
-                      ),
+                    onPressed: _existeChat
+                        ? () async {
+                            await _createPDF(_number2, message);
+                            Navigator.pop(context);
+                            return;
+                          }
+                        : null,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -4078,31 +4078,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   Future<void> _createPDF(String number, String message) async {
     //Create a new PDF document
     PdfDocument document = PdfDocument();
-
-    // final page = document.pages.add();
-
-    // final Size pageSize = page.getClientSize();
-
-    // page.graphics.drawImage(PdfBitmap(await _readImageData('logo2.png')),
-    //     const Rect.fromLTWH(20, 20, 200, 50));
-
-    // page.graphics.drawString(DateFormat('dd/MM/yyyy').format(DateTime.now()),
-    //     PdfStandardFont(PdfFontFamily.helvetica, 12),
-    //     brush: PdfBrushes.black,
-    //     bounds: Rect.fromLTWH(425, 55, pageSize.width - 30, 90),
-    //     format: PdfStringFormat(lineAlignment: PdfVerticalAlignment.middle));
-
-    // page.graphics.drawString(
-    //     "COMPROBANTE", PdfStandardFont(PdfFontFamily.helvetica, 22),
-    //     brush: PdfBrushes.black,
-    //     bounds: Rect.fromLTWH(175, 75, pageSize.width - 30, 90),
-    //     format: PdfStringFormat(lineAlignment: PdfVerticalAlignment.middle));
-
-    // page.graphics.drawString(
-    //     message, PdfStandardFont(PdfFontFamily.helvetica, 12),
-    //     brush: PdfBrushes.black,
-    //     bounds: Rect.fromLTWH(25, 150, pageSize.width - 30, 290),
-    //     format: PdfStringFormat(lineAlignment: PdfVerticalAlignment.middle));
 
     //Create a PdfGrid
     PdfGrid grid = PdfGrid();
@@ -4198,7 +4173,17 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     header.cells[0].value = "";
     header.cells[1].value = "Formulario de Recepción de Equipos";
-    String? ot = widget.asignacion.recupidjobcard ?? '';
+
+    String? ot = widget.asignacion.proyectomodulo != 'TLC'
+        ? (widget.asignacion.reclamoTecnicoID != null &&
+                widget.asignacion.reclamoTecnicoID != '')
+            ? widget.asignacion.reclamoTecnicoID.toString()
+            : ''
+        : (widget.asignacion.documento != null &&
+                widget.asignacion.documento != '')
+            ? widget.asignacion.documento
+            : '';
+
     header.cells[2].value = """
     N° de Cuenta: ${widget.asignacion.cliente}
 
@@ -4208,7 +4193,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     PdfGridRow row1 = grid.rows.add();
     row1.cells[0].value = "FLEET GROUP";
     row1.cells[1].value = "Fecha Retiro";
-    row1.cells[2].value = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    row1.cells[2].value =
+        "              " + DateFormat('dd/MM/yyyy').format(DateTime.now());
 
     header2.cells[0].value = "Apellido y Nombre del Cliente";
     header2.cells[1].value = widget.asignacion.nombre;
@@ -4234,17 +4220,36 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     header4.cells[0].value = "MODELO";
     header4.cells[1].value = "SERIE";
     header4.cells[2].value = "ACCESORIOS";
-    PdfGridRow row4 = grid4.rows.add();
-    row4.cells[0].value = " ";
-    row4.cells[1].value = " ";
-    row4.cells[2].value = " ";
+
+    //*********** AGREGA EQUIPOS ************
+
+    int contador = 0;
+    for (Asign asign in _asigns) {
+      if (asign.estadogaos == 'EJB') {
+        String modelo =
+            asign.marcaModeloId != null ? asign.marcaModeloId.toString() : '';
+        String serie = (asign.proyectomodulo.toString() == 'DTV' ||
+                asign.proyectomodulo.toString() == 'Cable' ||
+                asign.proyectomodulo.toString() == 'TLC')
+            ? asign.decO1.toString() //campo deco1 de la base.
+            : asign.estadO3
+                .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
+
+        PdfGridRow row = grid4.rows.add();
+        row.cells[0].value = modelo;
+        row.cells[1].value = serie;
+        row.cells[2].value = " ";
+        contador++;
+      }
+    }
+
     header5.cells[0].value = "Observaciones";
     header5.cells[1].value = widget.asignacion.observacion;
     PdfGridRow row5 = grid5.rows.add();
     row5.cells[0].value = "Firma recuperador";
     row5.cells[1].value = "";
     header6.cells[0].value = "Nro. Documento";
-    header6.cells[1].value = "";
+    header6.cells[1].value = widget.user.dni;
     header6.cells[2].value = "Alcaración";
     header6.cells[3].value = widget.user.apellidonombre;
 
@@ -4252,10 +4257,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         page: document.pages[0], bounds: const Rect.fromLTWH(0, 143, 0, 0));
     grid4.draw(
         page: document.pages[0], bounds: const Rect.fromLTWH(0, 170, 0, 0));
+
     grid5.draw(
-        page: document.pages[0], bounds: const Rect.fromLTWH(0, 199, 0, 0));
+        page: document.pages[0],
+        bounds: Rect.fromLTWH(0, 184 + contador * 14, 0, 0));
+
     grid6.draw(
-        page: document.pages[0], bounds: const Rect.fromLTWH(0, 228, 0, 0));
+        page: document.pages[0],
+        bounds: Rect.fromLTWH(0, 212 + (contador) * 14, 0, 0));
 
     page.graphics.drawImage(PdfBitmap(await _readImageData('logo2.png')),
         const Rect.fromLTWH(15, 10, 120, 35));
@@ -4287,13 +4296,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     //OpenFile.open(ruta);
 
-    // if (file.path.isNotEmpty) {
-    //   await WhatsappShare.shareFile(
-    //       phone: number,
-    //       text: 'Se adjunta Comprobante',
-    //       filePath: [file.path],
-    //       package: Package.whatsapp);
-    // }
+    if (file.path.isNotEmpty) {
+      await WhatsappShare.shareFile(
+          phone: number,
+          text: 'Se adjunta Comprobante',
+          filePath: [file.path],
+          package: Package.whatsapp);
+    }
   }
 
   //-------------------------------------------------------------------------

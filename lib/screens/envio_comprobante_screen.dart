@@ -796,64 +796,204 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
   //-------------------------------------------------------------------------
 
   Future<void> _createPDF(String number, String message) async {
+    //Create a new PDF document
     PdfDocument document = PdfDocument();
 
-    final page = document.pages.add();
+    //Create a PdfGrid
+    PdfGrid grid = PdfGrid();
+    PdfGrid grid2 = PdfGrid();
+    PdfGrid grid3 = PdfGrid();
+    PdfGrid grid4 = PdfGrid();
+    PdfGrid grid5 = PdfGrid();
+    PdfGrid grid6 = PdfGrid();
 
+    grid.style = PdfGridStyle(
+        font: PdfStandardFont(PdfFontFamily.helvetica, 10),
+        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+    grid2.style = PdfGridStyle(
+        font: PdfStandardFont(PdfFontFamily.helvetica, 10),
+        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+    grid3.style = PdfGridStyle(
+        font: PdfStandardFont(PdfFontFamily.helvetica, 15),
+        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+
+    //Add columns to grid
+    grid.columns.add(count: 3);
+    grid.headers.add(1);
+    grid2.columns.add(count: 2);
+    grid2.headers.add(1);
+    grid3.columns.add(count: 1);
+    grid3.headers.add(1);
+    grid4.columns.add(count: 3);
+    grid4.headers.add(1);
+    grid5.columns.add(count: 2);
+    grid5.headers.add(1);
+    grid6.columns.add(count: 4);
+    grid6.headers.add(1);
+
+    //Create and customize the string formats
+    PdfStringFormat format = PdfStringFormat();
+    format.alignment = PdfTextAlignment.center;
+    format.lineAlignment = PdfVerticalAlignment.middle;
+
+    PdfStringFormat format2 = PdfStringFormat();
+    format2.alignment = PdfTextAlignment.left;
+    format2.lineAlignment = PdfVerticalAlignment.middle;
+
+    //Set the column text format
+    grid.columns[0].format = format;
+    grid.columns[1].format = format;
+    grid.columns[2].format = format2;
+    grid3.columns[0].format = format;
+    grid4.columns[0].format = format;
+    grid4.columns[1].format = format;
+    grid4.columns[2].format = format;
+    grid5.columns[0].format = format;
+    grid5.columns[1].format = format;
+    grid6.columns[0].format = format;
+    grid6.columns[1].format = format;
+    grid6.columns[2].format = format;
+    grid6.columns[3].format = format;
+
+    //Set the width
+    grid.columns[0].width = 150;
+    grid.columns[1].width = 220;
+    grid.columns[2].width = 140;
+
+    grid2.columns[0].width = 150;
+    grid2.columns[1].width = 360;
+
+    grid3.columns[0].width = 510;
+
+    grid4.columns[0].width = 150;
+    grid4.columns[1].width = 220;
+    grid4.columns[2].width = 140;
+
+    grid5.columns[0].width = 150;
+    grid5.columns[1].width = 360;
+
+    grid6.columns[0].width = 150;
+    grid6.columns[1].width = 100;
+    grid6.columns[2].width = 80;
+    grid6.columns[3].width = 180;
+
+    //Add headers to grid
+    PdfGridRow header = grid.headers[0];
+    header.height = 65;
+    PdfGridRow header2 = grid2.headers[0];
+    PdfGridRow header3 = grid3.headers[0];
+    PdfGridRow header4 = grid4.headers[0];
+    PdfGridRow header5 = grid5.headers[0];
+    PdfGridRow header6 = grid6.headers[0];
+    //header2.height = 35;
+
+    header.cells[1].style = PdfGridCellStyle(
+        font: PdfStandardFont(PdfFontFamily.helvetica, 18),
+        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+
+    header.cells[0].value = "";
+    header.cells[1].value = "Formulario de Recepción de Equipos";
+
+    String? ot = widget.asignacion.proyectomodulo != 'TLC'
+        ? (widget.asignacion.reclamoTecnicoID != null &&
+                widget.asignacion.reclamoTecnicoID != '')
+            ? widget.asignacion.reclamoTecnicoID.toString()
+            : ''
+        : (widget.asignacion.documento != null &&
+                widget.asignacion.documento != '')
+            ? widget.asignacion.documento
+            : '';
+
+    header.cells[2].value = """
+    N° de Cuenta: ${widget.asignacion.cliente}
+
+    OT: ${ot}
+    """;
+
+    PdfGridRow row1 = grid.rows.add();
+    row1.cells[0].value = "FLEET GROUP";
+    row1.cells[1].value = "Fecha Retiro";
+    row1.cells[2].value =
+        "              " + DateFormat('dd/MM/yyyy').format(DateTime.now());
+
+    header2.cells[0].value = "Apellido y Nombre del Cliente";
+    header2.cells[1].value = widget.asignacion.nombre;
+    PdfGridRow row2 = grid2.rows.add();
+    row2.cells[0].value = "Documento de identidad";
+    row2.cells[1].value = widget.asignacion.documento;
+    PdfGridRow row3 = grid2.rows.add();
+    row3.cells[0].value = "Dirección";
+    row3.cells[1].value =
+        '${widget.asignacion.domicilio} - ${widget.asignacion.localidad}';
+
+    //Draw the grid in PDF document page
+
+    final page = document.pages.add();
     final Size pageSize = page.getClientSize();
 
+    grid.draw(page: document.pages[0], bounds: const Rect.fromLTWH(0, 0, 0, 0));
+    grid2.draw(
+        page: document.pages[0], bounds: const Rect.fromLTWH(0, 85, 0, 0));
+
+    header3.cells[0].value = "Datos del Equipo";
+
+    header4.cells[0].value = "MODELO";
+    header4.cells[1].value = "SERIE";
+    header4.cells[2].value = "ACCESORIOS";
+
+    //*********** AGREGA EQUIPOS ************
+
+    int contador = 0;
+    for (Asign asign in _asigns) {
+      if (asign.estadogaos == 'EJB') {
+        String modelo =
+            asign.marcaModeloId != null ? asign.marcaModeloId.toString() : '';
+        String serie = (asign.proyectomodulo.toString() == 'DTV' ||
+                asign.proyectomodulo.toString() == 'Cable' ||
+                asign.proyectomodulo.toString() == 'TLC')
+            ? asign.decO1.toString() //campo deco1 de la base.
+            : asign.estadO3
+                .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
+
+        PdfGridRow row = grid4.rows.add();
+        row.cells[0].value = modelo;
+        row.cells[1].value = serie;
+        row.cells[2].value = " ";
+        contador++;
+      }
+    }
+
+    header5.cells[0].value = "Observaciones";
+    header5.cells[1].value = widget.asignacion.observacion;
+    PdfGridRow row5 = grid5.rows.add();
+    row5.cells[0].value = "Firma recuperador";
+    row5.cells[1].value = "";
+    header6.cells[0].value = "Nro. Documento";
+    header6.cells[1].value = widget.user.dni;
+    header6.cells[2].value = "Alcaración";
+    header6.cells[3].value = widget.user.apellidonombre;
+
+    grid3.draw(
+        page: document.pages[0], bounds: const Rect.fromLTWH(0, 143, 0, 0));
+    grid4.draw(
+        page: document.pages[0], bounds: const Rect.fromLTWH(0, 170, 0, 0));
+
+    grid5.draw(
+        page: document.pages[0],
+        bounds: Rect.fromLTWH(0, 184 + contador * 14, 0, 0));
+
+    grid6.draw(
+        page: document.pages[0],
+        bounds: Rect.fromLTWH(0, 212 + (contador) * 14, 0, 0));
+
     page.graphics.drawImage(PdfBitmap(await _readImageData('logo2.png')),
-        const Rect.fromLTWH(20, 20, 200, 50));
+        const Rect.fromLTWH(15, 10, 120, 35));
 
-    page.graphics.drawString(DateFormat('dd/MM/yyyy').format(DateTime.now()),
-        PdfStandardFont(PdfFontFamily.helvetica, 12),
-        brush: PdfBrushes.black,
-        bounds: Rect.fromLTWH(425, 55, pageSize.width - 30, 90),
-        format: PdfStringFormat(lineAlignment: PdfVerticalAlignment.middle));
-
-    page.graphics.drawString(
-        "COMPROBANTE", PdfStandardFont(PdfFontFamily.helvetica, 22),
-        brush: PdfBrushes.black,
-        bounds: Rect.fromLTWH(175, 75, pageSize.width - 30, 90),
-        format: PdfStringFormat(lineAlignment: PdfVerticalAlignment.middle));
-
-    page.graphics.drawString(
-        message, PdfStandardFont(PdfFontFamily.helvetica, 12),
-        brush: PdfBrushes.black,
-        bounds: Rect.fromLTWH(25, 150, pageSize.width - 30, 290),
-        format: PdfStringFormat(lineAlignment: PdfVerticalAlignment.middle));
-
-    // PdfGrid grid = PdfGrid();
-
-    // grid.style = PdfGridStyle(
-    //     font: PdfStandardFont(PdfFontFamily.helvetica, 30),
-    //     cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
-
-    // grid.columns.add(count: 3);
-    // grid.headers.add(1);
-
-    // PdfGridRow header = grid.headers[0];
-    // header.cells[0].value = "N°";
-    // header.cells[1].value = "Name";
-    // header.cells[2].value = "Club";
-
-    // PdfGridRow row = grid.rows.add();
-    // row.cells[0].value = "1";
-    // row.cells[1].value = "Luis";
-    // row.cells[2].value = "Tallarín";
-
-    // row = grid.rows.add();
-    // row.cells[0].value = "2";
-    // row.cells[1].value = "Pablo";
-    // row.cells[2].value = "Bostero";
-
-    // grid.draw(
-    //     page: document.pages.add(), bounds: const Rect.fromLTWH(0, 0, 0, 0));
-
+    //Graba a PDF
     List<int> bytes = document.save();
     document.dispose();
 
-    _saveAndLaunchFile(bytes, 'Comprobante.pdf', number);
+    await _saveAndLaunchFile(bytes, 'Comprobante.pdf', number);
   }
 
   //-------------------------------------------------------------------------

@@ -27,7 +27,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       dominio: '',
       celular: '',
       orden: 0,
-      centroDistribucion: 0);
+      centroDistribucion: 0,
+      dni: '');
 
   String _currentPassword = '';
   String _currentPasswordError = '';

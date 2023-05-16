@@ -95,7 +95,8 @@ class _HomeScreenState extends State<HomeScreen>
       dominio: '',
       celular: '',
       orden: 0,
-      centroDistribucion: 0);
+      centroDistribucion: 0,
+      dni: '');
 
   ParadaEnvio paradaenvioSelected = ParadaEnvio(
     idParada: 0,
