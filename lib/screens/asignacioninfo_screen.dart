@@ -3993,48 +3993,48 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     height: 10,
                   ),
                   ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.picture_as_pdf),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Enviar PDF'),
-                      ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.picture_as_pdf),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text('Enviar PDF'),
+                        ],
                       ),
-                    ),
-                    // onPressed: () async {
-                    //   await _createPDF(_number2, message);
-                    //   Navigator.pop(context);
-                    //   if (ruta != '') {
-                    //     await Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => PdfScreen(
-                    //           ruta: ruta,
-                    //         ),
-                    //       ),
-                    //     );
-                    //     ruta = '';
-                    //   }
-                    //   return;
-                    // }
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      onPressed: () async {
+                        await _createPDF(_number2, message);
+                        Navigator.pop(context);
+                        if (ruta != '') {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PdfScreen(
+                                ruta: ruta,
+                              ),
+                            ),
+                          );
+                          ruta = '';
+                        }
+                        return;
+                      }
 
-                    onPressed: _existeChat
-                        ? () async {
-                            await _createPDF(_number2, message);
-                            Navigator.pop(context);
-                            return;
-                          }
-                        : null,
-                  ),
+                      // onPressed: _existeChat
+                      //     ? () async {
+                      //         await _createPDF(_number2, message);
+                      //         Navigator.pop(context);
+                      //         return;
+                      //       }
+                      //     : null,
+                      ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -4087,18 +4087,23 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     PdfGrid grid5 = PdfGrid();
     PdfGrid grid6 = PdfGrid();
 
-    grid.style = PdfGridStyle(
+    PdfGridStyle style10 = PdfGridStyle(
         font: PdfStandardFont(PdfFontFamily.helvetica, 10),
-        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
-    grid2.style = PdfGridStyle(
-        font: PdfStandardFont(PdfFontFamily.helvetica, 10),
-        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
-    grid3.style = PdfGridStyle(
-        font: PdfStandardFont(PdfFontFamily.helvetica, 15),
         cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
 
+    PdfGridStyle style12 = PdfGridStyle(
+        font: PdfStandardFont(PdfFontFamily.helvetica, 12),
+        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+
+    grid.style = style10;
+    grid2.style = style10;
+    grid3.style = style10;
+    grid4.style = style10;
+    grid5.style = style10;
+    grid6.style = style10;
+
     //Add columns to grid
-    grid.columns.add(count: 3);
+    grid.columns.add(count: 4);
     grid.headers.add(1);
     grid2.columns.add(count: 2);
     grid2.headers.add(1);
@@ -4124,6 +4129,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     grid.columns[0].format = format;
     grid.columns[1].format = format;
     grid.columns[2].format = format2;
+    grid.columns[3].format = format;
     grid3.columns[0].format = format;
     grid4.columns[0].format = format;
     grid4.columns[1].format = format;
@@ -4136,25 +4142,26 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     grid6.columns[3].format = format;
 
     //Set the width
-    grid.columns[0].width = 150;
-    grid.columns[1].width = 220;
-    grid.columns[2].width = 140;
+    grid.columns[0].width = 140;
+    grid.columns[1].width = 138;
+    grid.columns[2].width = 92;
+    grid.columns[3].width = 140;
 
-    grid2.columns[0].width = 150;
-    grid2.columns[1].width = 360;
+    grid2.columns[0].width = 140;
+    grid2.columns[1].width = 370;
 
     grid3.columns[0].width = 510;
 
-    grid4.columns[0].width = 150;
-    grid4.columns[1].width = 220;
+    grid4.columns[0].width = 140;
+    grid4.columns[1].width = 230;
     grid4.columns[2].width = 140;
 
-    grid5.columns[0].width = 150;
-    grid5.columns[1].width = 360;
+    grid5.columns[0].width = 140;
+    grid5.columns[1].width = 370;
 
-    grid6.columns[0].width = 150;
+    grid6.columns[0].width = 140;
     grid6.columns[1].width = 100;
-    grid6.columns[2].width = 80;
+    grid6.columns[2].width = 90;
     grid6.columns[3].width = 180;
 
     //Add headers to grid
@@ -4168,7 +4175,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     //header2.height = 35;
 
     header.cells[1].style = PdfGridCellStyle(
-        font: PdfStandardFont(PdfFontFamily.helvetica, 18),
+        font: PdfStandardFont(PdfFontFamily.helvetica, 12),
         cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
 
     header.cells[0].value = "";
@@ -4185,8 +4192,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             : '';
 
     header.cells[2].value = """
-    N° de Cuenta: ${widget.asignacion.cliente}
-
+    N° de Cuenta: 
+    ${widget.asignacion.cliente}
     OT: ${ot}
     """;
 
@@ -4194,7 +4201,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     row1.cells[0].value = "FLEET GROUP";
     row1.cells[1].value = "Fecha Retiro";
     row1.cells[2].value =
-        "              " + DateFormat('dd/MM/yyyy').format(DateTime.now());
+        "  " + DateFormat('dd/MM/yyyy').format(DateTime.now());
 
     header2.cells[0].value = "Apellido y Nombre del Cliente";
     header2.cells[1].value = widget.asignacion.nombre;
@@ -4255,19 +4262,25 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     grid3.draw(
         page: document.pages[0], bounds: const Rect.fromLTWH(0, 143, 0, 0));
+
     grid4.draw(
-        page: document.pages[0], bounds: const Rect.fromLTWH(0, 170, 0, 0));
+        page: document.pages[0], bounds: const Rect.fromLTWH(0, 162, 0, 0));
 
     grid5.draw(
         page: document.pages[0],
-        bounds: Rect.fromLTWH(0, 184 + contador * 14, 0, 0));
+        bounds: Rect.fromLTWH(0, 181 + contador * 19, 0, 0));
 
     grid6.draw(
         page: document.pages[0],
-        bounds: Rect.fromLTWH(0, 212 + (contador) * 14, 0, 0));
+        bounds: Rect.fromLTWH(0, 220 + (contador) * 19, 0, 0));
 
     page.graphics.drawImage(PdfBitmap(await _readImageData('logo2.png')),
         const Rect.fromLTWH(15, 10, 120, 35));
+
+    page.graphics.drawImage(
+        PdfBitmap(await _readImageData(
+            '${widget.asignacion.proyectomodulo.toString().toLowerCase()}.png')),
+        const Rect.fromLTWH(380, 10, 120, 35));
 
     //Graba a PDF
     List<int> bytes = document.save();
@@ -4296,13 +4309,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     //OpenFile.open(ruta);
 
-    if (file.path.isNotEmpty) {
-      await WhatsappShare.shareFile(
-          phone: number,
-          text: 'Se adjunta Comprobante',
-          filePath: [file.path],
-          package: Package.whatsapp);
-    }
+    // if (file.path.isNotEmpty) {
+    //   await WhatsappShare.shareFile(
+    //       phone: number,
+    //       text: 'Se adjunta Comprobante',
+    //       filePath: [file.path],
+    //       package: Package.whatsapp);
+    // }
   }
 
   //-------------------------------------------------------------------------
