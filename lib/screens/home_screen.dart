@@ -1808,7 +1808,9 @@ class _HomeScreenState extends State<HomeScreen>
           Motivo mot = Motivo(
               id: element.id,
               motivo: element.motivo,
-              muestraParaEntregado: element.muestraParaEntregado);
+              muestraParaEntregado: element.muestraParaEntregado,
+              exclusivoCliente: element.exclusivoCliente,
+              activo: element.activo);
 
           DBMotivos.insertMotivo(mot);
         }

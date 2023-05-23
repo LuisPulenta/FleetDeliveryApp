@@ -34,7 +34,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
   List<DropdownMenuItem<int>> _meses = [];
   List<Option> _listoptions = [];
   int _optionMes = DateTime.now().month;
-  int _mes = 0;
+  int _mes = DateTime.now().month;
   String _nombreMes = '';
   int _anio = DateTime.now().year;
 
@@ -869,6 +869,11 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
 
     List<CantidadEntera> asign = response.result;
     List<CantidadEntera> ejec = response2.result;
+
+    // if (_tipoasignacion == 'Otro') {
+    //   asign = asign.toSet().toList();
+    //   ejec = ejec.toSet().toList();
+    // }
 
     if (asign.length > 0) {
       _asignados = asign[0].cantidad!;

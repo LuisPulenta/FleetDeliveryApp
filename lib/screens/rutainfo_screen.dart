@@ -415,7 +415,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                     onPressed: _showFilter, icon: const Icon(Icons.filter_alt)),
             backgroundColor: const Color(0xff282886),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
           FloatingActionButton(
@@ -544,6 +544,12 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                             style: const TextStyle(
                                                 fontSize: 24,
                                                 color: Color(0xffbc2b51),
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                      Expanded(
+                                        child: Text(e.proveedor.toString(),
+                                            style: const TextStyle(
+                                                color: Color(0xff282886),
                                                 fontWeight: FontWeight.bold)),
                                       ),
                                       (e.estado == 4)
@@ -1623,10 +1629,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            title: Text('Filtrar Paradas'),
+            title: const Text('Filtrar Paradas'),
             content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              Text('Escriba texto a buscar en Nombre o Dirección'),
-              SizedBox(
+              const Text('Escriba texto a buscar en Nombre o Dirección'),
+              const SizedBox(
                 height: 10,
               ),
               TextField(
@@ -1634,7 +1640,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                 decoration: InputDecoration(
                     hintText: 'Criterio de búsqueda...',
                     labelText: 'Buscar',
-                    suffixIcon: Icon(Icons.search),
+                    suffixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
                 onChanged: (value) {
@@ -1645,8 +1651,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
             actions: <Widget>[
               TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Cancelar')),
-              TextButton(onPressed: () => _filter(), child: Text('Filtrar')),
+                  child: const Text('Cancelar')),
+              TextButton(
+                  onPressed: () => _filter(), child: const Text('Filtrar')),
             ],
           );
         });

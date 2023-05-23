@@ -1771,7 +1771,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         }
 
         _markers.add(Marker(
-            markerId: MarkerId(asign.reclamoTecnicoID.toString()),
+            markerId: MarkerId(asign.cliente.toString()),
             position: LatLng(lat, long),
             // infoWindow: InfoWindow(
             //   title: '${asign.cliente.toString()} - ${asign.nombre.toString()}',

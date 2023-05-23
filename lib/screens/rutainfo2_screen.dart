@@ -560,6 +560,15 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                                                           fontWeight:
                                                               FontWeight.bold)),
                                                 ),
+                                                Expanded(
+                                                  child: Text(
+                                                      e.proveedor.toString(),
+                                                      style: const TextStyle(
+                                                          color:
+                                                              Color(0xff282886),
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ),
                                                 (e.estado == 4)
                                                     ? const Text(
                                                         "ENTREGADO",

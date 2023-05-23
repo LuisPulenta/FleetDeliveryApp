@@ -3993,48 +3993,48 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     height: 10,
                   ),
                   ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.picture_as_pdf),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text('Enviar PDF'),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.picture_as_pdf),
+                        SizedBox(
+                          width: 15,
                         ),
+                        Text('Enviar PDF'),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                      onPressed: () async {
-                        await _createPDF(_number2, message);
-                        Navigator.pop(context);
-                        if (ruta != '') {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PdfScreen(
-                                ruta: ruta,
-                              ),
-                            ),
-                          );
-                          ruta = '';
-                        }
-                        return;
-                      }
+                    ),
+                    // onPressed: () async {
+                    //   await _createPDF(_number2, message);
+                    //   Navigator.pop(context);
+                    //   if (ruta != '') {
+                    //     await Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => PdfScreen(
+                    //           ruta: ruta,
+                    //         ),
+                    //       ),
+                    //     );
+                    //     ruta = '';
+                    //   }
+                    //   return;
+                    // }
 
-                      // onPressed: _existeChat
-                      //     ? () async {
-                      //         await _createPDF(_number2, message);
-                      //         Navigator.pop(context);
-                      //         return;
-                      //       }
-                      //     : null,
-                      ),
+                    onPressed: _existeChat
+                        ? () async {
+                            await _createPDF(_number2, message);
+                            Navigator.pop(context);
+                            return;
+                          }
+                        : null,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -4309,13 +4309,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     //OpenFile.open(ruta);
 
-    // if (file.path.isNotEmpty) {
-    //   await WhatsappShare.shareFile(
-    //       phone: number,
-    //       text: 'Se adjunta Comprobante',
-    //       filePath: [file.path],
-    //       package: Package.whatsapp);
-    // }
+    if (file.path.isNotEmpty) {
+      await WhatsappShare.shareFile(
+          phone: number,
+          text: 'Se adjunta Comprobante',
+          filePath: [file.path],
+          package: Package.whatsapp);
+    }
   }
 
   //-------------------------------------------------------------------------
