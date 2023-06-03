@@ -638,6 +638,20 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
+// //*****************************************************************************
+// //************************** METODO SHOWSNACKBAR ******************************
+// //*****************************************************************************
+
+//   void _showSnackbar() {
+//     SnackBar snackbar = const SnackBar(
+//       content: Text("No hay permiso de Almacenamiento"),
+//       backgroundColor: Colors.red,
+//       //duration: Duration(seconds: 3),
+//     );
+//     ScaffoldMessenger.of(context).showSnackBar(snackbar);
+//     //ScaffoldMessenger.of(context).hideCurrentSnackBar();
+//   }
+
 //*****************************************************************************
 //************************** METODO SHOWASIGNACION ****************************
 //*****************************************************************************
@@ -4400,7 +4414,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         if (!await directory.exists()) {
           await directory.create(recursive: true);
         }
-      } else {}
+      } else {
+        // _showSnackbar();
+      }
     }
   }
 

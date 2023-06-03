@@ -560,17 +560,13 @@ class _LoginScreenState extends State<LoginScreen> {
   //-------------------------------------------------------------------------
 
   void _getTablaUsuarios() async {
-    void _insertUsuarios() async {
+    if (_hayInternet) {
       if (_usuariosApi.isNotEmpty) {
         DBUsuarios.delete();
         for (var element in _usuariosApi) {
-          DBUsuarios.insertUsuario(element);
+          await DBUsuarios.insertUsuario(element);
         }
       }
-    }
-
-    if (_hayInternet) {
-      _insertUsuarios();
     }
 
     _usuarios = await DBUsuarios.usuarios();
@@ -643,10 +639,16 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               title: const Text('Aviso'),
               content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: const <Widget>[
-                    Text(
-                        'La App necesita que habilite el Permiso de acceso al teléfono para registrar el IMEI del celular con que se loguea.'),
+                    Text('''
+                        Debe habilitar los permisos:
+                        - Almacenamiento
+                        - Cámara
+                        - Teléfono
+                        - Ubicación
+                        '''),
                     SizedBox(
                       height: 10,
                     ),
