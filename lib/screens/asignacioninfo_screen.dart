@@ -2823,6 +2823,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     if (widget.asignacion.proyectomodulo == 'DTV' ||
         widget.asignacion.proyectomodulo == 'Tasa' ||
         widget.asignacion.proyectomodulo == 'Cable' ||
+        widget.asignacion.proyectomodulo == 'Prisma' ||
         widget.asignacion.proyectomodulo == 'TLC') {
       await showDialog(
           context: context,
@@ -3153,6 +3154,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     if (empresa == 'Tasa') {
       empresa = 'Movistar';
+    }
+
+    if (empresa == 'Prisma') {
+      empresa = 'Prisma';
     }
 
     if (empresa == 'DTV') {
@@ -3530,6 +3535,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     if (empresa == 'Tasa') {
       empresa = 'Movistar';
+    }
+    if (empresa == 'Prisma') {
+      empresa = 'Prisma';
     }
 
     if (empresa == 'DTV') {

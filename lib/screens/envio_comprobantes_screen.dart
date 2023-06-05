@@ -478,6 +478,7 @@ class _EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
       if (asignacion.proyectomodulo == 'DTV' ||
           asignacion.proyectomodulo == 'Cable' ||
           asignacion.proyectomodulo == 'Tasa' ||
+          asignacion.proyectomodulo == 'Prisma' ||
           asignacion.proyectomodulo == 'TLC') {
         _asignaciones2.add(asignacion);
       }

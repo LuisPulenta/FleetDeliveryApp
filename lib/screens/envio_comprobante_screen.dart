@@ -214,6 +214,10 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                 empresa = 'Movistar';
                               }
 
+                              if (empresa == 'Prisma') {
+                                empresa = 'Prisma';
+                              }
+
                               if (empresa == 'DTV') {
                                 empresa = 'DirecTV';
                               }
@@ -499,11 +503,17 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                 empresa = 'DirecTV';
                               }
 
+                              if (empresa == 'Prisma') {
+                                empresa = 'Prisma';
+                              }
+
                               for (Asign asign in _asigns) {
                                 String mm = (asign.proyectomodulo.toString() ==
                                             'DTV' ||
                                         asign.proyectomodulo.toString() ==
                                             'Cable' ||
+                                        asign.proyectomodulo.toString() ==
+                                            'Prisma' ||
                                         asign.proyectomodulo.toString() ==
                                             'TLC')
                                     ? asign.decO1
