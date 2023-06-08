@@ -39,6 +39,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
       CustomInfoWindowController();
   bool bandera = false;
   List<Asign> _asigns = [];
+  List<AsignacionesOtsEquiposExtra> _equiposExtra = [];
 
   String newPath = "";
 
@@ -216,6 +217,10 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
                               if (empresa == 'Prisma') {
                                 empresa = 'Prisma';
+                              }
+
+                              if (empresa == 'SuperC') {
+                                empresa = 'SuperC';
                               }
 
                               if (empresa == 'DTV') {
@@ -506,6 +511,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               if (empresa == 'Prisma') {
                                 empresa = 'Prisma';
                               }
+                              if (empresa == 'SuperC') {
+                                empresa = 'SuperC';
+                              }
 
                               for (Asign asign in _asigns) {
                                 String mm = (asign.proyectomodulo.toString() ==
@@ -514,6 +522,8 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                             'Cable' ||
                                         asign.proyectomodulo.toString() ==
                                             'Prisma' ||
+                                        asign.proyectomodulo.toString() ==
+                                            'SuperC' ||
                                         asign.proyectomodulo.toString() ==
                                             'TLC')
                                     ? asign.decO1
@@ -980,6 +990,22 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
       }
     }
 
+    //*********** AGREGA EQUIPOS EXTRAS************
+
+    for (AsignacionesOtsEquiposExtra equipoExtra in _equiposExtra) {
+      String modelo =
+          equipoExtra.coddeco1 != null ? equipoExtra.coddeco1.toString() : '';
+      String serie = equipoExtra.nroserieextra != null
+          ? '${equipoExtra.nroserieextra.toString()} (Equipo extra)'
+          : '';
+
+      PdfGridRow row = grid4.rows.add();
+      row.cells[0].value = modelo;
+      row.cells[1].value = serie;
+      row.cells[2].value = " ";
+      contador++;
+    }
+
     header5.cells[0].value = "Observaciones";
     header5.cells[1].value = widget.asignacion.observacion;
     PdfGridRow row5 = grid5.rows.add();
@@ -1174,7 +1200,56 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
       _asigns = response.result;
     });
 
+    _getEquiposExtras();
+  }
+
+//*****************************************************************************
+//********************** METODO GETEQUIPOSEXTRAS ******************************
+//*****************************************************************************
+
+  Future<void> _getEquiposExtras() async {
+    setState(() {});
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {});
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    bandera = false;
+
+    Response response = Response(isSuccess: false);
+    do {
+      response = await ApiHelper.getEquiposExtra(
+          widget.asignacion.cliente.toString(),
+          widget.user.idUser,
+          widget.asignacion.proyectomodulo.toString());
+      if (response.isSuccess) {
+        bandera = true;
+        _equiposExtra = response.result;
+      }
+    } while (bandera == false);
+
+    setState(() {});
+
     var a = 1;
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
   }
 
 //*****************************************************************************

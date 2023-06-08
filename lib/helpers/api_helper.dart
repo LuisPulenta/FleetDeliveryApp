@@ -750,4 +750,32 @@ class ApiHelper {
     var decodedJson = jsonDecode(body);
     return Response(isSuccess: true, result: Modulo.fromJson(decodedJson));
   }
+
+  //---------------------------------------------------------------------------
+  static Future<Response> getEquiposExtra(
+      String cliente, int userId, String proyectoModulo) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/AsignacionesOtsEquiposExtra/GetEquiposExtra/$cliente/$userId/$proyectoModulo');
+    var response = await http.post(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    List<AsignacionesOtsEquiposExtra> list = [];
+    var decodedJson = jsonDecode(body);
+    if (decodedJson != null) {
+      for (var item in decodedJson) {
+        list.add(AsignacionesOtsEquiposExtra.fromJson(item));
+      }
+    }
+    return Response(isSuccess: true, result: list);
+  }
 }

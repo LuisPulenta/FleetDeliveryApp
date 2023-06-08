@@ -6,7 +6,7 @@ class AsignacionesOtsEquiposExtra {
   int? idtecnico = 0;
   String? coddeco1 = '';
   String? nroserieextra = '';
-  String? proyectomodulo = '';
+  String? proyectoModulo = '';
 
   AsignacionesOtsEquiposExtra(
       {required this.idasignacionextra,
@@ -16,7 +16,7 @@ class AsignacionesOtsEquiposExtra {
       required this.idtecnico,
       required this.coddeco1,
       required this.nroserieextra,
-      required this.proyectomodulo});
+      required this.proyectoModulo});
 
   AsignacionesOtsEquiposExtra.fromJson(Map<String, dynamic> json) {
     idasignacionextra = json['idasignacionextra'];
@@ -24,9 +24,9 @@ class AsignacionesOtsEquiposExtra {
     fechacarga = json['fechacarga'];
     nrocliente = json['nrocliente'];
     idtecnico = json['idtecnico'];
-    coddeco1 = json['coddeco1'];
+    coddeco1 = json['coddecO1'];
     nroserieextra = json['nroserieextra'];
-    proyectomodulo = json['proyectomodulo'];
+    proyectoModulo = json['proyectoModulo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -38,7 +38,7 @@ class AsignacionesOtsEquiposExtra {
     data['idtecnico'] = idtecnico;
     data['coddeco1'] = coddeco1;
     data['nroserieextra'] = nroserieextra;
-    data['proyectomodulo'] = proyectomodulo;
+    data['proyectoModulo'] = proyectoModulo;
     return data;
   }
 
@@ -51,7 +51,7 @@ class AsignacionesOtsEquiposExtra {
       'idtecnico': idtecnico,
       'coddeco1': coddeco1,
       'nroserieextra': nroserieextra,
-      'proyectomodulo': proyectomodulo,
+      'proyectoModulo': proyectoModulo,
     };
   }
 }
