@@ -1157,7 +1157,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       _optionEstadoShowError = false;
     }
 
-    if (_estado == 7 || _estado == 10) {
+    if (_estado == 7 || _estado == 10 || _estado == 4) {
       if (_optionMotivo == 0) {
         isValid = false;
         _optionMotivoShowError = true;
