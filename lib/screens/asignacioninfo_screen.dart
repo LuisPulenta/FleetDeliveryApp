@@ -4359,7 +4359,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     row5.cells[0].value = "Firma recuperador";
     row5.cells[1].value = "";
     header6.cells[0].value = "Nro. Documento";
-    header6.cells[1].value = widget.user.dni;
+    header6.cells[1].value = widget.user.dni ?? '';
     header6.cells[2].value = "Alcaración";
     header6.cells[3].value = widget.user.apellidonombre;
 
