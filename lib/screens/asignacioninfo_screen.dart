@@ -2869,7 +2869,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //---------------- Trae Equipos Extras  --------------
 
-    _getAsigns();
     _getEquiposExtras();
 
 //---------------- Pregunta si se envía recibo (sólo en DTV) --------------
