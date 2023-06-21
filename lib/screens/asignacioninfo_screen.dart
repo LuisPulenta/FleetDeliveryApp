@@ -2021,7 +2021,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     Map<String, dynamic> request1 = {
       'reclamoTecnicoID': _asignacion.reclamoTecnicoID,
       'userID': _asignacion.userID,
-      'cliente': _asignacion.cliente
+      'cliente': _asignacion.cliente,
+      'domicilio': _asignacion.domicilio,
     };
 
     Response response = Response(isSuccess: false);
