@@ -587,7 +587,8 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     Map<String, dynamic> request1 = {
       'reclamoTecnicoID': asignacion.reclamoTecnicoID,
       'userID': asignacion.userID,
-      'cliente': asignacion.cliente
+      'cliente': asignacion.cliente,
+      'domicilio': asignacion.domicilio
     };
 
     do {
