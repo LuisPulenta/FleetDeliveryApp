@@ -986,24 +986,18 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   List<DropdownMenuItem<int>> _getOptions2() {
     List<DropdownMenuItem<int>> list = [];
 
-    if (_optionEstado == 7 || _optionEstado == 10) {
-      list.add(const DropdownMenuItem(
-        child: Text('Seleccione un Motivo...'),
-        value: 0,
-      ));
+//Agrega Seleccione un Motivo
+    list.add(const DropdownMenuItem(
+      child: Text('Seleccione un Motivo...'),
+      value: 0,
+    ));
 
+//Agrega motivos para No Entregados o Rechazados
+    if (_optionEstado == 7 || _optionEstado == 10) {
       for (var element in widget.motivos) {
         if (element.activo == 1) {
           if (element.muestraParaEntregado == 0) {
-            if (widget.paradaenvio.idproveedor == 13 &&
-                element.exclusivoCliente == widget.paradaenvio.idproveedor) {
-              list.add(DropdownMenuItem(
-                child: Text(element.motivo.toString()),
-                value: element.id,
-              ));
-            }
-            if (widget.paradaenvio.idproveedor != 13 &&
-                element.exclusivoCliente != 13) {
+            if (element.exclusivoCliente == widget.paradaenvio.idproveedor) {
               list.add(DropdownMenuItem(
                 child: Text(element.motivo.toString()),
                 value: element.id,
@@ -1014,24 +1008,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       }
     }
 
+//Agrega motivos para Entregados
     if (_optionEstado == 4) {
-      list.add(const DropdownMenuItem(
-        child: Text('Seleccione un Motivo...'),
-        value: 0,
-      ));
-
       for (var element in widget.motivos) {
         if (element.activo == 1) {
           if (element.muestraParaEntregado == 1) {
-            if (widget.paradaenvio.idproveedor == 13 &&
-                element.exclusivoCliente == widget.paradaenvio.idproveedor) {
-              list.add(DropdownMenuItem(
-                child: Text(element.motivo.toString()),
-                value: element.id,
-              ));
-            }
-            if (widget.paradaenvio.idproveedor != 13 &&
-                element.exclusivoCliente != 13) {
+            if (element.exclusivoCliente == widget.paradaenvio.idproveedor) {
               list.add(DropdownMenuItem(
                 child: Text(element.motivo.toString()),
                 value: element.id,
