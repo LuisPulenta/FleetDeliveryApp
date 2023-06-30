@@ -173,6 +173,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         backgroundColor: const Color(0xFF282886),
         centerTitle: true,
         actions: <Widget>[
+          IconButton(onPressed: _showInfo, icon: const Icon(Icons.info)),
           _asignaciones.isEmpty
               ? Container()
               : IconButton(onPressed: _showMap, icon: const Icon(Icons.map)),
@@ -1927,6 +1928,21 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           posicion: LatLng(latcenter, longcenter),
           markers: _markers,
           customInfoWindowController: _customInfoWindowController,
+        ),
+      ),
+    );
+  }
+
+//--------------------------------------------------------------------------
+//------------------------------ _showInfo ---------------------------------
+//--------------------------------------------------------------------------
+
+  void _showInfo() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => InfoScreen(
+          user: widget.user,
         ),
       ),
     );

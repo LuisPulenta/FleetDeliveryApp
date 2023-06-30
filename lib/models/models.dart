@@ -1,6 +1,7 @@
 export 'package:fleetdeliveryapp/models/asign.dart';
 export 'package:fleetdeliveryapp/models/asignacion.dart';
 export 'package:fleetdeliveryapp/models/asignacion2.dart';
+export 'package:fleetdeliveryapp/models/asignaciones_con_fecha_cita.dart';
 export 'package:fleetdeliveryapp/models/asignacionesOtsEquiposExtra.dart';
 export 'package:fleetdeliveryapp/models/cantidadentera.dart';
 export 'package:fleetdeliveryapp/models/cartera.dart';

@@ -778,4 +778,31 @@ class ApiHelper {
     }
     return Response(isSuccess: true, result: list);
   }
+
+  //---------------------------------------------------------------------------
+  static Future<Response> GetConFechaCita(int userId) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/AsignacionesOTs/GetConFechaCita/$userId/');
+    var response = await http.post(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    List<AsignacionesConFechaCita> list = [];
+    var decodedJson = jsonDecode(body);
+    if (decodedJson != null) {
+      for (var item in decodedJson) {
+        list.add(AsignacionesConFechaCita.fromJson(item));
+      }
+    }
+    return Response(isSuccess: true, result: list);
+  }
 }

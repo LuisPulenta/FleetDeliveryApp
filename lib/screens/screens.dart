@@ -25,3 +25,4 @@ export 'package:fleetdeliveryapp/screens/storage_screen.dart';
 export 'package:fleetdeliveryapp/screens/take_picture_screen.dart';
 export 'package:fleetdeliveryapp/screens/wait_screen.dart';
 export 'package:fleetdeliveryapp/screens/pdf_screen.dart';
+export 'package:fleetdeliveryapp/screens/info_screen.dart';
