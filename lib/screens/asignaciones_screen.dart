@@ -167,8 +167,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: _tipoasignacion != 'Elija un Tipo de Asignación...'
-            ? Text(
-                'Asig. $_tipoasignacion: ${_asignaciones2.length.toString()}')
+            ? FittedBox(
+                child: Text(
+                    'Asig. $_tipoasignacion: ${_asignaciones2.length.toString()}'),
+              )
             : Text('Asignaciones: ${_asignaciones2.length.toString()}'),
         backgroundColor: const Color(0xFF282886),
         centerTitle: true,
