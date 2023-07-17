@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_const
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
