@@ -38,9 +38,9 @@ class ParadaInfoScreen extends StatefulWidget {
 }
 
 class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
-//*****************************************************************************
-//************************** DEFINICION DE VARIABLES **************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -126,9 +126,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   LatLng _center = const LatLng(0, 0);
   final Set<Marker> _markers = {};
 
-//*****************************************************************************
-//************************** INIT STATE ***************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- initState ------------------------
+//--------------------------------------------------------
 
   @override
   void initState() {
@@ -137,9 +137,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     setState(() {});
   }
 
-//*****************************************************************************
-//************************** PANTALLA *****************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -177,13 +177,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO SHOWCLIENTE ---------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showCliente ---------------------
+//--------------------------------------------------------
 
   Widget _showCliente() {
     return Column(children: [
-      //************ CLIENTE *********
       Card(
         margin: const EdgeInsets.all(10),
         color: const Color(0xffb3b3b4),
@@ -325,9 +324,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                         String tel = widget.paradaenvio.telefonos != null
                             ? widget.paradaenvio.telefonos!.trim()
                             : "";
-                        if (tel != "")
+                        if (tel != "") {
                           launch(
                               'tel://${widget.paradaenvio.telefonos.toString()}');
+                        }
                       }),
                 ],
               ),
@@ -341,12 +341,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     ]);
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO SHOWPAQUETE ---------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showPaquete ---------------------
+//--------------------------------------------------------
+
   _showPaquete() {
-    return //************ PAQUETE *********
-        Card(
+    return Card(
       margin: const EdgeInsets.all(10),
       color: const Color(0xffb3b3b4),
       child: Column(
@@ -463,13 +463,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO SHOWDELIVERY --------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showDelivery ------------------------
+//--------------------------------------------------------
 
   _showDelivery() {
-    return //************ DELIVERY *********
-        Card(
+    return Card(
       margin: const EdgeInsets.all(10),
       color: const Color(0xffb3b3b4),
       child: Column(
@@ -731,9 +730,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO SHOWBUTTON ----------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showButton ----------------------
+//--------------------------------------------------------
 
   Widget _showButton() {
     return Container(
@@ -757,9 +756,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
         ));
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NAVEGAR -------------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _navegar -------------------------
+//--------------------------------------------------------
 
   _navegar(ParadaEnvio paradaenvio) async {
     Uint8List markerIcon = await getBytesFromCanvas(1, 20, 20, 3);
@@ -915,9 +914,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 )));
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NAVEGAR2 ------------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _navegar2 ------------------------
+//--------------------------------------------------------
 
   _navegar2(e) async {
     if (e.latitud == 0 ||
@@ -956,18 +955,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       } else {
         throw 'Could not launch ${uri.toString()}';
       }
-
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => ParadaMapScreen(
-      //       user: widget.user,
-      //       positionUser: widget.positionUser,
-      //       paradaenvio: e,
-      //       markers: _markers,
-      //     ),
-      //   ),
-      // );
     } else {
       await showAlertDialog(
           context: context,
@@ -979,9 +966,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO GETOPTIONS2 *******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getOptions2 ---------------------
+//--------------------------------------------------------
 
   List<DropdownMenuItem<int>> _getOptions2() {
     List<DropdownMenuItem<int>> list = [];
@@ -1026,10 +1013,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
     return list;
   }
-
-//*****************************************************************************
-//************************** METODO TAKEPICTURE *******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _takePicture ---------------------
+//--------------------------------------------------------
 
   Future _takePicture() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -1067,9 +1053,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO GOADDFOTO *********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _goAddPhoto ----------------------
+//--------------------------------------------------------
 
   void _goAddPhoto() async {
     var response = await showAlertDialog(
@@ -1091,15 +1077,11 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     } else {
       await _selectPicture();
     }
-
-    if (_photoChanged) {
-      //_addPicture();
-    }
   }
 
-//*****************************************************************************
-//************************** METODO SELECTPICTURE *****************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _selectPicture -------------------
+//--------------------------------------------------------
 
   Future<void> _selectPicture() async {
     final ImagePicker _picker = ImagePicker();
@@ -1113,9 +1095,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO SAVE **************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _save ----------------------------
+//--------------------------------------------------------
 
   _save() async {
     if (!validateFields()) {
@@ -1124,9 +1106,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     await _saveRecord();
   }
 
-//*****************************************************************************
-//************************** METODO VALIDATEFIELDS ****************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- validateFields -------------------
+//--------------------------------------------------------
 
   bool validateFields() {
     bool isValid = true;
@@ -1154,9 +1136,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     return isValid;
   }
 
-//*****************************************************************************
-//************************** METODO SAVERECORD ********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _saveRecord ----------------------
+//--------------------------------------------------------
 
   Future<void> _saveRecord() async {
     _paradasEnvios = await DBParadasEnvios.paradasenvios();
@@ -1171,9 +1153,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     Navigator.pop(context, 'yes');
   }
 
-//*****************************************************************************
-//************************** METODO GUARDARPARADAENBDLOCAL ********************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _guardaParadaEnBDLocal -----------
+//--------------------------------------------------------
 
   Future<void> _guardaParadaEnBDLocal() async {
     for (var element in widget.paradas) {
@@ -1247,9 +1229,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     _showSnackbar();
   }
 
-//*****************************************************************************
-//************************** METODO GETLISTOPTIONS ****************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getlistOptions ------------------
+//--------------------------------------------------------
 
   void _getlistOptions() {
     _items = [];
@@ -1267,9 +1249,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     _loadFieldValues();
   }
 
-//*****************************************************************************
-//************************** METODO LOADFIELDVALUES ***************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _loadFieldValues -----------------
+//--------------------------------------------------------
 
   void _loadFieldValues() {
     _estado = widget.paradaenvio.estado!;
@@ -1280,6 +1262,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
     _getComboEstados();
   }
+
+//--------------------------------------------------------
+//--------------------- getBytesFromCanvas ---------------
+//--------------------------------------------------------
 
   Future<Uint8List> getBytesFromCanvas(
       int customNum, int width, int height, int estado) async {
@@ -1293,16 +1279,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     if (estado == 10) {}
 
     if (estado == 7) {}
-
-    // canvas.drawRRect(
-    //     RRect.fromRectAndCorners(
-    //       Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
-    //       topLeft: radius,
-    //       topRight: radius,
-    //       bottomLeft: radius,
-    //       bottomRight: radius,
-    //     ),
-    //     paint);
 
     TextPainter painter = TextPainter(textDirection: ui.TextDirection.ltr);
 
@@ -1322,9 +1298,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     return data!.buffer.asUint8List();
   }
 
-//*****************************************************************************
-//************************** METODO GETCOMBOESTADOS ***************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getComboEstados -----------------
+//--------------------------------------------------------
 
   List<DropdownMenuItem<int>> _getComboEstados() {
     _items = [];
@@ -1347,9 +1323,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     return list;
   }
 
-//*****************************************************************************
-//************************** METODO SHOWSNACKBAR ******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showSnackbar --------------------
+//--------------------------------------------------------
 
   void _showSnackbar() {
     SnackBar snackbar = const SnackBar(
@@ -1360,6 +1336,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
     //ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
+
+//--------------------------------------------------------
+//--------------------- isNullOrEmpty --------------------
+//--------------------------------------------------------
 
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||

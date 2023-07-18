@@ -21,7 +21,7 @@ class RutaInfo2Screen extends StatefulWidget {
   final Position positionUser;
   final List<Motivo> motivos;
 
-  RutaInfo2Screen(
+  const RutaInfo2Screen(
       {Key? key,
       required this.user,
       required this.ruta,
@@ -37,9 +37,9 @@ class RutaInfo2Screen extends StatefulWidget {
 }
 
 class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
-//*****************************************************************************
-//************************** DEFINICION DE VARIABLES **************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -361,9 +361,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
   int _nroReg = 0;
 
-//*****************************************************************************
-//************************** INIT STATE ***************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- initState ------------------------
+//--------------------------------------------------------
 
   @override
   void initState() {
@@ -374,18 +374,18 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     setState(() {});
   }
 
-//*****************************************************************************
-//************************** METODO LOADDATA **********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _loadData ------------------------
+//--------------------------------------------------------
 
   void _loadData() async {
     await _getEstados();
     _getComboMotivos();
   }
 
-//**************************************************************
-//************************** _getEstados ***********************
-//**************************************************************
+//--------------------------------------------------------
+//--------------------- _getEstados ----------------------
+//--------------------------------------------------------
 
   Future<void> _getEstados() async {
     _estados = [];
@@ -393,9 +393,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     _estados.add('No Entregado');
   }
 
-//*****************************************************************************
-//************************** PANTALLA *****************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -432,9 +432,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO GETCONTENT ----------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _getContent ----------------------
+//--------------------------------------------------------
 
   Widget _getContent() {
     return Column(
@@ -447,9 +447,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO SHOWPARADASCOUNT ----------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showParadasCount ----------------
+//--------------------------------------------------------
 
   Widget _showParadasCount() {
     int pendientes = 0;
@@ -499,9 +499,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NOCONTENT -----------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _noContent -----------------------
+//--------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -515,9 +515,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO GETLISTVIEW ---------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _getListView ---------------------
+//--------------------------------------------------------
 
   Widget _getListView() {
     return Column(
@@ -691,20 +691,16 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
   }
 
-//*****************************************************************************
-//************************** METODO LLENARPARADASENVIOS ***********************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _llenarparadasenvios -------------
+//--------------------------------------------------------
 
   Future<void> _llenarparadasenvios() async {
     _paradasenvios = [];
     for (var paradasenvio in widget.paradasenvios) {
-      // if (_todas) {
-      //   _paradasenvios.add(paradasenvio);
-      // } else {
       if (paradasenvio.estado == 0 || paradasenvio.estado == 3) {
         _paradasenvios.add(paradasenvio);
       }
-      // }
     }
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
 
@@ -746,12 +742,6 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         _renovoState = true;
       } while (_renovoState == false);
 
-      // for (ParadaEnvio paradaenvio in _paradasenviosdb) {
-      //   if (paradaenvio.enviado == 0) {
-      //     await _putParada(paradaenvio);
-      //   }
-      // }
-
       for (var paradaenvio in _paradasenviosdb) {
         if (paradaenvio.enviado == 0) {
           await _putParada(paradaenvio);
@@ -774,9 +764,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     setState(() {});
   }
 
-//*****************************************************************************
-//************************** METODO PUTPARADA *********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _putParada -----------------------
+//--------------------------------------------------------
 
   Future<void> _putParada(ParadaEnvio paradaenvio) async {
     for (var element in widget.paradas) {
@@ -820,7 +810,6 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         Response response2 = await ApiHelper.getParadaByIDParada(
             paradaSelected.idParada.toString());
         if (response2.isSuccess) {
-          //CHEQUEAR SI ESTADO GUARDADO ES IGUAL A ESTADO EN EL CELULAR
           paradaSaved = response2.result;
           if (paradaSaved.estado == paradaenvio.estado) {
             await _ponerEnviadoParada1(paradaenvio);
@@ -831,7 +820,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     await _putEnvio(paradaenvio);
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _putEnvio ------------------------
+//--------------------------------------------------------
 
   Future<void> _putEnvio(ParadaEnvio paradaenvio) async {
     for (var element in widget.envios) {
@@ -942,7 +933,6 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         Response response2 =
             await ApiHelper.getEnvioByIdEnvio(envioSelected.idEnvio.toString());
         if (response2.isSuccess) {
-          //CHEQUEAR SI ESTADO GUARDADO ES IGUAL A ESTADO EN EL CELULAR
           envioSaved = response2.result;
           if (envioSaved.estado == paradaenvio.estado) {
             await _ponerEnviadoEnvio1(paradaenvio);
@@ -953,7 +943,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     await _postSeguimiento(paradaenvio);
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _postSeguimiento -----------------
+//--------------------------------------------------------
 
   Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
@@ -1003,7 +995,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviado1 -------------------
+//--------------------------------------------------------
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
     _puso1 = false;
@@ -1051,9 +1045,17 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     } while (_puso1 == false);
   }
 
+//--------------------------------------------------------
+//--------------------- isNullOrEmpty --------------------
+//--------------------------------------------------------
+
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
+
+//--------------------------------------------------------
+//--------------------- getBytesFromAsset ----------------
+//--------------------------------------------------------
 
   Future<Uint8List> getBytesFromAsset({String? path, int? width}) async {
     ByteData? data = await rootBundle.load(path.toString());
@@ -1064,6 +1066,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         .buffer
         .asUint8List();
   }
+
+//--------------------------------------------------------
+//--------------------- getBytesFromCanvas ---------------
+//--------------------------------------------------------
 
   Future<Uint8List> getBytesFromCanvas(
       int customNum, int width, int height, int estado) async {
@@ -1077,16 +1083,6 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     if (estado == 10) {}
 
     if (estado == 7) {}
-
-    // canvas.drawRRect(
-    //     RRect.fromRectAndCorners(
-    //       Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
-    //       topLeft: radius,
-    //       topRight: radius,
-    //       bottomLeft: radius,
-    //       bottomRight: radius,
-    //     ),
-    //     paint);
 
     TextPainter painter = TextPainter(textDirection: ui.TextDirection.ltr);
 
@@ -1106,9 +1102,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     return data!.buffer.asUint8List();
   }
 
-  //************************************************************************
-  //*********************** METODO GETPOSITION *****************************
-  //************************************************************************
+//--------------------------------------------------------
+//--------------------- _getPosition ---------------------
+//--------------------------------------------------------
 
   Future _getPosition() async {
     LocationPermission permission;
@@ -1176,9 +1172,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         desiredAccuracy: LocationAccuracy.high);
   }
 
-  //-------------------------------------------------------------------------
-  //--------------------- _ponerEnviadoParada1 ------------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviadoParada1 -------------
+//--------------------------------------------------------
 
   Future<void> _ponerEnviadoParada1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -1221,7 +1217,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviadoEnvio1 --------------
+//--------------------------------------------------------
 
   Future<void> _ponerEnviadoEnvio1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -1264,7 +1262,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
   }
 
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviadoSeguimiento1 --------
+//--------------------------------------------------------
+
   Future<void> _ponerEnviadoSeguimiento1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
         idParada: paradaenvio.idParada,
@@ -1306,9 +1307,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO REMOVEFILTER ******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _removeFilter --------------------
+//--------------------------------------------------------
 
   void _removeFilter() {
     setState(() {
@@ -1319,9 +1320,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     _filter();
   }
 
-//*****************************************************************************
-//************************** METODO SHOWFILTER ********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showFilter ----------------------
+//--------------------------------------------------------
 
   void _showFilter() {
     showDialog(
@@ -1361,9 +1362,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         });
   }
 
-//*****************************************************************************
-//************************** METODO FILTER ************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _filter --------------------------
+//--------------------------------------------------------
 
   _filter() {
     if (_search.isEmpty) {
@@ -1387,9 +1388,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     Navigator.of(context).pop();
   }
 
-//------------------------------------------------------------------------
-//------------------------------- _guardar -------------------------------
-//------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _guardar ------------------------
+//--------------------------------------------------------
 
   _guardar() async {
     int cantidad = 0;
@@ -1465,9 +1466,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         });
   }
 
-//-----------------------------------------------------------------------------
-//------------------------------ _showMotivos----------------------------------
-//-----------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showMotivos ---------------------
+//--------------------------------------------------------
 
   Widget _showMotivos() {
     return Row(
@@ -1510,6 +1511,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
   }
 
+//--------------------------------------------------------
+//--------------------- _getComboMotivos -----------------
+//--------------------------------------------------------
+
   void _getComboMotivos() {
     motivosEntregados.add(const DropdownMenuItem(
       child: Text('Elija un Motivo...'),
@@ -1538,16 +1543,13 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         ));
       }
     }
-
-    var a = 1;
   }
 
-//-----------------------------------------------------------------------------
-//------------------------------ SHOWESTADOS ----------------------------------
-//-----------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showEstados ---------------------
+//--------------------------------------------------------
 
   Widget _showEstados() {
-    //_estado = 'Elija un Estado...';
     return Row(
       children: [
         Expanded(
@@ -1582,7 +1584,6 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                     onChanged: (value) {
                       _estado = value.toString();
                       _motivo = 'Elija un Motivo...';
-
                       _estado == 'Entregado'
                           ? motivos = motivosEntregados
                           : _estado == 'No Entregado'
@@ -1597,6 +1598,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       ],
     );
   }
+
+//--------------------------------------------------------
+//--------------------- _getComboEstados -----------------
+//--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboEstados() {
     List<DropdownMenuItem<String>> list = [];
@@ -1618,9 +1623,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     return list;
   }
 
-//*****************************************************************************
-//************************** METODO SAVERECORDS *******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _saveRecords ---------------------
+//--------------------------------------------------------
 
   Future<void> _saveRecords() async {
     _paradasenviosfiltered2 = _paradasenviosfiltered;
@@ -1643,9 +1648,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     Navigator.pop(context, 'yes');
   }
 
-//*****************************************************************************
-//************************** METODO GUARDARPARADAENBDLOCAL ********************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _guardaParadaEnBDLocal -----------
+//--------------------------------------------------------
 
   Future<void> _guardaParadaEnBDLocal(ParadaEnvio paradaenvio) async {
     for (var element in widget.paradas) {
@@ -1711,9 +1716,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO SHOWSNACKBAR ******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showSnackbar --------------------
+//--------------------------------------------------------
 
   void _showSnackbar() {
     SnackBar snackbar = const SnackBar(
@@ -1725,9 +1730,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     //ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
-//-----------------------------------------------------------------
-//--------------------- METODO SHOWBUTTONS ------------------------
-//-----------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showButton ----------------------
+//--------------------------------------------------------
 
   Widget _showButton() {
     return Row(

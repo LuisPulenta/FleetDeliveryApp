@@ -41,9 +41,9 @@ class RutaInfoScreen extends StatefulWidget {
 }
 
 class _RutaInfoScreenState extends State<RutaInfoScreen> {
-//*****************************************************************************
-//************************** DEFINICION DE VARIABLES **************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -354,9 +354,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   int _nroReg = 0;
 
-//*****************************************************************************
-//************************** INIT STATE ***************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- initState ------------------------
+//--------------------------------------------------------
 
   @override
   void initState() {
@@ -366,9 +366,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     setState(() {});
   }
 
-//*****************************************************************************
-//************************** PANTALLA *****************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -432,9 +432,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO GETCONTENT ----------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _getContent ----------------------
+//--------------------------------------------------------
 
   Widget _getContent() {
     return Column(
@@ -447,9 +447,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO SHOWPARADASCOUNT ----------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showParadasCount ----------------
+//--------------------------------------------------------
 
   Widget _showParadasCount() {
     int pendientes = 0;
@@ -488,9 +488,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NOCONTENT -----------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _noContent -----------------------
+//--------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -504,9 +504,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO GETLISTVIEW ---------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _getListView ---------------------
+//--------------------------------------------------------
 
   Widget _getListView() {
     return RefreshIndicator(
@@ -676,9 +676,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO GOINFOPARADA --------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _goInfoParada --------------------
+//--------------------------------------------------------
 
   Future<void> _goInfoParada(ParadaEnvio e) async {
     var result = await Navigator.push(
@@ -699,9 +699,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     setState(() {});
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NAVEGAR -------------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _navegar -------------------------
+//--------------------------------------------------------
 
   _navegar(e) async {
     if (e.latitud == 0 ||
@@ -740,18 +740,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       } else {
         throw 'Could not launch ${uri.toString()}';
       }
-
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => ParadaMapScreen(
-      //       user: widget.user,
-      //       positionUser: widget.positionUser,
-      //       paradaenvio: e,
-      //       markers: _markers,
-      //     ),
-      //   ),
-      // );
     } else {
       await showAlertDialog(
           context: context,
@@ -763,9 +751,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NAVEGARTODOS --------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _navegartodos --------------------
+//--------------------------------------------------------
 
   _navegartodos() async {
     _markers.clear();
@@ -987,9 +975,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO LLENARPARADASENVIOS ***********************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _llenarparadasenvios -------------
+//--------------------------------------------------------
 
   Future<void> _llenarparadasenvios() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1046,12 +1034,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           _renovoState = true;
         } while (_renovoState == false);
 
-        // for (ParadaEnvio paradaenvio in _paradasenviosdb) {
-        //   if (paradaenvio.enviado == 0) {
-        //     await _putParada(paradaenvio);
-        //   }
-        // }
-
         for (var paradaenvio in _paradasenviosdb) {
           if (paradaenvio.enviado == 0) {
             await _putParada(paradaenvio);
@@ -1075,9 +1057,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     setState(() {});
   }
 
-//*****************************************************************************
-//************************** METODO PUTPARADA *********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _putParada -----------------------
+//--------------------------------------------------------
 
   Future<void> _putParada(ParadaEnvio paradaenvio) async {
     for (var element in widget.paradas) {
@@ -1132,7 +1114,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     await _putEnvio(paradaenvio);
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _putEnvio ------------------------
+//--------------------------------------------------------
 
   Future<void> _putEnvio(ParadaEnvio paradaenvio) async {
     for (var element in widget.envios) {
@@ -1254,7 +1238,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     await _postSeguimiento(paradaenvio);
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _postSeguimiento -----------------
+//--------------------------------------------------------
 
   Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
@@ -1287,7 +1273,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         Response response2 = await ApiHelper.getUltimoSeguimientoByIdEnvio(
             paradaenvio.idEnvio.toString());
         if (response2.isSuccess) {
-          //CHEQUEAR SI FECHA GUARDADA ES IGUAL A FECHA EN EL CELULAR
           seguimientoSaved = response2.result;
           if (seguimientoSaved.fecha == fec) {
             await _ponerEnviadoSeguimiento1(paradaenvio);
@@ -1304,7 +1289,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviado1 -------------------
+//--------------------------------------------------------
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
     _puso1 = false;
@@ -1352,9 +1339,17 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     } while (_puso1 == false);
   }
 
+//--------------------------------------------------------
+//--------------------- isNullOrEmpty --------------------
+//--------------------------------------------------------
+
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
+
+//--------------------------------------------------------
+//--------------------- getBytesFromAsset ----------------
+//--------------------------------------------------------
 
   Future<Uint8List> getBytesFromAsset({String? path, int? width}) async {
     ByteData? data = await rootBundle.load(path.toString());
@@ -1365,6 +1360,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         .buffer
         .asUint8List();
   }
+
+//--------------------------------------------------------
+//--------------------- getBytesFromCanvas ---------------
+//--------------------------------------------------------
 
   Future<Uint8List> getBytesFromCanvas(
       int customNum, int width, int height, int estado) async {
@@ -1378,16 +1377,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     if (estado == 10) {}
 
     if (estado == 7) {}
-
-    // canvas.drawRRect(
-    //     RRect.fromRectAndCorners(
-    //       Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
-    //       topLeft: radius,
-    //       topRight: radius,
-    //       bottomLeft: radius,
-    //       bottomRight: radius,
-    //     ),
-    //     paint);
 
     TextPainter painter = TextPainter(textDirection: ui.TextDirection.ltr);
 
@@ -1407,9 +1396,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     return data!.buffer.asUint8List();
   }
 
-  //************************************************************************
-  //*********************** METODO GETPOSITION *****************************
-  //************************************************************************
+//--------------------------------------------------------
+//--------------------- _getPosition ---------------------
+//--------------------------------------------------------
 
   Future _getPosition() async {
     LocationPermission permission;
@@ -1477,9 +1466,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         desiredAccuracy: LocationAccuracy.high);
   }
 
-  //-------------------------------------------------------------------------
-  //--------------------- _ponerEnviadoParada1 ------------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviadoParada1 -------------
+//--------------------------------------------------------
 
   Future<void> _ponerEnviadoParada1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -1522,7 +1511,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviadoEnvio1 --------------
+//--------------------------------------------------------
 
   Future<void> _ponerEnviadoEnvio1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -1565,7 +1556,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviadoSeguimiento1 --------
+//--------------------------------------------------------
+
   Future<void> _ponerEnviadoSeguimiento1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
         idParada: paradaenvio.idParada,
@@ -1607,9 +1601,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO REMOVEFILTER ******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _removeFilter --------------------
+//--------------------------------------------------------
 
   void _removeFilter() {
     setState(() {
@@ -1620,9 +1614,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     _filter();
   }
 
-//*****************************************************************************
-//************************** METODO SHOWFILTER ********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showFilter ----------------------
+//--------------------------------------------------------
 
   void _showFilter() {
     showDialog(
@@ -1662,9 +1656,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         });
   }
 
-//*****************************************************************************
-//************************** METODO FILTER ************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _filter --------------------------
+//--------------------------------------------------------
 
   _filter() {
     if (_search.isEmpty) {

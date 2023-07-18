@@ -13,6 +13,10 @@ class DisplayPictureScreen extends StatefulWidget {
 }
 
 class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

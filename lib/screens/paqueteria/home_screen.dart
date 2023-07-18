@@ -1546,7 +1546,10 @@ class _HomeScreenState extends State<HomeScreen>
     return;
   }
 
-//------------------ _getTablaRutas ----------------------
+//--------------------------------------------------------
+//--------------------- _getTablaRutas -------------------
+//--------------------------------------------------------
+
   void _getTablaRutas() async {
     //..............  _insertRutas ................
     void _insertRutas() async {
@@ -1773,6 +1776,10 @@ class _HomeScreenState extends State<HomeScreen>
     return;
   }
 
+//--------------------------------------------------------
+//--------------------- _getTablaMotivos -----------------
+//--------------------------------------------------------
+
   void _getTablaMotivos() async {
     void _insertMotivos() async {
       if (_motivosApi.isNotEmpty) {
@@ -1802,10 +1809,18 @@ class _HomeScreenState extends State<HomeScreen>
     _getParadasEnvios();
   }
 
+//--------------------------------------------------------
+//--------------------- _getParadasEnvios ----------------
+//--------------------------------------------------------
+
   Future<void> _getParadasEnvios() async {
     _getTablaMedicionesCab();
     return;
   }
+
+//--------------------------------------------------------
+//--------------------- _getTablaMedicionesCab -----------
+//--------------------------------------------------------
 
   void _getTablaMedicionesCab() async {
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();

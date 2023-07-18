@@ -26,7 +26,6 @@ class _StorageScreenState extends State<StorageScreen> {
   //----------------------------------------------------------
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _loadData();
   }
@@ -70,7 +69,7 @@ class _StorageScreenState extends State<StorageScreen> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: ancho,
                         child: const Text(
                           "Rutas:",
@@ -86,7 +85,7 @@ class _StorageScreenState extends State<StorageScreen> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: ancho,
                         child: const Text(
                           "Paradas:",
@@ -102,7 +101,7 @@ class _StorageScreenState extends State<StorageScreen> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: ancho,
                         child: const Text(
                           "Envíos:",
@@ -118,7 +117,7 @@ class _StorageScreenState extends State<StorageScreen> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: ancho,
                         child: const Text(
                           "Proveedores:",
@@ -134,7 +133,7 @@ class _StorageScreenState extends State<StorageScreen> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: ancho,
                         child: const Text(
                           "Usuarios:",
@@ -150,7 +149,7 @@ class _StorageScreenState extends State<StorageScreen> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: ancho,
                         child: const Text(
                           "Motivos:",
@@ -170,6 +169,7 @@ class _StorageScreenState extends State<StorageScreen> {
   //----------------------------------------------------------
   //---------------------- _loadData -------------------------
   //----------------------------------------------------------
+
   void _loadData() async {
     _rutas = await DBRutasCab.rutas();
     _paradas = await DBParadas.paradas();

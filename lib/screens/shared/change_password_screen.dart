@@ -7,13 +7,17 @@ import 'package:fleetdeliveryapp/models/models.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   final Usuario user;
-  ChangePasswordScreen({required this.user});
+  const ChangePasswordScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
+
   bool _showLoader = false;
 
   Usuario _user = Usuario(
@@ -47,11 +51,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   bool _passwordShow = false;
 
+//--------------------------------------------------------
+//--------------------- initState ------------------------
+//--------------------------------------------------------
+
   @override
   void initState() {
     super.initState();
     _user = widget.user;
   }
+
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +92,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           ],
         ));
   }
+
+//--------------------------------------------------------
+//--------------------- _showCurrentPassword -------------
+//--------------------------------------------------------
 
   Widget _showCurrentPassword() {
     return Container(
@@ -112,6 +128,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
+//--------------------------------------------------------
+//--------------------- _showNewPassword -----------------
+//--------------------------------------------------------
+
   Widget _showNewPassword() {
     return Container(
       padding: const EdgeInsets.all(10),
@@ -142,6 +162,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       ),
     );
   }
+
+//--------------------------------------------------------
+//--------------------- _showConfirmPassword -------------
+//--------------------------------------------------------
 
   Widget _showConfirmPassword() {
     return Container(
@@ -174,6 +198,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
+//--------------------------------------------------------
+//--------------------- _showButtons ---------------------
+//--------------------------------------------------------
+
   Widget _showButtons() {
     return Container(
       margin: const EdgeInsets.only(left: 10, right: 10),
@@ -185,6 +213,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       ),
     );
   }
+
+//--------------------------------------------------------
+//--------------------- _showChangePassword --------------
+//--------------------------------------------------------
 
   Widget _showChangePassword() {
     return Expanded(
@@ -211,12 +243,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
+//--------------------------------------------------------
+//--------------------- _save ----------------------------
+//--------------------------------------------------------
+
   void _save() async {
     if (!validateFields()) {
       return;
     }
     _changePassword();
   }
+
+//--------------------------------------------------------
+//--------------------- validateFields -------------------
+//--------------------------------------------------------
 
   bool validateFields() {
     bool isValid = true;
@@ -275,6 +315,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
     return isValid;
   }
+
+//--------------------------------------------------------
+//--------------------- _changePassword ------------------
+//--------------------------------------------------------
 
   void _changePassword() async {
     setState(() {
