@@ -250,7 +250,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         ElevatedButton(
             child: const Icon(Icons.search),
             style: ElevatedButton.styleFrom(
-              primary: const Color(0xFF282886),
+              backgroundColor: const Color(0xFF282886),
               minimumSize: const Size(50, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
@@ -411,7 +411,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                 ],
               ),
               style: ElevatedButton.styleFrom(
-                primary: const Color(0xFF282886),
+                backgroundColor: const Color(0xFF282886),
                 minimumSize: const Size(50, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
@@ -437,7 +437,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               ],
             ),
             style: ElevatedButton.styleFrom(
-              primary: Colors.red,
+              backgroundColor: Colors.red,
               minimumSize: const Size(50, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
@@ -633,7 +633,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFF282886),
+                    backgroundColor: const Color(0xFF282886),
                     minimumSize: const Size(50, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -1146,7 +1146,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                 ],
                                               ),
                                               style: ElevatedButton.styleFrom(
-                                                primary:
+                                                backgroundColor:
                                                     const Color(0xFF282886),
                                                 minimumSize: const Size(60, 36),
                                                 shape: RoundedRectangleBorder(
@@ -1853,7 +1853,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                         ],
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        primary: const Color(0xFFb3b3b4),
+                                        backgroundColor:
+                                            const Color(0xFFb3b3b4),
                                         minimumSize:
                                             const Size(double.infinity, 30),
                                         shape: RoundedRectangleBorder(
@@ -1886,7 +1887,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                         ],
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        primary: const Color(0xFFb3b3b4),
+                                        backgroundColor:
+                                            const Color(0xFFb3b3b4),
                                         minimumSize:
                                             const Size(double.infinity, 30),
                                         shape: RoundedRectangleBorder(
@@ -2028,7 +2030,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: const Color(0xff282886),
+                  backgroundColor: const Color(0xff282886),
                   minimumSize: const Size(double.infinity, 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -2055,7 +2057,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: const Color(0xff282886),
+                  backgroundColor: const Color(0xff282886),
                   minimumSize: const Size(double.infinity, 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),

@@ -231,7 +231,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                             ),
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(80, 50),
-                              primary: base64imagePoliza != ''
+                              backgroundColor: base64imagePoliza != ''
                                   ? Colors.red
                                   : const Color(0xFF282886),
                               shape: RoundedRectangleBorder(
@@ -265,7 +265,8 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                     ],
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Color.fromARGB(255, 200, 14, 241),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 200, 14, 241),
                                     minimumSize:
                                         const Size(double.infinity, 50),
                                     shape: RoundedRectangleBorder(
@@ -314,7 +315,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                             ),
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(80, 50),
-                              primary: base64imageCedula != ''
+                              backgroundColor: base64imageCedula != ''
                                   ? Colors.red
                                   : const Color(0xFF282886),
                               shape: RoundedRectangleBorder(
@@ -348,7 +349,8 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                     ],
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Color.fromARGB(255, 200, 14, 241),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 200, 14, 241),
                                     minimumSize:
                                         const Size(double.infinity, 50),
                                     shape: RoundedRectangleBorder(
@@ -397,7 +399,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                             ),
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(80, 50),
-                              primary: base64imageAntecedentes != ''
+                              backgroundColor: base64imageAntecedentes != ''
                                   ? Colors.red
                                   : const Color(0xFF282886),
                               shape: RoundedRectangleBorder(
@@ -431,7 +433,8 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                     ],
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Color.fromARGB(255, 200, 14, 241),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 200, 14, 241),
                                     minimumSize:
                                         const Size(double.infinity, 50),
                                     shape: RoundedRectangleBorder(
@@ -1186,7 +1189,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ],
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xFF282886),
+                          backgroundColor: const Color(0xFF282886),
                           minimumSize: const Size(double.infinity, 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -1291,7 +1294,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ],
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xFF282886),
+                          backgroundColor: const Color(0xFF282886),
                           minimumSize: const Size(double.infinity, 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -1399,7 +1402,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ],
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xFF282886),
+                          backgroundColor: const Color(0xFF282886),
                           minimumSize: const Size(double.infinity, 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -1507,7 +1510,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ],
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xFF282886),
+                          backgroundColor: const Color(0xFF282886),
                           minimumSize: const Size(double.infinity, 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -1570,7 +1573,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                 ],
               ),
               style: ElevatedButton.styleFrom(
-                primary: const Color(0xFF282886),
+                backgroundColor: const Color(0xFF282886),
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),

@@ -16,17 +16,27 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
+
   late Usuario _user;
   late WebSesion _webSesion;
   bool _showLoginPage = true;
   bool _isLoading = true;
 
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
   @override
   void initState() {
     super.initState();
     _getHome();
   }
 
+  //--------------------------------------------------------
+  //--------------------- Pantalla ------------------------
+  //--------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
@@ -64,6 +74,10 @@ class _MyAppState extends State<MyApp> {
                     ),
     );
   }
+
+  //--------------------------------------------------------
+  //--------------------- _getHome -------------------------
+  //--------------------------------------------------------
 
   void _getHome() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

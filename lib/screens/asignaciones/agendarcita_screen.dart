@@ -523,7 +523,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFF282886),
+                    backgroundColor: const Color(0xFF282886),
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -546,7 +546,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFF637893),
+                    backgroundColor: const Color(0xFF637893),
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),

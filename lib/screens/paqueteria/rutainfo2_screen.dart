@@ -1748,7 +1748,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: const Color(0xFF282886),
+                  backgroundColor: const Color(0xFF282886),
                   minimumSize: const Size(50, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),

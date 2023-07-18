@@ -744,7 +744,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
               child: ElevatedButton(
                 child: const Text('Guardar'),
                 style: ElevatedButton.styleFrom(
-                  primary: const Color(0xFF120E43),
+                  backgroundColor: const Color(0xFF120E43),
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -877,7 +877,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                                   ],
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: const Color(0xFFb3b3b4),
+                                  backgroundColor: const Color(0xFFb3b3b4),
                                   minimumSize: const Size(double.infinity, 30),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),

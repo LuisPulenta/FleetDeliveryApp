@@ -564,7 +564,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                 ],
               ),
               style: ElevatedButton.styleFrom(
-                primary: const Color(0xFF282886),
+                backgroundColor: const Color(0xFF282886),
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
@@ -601,7 +601,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                 ],
               ),
               style: ElevatedButton.styleFrom(
-                primary: Colors.red,
+                backgroundColor: Colors.red,
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
@@ -940,7 +940,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                 ],
               ),
               style: ElevatedButton.styleFrom(
-                primary: const Color(0xFF282886),
+                backgroundColor: const Color(0xFF282886),
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),

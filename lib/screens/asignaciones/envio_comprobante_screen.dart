@@ -192,7 +192,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               ],
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.deepPurple,
+                              backgroundColor: Colors.deepPurple,
                               minimumSize: const Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -393,7 +393,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                 ],
                                               ),
                                               style: ElevatedButton.styleFrom(
-                                                primary: Colors.green,
+                                                backgroundColor: Colors.green,
                                                 minimumSize: const Size(
                                                     double.infinity, 50),
                                                 shape: RoundedRectangleBorder(
@@ -432,7 +432,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                 ],
                                               ),
                                               style: ElevatedButton.styleFrom(
-                                                primary: Colors.red,
+                                                backgroundColor: Colors.red,
                                                 minimumSize: const Size(
                                                     double.infinity, 50),
                                                 shape: RoundedRectangleBorder(
@@ -477,7 +477,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               ],
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.purple,
+                              backgroundColor: Colors.purple,
                               minimumSize: const Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -677,7 +677,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                 ],
                                               ),
                                               style: ElevatedButton.styleFrom(
-                                                primary: Colors.green,
+                                                backgroundColor: Colors.green,
                                                 minimumSize: const Size(
                                                     double.infinity, 50),
                                                 shape: RoundedRectangleBorder(
@@ -721,7 +721,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                 ],
                                               ),
                                               style: ElevatedButton.styleFrom(
-                                                primary: Colors.blue,
+                                                backgroundColor: Colors.blue,
                                                 minimumSize: const Size(
                                                     double.infinity, 50),
                                                 shape: RoundedRectangleBorder(
@@ -754,7 +754,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                 ],
                                               ),
                                               style: ElevatedButton.styleFrom(
-                                                primary: Colors.red,
+                                                backgroundColor: Colors.red,
                                                 minimumSize: const Size(
                                                     double.infinity, 50),
                                                 shape: RoundedRectangleBorder(

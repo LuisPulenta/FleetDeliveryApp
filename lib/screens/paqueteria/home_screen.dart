@@ -24,9 +24,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  //*****************************************************************************
-//************************** DEFINICION DE VARIABLES **************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
 
   TabController? _tabController;
 
@@ -352,9 +352,9 @@ class _HomeScreenState extends State<HomeScreen>
       speed: 0,
       speedAccuracy: 0);
 
-//*****************************************************************************
-//************************** INIT STATE ***************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- initState ------------------------
+//--------------------------------------------------------
 
   @override
   void initState() {
@@ -372,9 +372,9 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-//*****************************************************************************
-//************************** PANTALLA *****************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -384,14 +384,14 @@ class _HomeScreenState extends State<HomeScreen>
         children: [
           Container(
             decoration: const BoxDecoration(
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
                   Color(
                     (0xffdadada),
                   ),
-                  const Color(
+                  Color(
                     (0xffb3b3b4),
                   ),
                 ],
@@ -405,6 +405,7 @@ class _HomeScreenState extends State<HomeScreen>
 //-------------------------------------------------------------------------
 //-------------------------- 1° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
+
                 Column(
                   children: <Widget>[
                     AppBar(
@@ -440,6 +441,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ],
                 ),
+
 //-------------------------------------------------------------------------
 //-------------------------- 2° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
@@ -477,6 +479,7 @@ class _HomeScreenState extends State<HomeScreen>
 //-------------------------------------------------------------------------
 //-------------------------- 3° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
+
                 SingleChildScrollView(
                   child: Column(
                     children: [
@@ -615,7 +618,7 @@ class _HomeScreenState extends State<HomeScreen>
                               ],
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
+                              backgroundColor: Colors.red,
                               minimumSize: const Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -646,7 +649,7 @@ class _HomeScreenState extends State<HomeScreen>
                               ],
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: const Color(0xff282886),
+                              backgroundColor: const Color(0xff282886),
                               minimumSize: const Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -669,7 +672,7 @@ class _HomeScreenState extends State<HomeScreen>
                               ],
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: const Color(0xff282886),
+                              backgroundColor: const Color(0xff282886),
                               minimumSize: const Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -692,7 +695,7 @@ class _HomeScreenState extends State<HomeScreen>
                               ],
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: const Color(0xff282886),
+                              backgroundColor: const Color(0xff282886),
                               minimumSize: const Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -715,7 +718,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 ],
                               ),
                               style: ElevatedButton.styleFrom(
-                                primary: const Color(0xff282886),
+                                backgroundColor: const Color(0xff282886),
                                 minimumSize: const Size(double.infinity, 50),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5),
@@ -732,35 +735,6 @@ class _HomeScreenState extends State<HomeScreen>
                                 await DBWebSesions.deleteall();
                                 _logOut();
                               }),
-                          // ElevatedButton(
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: const [
-                          //       Icon(Icons.delete),
-                          //       SizedBox(
-                          //         width: 15,
-                          //       ),
-                          //       Text('BORRAR REGISTROS DE LA BASE'),
-                          //     ],
-                          //   ),
-                          //   style: ElevatedButton.styleFrom(
-                          //     primary: Colors.red,
-                          //     minimumSize: const Size(double.infinity, 50),
-                          //     shape: RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.circular(5),
-                          //     ),
-                          //   ),
-                          //   onPressed: () async {
-                          //     await DBEnvios.deleteall();
-                          //     await DBMotivos.deleteall();
-                          //     await DBParadas.deleteall();
-                          //     await DBParadasEnvios.deleteall();
-                          //     await DBProveedores.deleteall();
-                          //     await DBRutasCab.deleteall();
-                          //     await DBUsuarios.deleteall();
-                          //     await DBWebSesions.deleteall();
-                          //   },
-                          // ),
                         ]),
                       ),
                     ],
@@ -837,9 +811,9 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NO CONTENT ----------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _noContent -----------------------
+//--------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -856,9 +830,9 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO SHOWRUTAS -----------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showRutas -----------------------
+//--------------------------------------------------------
 
   Widget _showRutas() {
     return ListView(
@@ -1055,17 +1029,17 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO GETCONTENT ----------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _getContent ----------------------
+//--------------------------------------------------------
 
   Widget _getContent() {
     return _paradasenviosdb.isEmpty ? _noContent2() : _getListView();
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NOCONTENT2 ----------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _noContent2 ----------------------
+//--------------------------------------------------------
 
   Widget _noContent2() {
     return Center(
@@ -1082,9 +1056,10 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO GETLISTVIEW ---------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _getListView ---------------------
+//--------------------------------------------------------
+
   Widget _getListView() {
     paraSincronizar = 0;
 
@@ -1222,14 +1197,14 @@ class _HomeScreenState extends State<HomeScreen>
                                   : (e.estado == 10)
                                       ? const Text(
                                           "NO ENTREGADO",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: Colors.red,
                                               fontWeight: FontWeight.bold),
                                         )
                                       : (e.estado == 7)
                                           ? const Text(
                                               "RECHAZADO",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: Colors.purple,
                                                   fontWeight: FontWeight.bold),
                                             )
@@ -1254,27 +1229,27 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO CONTACTO ------------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _contacto ------------------------
+//--------------------------------------------------------
 
   void _contacto() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const ContactoScreen()));
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- _storage -------------------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _storage -------------------------
+//--------------------------------------------------------
 
   void _storage() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const StorageScreen()));
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO _cambiarPassword ----------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _cambiarPassword -----------------
+//--------------------------------------------------------
 
   void _cambiarPassword() async {
     String? result = await Navigator.push(
@@ -1289,9 +1264,9 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO GOINFORUTA ----------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _goInfoRuta ----------------------
+//--------------------------------------------------------
 
   void _goInfoRuta(RutaCab ruta) async {
     _paradasenviosselected = [];
@@ -1326,9 +1301,9 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO GOINFORUTA2 ---------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _goInfoRuta2 ------------------------
+//--------------------------------------------------------
 
   void _goInfoRuta2(RutaCab ruta) async {
     _paradasenviosselected = [];
@@ -1356,10 +1331,6 @@ class _HomeScreenState extends State<HomeScreen>
         _showLoader = true;
       });
 
-      // await _actualizaParadasEnvios();
-      // await _actualizaRutas();
-      // await _llenarparadasenvios();
-
       for (int i = 0; i < 2; i++) {
         await _actualizaParadasEnvios();
         await _actualizaRutas();
@@ -1375,9 +1346,9 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-//*****************************************************************************
-//************************** METODO GETPREFS **********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getprefs ------------------------
+//--------------------------------------------------------
 
   void _getprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1386,9 +1357,9 @@ class _HomeScreenState extends State<HomeScreen>
     _ultimaactualizacion = prefs.getString('ultimaactualizacion').toString();
   }
 
-//*****************************************************************************
-//************************** METODO GETPOSITION **********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getPosition ---------------------
+//--------------------------------------------------------
 
   Future _getPosition() async {
     LocationPermission permission;
@@ -1459,9 +1430,9 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-//*****************************************************************************
-//************************** METODO LOGOUT ************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _logOut --------------------------
+//--------------------------------------------------------
 
   void _logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1501,9 +1472,9 @@ class _HomeScreenState extends State<HomeScreen>
         context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
-//*****************************************************************************
-//************************* PROVEEDORES ***************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getProveedores ------------------
+//--------------------------------------------------------
 
   Future<void> _getProveedores() async {
     setState(() {
@@ -1524,6 +1495,10 @@ class _HomeScreenState extends State<HomeScreen>
     _getTablaProveedores();
     //return;
   }
+
+//--------------------------------------------------------
+//--------------------- _getTablaProveedores -------------
+//--------------------------------------------------------
 
   void _getTablaProveedores() async {
     void _insertProveedores() async {
@@ -1547,9 +1522,10 @@ class _HomeScreenState extends State<HomeScreen>
     _getRutas();
   }
 
-//*****************************************************************************
-//************************* RUTAS *********************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getRutas ------------------------
+//--------------------------------------------------------
+
   Future<void> _getRutas() async {
     setState(() {
       _textComponent = "Cargando Rutas.";
@@ -1607,7 +1583,6 @@ class _HomeScreenState extends State<HomeScreen>
       }
     }
 
-//...........................................
     if (_hayInternet) {
       _insertRutas();
     }
@@ -1773,9 +1748,9 @@ class _HomeScreenState extends State<HomeScreen>
     _getMotivos();
   }
 
-//*****************************************************************************
-//************************* MOTIVOS *******************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getMotivos ----------------------
+//--------------------------------------------------------
 
   Future<void> _getMotivos() async {
     setState(() {
@@ -1840,9 +1815,9 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-//*****************************************************************************
-//************************* METODO ACTUALIZAPARADASENVIOS *********************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _actualizaParadasEnvios ----------
+//--------------------------------------------------------
 
   Future<void> _actualizaParadasEnvios() async {
     return Future.delayed(const Duration(seconds: 1), () async {
@@ -1862,9 +1837,9 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-//*****************************************************************************
-//************************* METODO BORRARMEDICIONESLOCALES ********************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _borrarMedicionesLocales ---------
+//--------------------------------------------------------
 
   _borrarMedicionesLocales() async {
     await showDialog(
@@ -1934,7 +1909,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ],
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
+                      backgroundColor: Colors.red,
                       minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -1981,7 +1956,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ],
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: const Color(0xFF9a6a2e),
+                      backgroundColor: const Color(0xFF9a6a2e),
                       minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -2003,9 +1978,9 @@ class _HomeScreenState extends State<HomeScreen>
         });
   }
 
-//*****************************************************************************
-//************************* METODO LLENARPARADASENVIOS ************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _llenarparadasenvios -------------
+//--------------------------------------------------------
 
   Future<void> _llenarparadasenvios() async {
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
@@ -2056,9 +2031,9 @@ class _HomeScreenState extends State<HomeScreen>
     setState(() {});
   }
 
-//*****************************************************************************
-//******************** METODOS PARA GRABAR EN EL SERVIDOR *********************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _putParada -----------------------
+//--------------------------------------------------------
 
   Future<void> _putParada(ParadaEnvio paradaenvio) async {
     for (var element in _paradas) {
@@ -2113,7 +2088,9 @@ class _HomeScreenState extends State<HomeScreen>
     await _putEnvio(paradaenvio);
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _putEnvio ------------------------
+//--------------------------------------------------------
 
   Future<void> _putEnvio(ParadaEnvio paradaenvio) async {
     for (var element in _envios) {
@@ -2236,7 +2213,9 @@ class _HomeScreenState extends State<HomeScreen>
     await _postSeguimiento(paradaenvio);
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _postSeguimiento -----------------
+//--------------------------------------------------------
 
   Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
@@ -2286,7 +2265,9 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviado1 -------------------
+//--------------------------------------------------------
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -2324,6 +2305,10 @@ class _HomeScreenState extends State<HomeScreen>
     await DBParadasEnvios.update(paradaenvionueva);
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
   }
+
+//--------------------------------------------------------
+//--------------------- _actualizaRutas ------------------
+//--------------------------------------------------------
 
   _actualizaRutas() async {
     //---------------- LLENA CAMPO TOTAL PARADAS  ------------------
@@ -2387,7 +2372,9 @@ class _HomeScreenState extends State<HomeScreen>
     _rutas = await DBRutasCab.rutas();
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviadoParada1 -------------
+//--------------------------------------------------------
 
   Future<void> _ponerEnviadoParada1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -2431,7 +2418,9 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviadoEnvio1 --------------
+//--------------------------------------------------------
 
   Future<void> _ponerEnviadoEnvio1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -2475,7 +2464,10 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _ponerEnviadoSeguimiento1 --------
+//--------------------------------------------------------
+
   Future<void> _ponerEnviadoSeguimiento1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
       idParada: paradaenvio.idParada,
@@ -2518,9 +2510,10 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-//-----------------------------------------------------------------------
-//-------------------------- _showEnviosCount ---------------------------
-//-----------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showEnviosCount -----------------
+//--------------------------------------------------------
+
   Widget _showEnviosCount() {
     int sincronizados = 0;
     int nosincronizados = 0;

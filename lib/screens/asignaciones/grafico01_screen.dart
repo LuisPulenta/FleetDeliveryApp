@@ -217,7 +217,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: const Color(0xFF282886),
+                        backgroundColor: const Color(0xFF282886),
                         minimumSize: const Size(40, 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -250,7 +250,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                   ],
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: const Color(0xFF282886),
+                  backgroundColor: const Color(0xFF282886),
                   minimumSize: const Size(40, 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),

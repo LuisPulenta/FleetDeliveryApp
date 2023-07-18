@@ -114,7 +114,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                   ElevatedButton(
                       child: const Icon(Icons.qr_code_2),
                       style: ElevatedButton.styleFrom(
-                        primary: const Color(0xFF282886),
+                        backgroundColor: const Color(0xFF282886),
                         minimumSize: const Size(50, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -164,7 +164,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                               child:
                                                   const Icon(Icons.qr_code_2),
                                               style: ElevatedButton.styleFrom(
-                                                primary:
+                                                backgroundColor:
                                                     const Color(0xFF282886),
                                                 minimumSize: const Size(50, 50),
                                                 shape: RoundedRectangleBorder(
@@ -211,7 +211,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                   ),
                                                   style:
                                                       ElevatedButton.styleFrom(
-                                                    primary:
+                                                    backgroundColor:
                                                         const Color(0xFF120E43),
                                                     minimumSize: const Size(
                                                         double.infinity, 50),
@@ -290,7 +290,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                   ],
                                                 ),
                                                 style: ElevatedButton.styleFrom(
-                                                  primary:
+                                                  backgroundColor:
                                                       const Color(0xFFB4161B),
                                                   minimumSize: const Size(
                                                       double.infinity, 50),
@@ -321,7 +321,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                   ElevatedButton(
                       child: const Icon(Icons.cancel),
                       style: ElevatedButton.styleFrom(
-                        primary: const Color(0xffdf281e),
+                        backgroundColor: const Color(0xffdf281e),
                         minimumSize: const Size(50, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -347,7 +347,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: const Color(0xFF120E43),
+                        backgroundColor: const Color(0xFF120E43),
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -371,7 +371,7 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: const Color(0xFFB4161B),
+                        backgroundColor: const Color(0xFFB4161B),
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),

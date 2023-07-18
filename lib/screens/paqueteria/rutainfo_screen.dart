@@ -644,7 +644,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                             ],
                                           ),
                                           style: ElevatedButton.styleFrom(
-                                            primary: const Color(0xFFb3b3b4),
+                                            backgroundColor:
+                                                const Color(0xFFb3b3b4),
                                             minimumSize:
                                                 const Size(double.infinity, 30),
                                             shape: RoundedRectangleBorder(
@@ -887,7 +888,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                         ],
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        primary: const Color(0xFFb3b3b4),
+                                        backgroundColor:
+                                            const Color(0xFFb3b3b4),
                                         minimumSize:
                                             const Size(double.infinity, 30),
                                         shape: RoundedRectangleBorder(
@@ -920,7 +922,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                         ],
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        primary: const Color(0xFFb3b3b4),
+                                        backgroundColor:
+                                            const Color(0xFFb3b3b4),
                                         minimumSize:
                                             const Size(double.infinity, 30),
                                         shape: RoundedRectangleBorder(

@@ -12,8 +12,8 @@ export 'package:fleetdeliveryapp/screens/asignaciones/envio_comprobante_screen.d
 export 'package:fleetdeliveryapp/screens/asignaciones/envio_comprobantes_screen.dart';
 export 'package:fleetdeliveryapp/screens/asignaciones/firma_screen.dart';
 export 'package:fleetdeliveryapp/screens/asignaciones/grafico01_screen.dart';
-export 'package:fleetdeliveryapp/screens/inicio/home_screen.dart';
-export 'package:fleetdeliveryapp/screens/inicio/home2_screen.dart';
+export 'package:fleetdeliveryapp/screens/paqueteria/home_screen.dart';
+export 'package:fleetdeliveryapp/screens/asignaciones/home2_screen.dart';
 export 'package:fleetdeliveryapp/screens/inicio/login_screen.dart';
 export 'package:fleetdeliveryapp/screens/asignaciones/mis_datos_screen.dart';
 export 'package:fleetdeliveryapp/screens/asignaciones/otro_recupero_screen.dart';

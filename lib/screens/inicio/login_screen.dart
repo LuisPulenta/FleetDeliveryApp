@@ -22,9 +22,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-//*****************************************************************************
-//************************** DEFINICION DE VARIABLES **************************
-//*****************************************************************************
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
 
   List<Usuario> _usuariosApi = [];
   List<Usuario> _usuarios = [];
@@ -79,22 +79,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String _ultimaactualizacion = '';
 
-//*****************************************************************************
-//************************** INIT STATE ***************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- initState ------------------------
+//--------------------------------------------------------
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
     _getprefs();
-
-    //_getUsuarios();
   }
 
-//*****************************************************************************
-//************************** PANTALLA *****************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +189,10 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+//----------------------------------------------------------
+//--------------------- _showEmail -------------------------
+//----------------------------------------------------------
+
   Widget _showEmail() {
     return Container(
       padding: const EdgeInsets.all(10),
@@ -211,6 +213,10 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+//----------------------------------------------------------
+//--------------------- _showPassword ----------------------
+//----------------------------------------------------------
 
   Widget _showPassword() {
     return Container(
@@ -243,6 +249,10 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+//----------------------------------------------------------
+//--------------------- _showButtons -----------------------
+//----------------------------------------------------------
+
   Widget _showButtons() {
     return Container(
       margin: const EdgeInsets.only(left: 20, right: 20),
@@ -264,7 +274,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFF282886),
+                    backgroundColor: const Color(0xFF282886),
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -294,7 +304,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFF637893),
+                    backgroundColor: const Color(0xFF637893),
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -328,7 +338,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.grey,
+                          backgroundColor: Colors.grey,
                           minimumSize: const Size(double.infinity, 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -345,9 +355,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- METODO SHOWREMEMBERME ---------------------
-//-----------------------------------------------------------------
+//----------------------------------------------------------
+//--------------------- _showRememberme --------------------
+//----------------------------------------------------------
 
   _showRememberme() {
     return CheckboxListTile(
@@ -362,9 +372,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-//*****************************************************************************
-//************************** METODO LOGIN *************************************
-//*****************************************************************************
+//----------------------------------------------------------
+//--------------------- _login -----------------------------
+//----------------------------------------------------------
 
   void _login() async {
     setState(() {
@@ -474,9 +484,9 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO VALIDATEFIELDS ****************************
-//*****************************************************************************
+//----------------------------------------------------------
+//--------------------- validateFields ---------------------
+//----------------------------------------------------------
 
   bool validateFields() {
     bool isValid = true;
@@ -502,9 +512,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return isValid;
   }
 
-//*****************************************************************************
-//*********************** METODO GETUSUARIOS **********************************
-//*****************************************************************************
+//----------------------------------------------------------
+//--------------------- _getUsuarios -----------------------
+//----------------------------------------------------------
+
   Future<void> _getUsuarios() async {
     var connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult != ConnectivityResult.none) {
@@ -592,11 +603,9 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  //-------------------------------------------------------------------------
-
-//*****************************************************************************
-//************************** METODO GETPREFS **********************************
-//*****************************************************************************
+//----------------------------------------------------------
+//--------------------- _getprefs --------------------------
+//----------------------------------------------------------
 
   void _getprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -617,9 +626,9 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO INITPLATFORMSTATE *************************
-//*****************************************************************************
+//----------------------------------------------------------
+//--------------------- initPlatformState ------------------
+//----------------------------------------------------------
 
   Future<void> initPlatformState() async {
     late String imeiNo = '';
@@ -678,9 +687,9 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-//*****************************************************************************
-//******************** METODO POSTWEBSESION ***********************************
-//*****************************************************************************
+//----------------------------------------------------------
+//--------------------- _postWebSesion ---------------------
+//----------------------------------------------------------
 
   Future<void> _postWebSesion(WebSesion webSesion) async {
     Map<String, dynamic> requestWebSesion = {
@@ -700,9 +709,9 @@ class _LoginScreenState extends State<LoginScreen> {
     await ApiHelper.post('/api/WebSesions/', requestWebSesion);
   }
 
-//*****************************************************************************
-//******************** METODO _storeUser **************************************
-//*****************************************************************************
+//----------------------------------------------------------
+//--------------------- _storeUser -------------------------
+//----------------------------------------------------------
 
   void _storeUser(String body, String wsesion) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
