@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_const
-
 import 'dart:ui' as ui;
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +12,10 @@ class FirmaScreen extends StatefulWidget {
 }
 
 class _FirmaScreenState extends State<FirmaScreen> {
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
+
   final GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
 
   @override
@@ -33,6 +35,10 @@ class _FirmaScreenState extends State<FirmaScreen> {
     Response response = Response(isSuccess: true, result: bytes);
     Navigator.pop(context, response);
   }
+
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {

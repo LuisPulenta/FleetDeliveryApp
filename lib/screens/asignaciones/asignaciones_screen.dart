@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_const
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
@@ -32,9 +30,9 @@ class AsignacionesScreen extends StatefulWidget {
 }
 
 class _AsignacionesScreenState extends State<AsignacionesScreen> {
-//*****************************************************************************
-//************************** DEFINICION DE VARIABLES **************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -145,9 +143,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   final Set<Marker> _markers = {};
 
-//*****************************************************************************
-//************************** INIT STATE ***************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- initState ------------------------
+//--------------------------------------------------------
 
   @override
   void initState() {
@@ -158,9 +156,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** PANTALLA *****************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -204,9 +202,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//-----------------------------------------------------------------------------
-//------------------------------ SHOWTIPOS-------------------------------------
-//-----------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showTipos -----------------------
+//--------------------------------------------------------
 
   Widget _showTipos() {
     return Row(
@@ -264,6 +262,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
+//--------------------------------------------------------
+//--------------------- _getComboTiposAsignacion ---------
+//--------------------------------------------------------
+
   List<DropdownMenuItem<String>> _getComboTiposAsignacion() {
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
@@ -281,9 +283,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     return list;
   }
 
-//-----------------------------------------------------------------------------
-//------------------------------ SHOWZONAS-------------------------------------
-//-----------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showZonas -----------------------
+//--------------------------------------------------------
 
   Widget _showZonas() {
     return Row(
@@ -336,9 +338,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//-----------------------------------------------------------------------------
-//--------------------------- SHOWTEXTFILTER ----------------------------------
-//-----------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showTextFilter ------------------
+//--------------------------------------------------------
+
   Widget _showTextFilter() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
@@ -360,9 +363,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- METODO _showTextoBuscar -------------------
-//-----------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showTextoBuscar -----------------
+//--------------------------------------------------------
 
   Widget _showTextoBuscar() {
     return Container(
@@ -391,9 +394,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- METODO SHOWBUTTONS ------------------------
-//-----------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showButtons ---------------------
+//--------------------------------------------------------
 
   Widget _showButtons() {
     return Row(
@@ -455,9 +458,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- METODO _getComboZonas ---------------------
-//-----------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _getComboZonas -------------------
+//--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboZonas() {
     List<DropdownMenuItem<String>> list = [];
@@ -480,9 +483,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     return list;
   }
 
-//-----------------------------------------------------------------------------
-//------------------------------ SHOWCARTERAS----------------------------------
-//-----------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showCarteras --------------------
+//--------------------------------------------------------
 
   Widget _showCarteras() {
     return Row(
@@ -535,6 +538,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
+//--------------------------------------------------------
+//--------------------- _getComboCarteras ----------------
+//--------------------------------------------------------
+
   List<DropdownMenuItem<String>> _getComboCarteras() {
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
@@ -556,23 +563,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     return list;
   }
 
-//-----------------------------------------------------------------------------
-//------------------------------ METODO GETCONTENT --------------------------
-//-----------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _getContent ----------------------
+//--------------------------------------------------------
 
   Widget _getContent() {
     return Column(
       children: <Widget>[
-        // _zonas.length <= 1 && _carteras.length <= 1
-        //     ? _showTipos()
-        //     : Container(),
-
         _asignaciones.isEmpty ? _showTipos() : _showTextFilter(),
-
-        // _zonas.length > 1 ? _showZonas() : Container(),
-        // _carteras.length > 1 ? _showCarteras() : Container(),
-
-        //_showAsignacionesCount(),
         _showFiltros(),
         Expanded(
           child: _asignaciones2.isEmpty ? _noContent() : _getListView(),
@@ -581,9 +579,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//-----------------------------------------------------------------------------
-//------------------------------ METODO SHOWAFILTROS --------------------------
-//-----------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showFiltros ---------------------
+//--------------------------------------------------------
 
   Widget _showFiltros() {
     return Container(
@@ -671,9 +669,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//-----------------------------------------------------------------------------
-//------------------------------ METODO NOCONTENT -----------------------------
-//-----------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _noContent -----------------------
+//--------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -689,9 +687,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//-----------------------------------------------------------------------------
-//------------------------------ METODO GETLISTVIEW ---------------------------
-//-----------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _getListView ---------------------
+//--------------------------------------------------------
 
   Widget _getListView() {
     return RefreshIndicator(
@@ -767,7 +765,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       e.proyectomodulo == 'Cable'
                                           ? const SizedBox(
                                               width: 30,
-                                              child: const Text("OT: ",
+                                              child: Text("OT: ",
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color:
@@ -791,26 +789,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   const SizedBox(
                                     height: 1,
                                   ),
-                                  // Row(
-                                  //   children: [
-                                  //     Text("Rec.Téc.: ",
-                                  //         style: TextStyle(
-                                  //           fontSize: 12,
-                                  //           color: Color(0xFF0e4888),
-                                  //           fontWeight: FontWeight.bold,
-                                  //         )),
-                                  //     Expanded(
-                                  //       child:
-                                  //           Text(e.reclamoTecnicoID.toString(),
-                                  //               style: TextStyle(
-                                  //                 fontSize: 12,
-                                  //               )),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  // SizedBox(
-                                  //   height: 1,
-                                  // ),
                                   Row(
                                     children: [
                                       const SizedBox(
@@ -914,25 +892,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   const SizedBox(
                                     height: 1,
                                   ),
-                                  // Row(
-                                  //   children: [
-                                  //     Text("Provincia: ",
-                                  //         style: TextStyle(
-                                  //           fontSize: 12,
-                                  //           color: Color(0xFF0e4888),
-                                  //           fontWeight: FontWeight.bold,
-                                  //         )),
-                                  //     Expanded(
-                                  //       child: Text(e.provincia.toString(),
-                                  //           style: TextStyle(
-                                  //             fontSize: 12,
-                                  //           )),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  // SizedBox(
-                                  //   height: 1,
-                                  // ),
                                   Row(
                                     children: [
                                       const SizedBox(
@@ -1043,27 +1002,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             const SizedBox(
                                               height: 1,
                                             ),
-                                            // Row(
-                                            //   children: [
-                                            //     Text("Medio Cita: ",
-                                            //         style: TextStyle(
-                                            //           fontSize: 12,
-                                            //           color: Color(0xFF0e4888),
-                                            //           fontWeight:
-                                            //               FontWeight.bold,
-                                            //         )),
-                                            //     Expanded(
-                                            //       child: Text(
-                                            //           e.medioCita.toString(),
-                                            //           style: TextStyle(
-                                            //             fontSize: 12,
-                                            //           )),
-                                            //     ),
-                                            //   ],
-                                            // ),
-                                            // SizedBox(
-                                            //   height: 1,
-                                            // ),
                                             Row(
                                               children: [
                                                 const SizedBox(
@@ -1216,17 +1154,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//*****************************************************************************
-//************************** METODO LOADDATA **********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _loadData ------------------------
+//--------------------------------------------------------
 
   void _loadData() async {
     await _getTiposAsignaciones();
   }
 
-//*****************************************************************************
-//************************** METODO LOADDATA2 *********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _loadData2 -----------------------
+//--------------------------------------------------------
 
   void _loadData2() async {
     _tipoasignacion = widget.asignacion.proyectomodulo.toString();
@@ -1236,9 +1174,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     await _filter();
   }
 
-//*****************************************************************************
-//************************** METODO GETTIPOASIGNACIONES ***********************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getTiposAsignaciones ------------
+//--------------------------------------------------------
 
   Future<void> _getTiposAsignaciones() async {
     var connectivityResult = await Connectivity().checkConnectivity();
@@ -1266,19 +1204,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         _tiposasignacion = response.result;
       }
     } while (bandera == false);
-    // await showAlertDialog(
-    //     context: context,
-    //     title: 'Intentos',
-    //     message: intentos.toString(),
-    //     actions: <AlertDialogAction>[
-    //       AlertDialogAction(key: null, label: 'Aceptar'),
-    //     ]);
+
     setState(() {});
   }
 
-//*****************************************************************************
-//************************** METODO GETZONAS **********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getZonas ------------------------
+//--------------------------------------------------------
 
   Future<void> _getZonas() async {
     var connectivityResult = await Connectivity().checkConnectivity();
@@ -1309,9 +1241,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     setState(() {});
   }
 
-//*****************************************************************************
-//************************** METODO GETCARTERAS **********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getCarteras ---------------------
+//--------------------------------------------------------
 
   Future<void> _getCarteras() async {
     var connectivityResult = await Connectivity().checkConnectivity();
@@ -1343,9 +1275,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     setState(() {});
   }
 
-//*****************************************************************************
-//************************** METODO LOADOBRAS *********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getObras ------------------------
+//--------------------------------------------------------
 
   Future<void> _getObras() async {
     if (_tipoasignacion == 'Elija un Tipo de Asignación...') {
@@ -1460,15 +1392,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     });
   }
 
-// getFuncionesApp(_tipoasignacion);
-// getControlesEquivalencia(_tipoasignacion);
-// _getCodigosCierre();
-// _getZonas();
-// _getCarteras();//SIRVE PARA TODO
-
-//*****************************************************************************
-//************************** METODO LOADOBRAS *********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getCodigosCierre ----------------
+//--------------------------------------------------------
 
   Future<void> _getCodigosCierre() async {
     if (_tipoasignacion == 'Elija un Tipo de Asignación...') {
@@ -1526,9 +1452,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     });
   }
 
-//*****************************************************************************
-//************************** METODO GOINFOOBRA ********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _goInfoAsignacion ----------------
+//--------------------------------------------------------
 
   void _goInfoAsignacion(Asignacion2 asignacion) async {
     String? result = await Navigator.push(
@@ -1548,9 +1474,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO REMOVEFILTER ******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _removeFilter --------------------
+//--------------------------------------------------------
 
   void _removeFilter() {
     setState(() {
@@ -1561,9 +1487,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     _filter();
   }
 
-//*****************************************************************************
-//************************** METODO SHOWFILTER ********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showFilter ----------------------
+//--------------------------------------------------------
 
   void _showFilter() {
     showDialog(
@@ -1582,35 +1508,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               _zonas.length > 1 ? _showZonas() : Container(),
               _carteras.length > 1 ? _showCarteras() : Container(),
             ]),
-            //actions: <Widget>[
-            // TextButton(
-            //     onPressed: () => Navigator.of(context).pop(),
-            //     child: const Text('Cancelar')),
-            // TextButton(
-            //     onPressed: () {
-            //       _filter();
-            //       if (_search != '') {
-            //         _isFiltered = true;
-            //       } else {
-            //         _isFiltered = false;
-            //       }
-
-            //       Navigator.of(context).pop();
-            //     },
-            //     child: const Text('Filtrar')),
-            //],
           );
         });
   }
 
-//*****************************************************************************
-//************************** METODO FILTER ************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _filter --------------------------
+//--------------------------------------------------------
 
   _filter() {
-    // if (_search.isEmpty) {
-    //   return;
-    // }
     List<Asignacion2> filteredList = [];
     bool condicionTexto = false;
     bool condicionAntig = false;
@@ -1719,9 +1625,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     });
   }
 
-//*****************************************************************************
-//************************** METODO AGENDARCITA *******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _agendarcita ---------------------
+//--------------------------------------------------------
 
   void _agendarcita(Asignacion2 asignacion) async {
     String? result = await Navigator.push(
@@ -1737,9 +1643,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO SHOWMAP ***********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showMap -------------------------
+//--------------------------------------------------------
 
   void _showMap() {
     if (_asignaciones2.isEmpty) {
@@ -1937,9 +1843,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//--------------------------------------------------------------------------
-//------------------------------ _showInfo ---------------------------------
-//--------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _showInfo ------------------------
+//--------------------------------------------------------
 
   void _showInfo() {
     Navigator.push(
@@ -1952,17 +1858,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO isNullOrEmpty -------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- isNullOrEmpty --------------------
+//--------------------------------------------------------
 
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NAVEGAR -------------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _navegar -------------------------
+//--------------------------------------------------------
 
   _navegar(e) async {
     if (e.grxx == "" ||
@@ -2001,9 +1907,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO _orderMethod ********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _orderMethod ---------------------
+//--------------------------------------------------------
 
   void _orderMethod() {
     showDialog(
@@ -2077,6 +1983,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           );
         });
   }
+
+//--------------------------------------------------------
+//--------------------- _ordenar -------------------------
+//--------------------------------------------------------
 
   void _ordenar() {
     if (_ordenarPorCliente) {

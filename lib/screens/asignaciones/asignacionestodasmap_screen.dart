@@ -102,7 +102,6 @@ class _AsignacionesTodasMapScreenState
                     },
                     myLocationEnabled: true,
                     initialCameraPosition: _initialPosition,
-                    onCameraMove: _onCameraMove,
                     markers: _markers,
                     mapType: _defaultMapType,
                     onMapCreated: (GoogleMapController controller) async {
@@ -141,7 +140,9 @@ class _AsignacionesTodasMapScreenState
     );
   }
 
-  void _onCameraMove(CameraPosition position) {}
+//--------------------------------------------------------------
+//------------------------- _changeMapType ---------------------
+//--------------------------------------------------------------
 
   void _changeMapType() {
     _defaultMapType = _defaultMapType == MapType.normal
@@ -203,8 +204,9 @@ class _AsignacionesTodasMapScreenState
   }
 
 //--------------------------------------------------------------
-//------------------------- _showMap --------------------------
+//------------------------- _showMap ---------------------------
 //--------------------------------------------------------------
+
   void _showMap() {
     if (_asignaciones2.isEmpty) {
       return;
@@ -398,9 +400,9 @@ class _AsignacionesTodasMapScreenState
     // longcenter = (longmin + longmax) / 2;
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NAVEGAR -------------------------------
-//-------------------------------------------------------------------------
+//-------------------------------------------------------------------
+//-------------------------- _navegar -------------------------------
+//-------------------------------------------------------------------
 
   _navegar(e) async {
     if (e.grxx == "" ||
@@ -439,9 +441,9 @@ class _AsignacionesTodasMapScreenState
     }
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO isNullOrEmpty -------------------------
-//-------------------------------------------------------------------------
+//------------------------------------------------------------------
+//-------------------------- isNullOrEmpty -------------------------
+//------------------------------------------------------------------
 
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
@@ -484,13 +486,15 @@ class _AsignacionesTodasMapScreenState
 
   void _goInfoAsignacion(Asignacion2 asignacion) async {
     String? result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => AsignacionesScreen(
-                  user: widget.user,
-                  positionUser: widget.positionUser,
-                  opcion: 2,
-                  asignacion: asignacion,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => AsignacionesScreen(
+          user: widget.user,
+          positionUser: widget.positionUser,
+          opcion: 2,
+          asignacion: asignacion,
+        ),
+      ),
+    );
   }
 }

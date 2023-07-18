@@ -18,9 +18,9 @@ class AgendarCitaScreen extends StatefulWidget {
 }
 
 class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
-//*****************************************************************************
-//************************** VARIABLES ****************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
 
   List medios = ["Teléfono", "WhatsApp", "SMS", "Visita directa"];
   String _opseleccionada = "Teléfono";
@@ -30,9 +30,9 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
   bool bandera = false;
   List<Asign> _asigns = [];
 
-//*****************************************************************************
-//************************** INIT STATE ***************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- initState ------------------------
+//--------------------------------------------------------
 
   @override
   void initState() {
@@ -41,9 +41,9 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
         Duration(hours: -selectedTime.hour, minutes: -selectedTime.minute));
   }
 
-//*****************************************************************************
-//************************** PANTALLA *****************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,6 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
       appBar: AppBar(
         title: const Text("Agendar Cita"),
         backgroundColor: const Color(0xFF0e4888),
-        //backgroundColor: Color(0xFF0e4888),
         centerTitle: true,
       ),
       body: Stack(
@@ -76,14 +75,13 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     );
   }
 
-//*****************************************************************************
-//************************** METODO SHOWASIGNACION ****************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showAsignacion ------------------
+//--------------------------------------------------------
 
   Widget _showAsignacion() {
     return Card(
       color: Colors.white,
-      //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -284,9 +282,9 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     );
   }
 
-//*****************************************************************************
-//************************** METODO GETDATETIME *******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getDateAndTime ------------------
+//--------------------------------------------------------
 
   Widget _getDateAndTime(context) {
     return Card(
@@ -337,9 +335,9 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     );
   }
 
-//*****************************************************************************
-//************************** METODO SHOWMEDIOCITA *****************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showMedioCita -------------------
+//--------------------------------------------------------
 
   Widget _showMedioCita() {
     return Row(
@@ -369,6 +367,10 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     );
   }
 
+//--------------------------------------------------------
+//--------------------- getOptionsDropDown ---------------
+//--------------------------------------------------------
+
   List<DropdownMenuItem<String>> getOptionsDropDown() {
     List<DropdownMenuItem<String>> list = [];
     for (var element in medios) {
@@ -377,9 +379,10 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     return list;
   }
 
-//*****************************************************************************
-//************************** METODO SHOWFECHA *********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getFecha ------------------------
+//--------------------------------------------------------
+
   Widget _getFecha(context) {
     return Stack(
       children: <Widget>[
@@ -472,6 +475,10 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     );
   }
 
+//--------------------------------------------------------
+//--------------------- _selectDate ----------------------
+//--------------------------------------------------------
+
   void _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
       context: context,
@@ -486,6 +493,10 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     }
   }
 
+//--------------------------------------------------------
+//--------------------- _selectTime ----------------------
+//--------------------------------------------------------
+
   void _selectTime(BuildContext context) async {
     final TimeOfDay? selected = await showTimePicker(
       initialTime: TimeOfDay.now(),
@@ -498,9 +509,9 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     }
   }
 
-//*****************************************************************************
-//************************** METODO SHOWBUTTONS *******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showButtons ---------------------
+//--------------------------------------------------------
 
   Widget _showButtons(context) {
     return Container(
@@ -564,9 +575,9 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     );
   }
 
-//*****************************************************************************
-//************************** METODO SAVE **************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _save ----------------------------
+//--------------------------------------------------------
 
   void _save(Asignacion2 asignacion, context) async {
     var connectivityResult = await Connectivity().checkConnectivity();
@@ -617,18 +628,14 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
             .add(Duration(
                 hours: selectedTime.hour, minutes: selectedTime.minute))
             .toString(),
-        'fechacumplida':
-            _asign.fechacumplida == Null ? '' : _asign.fechacumplida,
+        'fechacumplida': _asign.fechacumplida ?? '',
         'fechaEvento1': selectedDate
             .add(Duration(
                 hours: selectedTime.hour, minutes: selectedTime.minute))
             .toString(),
-        'fechaEvento2':
-            asignacion.fechaEvento1 == Null ? '' : asignacion.fechaEvento1,
-        'fechaEvento3':
-            asignacion.fechaEvento2 == Null ? '' : asignacion.fechaEvento2,
-        'fechaEvento4':
-            asignacion.fechaEvento3 == Null ? '' : asignacion.fechaEvento3,
+        'fechaEvento2': asignacion.fechaEvento1 ?? '',
+        'fechaEvento3': asignacion.fechaEvento2 ?? '',
+        'fechaEvento4': asignacion.fechaEvento3 ?? '',
         'hsCumplidaTime': _asign.hsCumplidaTime,
         'medioCita': _opseleccionada,
         'nroSeriesExtras': _asign.nroSeriesExtras,
@@ -653,7 +660,6 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
         return;
       }
     }
-
     Navigator.pop(context, 'yes');
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
@@ -31,9 +30,9 @@ class EnvioComprobanteScreen extends StatefulWidget {
 
 class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     with SingleTickerProviderStateMixin {
-//*****************************************************************************
-//************************** DEFINICION DE VARIABLES **************************
-//*****************************************************************************
+//--------------------------------------------------------------
+//------------------------- Variables --------------------------
+//--------------------------------------------------------------
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -127,9 +126,10 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
       modificadoAPP: 0,
       hsCumplidaTime: '');
 
-//*****************************************************************************
-//************************** INIT STATE ***************************************
-//*****************************************************************************
+//--------------------------------------------------------------
+//------------------------- initState --------------------------
+//--------------------------------------------------------------
+
   @override
   void initState() {
     super.initState();
@@ -137,9 +137,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     _getAsigns();
   }
 
-//*****************************************************************************
-//************************** PANTALLA *****************************************
-//*****************************************************************************
+//--------------------------------------------------------------
+//------------------------- Pantalla ---------------------------
+//--------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -797,9 +797,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     );
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- _creaChat ----------------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------------
+//------------------------- _creaChat --------------------------
+//--------------------------------------------------------------
 
   Future<void> _creaChat(String number) async {
     _existeChat = true;
@@ -811,9 +811,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     await launch('$link');
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- _createPDF ---------------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------------
+//------------------------- _createPDF -------------------------
+//--------------------------------------------------------------
 
   Future<void> _createPDF(String number, String message) async {
     //Create a new PDF document
@@ -1045,18 +1045,18 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     await _saveAndLaunchFile(bytes, 'Comprobante.pdf', number);
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- _readImageData -----------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------------
+//------------------------- _readImageData ---------------------
+//--------------------------------------------------------------
 
   Future<Uint8List> _readImageData(String name) async {
     final data = await rootBundle.load('images/$name');
     return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- _saveAndLaunchFile -------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------------
+//------------------------- _saveAndLaunchFile -----------------
+//--------------------------------------------------------------
 
   Future<void> _saveAndLaunchFile(
       List<int> bytes, String fileName, String number) async {
@@ -1083,9 +1083,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     }
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- initRecorder -----------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------------
+//------------------------- initRecorder -----------------------
+//--------------------------------------------------------------
 
   Future initRecorder() async {
     bool permission = await requestPermission();
@@ -1113,9 +1113,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     }
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- requestPermission -----------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------------
+//------------------------- requestPermission ------------------
+//--------------------------------------------------------------
 
   Future<bool> requestPermission() async {
     bool storagePermission = await Permission.storage.isGranted;
@@ -1146,9 +1146,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     }
   }
 
-//*****************************************************************************
-//************************** METODO GETASIGNS *********************************
-//*****************************************************************************
+//--------------------------------------------------------------
+//------------------------- _getAsigns -------------------------
+//--------------------------------------------------------------
 
   Future<void> _getAsigns() async {
     setState(() {});
@@ -1203,9 +1203,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     _getEquiposExtras();
   }
 
-//*****************************************************************************
-//********************** METODO GETEQUIPOSEXTRAS ******************************
-//*****************************************************************************
+//--------------------------------------------------------------
+//------------------------- _getEquiposExtras ------------------
+//--------------------------------------------------------------
 
   Future<void> _getEquiposExtras() async {
     setState(() {});
@@ -1252,9 +1252,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     }
   }
 
-//*****************************************************************************
-//************************** METODO SHOWASIGNACION ****************************
-//*****************************************************************************
+//--------------------------------------------------------------
+//------------------------- _showAsignacion --------------------
+//--------------------------------------------------------------
 
   Widget _showAsignacion() {
     return Card(
@@ -1355,10 +1355,10 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                       fontSize: 12,
                                     )),
                               ),
-                              _asignacion == 'Cable'
+                              _asignacion.proyectomodulo == 'Cable'
                                   ? const SizedBox(
                                       width: 30,
-                                      child: const Text("OT: ",
+                                      child: Text("OT: ",
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: const Color(0xFF0e4888),
@@ -1366,7 +1366,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                           )),
                                     )
                                   : Container(),
-                              _asignacion == 'Cable'
+                              _asignacion.proyectomodulo == 'Cable'
                                   ? Expanded(
                                       flex: 1,
                                       child: Text(
@@ -1518,15 +1518,9 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     );
   }
 
-  //------------------------------------------------------------
-  //--------------------- _sendMessage2 ------------------------
-  //------------------------------------------------------------
-
-  void _sendMessage2(String message) async {}
-
-  //------------------------------------------------------------
-  //------------------------- _getComboTelefonos ---------------
-  //------------------------------------------------------------
+//------------------------------------------------------------
+//------------------------- _getComboTelefonos ---------------
+//------------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboTelefonos() {
     List<String> telefonos = [];
@@ -1566,7 +1560,6 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
         value: telefono,
       ));
     }
-
     return list;
   }
 }

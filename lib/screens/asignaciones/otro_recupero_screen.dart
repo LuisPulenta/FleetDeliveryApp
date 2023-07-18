@@ -25,6 +25,10 @@ class OtroRecuperoScreen extends StatefulWidget {
 }
 
 class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
+
   String _coddeco1OtroRecupero = 'Elija un Modelo...';
   final String _coddeco1OtroRecuperoError = '';
   final bool _coddeco1OtroRecuperoShowError = false;
@@ -34,6 +38,10 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
   final bool _nroserieextraOtroRecuperoShowError = false;
   final TextEditingController _nroserieextraOtroRecuperoController =
       TextEditingController();
+
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -391,9 +399,9 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
     );
   }
 
-//*****************************************************************************
-//************************** GETCOMBOEQUIPOS **********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getComboEquipos -----------------
+//--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboEquipos() {
     List<DropdownMenuItem<String>> list = [];
@@ -412,9 +420,9 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
     return list;
   }
 
-//*****************************************************************************
-//************************** METODO GRABAR ************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _grabar --------------------------
+//--------------------------------------------------------
 
   Future<void> _grabar() async {
 //---------------- Verifica que se haya elegido un modelo --------------

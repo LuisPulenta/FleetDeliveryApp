@@ -50,9 +50,9 @@ class AsignacionInfoScreen extends StatefulWidget {
 
 class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     with SingleTickerProviderStateMixin {
-//*****************************************************************************
-//************************** DEFINICION DE VARIABLES **************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
 
   String ruta = '';
 
@@ -196,9 +196,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   LatLng _center = const LatLng(0, 0);
 
-//*****************************************************************************
-//************************** INIT STATE ***************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- initState ------------------------
+//--------------------------------------------------------
+
   @override
   void initState() {
     super.initState();
@@ -236,9 +237,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     _getAsigns();
   }
 
-//*****************************************************************************
-//************************** PANTALLA *****************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -269,6 +270,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //-------------------------------------------------------------------------
 //-------------------------- 1° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
+
                 Container(
                   margin: const EdgeInsets.all(0),
                   child: Column(
@@ -291,9 +293,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     ],
                   ),
                 ),
+
 //-------------------------------------------------------------------------
 //-------------------------- 2° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
+
                 Column(
                   children: [
                     AppBar(
@@ -312,9 +316,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     )
                   ],
                 ),
+
 //-------------------------------------------------------------------------
 //-------------------------- 3° TABBAR ------------------------------------
 //-------------------------------------------------------------------------
+
                 Column(
                   children: [
                     AppBar(
@@ -347,26 +353,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             const SizedBox(
                               height: 20,
                             ),
-                            // Row(
-                            //   children: [
-                            //     const Text("Observación Captura: ",
-                            //         style: TextStyle(
-                            //           fontSize: 12,
-                            //           color: Color(0xFF0e4888),
-                            //           fontWeight: FontWeight.bold,
-                            //         )),
-                            //     Expanded(
-                            //       child:
-                            //           Text('${_asignacion.observacionCaptura}',
-                            //               style: const TextStyle(
-                            //                 fontSize: 12,
-                            //               )),
-                            //     ),
-                            //   ],
-                            // ),
-                            // const SizedBox(
-                            //   height: 20,
-                            // ),
                             Row(
                               children: [
                                 const Text("N° Series Extras: ",
@@ -622,42 +608,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   ],
                 ),
               ),
-              // Tab(
-              //   child: Row(
-              //     children: [
-              //       Icon(Icons.map),
-              //       SizedBox(
-              //         width: 2,
-              //       ),
-              //       Text(
-              //         "Mapa",
-              //         style: TextStyle(fontSize: 14),
-              //       ),
-              //     ],
-              //   ),
-              // ),
             ]),
       ),
     );
   }
 
-// //*****************************************************************************
-// //************************** METODO SHOWSNACKBAR ******************************
-// //*****************************************************************************
-
-//   void _showSnackbar() {
-//     SnackBar snackbar = const SnackBar(
-//       content: Text("No hay permiso de Almacenamiento"),
-//       backgroundColor: Colors.red,
-//       //duration: Duration(seconds: 3),
-//     );
-//     ScaffoldMessenger.of(context).showSnackBar(snackbar);
-//     //ScaffoldMessenger.of(context).hideCurrentSnackBar();
-//   }
-
-//*****************************************************************************
-//************************** METODO SHOWASIGNACION ****************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showAsignacion ------------------
+//--------------------------------------------------------
 
   Widget _showAsignacion() {
     return Card(
@@ -749,23 +707,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           const SizedBox(
                             height: 1,
                           ),
-                          // Row(
-                          //   children: [
-                          //     Text("Rec.Téc.: ",
-                          //         style: TextStyle(
-                          //           fontSize: 12,
-                          //           color: Color(0xFF0e4888),
-                          //           fontWeight: FontWeight.bold,
-                          //         )),
-                          //     Expanded(
-                          //       child: Text(
-                          //           _asignacion.reclamoTecnicoID.toString(),
-                          //           style: TextStyle(
-                          //             fontSize: 12,
-                          //           )),
-                          //     ),
-                          //   ],
-                          // ),
                           Row(
                             children: [
                               Expanded(
@@ -870,20 +811,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         ),
                                       ],
                                     ),
-                                    // Row(
-                                    //   children: [
-                                    //     Text("Provincia: ",
-                                    //         style: TextStyle(
-                                    //           fontSize: 12,
-                                    //           color: Color(0xFF0e4888),
-                                    //           fontWeight: FontWeight.bold,
-                                    //         )),
-                                    //     Text(_asignacion.provincia.toString(),
-                                    //         style: TextStyle(
-                                    //           fontSize: 12,
-                                    //         )),
-                                    //   ],
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -930,9 +857,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//*****************************************************************************
-//************************** SHOWBUTTONDNIFIRMA *******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showButtonsDNIFirma -------------
+//--------------------------------------------------------
 
   Widget _showButtonsDNIFirma() {
     return Container(
@@ -1052,9 +979,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//*****************************************************************************
-//************************** SHOWBUTTONSESTADOS *******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showButtonsEstados --------------
+//--------------------------------------------------------
 
   Widget _showButtonsEstados() {
     return Column(
@@ -1183,9 +1110,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//*****************************************************************************
-//************************** SHOWCODCIERREOBSERVACIONES ***********************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showCodCierreObservaciones ------
+//--------------------------------------------------------
 
   Widget _showCodCierreObservaciones() {
     return Column(
@@ -1236,9 +1163,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//*****************************************************************************
-//************************** SHOWBUTTONSGUARDARCANCELAR ***********************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showButtonsGuardarCancelar ------
+//--------------------------------------------------------
 
   Widget _showButtonsGuardarCancelar() {
     return Padding(
@@ -1348,9 +1275,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//*****************************************************************************
-//************************** SHOWAUTONUMERICOS ********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showAutonumericos ---------------
+//--------------------------------------------------------
 
   Widget _showAutonumericos() {
     return ListView(
@@ -1924,9 +1851,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//*****************************************************************************
-//************************** GETCOMBOCODIGOSCIERRE ****************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getComboCodigosCierre -----------
+//--------------------------------------------------------
 
   List<DropdownMenuItem<int>> _getComboCodigosCierre() {
     List<DropdownMenuItem<int>> list = [];
@@ -1945,9 +1872,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     return list;
   }
 
-//*****************************************************************************
-//************************** TAKEPICTURE **************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _takePicture ---------------------
+//--------------------------------------------------------
 
   void _takePicture() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -1985,9 +1912,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//*****************************************************************************
-//************************** TAKESIGNATURE ************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _takeSignature -------------------
+//--------------------------------------------------------
 
   void _takeSignature() async {
     Response? response = await Navigator.push(
@@ -1997,13 +1924,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         _signatureChanged = true;
         _signature = response.result;
       });
-
-      //_signature2 = await _signature.toByteData(format: ui.ImageByteFormat.png);
     }
   }
-//*****************************************************************************
-//************************** METODO GETASIGNS *********************************
-//*****************************************************************************
+
+//--------------------------------------------------------
+//--------------------- _getAsigns -----------------------
+//--------------------------------------------------------
 
   Future<void> _getAsigns() async {
     setState(() {});
@@ -2086,9 +2012,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//*****************************************************************************
-//********************** METODO GETEQUIPOSEXTRAS ******************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getEquiposExtras ----------------
+//--------------------------------------------------------
 
   Future<void> _getEquiposExtras() async {
     setState(() {});
@@ -2134,9 +2060,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//*****************************************************************************
-//************************** SHOWTELEFONOS ************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showTelefonos -------------------
+//--------------------------------------------------------
 
   Widget _showTelefonos() {
     return Card(
@@ -2579,9 +2505,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//-------------------------------------------------------------------------
-//-------------------------- METODO NAVEGAR -------------------------------
-//-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _navegar -------------------------
+//--------------------------------------------------------
 
   _navegar(Asignacion2 asignacion) async {
     if (asignacion.grxx == "0" ||
@@ -2669,9 +2595,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
   }
 
-//*****************************************************************************
-//************************** METODO GUARDAR ***********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _guardar ------------------------
+//--------------------------------------------------------
 
 //-------------------------- Verifica que no sea PEN --------------------------
   void _guardar() async {
@@ -3255,9 +3181,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//*****************************************************************************
-//************************** METODO GUARDAR2 ***********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _guardar2 ------------------------
+//--------------------------------------------------------
 
   void _guardar2() async {
 //---------------- Establece valores para grabar -----------------------------
@@ -3406,12 +3332,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
     _editar = false;
     setState(() {});
-    //Navigator.pop(context, "Yes");
   }
 
-//*****************************************************************************
-//************************** SHOWMAP ******************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _showMap ------------------------
+//--------------------------------------------------------
 
   void _showMap(Asignacion2 asignacion) async {
     _markers.clear();
@@ -3523,9 +3448,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//*****************************************************************************
-//************************** GETCOMBOEQUIPOS **********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getComboEquipos -----------------
+//--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboEquipos() {
     List<DropdownMenuItem<String>> list = [];
@@ -3544,9 +3469,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     return list;
   }
 
-//*****************************************************************************
-//************************** _getComboCuandos *********************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _getComboCuandos -----------------
+//--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboCuandos() {
     List<DropdownMenuItem<String>> list = [];
@@ -3561,9 +3486,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     return list;
   }
 
-//*****************************************************************************
-//************************** SELECTPICTURE ************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _selectPicture -------------------
+//--------------------------------------------------------
+
   void _selectPicture() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -3575,9 +3501,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//*****************************************************************************
-//************************** _sendMessage *************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _sendMessage ---------------------
+//--------------------------------------------------------
 
   void _sendMessage(String number) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -3666,7 +3592,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           height: 10,
                         ),
                         Text(
-                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
+                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
                             style: const TextStyle(
                                 color: Colors.blue, fontSize: 12)),
                         const SizedBox(
@@ -3771,7 +3697,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               phoneNumber: _number2,
                               //***** MENSAJE DE CONTACTO *****
                               text:
-                                  'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de ${empresa}. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
+                                  'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
                             );
                             await launch('$link');
                           },
@@ -3789,9 +3715,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         });
   }
 
-//*****************************************************************************
-//************************** _sendMessage2 ************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _sendMessage2 --------------------
+//--------------------------------------------------------
 
   void _sendMessage2(String message) async {
     String _number2 = "";
@@ -3952,9 +3878,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         });
   }
 
-//*****************************************************************************
-//************************** _sendMessage3 ************************************
-//*****************************************************************************
+//--------------------------------------------------------
+//--------------------- _sendMessage3 --------------------
+//--------------------------------------------------------
 
   void _sendMessage3(String message) async {
     String _number2 = "";
@@ -4100,23 +4026,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    // onPressed: () async {
-                    //   await _createPDF(_number2, message);
-                    //   Navigator.pop(context);
-                    //   if (ruta != '') {
-                    //     await Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => PdfScreen(
-                    //           ruta: ruta,
-                    //         ),
-                    //       ),
-                    //     );
-                    //     ruta = '';
-                    //   }
-                    //   return;
-                    // }
-
                     onPressed: _existeChat
                         ? () async {
                             await _createPDF(_number2, message);
@@ -4161,9 +4070,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         });
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- _createPDF ---------------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _createPDF -----------------------
+//--------------------------------------------------------
 
   Future<void> _createPDF(String number, String message) async {
     //Create a new PDF document
@@ -4342,7 +4251,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
     }
 
-    //*********** AGREGA EQUIPOS EXTRAS************
+    //------------- AGREGA EQUIPOS EXTRAS ----------------
 
     for (AsignacionesOtsEquiposExtra equipoExtra in _equiposExtra) {
       String modelo =
@@ -4397,9 +4306,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     await _saveAndLaunchFile(bytes, 'Comprobante.pdf', number);
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- _saveAndLaunchFile -------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _saveAndLaunchFile ---------------
+//--------------------------------------------------------
 
   Future<void> _saveAndLaunchFile(
       List<int> bytes, String fileName, String number) async {
@@ -4426,9 +4335,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- _creaChat ----------------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _creaChat ------------------------
+//--------------------------------------------------------
 
   Future<void> _creaChat(String number) async {
     _existeChat = true;
@@ -4440,18 +4349,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     await launch('$link');
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- _readImageData -----------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _readImageData -------------------
+//--------------------------------------------------------
 
   Future<Uint8List> _readImageData(String name) async {
     final data = await rootBundle.load('images/$name');
     return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- requestPermission -----------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- requestPermission ----------------
+//--------------------------------------------------------
 
   Future<bool> requestPermission() async {
     bool storagePermission = await Permission.storage.isGranted;
@@ -4482,9 +4391,9 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-  //-------------------------------------------------------------------------
-  //---------------------------- initRecorder -----------------------------
-  //-------------------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- initRecorder ---------------------
+//--------------------------------------------------------
 
   Future initRecorder() async {
     bool permission = await requestPermission();
@@ -4508,15 +4417,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         if (!await directory.exists()) {
           await directory.create(recursive: true);
         }
-      } else {
-        // _showSnackbar();
       }
     }
   }
 
-  //------------------------------------------------------------
-  //------------------------- _getComboTelefonos ---------------
-  //------------------------------------------------------------
+//--------------------------------------------------------
+//--------------------- _getComboTelefonos ---------------
+//--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboTelefonos() {
     List<String> telefonos = [];
@@ -4556,7 +4463,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         value: telefono,
       ));
     }
-
     return list;
   }
 }

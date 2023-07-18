@@ -20,6 +20,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
 //-----------------------------------------------------------------------------
 //---------------------------- Variables --------------------------------------
 //-----------------------------------------------------------------------------
+
   bool _showLoader = false;
   late EquiposSinDevolver _equiposSinDevolver;
   late Turno _turno;
@@ -337,7 +338,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                                             color: Colors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold)),
-                                    Text(_HoraMinuto(_turno.horaTurno!),
+                                    Text(_horaMinuto(_turno.horaTurno!),
                                         style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -400,7 +401,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold)),
                                     Text(
-                                        _HoraMinuto(
+                                        _horaMinuto(
                                             _turno.horaTurnoConfirmado!),
                                         style: const TextStyle(
                                             color: Colors.black,
@@ -542,7 +543,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
   }
 
 //-----------------------------------------------------------------
-//---------------------  _showButtonTurno -----------------
+//---------------------  _showButtonTurno -------------------------
 //-----------------------------------------------------------------
 
   Widget _showButtonTurno() {
@@ -724,13 +725,11 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
           ]);
       return;
     }
-
-    //Navigator.pop(context, 'yes');
     _getTurnos();
     setState(() {});
   }
 
-  //--------------------------------------------------------------------------
+  //------------------------------------------------------------------------
   //---------------------------- _delete -----------------------------------
   //------------------------------------------------------------------------
 
@@ -817,7 +816,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     setState(() {});
   }
 
-  //--------------------------------------------------------------------------
+  //------------------------------------------------------------------------
   //---------------------------- _confirma ---------------------------------
   //------------------------------------------------------------------------
 
@@ -911,8 +910,6 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
           ]);
       return;
     }
-
-    //Navigator.pop(context, 'yes');
     _getTurnos();
     setState(() {});
   }
@@ -955,6 +952,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
       ),
     );
   }
+
 //----------------------------------------------------------------------------
 //------------------------------- _getFecha ----------------------------------
 //----------------------------------------------------------------------------
@@ -1051,6 +1049,10 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     );
   }
 
+//----------------------------------------------------------------------------
+//------------------------------- _selectDate --------------------------------
+//----------------------------------------------------------------------------
+
   void _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
       context: context,
@@ -1065,6 +1067,10 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     }
   }
 
+//----------------------------------------------------------------------------
+//------------------------------- _selectTime --------------------------------
+//----------------------------------------------------------------------------
+
   void _selectTime(BuildContext context) async {
     final TimeOfDay? selected = await showTimePicker(
       initialTime: TimeOfDay.now(),
@@ -1078,10 +1084,10 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
   }
 
 //----------------------------------------------------------------------------
-//----------------------------- _HoraMinuto ----------------------------------
+//----------------------------- _horaMinuto ----------------------------------
 //----------------------------------------------------------------------------
 
-  String _HoraMinuto(int valor) {
+  String _horaMinuto(int valor) {
     String hora = (valor / 3600).floor().toString();
     String minutos =
         ((valor - ((valor / 3600).floor()) * 3600) / 60).round().toString();
@@ -1096,6 +1102,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
 //-------------------------------------------------------------------------
 //------------------------------ _celda -----------------------------------
 //-------------------------------------------------------------------------
+
 class _celda extends StatelessWidget {
   final String valor;
   final Color color;

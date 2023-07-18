@@ -28,6 +28,10 @@ class AsignacionesMapScreen extends StatefulWidget {
 }
 
 class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
+//--------------------------------------------------------
+//--------------------- Variables ------------------------
+//--------------------------------------------------------
+
   bool ubicOk = false;
   double latitud = 0;
   double longitud = 0;
@@ -46,14 +50,10 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
       speedAccuracy: 0);
   CameraPosition _initialPosition =
       const CameraPosition(target: LatLng(31, 64), zoom: 16.0);
-  //static const LatLng _center = const LatLng(-31.4332373, -64.226344);
 
-  @override
-  void dispose() {
-    widget.customInfoWindowController.dispose();
-    super.dispose();
-  }
-
+//--------------------------------------------------------
+//--------------------- initState ------------------------
+//--------------------------------------------------------
   @override
   void initState() {
     super.initState();
@@ -63,17 +63,17 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
     _initialPosition = CameraPosition(target: widget.posicion, zoom: 3.0);
 
     ubicOk = true;
-
-    // _markers.add(Marker(
-    //   markerId: MarkerId(widget.paradaenvio.secuencia.toString()),
-    //   position: _center,
-    //   infoWindow: InfoWindow(
-    //     title: widget.paradaenvio.titular.toString(),
-    //     snippet: widget.paradaenvio.domicilio.toString(),
-    //   ),
-    //   icon: BitmapDescriptor.defaultMarker,
-    // ));
   }
+
+  @override
+  void dispose() {
+    widget.customInfoWindowController.dispose();
+    super.dispose();
+  }
+
+//--------------------------------------------------------
+//--------------------- Pantalla -------------------------
+//--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,6 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
                     },
                     myLocationEnabled: true,
                     initialCameraPosition: _initialPosition,
-                    onCameraMove: _onCameraMove,
                     markers: _markers,
                     mapType: _defaultMapType,
                     onMapCreated: (GoogleMapController controller) async {
@@ -113,13 +112,6 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
                           }),
                     ]),
                   ),
-                  // Center(
-                  //   child: Icon(
-                  //     Icons.location_on,
-                  //     color: Colors.red,
-                  //     size: 50,
-                  //   ),
-                  // ),
                 ])
               : Container(),
           _showLoader
@@ -138,7 +130,9 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
     );
   }
 
-  void _onCameraMove(CameraPosition position) {}
+//--------------------------------------------------------
+//--------------------- _changeMapType -------------------
+//--------------------------------------------------------
 
   void _changeMapType() {
     _defaultMapType = _defaultMapType == MapType.normal
