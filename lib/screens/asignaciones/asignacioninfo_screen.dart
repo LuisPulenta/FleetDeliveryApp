@@ -2558,9 +2558,17 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
+//--------------------------------------------------------
+//--------------------- isNullOrEmpty --------------------
+//--------------------------------------------------------
+
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
+
+//--------------------------------------------------------
+//--------------------- _elegirtodos ---------------------
+//--------------------------------------------------------
 
   void _elegirtodos() {
     estadogaos = "EJB";
@@ -2575,6 +2583,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
   }
 
+//--------------------------------------------------------
+//--------------------- _deselegirtodos ------------------
+//--------------------------------------------------------
+
   void _deselegirtodos() {
     estadogaos = "INC";
     for (Asign asign in _asigns) {
@@ -2584,6 +2596,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
     setState(() {});
   }
+
+//--------------------------------------------------------
+//--------------------- _elegiralgunos -------------------
+//--------------------------------------------------------
 
   void _elegiralgunos() {
     estadogaos = "PAR";

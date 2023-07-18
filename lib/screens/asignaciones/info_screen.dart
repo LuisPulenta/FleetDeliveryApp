@@ -66,7 +66,7 @@ class _InfoScreenState extends State<InfoScreen> {
     return Column(
       children: <Widget>[
         const Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 5),
           child: Text(
             'Este listado puede incluir Asignaciones con Fechas Cita anteriores al día de la fecha',
             style: TextStyle(color: Colors.red),

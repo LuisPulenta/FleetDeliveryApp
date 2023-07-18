@@ -485,7 +485,7 @@ class _AsignacionesTodasMapScreenState
 //---------------------------------------------
 
   void _goInfoAsignacion(Asignacion2 asignacion) async {
-    String? result = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AsignacionesScreen(

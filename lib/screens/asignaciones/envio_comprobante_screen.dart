@@ -177,7 +177,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                           height: 10,
                         ),
                         _showAsignacion(),
-                        Spacer(),
+                        const Spacer(),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: ElevatedButton(
@@ -1239,7 +1239,6 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
     setState(() {});
 
-    var a = 1;
     if (!response.isSuccess) {
       await showAlertDialog(
           context: context,
@@ -1259,7 +1258,6 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
   Widget _showAsignacion() {
     return Card(
       color: Colors.white,
-      //color: Color(0xFFC7C7C8),
       shadowColor: Colors.white,
       elevation: 10,
       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
