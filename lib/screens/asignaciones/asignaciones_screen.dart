@@ -823,20 +823,12 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             )),
                                       ),
                                       Expanded(
-                                        child: (e.entrecallE1
-                                                        .toString()
-                                                        .length >
-                                                    1 &&
-                                                e.entrecallE2
-                                                        .toString()
-                                                        .length >
-                                                    1)
-                                            ? Text(
-                                                '${e.entrecallE1.toString()} y ${e.entrecallE2.toString()}',
+                                        child: Text(
+                                                '${e.entrecallE1.toString()} - ${e.entrecallE2.toString()}',
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                 ))
-                                            : const Text(""),
+                                            ,
                                       ),
                                     ],
                                   ),

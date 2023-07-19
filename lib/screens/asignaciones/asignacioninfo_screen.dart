@@ -747,20 +747,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                               )),
                                         ),
                                         Expanded(
-                                          child: (_asignacion.entrecallE1
-                                                          .toString()
-                                                          .length >
-                                                      1 &&
-                                                  _asignacion.entrecallE2
-                                                          .toString()
-                                                          .length >
-                                                      1)
-                                              ? Text(
-                                                  '${_asignacion.entrecallE1.toString()} y ${_asignacion.entrecallE2.toString()}',
+                                          child: Text(
+                                                  '${_asignacion.entrecallE1.toString()} - ${_asignacion.entrecallE2.toString()}',
                                                   style: const TextStyle(
                                                     fontSize: 12,
                                                   ))
-                                              : const Text(""),
+                                              ,
                                         ),
                                       ],
                                     ),
