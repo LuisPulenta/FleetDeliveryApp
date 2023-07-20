@@ -45,6 +45,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   double _sliderValue = 0;
+  double _sliderValue2 = 0;
   bool _prioridad = false;
   bool _citaHoy = false;
 
@@ -652,14 +653,35 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   )),
               Slider(
                 min: 0,
-                max: 100,
+                max: 6,
                 activeColor: const Color(0xFF282886),
-                value: _sliderValue,
+                value: _sliderValue2,
                 onChanged: (value) {
-                  _sliderValue = value;
+                  if (value == 0) {
+                    _sliderValue = 0;
+                  }
+                  if (value == 1) {
+                    _sliderValue = 3;
+                  }
+                  if (value == 2) {
+                    _sliderValue = 7;
+                  }
+                  if (value == 3) {
+                    _sliderValue = 15;
+                  }
+                  if (value == 4) {
+                    _sliderValue = 30;
+                  }
+                  if (value == 5) {
+                    _sliderValue = 45;
+                  }
+                  if (value == 6) {
+                    _sliderValue = 60;
+                  }
+                  _sliderValue2 = value;
                   _filter();
                 },
-                divisions: 5,
+                divisions: 6,
               ),
               Center(child: Text(_sliderValue.round().toString())),
             ],
@@ -824,11 +846,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                                '${e.entrecallE1.toString()} - ${e.entrecallE2.toString()}',
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                ))
-                                            ,
+                                            '${e.entrecallE1.toString()} - ${e.entrecallE2.toString()}',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            )),
                                       ),
                                     ],
                                   ),
