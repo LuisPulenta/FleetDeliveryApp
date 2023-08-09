@@ -37,6 +37,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
 
+  int _valorMarcador = 0;
+
   bool _showLoader = false;
   bool _isFiltered = false;
   bool bandera = false;
@@ -45,7 +47,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   double _sliderValue = 0;
-  double _sliderValue2 = 0;
   bool _prioridad = false;
   bool _citaHoy = false;
 
@@ -90,59 +91,58 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   int intentos = 0;
 
   Asignacion2 asignacionSelected = Asignacion2(
-    recupidjobcard: '',
-    cliente: '',
-    documento: '',
-    nombre: '',
-    domicilio: '',
-    cp: '',
-    entrecallE1: '',
-    entrecallE2: '',
-    partido: '',
-    localidad: '',
-    telefono: '',
-    grxx: '',
-    gryy: '',
-    estadogaos: '',
-    proyectomodulo: '',
-    userID: 0,
-    causantec: '',
-    subcon: '',
-    fechaAsignada: '',
-    codigoCierre: 0,
-    descripcion: '',
-    cierraenapp: 0,
-    nomostrarapp: 0,
-    novedades: '',
-    provincia: '',
-    reclamoTecnicoID: 0,
-    motivos: '',
-    fechaCita: '',
-    medioCita: '',
-    nroSeriesExtras: '',
-    evento1: '',
-    fechaEvento1: '',
-    evento2: '',
-    fechaEvento2: '',
-    evento3: '',
-    fechaEvento3: '',
-    evento4: '',
-    fechaEvento4: '',
-    observacion: '',
-    telefAlternativo1: '',
-    telefAlternativo2: '',
-    telefAlternativo3: '',
-    telefAlternativo4: '',
-    cantAsign: 0,
-    codigoequivalencia: '',
-    deco1descripcion: '',
-    elegir: 0,
-    observacionCaptura: '',
-    zona: '',
-    modificadoAPP: 0,
-    hsCumplidaTime: '',
-    marcado: 0,
-  );
+      recupidjobcard: '',
+      cliente: '',
+      documento: '',
+      nombre: '',
+      domicilio: '',
+      cp: '',
+      entrecallE1: '',
+      entrecallE2: '',
+      partido: '',
+      localidad: '',
+      telefono: '',
+      grxx: '',
+      gryy: '',
+      estadogaos: '',
+      proyectomodulo: '',
+      userID: 0,
+      causantec: '',
+      subcon: '',
+      fechaAsignada: '',
+      codigoCierre: 0,
+      descripcion: '',
+      cierraenapp: 0,
+      nomostrarapp: 0,
+      novedades: '',
+      provincia: '',
+      reclamoTecnicoID: 0,
+      motivos: '',
+      fechaCita: '',
+      medioCita: '',
+      nroSeriesExtras: '',
+      evento1: '',
+      fechaEvento1: '',
+      evento2: '',
+      fechaEvento2: '',
+      evento3: '',
+      fechaEvento3: '',
+      evento4: '',
+      fechaEvento4: '',
+      observacion: '',
+      telefAlternativo1: '',
+      telefAlternativo2: '',
+      telefAlternativo3: '',
+      telefAlternativo4: '',
+      cantAsign: 0,
+      codigoequivalencia: '',
+      deco1descripcion: '',
+      elegir: 0,
+      observacionCaptura: '',
+      zona: '',
+      modificadoAPP: 0,
+      hsCumplidaTime: '',
+      marcado: 0);
 
   final Set<Marker> _markers = {};
 
@@ -177,6 +177,10 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(onPressed: _showInfo, icon: const Icon(Icons.info)),
+          _asignaciones.isEmpty
+              ? Container()
+              : IconButton(
+                  onPressed: _showMap2, icon: const Icon(Icons.directions)),
           _asignaciones.isEmpty
               ? Container()
               : IconButton(onPressed: _showMap, icon: const Icon(Icons.map)),
@@ -655,35 +659,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   )),
               Slider(
                 min: 0,
-                max: 6,
+                max: 100,
                 activeColor: const Color(0xFF282886),
-                value: _sliderValue2,
+                value: _sliderValue,
                 onChanged: (value) {
-                  if (value == 0) {
-                    _sliderValue = 0;
-                  }
-                  if (value == 1) {
-                    _sliderValue = 3;
-                  }
-                  if (value == 2) {
-                    _sliderValue = 7;
-                  }
-                  if (value == 3) {
-                    _sliderValue = 15;
-                  }
-                  if (value == 4) {
-                    _sliderValue = 30;
-                  }
-                  if (value == 5) {
-                    _sliderValue = 45;
-                  }
-                  if (value == 6) {
-                    _sliderValue = 60;
-                  }
-                  _sliderValue2 = value;
+                  _sliderValue = value;
                   _filter();
                 },
-                divisions: 6,
+                divisions: 5,
               ),
               Center(child: Text(_sliderValue.round().toString())),
             ],
@@ -847,11 +830,20 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                             )),
                                       ),
                                       Expanded(
-                                        child: Text(
-                                            '${e.entrecallE1.toString()} - ${e.entrecallE2.toString()}',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        child: (e.entrecallE1
+                                                        .toString()
+                                                        .length >
+                                                    1 &&
+                                                e.entrecallE2
+                                                        .toString()
+                                                        .length >
+                                                    1)
+                                            ? Text(
+                                                '${e.entrecallE1.toString()} y ${e.entrecallE2.toString()}',
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                ))
+                                            : const Text(""),
                                       ),
                                     ],
                                   ),
@@ -1853,6 +1845,211 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           posicion: LatLng(latcenter, longcenter),
           markers: _markers,
           customInfoWindowController: _customInfoWindowController,
+        ),
+      ),
+    );
+  }
+
+//--------------------------------------------------------
+//--------------------- _showMap2 ------------------------
+//--------------------------------------------------------
+
+  void _showMap2() {
+    if (_asignaciones2.isEmpty) {
+      return;
+    }
+
+    _markers.clear();
+
+    double latmin = 180.0;
+    double latmax = -180.0;
+    double longmin = 180.0;
+    double longmax = -180.0;
+    double latcenter = 0.0;
+    double longcenter = 0.0;
+
+    for (Asignacion2 asign in _asignaciones2) {
+      var lat = double.tryParse(asign.grxx.toString()) ?? 0;
+      var long = double.tryParse(asign.gryy.toString()) ?? 0;
+
+      if (asign.marcado! > _valorMarcador) {
+        _valorMarcador = asign.marcado!;
+      }
+
+      if (lat.toString().length > 3 && long.toString().length > 3) {
+        if (lat < latmin) {
+          latmin = lat;
+        }
+        if (lat > latmax) {
+          latmax = lat;
+        }
+        if (long < longmin) {
+          longmin = long;
+        }
+        if (long > longmax) {
+          longmax = long;
+        }
+
+        _markers.add(Marker(
+            markerId: MarkerId(asign.cliente.toString()),
+            position: LatLng(lat, long),
+            // infoWindow: InfoWindow(
+            //   title: '${asign.cliente.toString()} - ${asign.nombre.toString()}',
+            //   snippet: asign.domicilio.toString(),
+            // ),
+            onTap: () {
+              // CameraPosition(
+              //     target: LatLng(element.latitud!.toDouble(),
+              //         element.longitud!.toDouble()),
+              //     zoom: 16.0);
+              _customInfoWindowController.addInfoWindow!(
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.info),
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                  child: Text(
+                                asign.proyectomodulo.toString(),
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              )),
+                              Expanded(
+                                  child: Text(
+                                '${asign.cliente.toString()} - ${asign.nombre.toString()}',
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              )),
+                              Expanded(
+                                  child: Text(asign.domicilio.toString(),
+                                      style: const TextStyle(fontSize: 12))),
+                              asign.fechaCita != null
+                                  ? Expanded(
+                                      child: Text(
+                                          'Fecha Cita: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(asign.fechaCita.toString()))}',
+                                          style: const TextStyle(fontSize: 12)))
+                                  : Container(),
+                              asign.fechaCita != null
+                                  ? Expanded(
+                                      child: Text(
+                                          'Hora Cita: ${DateFormat('HH:mm').format(DateTime.parse(asign.fechaCita.toString()))}',
+                                          style: const TextStyle(fontSize: 12)))
+                                  : Container(),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(Icons.map,
+                                              color: Color(0xff282886)),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            'Navegar',
+                                            style: TextStyle(
+                                                color: Color(0xff282886)),
+                                          ),
+                                        ],
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFFb3b3b4),
+                                        minimumSize:
+                                            const Size(double.infinity, 30),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () => _navegar(asign),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Text(
+                                            'Abrir',
+                                            style: TextStyle(
+                                                color: Color(0xff282886)),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Icon(Icons.arrow_forward_ios,
+                                              color: Color(0xff282886)),
+                                        ],
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFFb3b3b4),
+                                        minimumSize:
+                                            const Size(double.infinity, 30),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () => _goInfoAsignacion(asign),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  LatLng(lat, long));
+            },
+            icon: asign.proyectomodulo == 'Otro' && asign.fechaCita != null
+                ? BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueBlue)
+                : (asign.codigoCierre == 0)
+                    ? BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed)
+                    : BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueOrange)));
+      }
+    }
+    latcenter = (latmin + latmax) / 2;
+    longcenter = (longmin + longmax) / 2;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AsignacionesMap2Screen(
+          user: widget.user,
+          positionUser: widget.positionUser,
+          asignacion: _asignaciones[0],
+          posicion: LatLng(latcenter, longcenter),
+          asignaciones2: _asignaciones2,
+          customInfoWindowController: _customInfoWindowController,
+          valorMarcador: _valorMarcador,
         ),
       ),
     );
