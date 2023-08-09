@@ -192,7 +192,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       observacionCaptura: '',
       zona: '',
       modificadoAPP: 0,
-      hsCumplidaTime: '');
+      hsCumplidaTime: '',
+      marcado: 0);
 
   LatLng _center = const LatLng(0, 0);
 
@@ -748,11 +749,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         ),
                                         Expanded(
                                           child: Text(
-                                                  '${_asignacion.entrecallE1.toString()} - ${_asignacion.entrecallE2.toString()}',
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                  ))
-                                              ,
+                                              '${_asignacion.entrecallE1.toString()} - ${_asignacion.entrecallE2.toString()}',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                              )),
                                         ),
                                       ],
                                     ),

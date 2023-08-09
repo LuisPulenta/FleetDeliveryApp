@@ -50,6 +50,7 @@ class Asignacion2 {
   String? zona = '';
   int? modificadoAPP = 0;
   String? hsCumplidaTime = '';
+  int? marcado = 0;
 
   Asignacion2(
       {required this.recupidjobcard,
@@ -102,7 +103,8 @@ class Asignacion2 {
       required this.observacionCaptura,
       required this.zona,
       required this.modificadoAPP,
-      required this.hsCumplidaTime});
+      required this.hsCumplidaTime,
+      required this.marcado});
 
   Asignacion2.fromJson(Map<String, dynamic> json) {
     cliente = json['cliente'];
@@ -156,6 +158,7 @@ class Asignacion2 {
     zona = json['zona'];
     modificadoAPP = json['modificadoAPP'];
     hsCumplidaTime = json['hsCumplidaTime'];
+    marcado = json['marcado'];
   }
 
   Map<String, dynamic> toJson() {
@@ -211,6 +214,7 @@ class Asignacion2 {
     data['zona'] = zona;
     data['modificadoAPP'] = modificadoAPP;
     data['hsCumplidaTime'] = hsCumplidaTime;
+    data['marcado'] = marcado;
     return data;
   }
 
@@ -267,6 +271,7 @@ class Asignacion2 {
       'zona': zona,
       'modificadoAPP': modificadoAPP,
       'hsCumplidaTime': hsCumplidaTime,
+      'marcado': marcado,
     };
   }
 

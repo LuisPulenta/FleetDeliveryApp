@@ -58,14 +58,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   List<WebSesion> _webSesionsdb = [];
 
-  String _email = '';
-  String _password = '';
+  // String _email = '';
+  // String _password = '';
 
   //String _email = 'jona';
   //String _password = '123456';
 
-  //String _email = 'TEST';
-  //String _password = '123456';
+  String _email = 'TEST';
+  String _password = '123456';
 
   String _emailError = '';
   bool _emailShowError = false;
@@ -377,6 +377,18 @@ class _LoginScreenState extends State<LoginScreen> {
 //----------------------------------------------------------
 
   void _login() async {
+    if (_modulo.nroVersion != '' && _modulo.nroVersion != Constants.version) {
+      await showAlertDialog(
+          context: context,
+          title: 'Atención!',
+          message:
+              "Debe instalar la nueva versión disponible en Google Play para poder continuar.",
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
     setState(() {
       _passwordShow = false;
     });
@@ -614,7 +626,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _launchURL() async {
-    if (!await launch('http://www.fleetsa.com.ar:99/LoginForm')) {
+    if (!await launch('http://www.deliveryfleet.com.ar:99/LoginForm')) {
       throw 'No se puede conectar a la Web de Fleet';
     }
   }

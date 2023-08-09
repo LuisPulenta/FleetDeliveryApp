@@ -84,7 +84,8 @@ class _Home2ScreenState extends State<Home2Screen> {
       observacionCaptura: '',
       zona: '',
       modificadoAPP: 0,
-      hsCumplidaTime: '');
+      hsCumplidaTime: '',
+      marcado: 0);
 
 //--------------------------------------------------------
 //--------------------- initState ------------------------

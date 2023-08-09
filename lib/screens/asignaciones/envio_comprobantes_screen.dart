@@ -80,7 +80,8 @@ class _EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
       observacionCaptura: '',
       zona: '',
       modificadoAPP: 0,
-      hsCumplidaTime: '');
+      hsCumplidaTime: '',
+      marcado: 0);
 
 //--------------------------------------------------------------
 //------------------------- initState --------------------------
