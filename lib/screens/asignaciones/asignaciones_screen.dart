@@ -48,6 +48,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   double _sliderValue = 0;
   bool _prioridad = false;
+  bool _marcado = false;
   bool _citaHoy = false;
 
   bool _ordenarPorCliente = true;
@@ -593,7 +594,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   Widget _showFiltros() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      height: 100,
+      height: 117,
       child: Column(
         children: [
           Row(
@@ -652,7 +653,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           ),
           Row(
             children: [
-              const Text("Antiguedad (días): ",
+              const Text("Antig.(días): ",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -669,6 +670,27 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                 divisions: 5,
               ),
               Center(child: Text(_sliderValue.round().toString())),
+              SizedBox(
+                width: 25,
+              ),
+              Column(
+                children: [
+                  const Text("Marc.: ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  Checkbox(
+                      value: _marcado,
+                      focusColor: const Color(0xFF282886),
+                      fillColor:
+                          MaterialStateProperty.all(const Color(0xFF282886)),
+                      onChanged: (value) {
+                        _marcado = value!;
+                        _filter();
+                      }),
+                ],
+              ),
             ],
           ),
         ],
@@ -1150,7 +1172,27 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                         ),
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios),
+                    Column(
+                      children: [
+                        const Icon(Icons.arrow_forward_ios),
+                        e.marcado != 0
+                            ? const SizedBox(
+                                height: 40,
+                              )
+                            : Container(),
+                        e.marcado != 0
+                            ? CircleAvatar(
+                                radius: 12,
+                                backgroundColor: Colors.purple,
+                                child: Text(e.marcado.toString(),
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                              )
+                            : Container()
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -1532,6 +1574,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     bool condicionZona = false;
     bool condicionCartera = false;
     bool condicionCitaHoy = false;
+    bool condicionMarcado = false;
 
     for (var asignacion in _asignaciones) {
       if (_zona == 'Elija una Zona...') {
@@ -1615,6 +1658,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         }
       }
 //------------------------------------------------------------------------
+      if (!_marcado) {
+        condicionMarcado = true;
+      } else {
+        if (asignacion.marcado != 0) {
+          condicionMarcado = true;
+        } else {
+          condicionMarcado = false;
+        }
+      }
+
+//------------------------------------------------------------------------
       condicionFechaCita = (asignacion.fechaCita != null);
 //------------------------------------------------------------------------
       if (condicionTexto &&
@@ -1622,9 +1676,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
           (condicionCodCierre || condicionFechaCita) &&
           condicionZona &&
           condicionCartera &&
-          condicionCitaHoy) {
+          condicionCitaHoy &&
+          condicionMarcado) {
         filteredList.add(asignacion);
       }
+    }
+
+//Ordenar Lista Filtrada por ,arcado si esta _marcado en true
+
+    if (_marcado) {
+      filteredList.sort((a, b) {
+        return a.marcado!.compareTo(b.marcado!);
+      });
     }
 
     setState(() {
@@ -1854,7 +1917,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //--------------------- _showMap2 ------------------------
 //--------------------------------------------------------
 
-  void _showMap2() {
+  void _showMap2() async {
     if (_asignaciones2.isEmpty) {
       return;
     }
@@ -2039,7 +2102,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     latcenter = (latmin + latmax) / 2;
     longcenter = (longmin + longmax) / 2;
 
-    Navigator.push(
+    String? result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AsignacionesMap2Screen(
@@ -2053,6 +2116,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         ),
       ),
     );
+    _valorMarcador = 0;
+    await _getObras();
   }
 
 //--------------------------------------------------------

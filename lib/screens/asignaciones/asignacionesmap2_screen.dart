@@ -4,13 +4,11 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
+import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
-import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AsignacionesMap2Screen extends StatefulWidget {
   final Usuario user;
@@ -41,9 +39,11 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
 //--------------------- Variables ------------------------
 //--------------------------------------------------------
 
+  List<Asignacion2> asignacionesTemporal = [];
+  bool bandera = false;
+  List<Asign> _asigns = [];
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
-  bool poderMarcar = false;
   bool ubicOk = false;
   int _valorMarcador = 0;
   double latitud = 0;
@@ -62,7 +62,7 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
       speed: 0,
       speedAccuracy: 0);
   CameraPosition _initialPosition =
-      const CameraPosition(target: LatLng(31, 64), zoom: 16.0);
+      const CameraPosition(target: LatLng(31, 64), zoom: 10.0);
 
 //--------------------------------------------------------
 //--------------------- initState ------------------------
@@ -74,7 +74,7 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
     _getMarkers();
     _valorMarcador = widget.valorMarcador;
 
-    _initialPosition = CameraPosition(target: widget.posicion, zoom: 3.0);
+    _initialPosition = CameraPosition(target: widget.posicion, zoom: 10.0);
 
     ubicOk = true;
 
@@ -97,25 +97,6 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
       appBar: AppBar(
         title: Text(('Mapa Asign. ${widget.asignacion.proyectomodulo}')),
         centerTitle: true,
-        actions: [
-          Row(
-            children: [
-              const Text(
-                "Marcar:",
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-              Switch(
-                  value: poderMarcar,
-                  activeColor: Colors.green,
-                  inactiveThumbColor: Colors.grey,
-                  onChanged: (value) async {
-                    poderMarcar = value;
-                    var a = 1;
-                    setState(() {});
-                  }),
-            ],
-          ),
-        ],
       ),
       body: Stack(
         children: [
@@ -146,6 +127,73 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
                             _changeMapType();
                           }),
                     ]),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 10, left: 10),
+                    alignment: Alignment.bottomLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: ElevatedButton(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.pin),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text('Renumerar',
+                                      style: TextStyle(fontSize: 12)),
+                                ],
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    ui.Color.fromARGB(255, 108, 9, 126),
+                                minimumSize: const Size(double.infinity, 40),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () {
+                                _renumerar();
+                              }),
+                        ),
+                        const SizedBox(
+                          width: 3,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: ElevatedButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.cancel),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text('Borrar todo',
+                                    style: TextStyle(fontSize: 12)),
+                              ],
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xffdf281e),
+                              minimumSize: const Size(double.infinity, 40),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () {
+                              _borrar();
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 80,
+                        ),
+                      ],
+                    ),
                   ),
                 ])
               : Container(),
@@ -222,7 +270,7 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
               } else {
                 asign.marcado = 0;
               }
-
+              _getAsigns(asign);
               _getMarkers();
             },
             icon: asign.marcado == 0
@@ -235,7 +283,7 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
                         : BitmapDescriptor.defaultMarkerWithHue(
                             BitmapDescriptor.hueOrange)
                 : BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueGreen)));
+                    BitmapDescriptor.hueViolet)));
       }
     }
 
@@ -298,4 +346,126 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
+
+//--------------------------------------------------------
+//--------------------- _getAsigns -----------------------
+//--------------------------------------------------------
+
+  Future<void> _getAsigns(Asignacion2 asignacion) async {
+    setState(() {});
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {});
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    bandera = false;
+
+    Map<String, dynamic> request1 = {
+      'reclamoTecnicoID': asignacion.reclamoTecnicoID,
+      'userID': asignacion.userID,
+      'cliente': asignacion.cliente,
+      'domicilio': asignacion.domicilio,
+    };
+
+    Response response = Response(isSuccess: false);
+    do {
+      response = await ApiHelper.getAutonumericos(request1);
+      if (response.isSuccess) {
+        bandera = true;
+        _asigns = response.result;
+      }
+    } while (bandera == false);
+
+    setState(() {});
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    setState(() {
+      _asigns = response.result;
+    });
+
+    for (Asign asign in _asigns) {
+      asign.marcado = asignacion.marcado;
+      _guardar(asign);
+    }
+  }
+
+//--------------------------------------------------------
+//--------------------- _guardar -------------------------
+//--------------------------------------------------------
+  void _guardar(Asign asign) async {
+    Map<String, dynamic> request = {
+      //----------------- Campos que mantienen el valor -----------------
+      'IDREGISTRO': asign.idregistro,
+      'Marcado': asign.marcado,
+    };
+    Response response = await ApiHelper.put(
+        '/api/AsignacionesMarca/', asign.idregistro.toString(), request);
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+  }
+
+//--------------------------------------------------------
+//--------------------- _borrar --------------------------
+//--------------------------------------------------------
+  void _borrar() async {
+    for (Asignacion2 asignacion in widget.asignaciones2) {
+      if (asignacion.marcado! > 0) {
+        asignacion.marcado = 0;
+        _getAsigns(asignacion);
+      }
+    }
+    _valorMarcador = 0;
+    _getMarkers();
+  }
+
+//--------------------------------------------------------
+//--------------------- _renumerar -----------------------
+//--------------------------------------------------------
+  void _renumerar() async {
+    int numero = 1;
+
+    asignacionesTemporal = [];
+    asignacionesTemporal = widget.asignaciones2;
+
+    asignacionesTemporal.sort((a, b) {
+      return a.marcado!.compareTo(b.marcado!);
+    });
+
+    for (Asignacion2 asignacion in asignacionesTemporal) {
+      if (asignacion.marcado! > 0) {
+        asignacion.marcado = numero;
+        numero++;
+        _getAsigns(asignacion);
+      }
+    }
+    _valorMarcador = numero - 1;
+    _getMarkers();
+  }
 }

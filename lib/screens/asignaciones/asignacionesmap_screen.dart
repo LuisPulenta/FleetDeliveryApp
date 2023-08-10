@@ -49,7 +49,7 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
       speed: 0,
       speedAccuracy: 0);
   CameraPosition _initialPosition =
-      const CameraPosition(target: LatLng(31, 64), zoom: 16.0);
+      const CameraPosition(target: LatLng(31, 64), zoom: 10.0);
 
 //--------------------------------------------------------
 //--------------------- initState ------------------------
@@ -60,7 +60,7 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
 
     _markers = widget.markers;
 
-    _initialPosition = CameraPosition(target: widget.posicion, zoom: 3.0);
+    _initialPosition = CameraPosition(target: widget.posicion, zoom: 10.0);
 
     ubicOk = true;
   }
