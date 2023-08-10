@@ -47,6 +47,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   double _sliderValue = 0;
+  double _sliderValueAux = 0;
   bool _prioridad = false;
   bool _marcado = false;
   bool _citaHoy = false;
@@ -359,7 +360,31 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         children: <Widget>[
           Row(
             children: [
-              Expanded(flex: 4, child: _showTextoBuscar()),
+              Expanded(
+                flex: 1,
+                child: ElevatedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.sort_by_alpha),
+                        SizedBox(
+                          width: 5,
+                        ),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF282886),
+                      minimumSize: const Size(50, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      _orderMethod();
+                    }),
+              ),
+              Expanded(flex: 3, child: _showTextoBuscar()),
               Expanded(flex: 2, child: _showButtons()),
             ],
           ),
@@ -594,7 +619,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   Widget _showFiltros() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      height: 117,
+      height: 100,
       child: Column(
         children: [
           Row(
@@ -612,10 +637,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                     _prioridad = value!;
                     _filter();
                   }),
-              const SizedBox(
-                width: 50,
-              ),
-              const Text("Con Cita HOY: ",
+              const Text("C/Cita HOY: ",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -628,26 +650,18 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                     _citaHoy = value!;
                     _filter();
                   }),
-              ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.sort_by_alpha),
-                      SizedBox(
-                        width: 5,
-                      ),
-                    ],
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF282886),
-                    minimumSize: const Size(50, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onPressed: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    _orderMethod();
+              const Text("C/Ruta: ",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  )),
+              Checkbox(
+                  value: _marcado,
+                  focusColor: const Color(0xFF282886),
+                  fillColor: MaterialStateProperty.all(const Color(0xFF282886)),
+                  onChanged: (value) {
+                    _marcado = value!;
+                    _filter();
                   }),
             ],
           ),
@@ -660,36 +674,39 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   )),
               Slider(
                 min: 0,
-                max: 100,
+                max: 6,
                 activeColor: const Color(0xFF282886),
-                value: _sliderValue,
+                value: _sliderValueAux,
                 onChanged: (value) {
-                  _sliderValue = value;
+                  _sliderValueAux = value;
+                  if (_sliderValueAux == 0) {
+                    _sliderValue = 0;
+                  }
+                  if (_sliderValueAux == 1.0) {
+                    _sliderValue = 3;
+                  }
+                  if (_sliderValueAux == 2.0) {
+                    _sliderValue = 7;
+                  }
+                  if (_sliderValueAux == 3.0) {
+                    _sliderValue = 15;
+                  }
+                  if (_sliderValueAux == 4.0) {
+                    _sliderValue = 30;
+                  }
+                  if (_sliderValueAux == 5.0) {
+                    _sliderValue = 45;
+                  }
+                  if (_sliderValueAux == 6.0) {
+                    _sliderValue = 60;
+                  }
                   _filter();
                 },
-                divisions: 5,
+                divisions: 6,
               ),
               Center(child: Text(_sliderValue.round().toString())),
-              SizedBox(
+              const SizedBox(
                 width: 25,
-              ),
-              Column(
-                children: [
-                  const Text("Marc.: ",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  Checkbox(
-                      value: _marcado,
-                      focusColor: const Color(0xFF282886),
-                      fillColor:
-                          MaterialStateProperty.all(const Color(0xFF282886)),
-                      onChanged: (value) {
-                        _marcado = value!;
-                        _filter();
-                      }),
-                ],
               ),
             ],
           ),

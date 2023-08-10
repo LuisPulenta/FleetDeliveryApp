@@ -41,8 +41,15 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 //--------------------- Variables ------------------------
 //--------------------------------------------------------
 
+  String _proveedor = 'Elija un Proveedor...';
+  String _proveedorError = '';
+  bool _proveedorShowError = false;
+
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
+
+  List<ParadaEnvio> paradasFiltered = [];
+  List<String> _proveedores = [];
 
   List<String> _estados = [];
   String _estado = 'Elija un Estado...';
@@ -355,6 +362,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       notachofer: '');
 
   List<ParadaEnvio> _paradasenvios = [];
+  List<ParadaEnvio> _paradasenviosUnProveedor = [];
   List<ParadaEnvio> _paradasenviosfiltered = [];
   List<ParadaEnvio> _paradasenviosfiltered2 = [];
   List<ParadaEnvio> _paradasenviosdb = [];
@@ -381,6 +389,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   void _loadData() async {
     await _getEstados();
     _getComboMotivos();
+    _getComboProveedores();
   }
 
 //--------------------------------------------------------
@@ -439,9 +448,11 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   Widget _getContent() {
     return Column(
       children: <Widget>[
+        _showProveedores(),
         _showParadasCount(),
         Expanded(
-          child: widget.paradas.isEmpty ? _noContent() : _getListView(),
+          child:
+              _paradasenviosUnProveedor.isEmpty ? _noContent() : _getListView(),
         )
       ],
     );
@@ -454,7 +465,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   Widget _showParadasCount() {
     int pendientes = 0;
 
-    for (var element in _paradasenvios) {
+    for (var element in _paradasenviosUnProveedor) {
       if (element.estado == 3) {
         pendientes++;
       }
@@ -466,19 +477,19 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       child: pendientes > 0
           ? Row(
               children: [
-                const Text("Cantidad de Paradas: ",
+                const Text("Cantidad de Paradas Pendientes: ",
                     style: TextStyle(
                       fontSize: 14,
                       color: Color(0xff282886),
                       fontWeight: FontWeight.bold,
                     )),
-                Text(_paradasenviosfiltered.length.toString(),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Color(0xff282886),
-                      fontWeight: FontWeight.bold,
-                    )),
-                Text((' (Pendientes: $pendientes)'),
+                // Text(_paradasenviosUnProveedor.length.toString(),
+                //     style: const TextStyle(
+                //       fontSize: 14,
+                //       color: Color(0xff282886),
+                //       fontWeight: FontWeight.bold,
+                //     )),
+                Text((' $pendientes'),
                     style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xff282886),
@@ -487,8 +498,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
               ],
             )
           : const Center(
-              child: Text(
-                  "No existen envíos que cumplan las condiciones necesarias para entregas masivas.",
+              child: Text("",
                   maxLines: 2,
                   style: TextStyle(
                     fontSize: 14,
@@ -526,7 +536,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
           child: RefreshIndicator(
             onRefresh: _llenarparadasenvios,
             child: ListView(
-              children: _paradasenviosfiltered.map((e) {
+              children: _paradasenviosUnProveedor.map((e) {
                 return Card(
                   color: Colors.white60,
                   shadowColor: Colors.white,
@@ -1770,5 +1780,110 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         ),
       ],
     );
+  }
+
+//--------------------------------------------------------
+//--------------- _showProveedores -----------------------
+//--------------------------------------------------------
+
+  Widget _showProveedores() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+            child: _proveedores.isEmpty
+                ? Row(
+                    children: const [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Cargando Proveedores...'),
+                    ],
+                  )
+                : DropdownButtonFormField(
+                    value: _proveedor,
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Elija un Proveedor...',
+                      labelText: 'Proveedores',
+                      errorText: _proveedorShowError ? _proveedorError : null,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                    items: _getComboProveedores(),
+                    onChanged: (value) {
+                      _proveedor = value.toString();
+                    },
+                  ),
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        ElevatedButton(
+            child: const Icon(Icons.search),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF282886),
+              minimumSize: const Size(50, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            //onPressed: () => _getObras(),
+            onPressed: () async {
+              _getParadasenviosUnProveedor();
+            }),
+        const SizedBox(
+          width: 10,
+        ),
+      ],
+    );
+  }
+
+//--------------------------------------------------------
+//--------------------- _getComboProveedores -------------
+//--------------------------------------------------------
+
+  List<DropdownMenuItem<String>> _getComboProveedores() {
+    _proveedores = [];
+    for (ParadaEnvio paradaenvio in widget.paradasenvios) {
+      _proveedores.add(paradaenvio.proveedor.toString());
+    }
+
+    var paradasenviostiposSet = _proveedores.toSet();
+    _proveedores = paradasenviostiposSet.toList();
+
+    List<DropdownMenuItem<String>> list = [];
+    list.add(const DropdownMenuItem(
+      child: Text('Elija un Proveedor...'),
+      value: 'Elija un Proveedor...',
+    ));
+
+    for (String proveedor in _proveedores) {
+      list.add(DropdownMenuItem(
+        child: Text(proveedor),
+        value: proveedor,
+      ));
+    }
+
+    return list;
+  }
+
+//--------------------------------------------------------
+//------------------ _getParadasenviosUnProveedor --------
+//--------------------------------------------------------
+
+  _getParadasenviosUnProveedor() {
+    _paradasenviosUnProveedor = [];
+    for (ParadaEnvio paradasenvio in widget.paradasenvios) {
+      if (paradasenvio.proveedor == _proveedor) {
+        _paradasenviosUnProveedor.add(paradasenvio);
+      }
+    }
+    var a = 1;
+    setState(() {});
   }
 }
