@@ -1324,6 +1324,7 @@ class _HomeScreenState extends State<HomeScreen>
                   paradasenvios: _paradasenviosselected,
                   positionUser: _positionUser,
                   motivos: _motivos,
+                  proveedores: _proveedores,
                 )));
     if (result == 'yes' || result != 'yes') {
       setState(() {

@@ -20,6 +20,7 @@ class RutaInfo2Screen extends StatefulWidget {
   final List<ParadaEnvio> paradasenvios;
   final Position positionUser;
   final List<Motivo> motivos;
+  final List<Proveedor> proveedores;
 
   const RutaInfo2Screen(
       {Key? key,
@@ -29,7 +30,8 @@ class RutaInfo2Screen extends StatefulWidget {
       required this.envios,
       required this.paradasenvios,
       required this.positionUser,
-      required this.motivos})
+      required this.motivos,
+      required this.proveedores})
       : super(key: key);
 
   @override
@@ -40,7 +42,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------
-
+  int idProveedor = 0;
   String _proveedor = 'Elija un Proveedor...';
   String _proveedorError = '';
   bool _proveedorShowError = false;
@@ -388,7 +390,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
   void _loadData() async {
     await _getEstados();
-    _getComboMotivos();
+    // _getComboMotivos();
     _getComboProveedores();
   }
 
@@ -1526,6 +1528,8 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 //--------------------------------------------------------
 
   void _getComboMotivos() {
+    motivosEntregados = [];
+    motivosNoEntregados = [];
     motivosEntregados.add(const DropdownMenuItem(
       child: Text('Elija un Motivo...'),
       value: 'Elija un Motivo...',
@@ -1537,7 +1541,8 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     ));
 
     for (var motivo in widget.motivos) {
-      if (motivo.muestraParaEntregado == 1) {
+      if (motivo.muestraParaEntregado == 1 &&
+          motivo.exclusivoCliente == idProveedor) {
         motivosEntregados.add(DropdownMenuItem(
           child: Text(motivo.motivo.toString()),
           value: motivo.motivo.toString(),
@@ -1546,7 +1551,8 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
 
     for (var motivo in widget.motivos) {
-      if (motivo.muestraParaEntregado != 1) {
+      if (motivo.muestraParaEntregado != 1 &&
+          motivo.exclusivoCliente == idProveedor) {
         motivosNoEntregados.add(DropdownMenuItem(
           child: Text(motivo.motivo.toString()),
           value: motivo.motivo.toString(),
@@ -1593,6 +1599,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                     items: _getComboEstados(),
                     onChanged: (value) {
                       _estado = value.toString();
+                      _getComboMotivos();
                       _motivo = 'Elija un Motivo...';
                       _estado == 'Entregado'
                           ? motivos = motivosEntregados
@@ -1816,6 +1823,12 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                     items: _getComboProveedores(),
                     onChanged: (value) {
                       _proveedor = value.toString();
+                      idProveedor = 0;
+                      for (var proveedor in widget.proveedores) {
+                        if (proveedor.nombre == _proveedor) {
+                          idProveedor = proveedor.id;
+                        }
+                      }
                     },
                   ),
           ),
@@ -1850,7 +1863,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   List<DropdownMenuItem<String>> _getComboProveedores() {
     _proveedores = [];
     for (ParadaEnvio paradaenvio in widget.paradasenvios) {
-      _proveedores.add(paradaenvio.proveedor.toString());
+      if (paradaenvio.estado == 3) {
+        _proveedores.add(paradaenvio.proveedor.toString());
+      }
     }
 
     var paradasenviostiposSet = _proveedores.toSet();
@@ -1879,7 +1894,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   _getParadasenviosUnProveedor() {
     _paradasenviosUnProveedor = [];
     for (ParadaEnvio paradasenvio in widget.paradasenvios) {
-      if (paradasenvio.proveedor == _proveedor) {
+      if (paradasenvio.proveedor == _proveedor && paradasenvio.estado == 3) {
         _paradasenviosUnProveedor.add(paradasenvio);
       }
     }
