@@ -3524,7 +3524,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     if (number == 'xxx' || number == 'XXX') return;
 
+    String men1 = 'el retiro';
+    String men2 = 'retirarlo';
+
     String empresa = _asignacion.proyectomodulo.toString();
+
+    if (empresa == 'Otro') {
+      men1 = 'la entrega';
+      men2 = 'entregarlo';
+    }
+
     if (empresa == 'Otro' || empresa == 'TLC') {
       empresa = 'Telecentro';
     }
@@ -3600,7 +3609,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           height: 10,
                         ),
                         Text(
-                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
+                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer ${men1} de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para ${men2} $_cuando?. Muchas gracias.',
                             style: const TextStyle(
                                 color: Colors.blue, fontSize: 12)),
                         const SizedBox(
