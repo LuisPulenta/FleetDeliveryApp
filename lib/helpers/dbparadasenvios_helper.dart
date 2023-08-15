@@ -7,9 +7,9 @@ class DBParadasEnvios {
     return openDatabase(join(await getDatabasesPath(), 'paradasenvios.db'),
         onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE paradasenvios(idParada INTEGER,idRuta INTEGER,idEnvio INTEGER,secuencia INTEGER,leyenda TEXT,latitud DOUBLE,longitud DOUBLE,idproveedor INTEGER,estado INTEGER,ordenid TEXT,titular TEXT,dni TEXT,domicilio TEXT,cp TEXT,entreCalles TEXT,telefonos TEXT,localidad TEXT, bultos INTEGER, proveedor TEXT,motivo INTEGER, motivodesc TEXT,notas TEXT,enviado INTEGER, fecha TEXT,imageArray TEXT, observaciones TEXT,enviadoparada INTEGER,enviadoenvio INTEGER,enviadoseguimiento INTEGER)",
+        "CREATE TABLE paradasenvios(idParada INTEGER,idRuta INTEGER,idEnvio INTEGER,secuencia INTEGER,leyenda TEXT,latitud DOUBLE,longitud DOUBLE,idproveedor INTEGER,estado INTEGER,ordenid TEXT,titular TEXT,dni TEXT,domicilio TEXT,cp TEXT,entreCalles TEXT,telefonos TEXT,localidad TEXT, bultos INTEGER, proveedor TEXT,motivo INTEGER, motivodesc TEXT,notas TEXT,enviado INTEGER, fecha TEXT,imageArray TEXT, observaciones TEXT,enviadoparada INTEGER,enviadoenvio INTEGER,enviadoseguimiento INTEGER,avonCodAmount TEXT)",
       );
-    }, version: 2);
+    }, version: 3);
   }
 
   static Future<int> insertParadaEnvio(ParadaEnvio paradaenvio) async {
@@ -70,6 +70,7 @@ class DBParadasEnvios {
               enviadoparada: paradasenviosMap[i]['enviadoparada'],
               enviadoenvio: paradasenviosMap[i]['enviadoenvio'],
               enviadoseguimiento: paradasenviosMap[i]['enviadoseguimiento'],
+              avonCodAmount: paradasenviosMap[i]['avonCodAmount'],
             ));
   }
 }

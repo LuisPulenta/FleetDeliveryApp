@@ -98,6 +98,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     enviadoparada: 0,
     enviadoenvio: 0,
     enviadoseguimiento: 0,
+    avonCodAmount: '',
   );
 
   Parada paradaSelected = Parada(
@@ -417,8 +418,16 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                          ('Cant. de bultos: ${widget.paradaenvio.bultos.toString()}'))
+                      Row(
+                        children: [
+                          Text(
+                              ('Cant. de bultos: ${widget.paradaenvio.bultos.toString()}')),
+                          widget.paradaenvio.avonCodAmount != null
+                              ? Text(
+                                  ('    Cod \$: ${widget.paradaenvio.avonCodAmount.toString()}'))
+                              : const Text(('    Cod \$: 0'))
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -1211,6 +1220,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       enviadoparada: 0,
       enviadoenvio: 0,
       enviadoseguimiento: 0,
+      avonCodAmount: '',
     );
 
     var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
