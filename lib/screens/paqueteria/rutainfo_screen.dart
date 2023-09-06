@@ -687,6 +687,18 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 //--------------------------------------------------------
 
   Future<void> _goInfoParada(ParadaEnvio e) async {
+    if (e.titular == null || e.titular!.isEmpty) {
+      await showAlertDialog(
+          context: context,
+          title: 'Aviso',
+          message:
+              "Esta parada no tiene el Nombre del Cliente. Pruebe a volver a sincronizar/traer Rutas nuevamente.",
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
     var result = await Navigator.push(
         context,
         MaterialPageRoute(
