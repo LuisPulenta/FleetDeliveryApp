@@ -29,6 +29,7 @@ class ParadaEnvio {
   int? enviadoenvio = 0;
   int? enviadoseguimiento = 0;
   String? avonCodAmount = '';
+  String? avonCodMemo = '';
 
   ParadaEnvio({
     required this.idParada,
@@ -61,6 +62,7 @@ class ParadaEnvio {
     required this.enviadoenvio,
     required this.enviadoseguimiento,
     required this.avonCodAmount,
+    required this.avonCodMemo,
   });
 
   ParadaEnvio.fromJson(Map<String, dynamic> json) {
@@ -95,6 +97,7 @@ class ParadaEnvio {
     enviadoenvio = json['enviadoenvio'];
     enviadoseguimiento = json['enviadoseguimiento'];
     avonCodAmount = json['avonCodAmount'];
+    avonCodMemo = json['avonCodMemo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -130,6 +133,7 @@ class ParadaEnvio {
     data['enviadoenvio'] = enviadoenvio;
     data['enviadoseguimiento'] = enviadoseguimiento;
     data['avonCodAmount'] = avonCodAmount;
+    data['avonCodMemo'] = avonCodMemo;
 
     return data;
   }
@@ -166,6 +170,7 @@ class ParadaEnvio {
       'enviadoenvio': enviadoenvio,
       'enviadoseguimiento': enviadoseguimiento,
       'avonCodAmount': avonCodAmount,
+      'avonCodMemo': avonCodMemo,
     };
   }
 }

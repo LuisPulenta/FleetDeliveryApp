@@ -101,6 +101,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     enviadoenvio: 0,
     enviadoseguimiento: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   ParadaEnvio parenv = ParadaEnvio(
@@ -134,6 +135,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     enviadoenvio: 0,
     enviadoseguimiento: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Parada paradaSelected = Parada(
@@ -260,6 +262,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     latitud2: 0,
     longitud2: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Envio envioSaved = Envio(
@@ -340,6 +343,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     latitud2: 0,
     longitud2: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Seguimiento seguimientoSaved = Seguimiento(
@@ -1345,6 +1349,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         enviadoenvio: paradaenvio.enviadoenvio,
         enviadoseguimiento: paradaenvio.enviadoenvio,
         avonCodAmount: paradaenvio.avonCodAmount,
+        avonCodMemo: paradaenvio.avonCodMemo,
       );
 
       await DBParadasEnvios.update(paradaenvionueva);
@@ -1521,6 +1526,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       enviadoenvio: paradaenvio.enviadoenvio,
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1568,6 +1574,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       enviadoenvio: 1,
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1615,6 +1622,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       enviadoenvio: paradaenvio.enviadoenvio,
       enviadoseguimiento: 1,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);

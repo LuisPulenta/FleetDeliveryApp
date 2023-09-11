@@ -99,6 +99,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     enviadoenvio: 0,
     enviadoseguimiento: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Parada paradaSelected = Parada(
@@ -422,10 +423,48 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                         children: [
                           Text(
                               ('Cant. de bultos: ${widget.paradaenvio.bultos.toString()}')),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            color: const Color(0xffdadada),
+            width: double.infinity,
+          ),
+          const Divider(
+            height: 3,
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            height: 40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  width: 20,
+                ),
+                const Icon(Icons.notes),
+                const SizedBox(
+                  width: 20,
+                ),
+                SizedBox(
+                  width: 300,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
                           widget.paradaenvio.avonCodAmount != null
                               ? Text(
-                                  ('    Cod \$: ${widget.paradaenvio.avonCodAmount.toString()}'))
-                              : const Text(('    Cod \$: 0'))
+                                  ('Cod \$: ${widget.paradaenvio.avonCodAmount.toString()}'))
+                              : const Text(('    Cod \$: 0')),
+                          widget.paradaenvio.avonCodMemo != null
+                              ? Text(
+                                  ('    Memo: ${widget.paradaenvio.avonCodMemo.toString()}'))
+                              : const Text(('    Memo \$: 0')),
                         ],
                       ),
                     ],
@@ -1221,6 +1260,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       enviadoenvio: 0,
       enviadoseguimiento: 0,
       avonCodAmount: '',
+      avonCodMemo: '',
     );
 
     var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);

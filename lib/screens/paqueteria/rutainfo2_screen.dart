@@ -106,6 +106,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     enviadoenvio: 0,
     enviadoseguimiento: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Position _positionUser = const Position(
@@ -149,6 +150,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     enviadoenvio: 0,
     enviadoseguimiento: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Parada paradaSelected = Parada(
@@ -275,6 +277,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     latitud2: 0,
     longitud2: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Envio envioSaved = Envio(
@@ -355,6 +358,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     latitud2: 0,
     longitud2: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Seguimiento seguimientoSaved = Seguimiento(
@@ -1051,6 +1055,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         enviadoenvio: paradaenvio.enviadoenvio,
         enviadoseguimiento: paradaenvio.enviadoenvio,
         avonCodAmount: paradaenvio.avonCodAmount,
+        avonCodMemo: paradaenvio.avonCodMemo,
       );
 
       await DBParadasEnvios.update(paradaenvionueva);
@@ -1227,6 +1232,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       enviadoenvio: paradaenvio.enviadoenvio,
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1274,6 +1280,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       enviadoenvio: 1,
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1321,6 +1328,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       enviadoenvio: paradaenvio.enviadoenvio,
       enviadoseguimiento: 1,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1731,6 +1739,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       enviadoenvio: 0,
       enviadoseguimiento: 0,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);

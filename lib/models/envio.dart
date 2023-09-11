@@ -76,6 +76,7 @@ class Envio {
   double? latitud2 = 0.0;
   double? longitud2 = 0.0;
   String? avonCodAmount = '';
+  String? avonCodMemo = '';
 
   Envio(
       {required this.idEnvio,
@@ -154,7 +155,8 @@ class Envio {
       required this.urlDNIFullPath,
       required this.latitud2,
       required this.longitud2,
-      required this.avonCodAmount});
+      required this.avonCodAmount,
+      required this.avonCodMemo});
 
   Envio.fromJson(Map<String, dynamic> json) {
     idEnvio = json['idEnvio'];
@@ -234,6 +236,7 @@ class Envio {
     latitud2 = json['latitud2'];
     longitud2 = json['longitud2'];
     avonCodAmount = json['avonCodAmount'];
+    avonCodMemo = json['avonCodMemo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -315,6 +318,7 @@ class Envio {
     data['latitud2'] = latitud2;
     data['longitud2'] = longitud2;
     data['avonCodAmount'] = avonCodAmount;
+    data['avonCodMemo'] = avonCodMemo;
     return data;
   }
 
@@ -397,6 +401,7 @@ class Envio {
       'latitud2': latitud2,
       'longitud2': longitud2,
       'avonCodAmount': avonCodAmount,
+      'avonCodMemo': avonCodMemo,
     };
   }
 }

@@ -127,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen>
     enviadoenvio: 0,
     enviadoseguimiento: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Parada paradaSelected = Parada(
@@ -253,6 +254,7 @@ class _HomeScreenState extends State<HomeScreen>
     latitud2: 0,
     longitud2: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Envio envioSaved = Envio(
@@ -333,6 +335,7 @@ class _HomeScreenState extends State<HomeScreen>
     latitud2: 0,
     longitud2: 0,
     avonCodAmount: '',
+    avonCodMemo: '',
   );
 
   Seguimiento seguimientoSaved = Seguimiento(
@@ -1683,6 +1686,7 @@ class _HomeScreenState extends State<HomeScreen>
         latitud2: 0,
         longitud2: 0,
         avonCodAmount: '',
+        avonCodMemo: '',
       );
 
       for (var envio in _envios) {
@@ -1728,6 +1732,7 @@ class _HomeScreenState extends State<HomeScreen>
         enviadoenvio: 0,
         enviadoseguimiento: 0,
         avonCodAmount: filteredEnvio.avonCodAmount,
+        avonCodMemo: filteredEnvio.avonCodMemo,
       );
 
       _paradasenvios.add(paradaEnvio);
@@ -2324,6 +2329,7 @@ class _HomeScreenState extends State<HomeScreen>
       enviadoenvio: paradaenvio.enviadoenvio,
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -2432,6 +2438,7 @@ class _HomeScreenState extends State<HomeScreen>
       enviadoenvio: paradaenvio.enviadoenvio,
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -2479,6 +2486,7 @@ class _HomeScreenState extends State<HomeScreen>
       enviadoenvio: 1,
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -2526,6 +2534,7 @@ class _HomeScreenState extends State<HomeScreen>
       enviadoenvio: paradaenvio.enviadoenvio,
       enviadoseguimiento: 1,
       avonCodAmount: paradaenvio.avonCodAmount,
+      avonCodMemo: paradaenvio.avonCodMemo,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
