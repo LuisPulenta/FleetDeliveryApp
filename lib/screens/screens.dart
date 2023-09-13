@@ -25,5 +25,5 @@ export 'package:fleetdeliveryapp/screens/paqueteria/rutainfo2_screen.dart';
 export 'package:fleetdeliveryapp/screens/paqueteria/storage_screen.dart';
 export 'package:fleetdeliveryapp/screens/shared/take_picture_screen.dart';
 export 'package:fleetdeliveryapp/screens/inicio/wait_screen.dart';
-export 'package:fleetdeliveryapp/screens/pdf_screen.dart';
+export 'package:fleetdeliveryapp/screens/asignaciones/pdf_screen.dart';
 export 'package:fleetdeliveryapp/screens/asignaciones/info_screen.dart';

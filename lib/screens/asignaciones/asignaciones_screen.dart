@@ -73,7 +73,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       serieObligatoria: 0,
       codigoFinal: 0,
       habilitaOtroRecupero: 0,
-      habilitaCambioModelo: 0);
+      habilitaCambioModelo: 0,
+      habilitaVerPdf: 0);
 
   List<CodigoCierre> _codigoscierreAux = [];
   final List<CodigoCierre> _codigoscierre = [];

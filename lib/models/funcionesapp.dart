@@ -8,6 +8,7 @@ class FuncionesApp {
   int? codigoFinal = 0;
   int? habilitaOtroRecupero = 0;
   int? habilitaCambioModelo = 0;
+  int? habilitaVerPdf = 0;
 
   FuncionesApp(
       {required this.proyectomodulo,
@@ -18,7 +19,8 @@ class FuncionesApp {
       required this.serieObligatoria,
       required this.codigoFinal,
       required this.habilitaOtroRecupero,
-      required this.habilitaCambioModelo});
+      required this.habilitaCambioModelo,
+      required this.habilitaVerPdf});
 
   FuncionesApp.fromJson(Map<String, dynamic> json) {
     proyectomodulo = json['proyectomodulo'];
@@ -30,6 +32,7 @@ class FuncionesApp {
     codigoFinal = json['codigoFinal'];
     habilitaOtroRecupero = json['habilitaOtroRecupero'];
     habilitaCambioModelo = json['habilitaCambioModelo'];
+    habilitaVerPdf = json['habilitaVerPdf'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +46,7 @@ class FuncionesApp {
     data['codigoFinal'] = codigoFinal;
     data['habilitaOtroRecupero'] = habilitaOtroRecupero;
     data['habilitaCambioModelo'] = habilitaCambioModelo;
+    data['habilitaVerPdf'] = habilitaVerPdf;
     return data;
   }
 
@@ -57,6 +61,7 @@ class FuncionesApp {
       'codigoFinal': codigoFinal,
       'habilitaOtroRecupero': habilitaOtroRecupero,
       'habilitaCambioModelo': habilitaCambioModelo,
+      'habilitaVerPdf': habilitaVerPdf,
     };
   }
 }

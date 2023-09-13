@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
+import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
@@ -37,10 +38,26 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
   bool bandera = false;
+  bool verPDF = false;
   List<Asign> _asigns = [];
   List<AsignacionesOtsEquiposExtra> _equiposExtra = [];
 
   String newPath = "";
+
+  bool _showLoader = false;
+
+  List<FuncionesApp> _funcionesApp = [];
+  FuncionesApp _funcionApp = FuncionesApp(
+      proyectomodulo: '',
+      habilitaFoto: 0,
+      habilitaDNI: 0,
+      habilitaEstadisticas: 0,
+      habilitaFirma: 0,
+      serieObligatoria: 0,
+      codigoFinal: 0,
+      habilitaOtroRecupero: 0,
+      habilitaCambioModelo: 0,
+      habilitaVerPdf: 0);
 
   final List<String> cuandos = [
     "esta semana",
@@ -665,6 +682,54 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                             ),
                                           ),
                                           actions: <Widget>[
+                                            _funcionApp.habilitaVerPdf == 1
+                                                ? Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 0.0),
+                                                    child: ElevatedButton(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: const [
+                                                          Icon(Icons
+                                                              .picture_as_pdf),
+                                                          SizedBox(
+                                                            width: 15,
+                                                          ),
+                                                          Text('Ver PDF'),
+                                                        ],
+                                                      ),
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        minimumSize: const Size(
+                                                            double.infinity,
+                                                            50),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {
+                                                        verPDF = true;
+                                                        //Navigator.pop(context);
+                                                        _createPDF(
+                                                            _number2, message);
+                                                        return;
+                                                      },
+                                                    ),
+                                                  )
+                                                : Container(),
+                                            _funcionApp.habilitaVerPdf == 1
+                                                ? const SizedBox(
+                                                    height: 15,
+                                                  )
+                                                : Container(),
                                             ElevatedButton(
                                               child: Row(
                                                 mainAxisAlignment:
@@ -732,6 +797,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                               ),
                                               onPressed: _existeChat
                                                   ? () async {
+                                                      verPDF = false;
                                                       await _createPDF(
                                                           _number2, message);
                                                       Navigator.pop(context);
@@ -1075,12 +1141,35 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
     //OpenFile.open(ruta);
 
-    if (file.path.isNotEmpty) {
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => PdfScreen(
+    //               ruta: ruta,
+    //             )));
+
+    if (file.path.isNotEmpty && verPDF == false) {
       await WhatsappShare.shareFile(
           phone: number,
           text: 'Se adjunta Comprobante',
           filePath: [file.path],
           package: Package.whatsapp);
+    } else if (file.path.isNotEmpty && verPDF == true) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => PdfScreen(
+                    ruta: ruta,
+                  )));
+    } else {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Ha ocurrido un error al generar el documento PDF',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
     }
   }
 
@@ -1250,6 +1339,8 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
           ]);
       return;
     }
+
+    _getFuncionApp();
   }
 
 //--------------------------------------------------------------
@@ -1560,5 +1651,55 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
       ));
     }
     return list;
+  }
+
+//--------------------------------------------------------
+//--------------------- _getFuncionApp ------------------------
+//--------------------------------------------------------
+
+  Future<void> _getFuncionApp() async {
+    setState(() {
+      _showLoader = true;
+    });
+
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _showLoader = false;
+      });
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Verifica que estés conectado a Internet',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    Response response = Response(isSuccess: false);
+
+    Response response3 = Response(isSuccess: false);
+    response3 =
+        await ApiHelper.getFuncionesApp(widget.asignacion.proyectomodulo!);
+
+    if (!response3.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    _funcionesApp = response3.result;
+    _funcionApp = _funcionesApp[0];
+
+    setState(() {
+      _showLoader = false;
+    });
   }
 }
