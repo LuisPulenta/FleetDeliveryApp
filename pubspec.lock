@@ -93,18 +93,18 @@ packages:
     dependency: transitive
     description:
       name: camera_avfoundation
-      sha256: "7ac8b950672716722af235eed7a7c37896853669800b7da706bb0a9fd41d3737"
+      sha256: "718b60ed2e22b4067fe6e2c0e9ebe2856c2de5c8b1289ba95d10db85b0b00bc2"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.13+1"
+    version: "0.9.13+4"
   camera_platform_interface:
     dependency: transitive
     description:
       name: camera_platform_interface
-      sha256: "525017018d116c5db8c4c43ec2d9b1663216b369c9f75149158280168a7ce472"
+      sha256: "8734d1c682f034bdb12d0d6ff379b0535a9b8e44266b530025bf8266d6a62f28"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.0"
+    version: "2.5.2"
   camera_web:
     dependency: transitive
     description:
@@ -1034,11 +1034,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0+2"
-  whatsapp_share2:
+  whatsapp_share:
     dependency: "direct main"
     description:
-      name: whatsapp_share2
-      sha256: d0b84f44a46b4e191ca659293b5e56fb1b8352a56abe048fdb14bf26535d847e
+      name: whatsapp_share
+      sha256: d1884f302a52d9f400bc3d7d4274b77aad83424e08f425351cea8d13b4cb8649
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
@@ -1083,5 +1083,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.18.0 <3.0.0"
-  flutter: ">=3.4.0-17.0.pre"
+  dart: ">=2.19.0 <3.0.0"
+  flutter: ">=3.7.0"

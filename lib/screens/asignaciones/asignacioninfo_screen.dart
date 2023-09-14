@@ -20,7 +20,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:whatsapp_share2/whatsapp_share2.dart';
+import 'package:whatsapp_share/whatsapp_share.dart';
+//import 'package:whatsapp_share2/whatsapp_share2.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 

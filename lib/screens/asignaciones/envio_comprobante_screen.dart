@@ -11,7 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:whatsapp_share2/whatsapp_share2.dart';
+import 'package:whatsapp_share/whatsapp_share.dart';
+//import 'package:whatsapp_share2/whatsapp_share2.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
@@ -715,13 +716,31 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                                   .circular(5),
                                                         ),
                                                       ),
-                                                      onPressed: () {
-                                                        verPDF = true;
-                                                        //Navigator.pop(context);
-                                                        _createPDF(
-                                                            _number2, message);
-                                                        return;
-                                                      },
+                                                      onPressed: _number2 != ""
+                                                          ? _existeChat == false
+                                                              ? () async {
+                                                                  _number2.substring(
+                                                                              0,
+                                                                              3) !=
+                                                                          '549'
+                                                                      ? _number2 =
+                                                                          '549' +
+                                                                              _number2
+                                                                      : _number2 =
+                                                                          _number2;
+
+                                                                  verPDF = true;
+                                                                  //Navigator.pop(context);
+                                                                  _createPDF(
+                                                                      _number2,
+                                                                      message);
+
+                                                                  setState(
+                                                                      () {});
+                                                                  return;
+                                                                }
+                                                              : null
+                                                          : null,
                                                     ),
                                                   )
                                                 : Container(),
@@ -1159,6 +1178,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
           context,
           MaterialPageRoute(
               builder: (context) => PdfScreen(
+                    phone: number,
                     ruta: ruta,
                   )));
     } else {
