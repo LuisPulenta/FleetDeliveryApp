@@ -464,7 +464,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                           widget.paradaenvio.avonCodMemo != null
                               ? Text(
                                   ('    Memo: ${widget.paradaenvio.avonCodMemo.toString()}'))
-                              : const Text(('    Memo \$: 0')),
+                              : const Text(('    Memo: 0')),
                         ],
                       ),
                     ],
@@ -506,6 +506,38 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
             color: const Color(0xffdadada),
             width: double.infinity,
           ),
+          const Divider(
+            height: 3,
+          ),
+          widget.paradaenvio.proveedor == "Avon" &&
+                  (widget.paradaenvio.avonCodAmount == null ||
+                      widget.paradaenvio.avonCodAmount == "0.00")
+              ? const Text('SE PUEDE ENTREGAR EL PEDIDO',
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold))
+              : widget.paradaenvio.proveedor == "Avon" &&
+                      widget.paradaenvio.avonCodAmount != null &&
+                      widget.paradaenvio.avonCodAmount != "0.00" &&
+                      (widget.paradaenvio.avonCodMemo == "" ||
+                          widget.paradaenvio.avonCodMemo == null)
+                  ? const Text('SOLO ENTREGAR C/ COMPROB. DE PAGO',
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold))
+                  : widget.paradaenvio.proveedor == "Avon" &&
+                          widget.paradaenvio.avonCodAmount != null &&
+                          widget.paradaenvio.avonCodAmount != "0.00" &&
+                          (widget.paradaenvio.avonCodMemo != "" &&
+                              widget.paradaenvio.avonCodMemo != null)
+                      ? const Text('SE PUEDE ENTREGAR EL PEDIDO',
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold))
+                      : Container(),
         ],
       ),
     );
