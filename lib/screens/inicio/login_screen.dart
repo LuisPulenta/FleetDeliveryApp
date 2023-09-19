@@ -32,6 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _rememberme = true;
 
+  final TextEditingController _emailController = TextEditingController();
+
   Modulo _modulo = Modulo(
       idModulo: 0,
       nombre: '',
@@ -201,6 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.all(10),
       child: TextField(
         keyboardType: TextInputType.emailAddress,
+        controller: _emailController,
         decoration: InputDecoration(
             fillColor: Colors.white,
             filled: true,
@@ -380,6 +383,18 @@ class _LoginScreenState extends State<LoginScreen> {
 //----------------------------------------------------------
 
   void _login() async {
+    if (_email.toLowerCase() == 'modulo') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ModuloScreen(
+                    modulo: _modulo,
+                  )));
+      _email = '';
+      _emailController.text = '';
+      return;
+    }
+
     if (_modulo.nroVersion != '' && _modulo.nroVersion != Constants.version) {
       await showAlertDialog(
           context: context,
