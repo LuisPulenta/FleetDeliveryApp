@@ -18,6 +18,7 @@ class Asignacion2 {
   String? causantec = '';
   String? subcon = '';
   String? fechaAsignada = '';
+  String? fechacaptura = '';
   int? codigoCierre = 0;
   String? descripcion = '';
   int? cierraenapp = 0;
@@ -72,6 +73,7 @@ class Asignacion2 {
       required this.causantec,
       required this.subcon,
       required this.fechaAsignada,
+      required this.fechacaptura,
       required this.codigoCierre,
       required this.descripcion,
       required this.cierraenapp,
@@ -126,6 +128,7 @@ class Asignacion2 {
     causantec = json['causantec'];
     subcon = json['subcon'];
     fechaAsignada = json['fechaAsignada'];
+    fechacaptura = json['fechacaptura'];
     codigoCierre = json['codigoCierre'];
     descripcion = json['descripcion'];
     cierraenapp = json['cierraenapp '];
@@ -182,6 +185,7 @@ class Asignacion2 {
     data['causantec'] = causantec;
     data['subcon'] = subcon;
     data['fechaAsignada'] = fechaAsignada;
+    data['fechacaptura'] = fechacaptura;
     data['codigoCierre'] = codigoCierre;
     data['descripcion'] = descripcion;
     data['cierraenapp'] = cierraenapp;
@@ -239,6 +243,7 @@ class Asignacion2 {
       'causantec': causantec,
       'subcon': subcon,
       'fechaAsignada': fechaAsignada,
+      'fechacaptura': fechacaptura,
       'codigoCierre': codigoCierre,
       'descripcion': descripcion,
       'cierraenapp': cierraenapp,

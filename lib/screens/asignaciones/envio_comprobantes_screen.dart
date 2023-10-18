@@ -49,6 +49,7 @@ class _EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
       causantec: '',
       subcon: '',
       fechaAsignada: '',
+      fechacaptura: '',
       codigoCierre: 0,
       descripcion: '',
       cierraenapp: 0,

@@ -162,6 +162,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       causantec: '',
       subcon: '',
       fechaAsignada: '',
+      fechacaptura: '',
       codigoCierre: 0,
       descripcion: '',
       cierraenapp: 0,
@@ -3562,6 +3563,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     String palabraEquipo = _asignacion.cantAsign == 1 ? "equipo" : "equipos";
 
+    if (empresa == 'Telecentro') {
+      palabraEquipo =
+          _asignacion.cantAsign == 1 ? "control remoto" : "controles remotos";
+    }
+
     await showDialog(
         barrierDismissible: false,
         context: context,
@@ -3715,7 +3721,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               phoneNumber: _number2,
                               //***** MENSAJE DE CONTACTO *****
                               text:
-                                  'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer el retiro de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
+                                  'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer ${men1}  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
                             );
                             await launch('$link');
                           },

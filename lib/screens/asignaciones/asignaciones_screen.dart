@@ -113,6 +113,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       causantec: '',
       subcon: '',
       fechaAsignada: '',
+      fechacaptura: '',
       codigoCierre: 0,
       descripcion: '',
       cierraenapp: 0,
@@ -1013,6 +1014,60 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                   ),
                                   Row(
                                     children: [
+                                      const SizedBox(
+                                        width: 80,
+                                        child: Text("Fec. Capt.: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
+                                      Expanded(
+                                        child: e.fechacaptura == null
+                                            ? const Text("")
+                                            : Text(
+                                                DateFormat('dd/MM/yyyy').format(
+                                                    DateTime.parse(e
+                                                        .fechacaptura
+                                                        .toString())),
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                )),
+                                      ),
+                                      const SizedBox(
+                                        width: 40,
+                                        child: Text("Antig.: ",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ),
+                                      Expanded(
+                                        child: e.fechacaptura == null
+                                            ? const Text("")
+                                            : Text(
+                                                DateTime.now()
+                                                    .difference(DateTime.parse(
+                                                        e.fechacaptura!))
+                                                    .inDays
+                                                    .toString(),
+                                                textAlign: TextAlign.left,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 1,
+                                  ),
+                                  Row(
+                                    children: [
                                       Expanded(
                                         flex: 10,
                                         child: Column(
@@ -1652,7 +1707,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               .contains(_search.toLowerCase()));
 //------------------------------------------------------------------------
       condicionAntig = DateTime.now()
-              .difference(DateTime.parse(asignacion.fechaAsignada!))
+              .difference(DateTime.parse(asignacion.fechacaptura!))
+              //se cambia fechaasign a fechacaptura, pedido por Nicolas Arias 18/10/2023
               .inDays >=
           _sliderValue;
 //------------------------------------------------------------------------

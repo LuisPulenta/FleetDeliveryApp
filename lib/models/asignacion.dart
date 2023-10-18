@@ -18,6 +18,7 @@ class Asignacion {
   String? causantec = '';
   String? subcon = '';
   String? fechaAsignada = '';
+  String? fechacaptura = '';
   int? codigoCierre = 0;
   String? novedades = '';
   String? provincia = '';
@@ -64,6 +65,7 @@ class Asignacion {
       required this.causantec,
       required this.subcon,
       required this.fechaAsignada,
+      required this.fechacaptura,
       required this.codigoCierre,
       required this.novedades,
       required this.provincia,
@@ -110,6 +112,7 @@ class Asignacion {
     causantec = json['causantec'];
     subcon = json['subcon'];
     fechaAsignada = json['fechaAsignada'];
+    fechacaptura = json['fechacaptura'];
     codigoCierre = json['codigoCierre'];
     novedades = json['novedades'];
     provincia = json['provincia'];
@@ -158,6 +161,7 @@ class Asignacion {
     data['causantec'] = causantec;
     data['subcon'] = subcon;
     data['fechaAsignada'] = fechaAsignada;
+    data['fechacaptura'] = fechacaptura;
     data['codigoCierre'] = codigoCierre;
     data['novedades'] = novedades;
     data['provincia'] = provincia;
@@ -207,6 +211,7 @@ class Asignacion {
       'causantec': causantec,
       'subcon': subcon,
       'fechaAsignada': fechaAsignada,
+      'fechacaptura': fechacaptura,
       'codigoCierre': codigoCierre,
       'novedades': novedades,
       'provincia': provincia,
