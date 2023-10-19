@@ -146,7 +146,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       zona: '',
       modificadoAPP: 0,
       hsCumplidaTime: '',
-      marcado: 0);
+      marcado: 0,
+      emailCliente: '');
 
   final Set<Marker> _markers = {};
 

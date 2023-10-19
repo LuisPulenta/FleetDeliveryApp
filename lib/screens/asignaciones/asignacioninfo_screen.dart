@@ -195,7 +195,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       zona: '',
       modificadoAPP: 0,
       hsCumplidaTime: '',
-      marcado: 0);
+      marcado: 0,
+      emailCliente: '');
 
   LatLng _center = const LatLng(0, 0);
 
@@ -2079,6 +2080,54 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     Expanded(
                       child: Column(
                         children: [
+                          // Row(
+                          //   children: [
+                          //     const Text("Mail: ",
+                          //         style: TextStyle(
+                          //           fontSize: 12,
+                          //           color: Color(0xFF0e4888),
+                          //           fontWeight: FontWeight.bold,
+                          //         )),
+                          //     Expanded(
+                          //       child: Text(widget.user.mail!,
+                          //           style: const TextStyle(
+                          //             fontSize: 12,
+                          //           )),
+                          //     ),
+                          //   ],
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     const Text("Clave: ",
+                          //         style: TextStyle(
+                          //           fontSize: 12,
+                          //           color: Color(0xFF0e4888),
+                          //           fontWeight: FontWeight.bold,
+                          //         )),
+                          //     Expanded(
+                          //       child: Text(widget.user.claveEmail!,
+                          //           style: const TextStyle(
+                          //             fontSize: 12,
+                          //           )),
+                          //     ),
+                          //   ],
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     const Text("Mail Cliente: ",
+                          //         style: TextStyle(
+                          //           fontSize: 12,
+                          //           color: Color(0xFF0e4888),
+                          //           fontWeight: FontWeight.bold,
+                          //         )),
+                          //     Expanded(
+                          //       child: Text(_asignacion.emailCliente!,
+                          //           style: const TextStyle(
+                          //             fontSize: 12,
+                          //           )),
+                          //     ),
+                          //   ],
+                          // ),
                           Row(
                             children: [
                               const Text("Cliente: ",
@@ -3142,8 +3191,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     String message = '';
 
     String empresa = _asignacion.proyectomodulo.toString();
-    if (empresa == 'Otro' || empresa == 'TLC') {
+    // if (empresa == 'Otro' || empresa == 'TLC') {
+    //   empresa = 'Telecentro';
+    // }
+
+    if (empresa == 'Otro') {
       empresa = 'Telecentro';
+    }
+
+    if (empresa == 'TLC') {
+      empresa = 'Telecentro ';
     }
 
     if (empresa == 'Cable') {
@@ -3536,8 +3593,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       men2 = 'entregarlo';
     }
 
-    if (empresa == 'Otro' || empresa == 'TLC') {
+    // if (empresa == 'Otro' || empresa == 'TLC') {
+    //   empresa = 'Telecentro';
+    // }
+
+    if (empresa == 'Otro') {
       empresa = 'Telecentro';
+    }
+
+    if (empresa == 'TLC') {
+      empresa = 'Telecentro ';
     }
 
     if (empresa == 'Cable') {

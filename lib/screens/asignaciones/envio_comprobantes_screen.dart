@@ -82,7 +82,8 @@ class _EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
       zona: '',
       modificadoAPP: 0,
       hsCumplidaTime: '',
-      marcado: 0);
+      marcado: 0,
+      emailCliente: '');
 
 //--------------------------------------------------------------
 //------------------------- initState --------------------------

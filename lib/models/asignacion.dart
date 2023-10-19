@@ -44,6 +44,7 @@ class Asignacion {
   String? zona = '';
   int? cantAsign = 0;
   int? modificadoAPP = 0;
+  String? emailCliente = '';
 
   Asignacion(
       {required this.recupidjobcard,
@@ -90,7 +91,8 @@ class Asignacion {
       required this.cantAsign,
       required this.observacionCaptura,
       required this.zona,
-      required this.modificadoAPP});
+      required this.modificadoAPP,
+      required this.emailCliente});
 
   Asignacion.fromJson(Map<String, dynamic> json) {
     recupidjobcard = json['recupidjobcard'];
@@ -138,6 +140,7 @@ class Asignacion {
     observacionCaptura = json['observacionCaptura'];
     zona = json['zona'];
     modificadoAPP = json['modificadoAPP'];
+    emailCliente = json['emailCliente'];
   }
 
   Map<String, dynamic> toJson() {
@@ -187,6 +190,7 @@ class Asignacion {
     data['observacionCaptura'] = observacionCaptura;
     data['zona'] = zona;
     data['modificadoAPP'] = modificadoAPP;
+    data['emailCliente'] = emailCliente;
     return data;
   }
 
@@ -237,6 +241,7 @@ class Asignacion {
       'observacionCaptura': observacionCaptura,
       'zona': zona,
       'modificadoAPP': modificadoAPP,
+      'emailCliente': emailCliente,
     };
   }
 }

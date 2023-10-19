@@ -7,9 +7,9 @@ class DBUsuarios {
     return openDatabase(join(await getDatabasesPath(), 'usuarios.db'),
         onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE usuarios(idUser INTEGER , codigo TEXT, apellidonombre TEXT, usrlogin TEXT, usrcontrasena TEXT,  habilitadoWeb INTEGER, vehiculo TEXT, dominio TEXT, celular TEXT, orden INTEGER, centroDistribucion INTEGER, dni TEXT)",
+        "CREATE TABLE usuarios(idUser INTEGER , codigo TEXT, apellidonombre TEXT, usrlogin TEXT, usrcontrasena TEXT,  habilitadoWeb INTEGER, vehiculo TEXT, dominio TEXT, celular TEXT, orden INTEGER, centroDistribucion INTEGER, dni TEXT, mail TEXT, claveEmail TEXT)",
       );
-    }, version: 2);
+    }, version: 3);
   }
 
   static Future<int> insertUsuario(Usuario usuario) async {
@@ -52,6 +52,8 @@ class DBUsuarios {
               orden: usuariosMap[i]['orden'],
               centroDistribucion: usuariosMap[i]['centroDistribucion'],
               dni: usuariosMap[i]['dni'],
+              mail: usuariosMap[i]['mail'],
+              claveEmail: usuariosMap[i]['claveEmail'],
             ));
   }
 }

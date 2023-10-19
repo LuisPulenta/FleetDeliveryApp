@@ -56,7 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
       celular: '',
       orden: 0,
       centroDistribucion: 0,
-      dni: '');
+      dni: '',
+      mail: '',
+      claveEmail: '');
 
   List<WebSesion> _webSesionsdb = [];
 

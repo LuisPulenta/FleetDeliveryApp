@@ -32,7 +32,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       celular: '',
       orden: 0,
       centroDistribucion: 0,
-      dni: '');
+      dni: '',
+      mail: '',
+      claveEmail: '');
 
   String _currentPassword = '';
   String _currentPasswordError = '';

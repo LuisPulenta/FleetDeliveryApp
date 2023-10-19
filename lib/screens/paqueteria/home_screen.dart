@@ -94,7 +94,9 @@ class _HomeScreenState extends State<HomeScreen>
       celular: '',
       orden: 0,
       centroDistribucion: 0,
-      dni: '');
+      dni: '',
+      mail: '',
+      claveEmail: '');
 
   ParadaEnvio paradaenvioSelected = ParadaEnvio(
     idParada: 0,

@@ -86,7 +86,8 @@ class _Home2ScreenState extends State<Home2Screen> {
       zona: '',
       modificadoAPP: 0,
       hsCumplidaTime: '',
-      marcado: 0);
+      marcado: 0,
+      emailCliente: '');
 
 //--------------------------------------------------------
 //--------------------- initState ------------------------
