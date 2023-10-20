@@ -1580,6 +1580,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 //--------------------------------------------------------
 
   void _goInfoAsignacion(Asignacion2 asignacion) async {
+    asignacion.emailCliente ??= '';
     String? result = await Navigator.push(
         context,
         MaterialPageRoute(

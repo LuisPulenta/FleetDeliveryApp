@@ -24,6 +24,7 @@ import 'package:whatsapp_share/whatsapp_share.dart';
 //import 'package:whatsapp_share2/whatsapp_share2.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:email_validator/email_validator.dart';
 
 class AsignacionInfoScreen extends StatefulWidget {
   final Usuario user;
@@ -450,7 +451,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             _editar
                                 ? TextField(
                                     style: const TextStyle(
-                                        color: Colors.black,
+                                        color: Color.fromARGB(255, 34, 33, 33),
                                         fontSize: 12,
                                         fontWeight: FontWeight.w300),
                                     controller: _observaciones2Controller,
@@ -2080,54 +2081,54 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     Expanded(
                       child: Column(
                         children: [
-                          // Row(
-                          //   children: [
-                          //     const Text("Mail: ",
-                          //         style: TextStyle(
-                          //           fontSize: 12,
-                          //           color: Color(0xFF0e4888),
-                          //           fontWeight: FontWeight.bold,
-                          //         )),
-                          //     Expanded(
-                          //       child: Text(widget.user.mail!,
-                          //           style: const TextStyle(
-                          //             fontSize: 12,
-                          //           )),
-                          //     ),
-                          //   ],
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     const Text("Clave: ",
-                          //         style: TextStyle(
-                          //           fontSize: 12,
-                          //           color: Color(0xFF0e4888),
-                          //           fontWeight: FontWeight.bold,
-                          //         )),
-                          //     Expanded(
-                          //       child: Text(widget.user.claveEmail!,
-                          //           style: const TextStyle(
-                          //             fontSize: 12,
-                          //           )),
-                          //     ),
-                          //   ],
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     const Text("Mail Cliente: ",
-                          //         style: TextStyle(
-                          //           fontSize: 12,
-                          //           color: Color(0xFF0e4888),
-                          //           fontWeight: FontWeight.bold,
-                          //         )),
-                          //     Expanded(
-                          //       child: Text(_asignacion.emailCliente!,
-                          //           style: const TextStyle(
-                          //             fontSize: 12,
-                          //           )),
-                          //     ),
-                          //   ],
-                          // ),
+                          Row(
+                            children: [
+                              const Text("Mail: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(widget.user.mail!,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Text("Clave: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(widget.user.claveEmail!,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Text("Mail Cliente: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: Text(_asignacion.emailCliente!,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                            ],
+                          ),
                           Row(
                             children: [
                               const Text("Cliente: ",
@@ -2253,7 +2254,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             color: Colors.white,
                                           ),
                                           onPressed: () => _sendMessage(
-                                              _asignacion.telefono.toString()),
+                                              _asignacion.telefono.toString(),
+                                              "ws"),
                                         ),
                                       ),
                                     ),
@@ -2313,7 +2315,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           ),
                                           onPressed: () => _sendMessage(
                                               _asignacion.telefAlternativo1
-                                                  .toString()),
+                                                  .toString(),
+                                              "ws"),
                                         ),
                                       ),
                                     ),
@@ -2376,7 +2379,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           ),
                                           onPressed: () => _sendMessage(
                                               _asignacion.telefAlternativo2
-                                                  .toString()),
+                                                  .toString(),
+                                              "ws"),
                                         ),
                                       ),
                                     ),
@@ -2439,7 +2443,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           ),
                                           onPressed: () => _sendMessage(
                                               _asignacion.telefAlternativo3
-                                                  .toString()),
+                                                  .toString(),
+                                              "ws"),
                                         ),
                                       ),
                                     ),
@@ -2502,7 +2507,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           ),
                                           onPressed: () => _sendMessage(
                                               _asignacion.telefAlternativo4
-                                                  .toString()),
+                                                  .toString(),
+                                              "ws"),
                                         ),
                                       ),
                                     ),
@@ -2535,6 +2541,87 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   color: Colors.black,
                                 )
                               : Container(),
+                          const Text('Envío del Mensaje por Mail',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Text("Mail Usuario: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF0e4888),
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  Expanded(
+                                    child: !EmailValidator.validate(
+                                            widget.user.mail!)
+                                        ? const Text(
+                                            'Su usuario no tiene cargado un mail válido para poder enviar correos',
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold))
+                                        : Text(widget.user.mail!,
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                  ),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      color: (EmailValidator.validate(
+                                                  widget.user.mail!) &&
+                                              EmailValidator.validate(
+                                                  _asignacion.emailCliente!))
+                                          ? Colors.green
+                                          : Colors.grey,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.alternate_email),
+                                        color: Colors.white,
+                                        onPressed: (EmailValidator.validate(
+                                                    widget.user.mail!) &&
+                                                EmailValidator.validate(
+                                                    _asignacion.emailCliente!))
+                                            ? () {
+                                                _sendMessage("", "mail");
+                                              }
+                                            : null,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Text("Mail Cliente: ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                child: !EmailValidator.validate(
+                                        _asignacion.emailCliente!)
+                                    ? const Text(
+                                        'El cliente no tiene cargado un mail válido para poder recibir correos',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold))
+                                    : Text(_asignacion.emailCliente!,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                        )),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -3572,7 +3659,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //--------------------- _sendMessage ---------------------
 //--------------------------------------------------------
 
-  void _sendMessage(String number) async {
+  void _sendMessage(String number, String metodo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String _cuando = prefs.getString('cuando') ?? "esta semana";
@@ -3690,41 +3777,48 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         const Divider(
                           color: Colors.black,
                         ),
-                        const Text(
-                          "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
-                          style: TextStyle(fontSize: 14),
-                        ),
+                        metodo == "ws"
+                            ? const Text(
+                                "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                                style: TextStyle(fontSize: 14),
+                              )
+                            : Container(),
                         const Text(""),
                         const SizedBox(
                           height: 10,
                         ),
-                        TextField(
-                          controller: _phoneController,
-                          decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
-                              hintText: 'Teléfono...',
-                              labelText: 'Teléfono',
-                              //errorText:_passwordShowError ? _passwordError : null,
-                              prefixIcon: const Icon(Icons.phone),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10))),
-                          onChanged: (value) {
-                            _number2 = value;
-                          },
-                        ),
+                        metodo == "ws"
+                            ? TextField(
+                                controller: _phoneController,
+                                decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    hintText: 'Teléfono...',
+                                    labelText: 'Teléfono',
+                                    //errorText:_passwordShowError ? _passwordError : null,
+                                    prefixIcon: const Icon(Icons.phone),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                onChanged: (value) {
+                                  _number2 = value;
+                                },
+                              )
+                            : Container(),
                         const SizedBox(
                           height: 10,
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: ElevatedButton(
-                              child: const Text("+549"),
-                              onPressed: () async {
-                                _phoneController.text =
-                                    "549" + _phoneController.text;
-                              }),
-                        ),
+                        metodo == "ws"
+                            ? Expanded(
+                                flex: 1,
+                                child: ElevatedButton(
+                                    child: const Text("+549"),
+                                    onPressed: () async {
+                                      _phoneController.text =
+                                          "549" + _phoneController.text;
+                                    }),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
@@ -3761,37 +3855,76 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       const SizedBox(
                         width: 10,
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: ElevatedButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.insert_comment),
-                              SizedBox(
-                                width: 15,
+
+                      //------------ Botón para enviar por WhatsApp ------------
+                      metodo == "ws"
+                          ? Expanded(
+                              flex: 1,
+                              child: ElevatedButton(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.insert_comment),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text('Continuar'),
+                                  ],
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  minimumSize: const Size(double.infinity, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  final link = WhatsAppUnilink(
+                                    phoneNumber: _number2,
+                                    //***** MENSAJE DE CONTACTO *****
+                                    text:
+                                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer ${men1}  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
+                                  );
+                                  await launch('$link');
+                                },
                               ),
-                              Text('Continuar'),
-                            ],
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          onPressed: () async {
-                            final link = WhatsAppUnilink(
-                              phoneNumber: _number2,
-                              //***** MENSAJE DE CONTACTO *****
-                              text:
-                                  'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer ${men1}  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
-                            );
-                            await launch('$link');
-                          },
-                        ),
-                      ),
+                            )
+                          : Container(),
+
+                      //------------ Botón para enviar por Mail ------------
+                      metodo == "mail"
+                          ? Expanded(
+                              flex: 1,
+                              child: ElevatedButton(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.insert_comment),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text('-> Mail'),
+                                  ],
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  minimumSize: const Size(double.infinity, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  final link = WhatsAppUnilink(
+                                    phoneNumber: _number2,
+                                    //***** MENSAJE DE CONTACTO *****
+                                    text:
+                                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer ${men1}  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
+                                  );
+                                  await launch('$link');
+                                },
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                 ],
