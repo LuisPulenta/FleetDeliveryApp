@@ -3883,7 +3883,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     phoneNumber: _number2,
                                     //***** MENSAJE DE CONTACTO *****
                                     text:
-                                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer ${men1}  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
+                                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer ${men1}  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para ${men2} $_cuando?. Muchas gracias.',
                                   );
                                   await launch('$link');
                                 },
