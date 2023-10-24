@@ -38,7 +38,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       CustomInfoWindowController();
 
   int _valorMarcador = 0;
-
+  late Usuario _user;
   bool _showLoader = false;
   bool _isFiltered = false;
   bool bandera = false;
@@ -158,6 +158,9 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   @override
   void initState() {
     super.initState();
+    _user = widget.user;
+    _user.mail ??= '';
+    _user.claveEmail ??= '';
     _loadData();
     if (widget.opcion == 2) {
       _loadData2();
@@ -1581,11 +1584,12 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
   void _goInfoAsignacion(Asignacion2 asignacion) async {
     asignacion.emailCliente ??= '';
+
     String? result = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => AsignacionInfoScreen(
-                  user: widget.user,
+                  user: _user,
                   asignacion: asignacion,
                   codigoscierre: _codigoscierre,
                   codigoscierreAux: _codigoscierreAux,

@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.luisnu.fleetdeliveryapp">
+   
    <application
         android:label="Fleet Delivery App"
         android:icon="@mipmap/launcher_icon"
@@ -80,8 +81,11 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" /> -->
 
     
-<queries>
+  <queries>
 		<package android:name="com.google.android.apps.maps" />
+    <intent>
+    <action android:name="android.intent.action.SEND" />
+    <data android:mimeType="*/*" />
+  </intent>
 	</queries>
-  
 </manifest>

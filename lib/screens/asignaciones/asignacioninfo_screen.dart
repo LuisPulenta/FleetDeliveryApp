@@ -2545,59 +2545,34 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  const Text("Mail Usuario: ",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF0e4888),
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  Expanded(
-                                    child: !EmailValidator.validate(
-                                            widget.user.mail!)
-                                        ? const Text(
-                                            'Su usuario no tiene cargado un mail válido para poder enviar correos',
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold))
-                                        : Text(widget.user.mail!,
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
-                                  ),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      height: 40,
-                                      width: 40,
-                                      color: (EmailValidator.validate(
-                                                  widget.user.mail!) &&
-                                              EmailValidator.validate(
-                                                  _asignacion.emailCliente!))
-                                          ? Colors.green
-                                          : Colors.grey,
-                                      child: IconButton(
-                                        icon: const Icon(Icons.alternate_email),
-                                        color: Colors.white,
-                                        onPressed: (EmailValidator.validate(
-                                                    widget.user.mail!) &&
-                                                EmailValidator.validate(
-                                                    _asignacion.emailCliente!))
-                                            ? () {
-                                                _sendMessage("", "mail");
-                                              }
-                                            : null,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                          // Column(
+                          //   children: [
+                          //     Row(
+                          //       children: [
+                          //         const Text("Mail Usuario: ",
+                          //             style: TextStyle(
+                          //               fontSize: 12,
+                          //               color: Color(0xFF0e4888),
+                          //               fontWeight: FontWeight.bold,
+                          //             )),
+                          //         Expanded(
+                          //           child: !EmailValidator.validate(
+                          //                   widget.user.mail!)
+                          //               ? const Text(
+                          //                   'Su usuario no tiene cargado un mail válido para poder enviar correos',
+                          //                   style: TextStyle(
+                          //                       color: Colors.red,
+                          //                       fontSize: 12,
+                          //                       fontWeight: FontWeight.bold))
+                          //               : Text(widget.user.mail!,
+                          //                   style: const TextStyle(
+                          //                     fontSize: 12,
+                          //                   )),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ],
+                          // ),
                           Row(
                             children: [
                               const Text("Mail Cliente: ",
@@ -2619,6 +2594,27 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         style: const TextStyle(
                                           fontSize: 12,
                                         )),
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  color: (EmailValidator.validate(
+                                          _asignacion.emailCliente!))
+                                      ? Colors.green
+                                      : Colors.grey,
+                                  child: IconButton(
+                                    icon: const Icon(Icons.alternate_email),
+                                    color: Colors.white,
+                                    onPressed: (EmailValidator.validate(
+                                            _asignacion.emailCliente!))
+                                        ? () {
+                                            _sendMessage("", "mail");
+                                          }
+                                        : null,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -3914,13 +3910,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   ),
                                 ),
                                 onPressed: () async {
-                                  final link = WhatsAppUnilink(
-                                    phoneNumber: _number2,
-                                    //***** MENSAJE DE CONTACTO *****
-                                    text:
-                                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer ${men1}  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para retirarlo $_cuando?. Muchas gracias.',
-                                  );
-                                  await launch('$link');
+                                  final body =
+                                      'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer ${men1}  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para ${men2} $_cuando?. Muchas gracias.';
+
+                                  final _url =
+                                      'mailto:${_asignacion.emailCliente}?subject=Mensaje de la empresa Fleet al servicio de $empresa&body=$body';
+
+                                  await launch(_url);
+
+                                  Navigator.pop(context);
+                                  return;
                                 },
                               ),
                             )
