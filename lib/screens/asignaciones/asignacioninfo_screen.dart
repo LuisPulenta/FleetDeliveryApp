@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
+import 'package:fleetdeliveryapp/screens/asignaciones/contrato_firma_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
@@ -57,6 +58,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //--------------------------------------------------------
 
   String ruta = '';
+
+  int _nroReg = 0;
+
+  String _codCier = '';
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -141,6 +146,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   String estadogaos = "";
 
+  String _recibe = '';
+  final String _recibeError = '';
+  final bool _recibeShowError = false;
+  final TextEditingController _recibeController = TextEditingController();
+
+  String _dnirecibe = '';
+  final String _dnirecibeError = '';
+  final bool _dnirecibeShowError = false;
+  final TextEditingController _dnirecibeController = TextEditingController();
+
+  String _nroserie = '';
+  final String _nroserieError = '';
+  final bool _nroserieShowError = false;
+  final TextEditingController _nroserieController = TextEditingController();
+
   final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
 
   Asignacion2 _asignacion = Asignacion2(
@@ -212,6 +232,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     estadogaos = _asignacion.estadogaos!;
 
     __codigoscierre = widget.codigoscierre;
+
     _tabController = TabController(length: 3, vsync: this);
 
     double? grxx = double.tryParse(_asignacion.grxx!);
@@ -287,7 +308,11 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         backgroundColor: const Color(0xff282886),
                       ),
                       Expanded(
-                          flex: widget.funcionApp.habilitaDNI == 1 ? 15 : 7,
+                          flex: widget.funcionApp.habilitaDNI == 1
+                              ? 15
+                              : _asignacion.proyectomodulo == 'Mesh'
+                                  ? 19
+                                  : 7,
                           child:
                               SingleChildScrollView(child: _showAsignacion())),
                       Expanded(
@@ -823,10 +848,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           const SizedBox(
                             height: 1,
                           ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          _showButtonsDNIFirma(),
+                          widget.funcionApp.habilitaDNI == 1
+                              ? const Divider(
+                                  color: Colors.black,
+                                )
+                              : Container(),
+                          widget.funcionApp.habilitaDNI == 1
+                              ? _showButtonsDNIFirma()
+                              : Container(),
                           const Divider(
                             color: Colors.black,
                           ),
@@ -970,6 +999,74 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   ),
                 )
               : Container(),
+        ],
+      ),
+    );
+  }
+
+//--------------------------------------------------------
+//--------------------- _showButtonContratoFirma ---------
+//--------------------------------------------------------
+
+  Widget _showButtonContratoFirma() {
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text('Firma de Contrato:'),
+          Expanded(
+            child: InkWell(
+              child: Stack(children: <Widget>[
+                Container(
+                  child: !_signatureChanged
+                      ? const Image(
+                          image: AssetImage('assets/firma.png'),
+                          width: 180,
+                          height: 60,
+                          fit: BoxFit.contain)
+                      : Image.memory(
+                          _signature!.buffer.asUint8List(),
+                          width: 80,
+                          height: 60,
+                        ),
+                ),
+                Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: InkWell(
+                      onTap: () async {
+                        if (_nroserie.isEmpty) {
+                          await showAlertDialog(
+                              context: context,
+                              title: 'Error',
+                              message: 'Debe ingresar un N° de Serie',
+                              actions: <AlertDialogAction>[
+                                const AlertDialogAction(
+                                    key: null, label: 'Aceptar'),
+                              ]);
+                          return;
+                        }
+
+                        _takeContractSignature();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          color: const Color(0xFF282886),
+                          width: 50,
+                          height: 50,
+                          child: const Icon(
+                            Icons.drive_file_rename_outline,
+                            size: 40,
+                            color: Color(0xFFf6faf8),
+                          ),
+                        ),
+                      ),
+                    )),
+              ]),
+            ),
+          ),
         ],
       ),
     );
@@ -1155,6 +1252,72 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             _observaciones = value;
           },
         ),
+        SizedBox(
+          height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0,
+        ),
+        widget.asignacion.proyectomodulo == 'Mesh'
+            ? TextField(
+                style: const TextStyle(
+                    fontSize: 14.0, height: 1.0, color: Colors.black),
+                controller: _recibeController,
+                decoration: InputDecoration(
+                    hintText: 'Nombre de quién recibe...',
+                    labelText: 'Recibe',
+                    errorText: _recibeShowError ? _recibeError : null,
+                    suffixIcon: const Icon(Icons.person),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                onChanged: (value) {
+                  _recibe = value;
+                },
+              )
+            : Container(),
+        SizedBox(
+          height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0,
+        ),
+        widget.asignacion.proyectomodulo == 'Mesh'
+            ? TextField(
+                style: const TextStyle(
+                    fontSize: 14.0, height: 1.0, color: Colors.black),
+                controller: _dnirecibeController,
+                decoration: InputDecoration(
+                    hintText: 'DNI recibe...',
+                    labelText: 'DNI recibe',
+                    errorText: _dnirecibeShowError ? _dnirecibeError : null,
+                    suffixIcon: const Icon(Icons.pin),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                onChanged: (value) {
+                  _dnirecibe = value;
+                },
+              )
+            : Container(),
+        SizedBox(
+          height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0,
+        ),
+        widget.asignacion.proyectomodulo == 'Mesh'
+            ? TextField(
+                style: const TextStyle(
+                    fontSize: 14.0, height: 1.0, color: Colors.black),
+                controller: _nroserieController,
+                decoration: InputDecoration(
+                    hintText: 'N° Serie...',
+                    labelText: 'N° Serie',
+                    errorText: _nroserieShowError ? _nroserieError : null,
+                    suffixIcon: const Icon(Icons.numbers),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                onChanged: (value) {
+                  _nroserie = value.toUpperCase();
+                },
+              )
+            : Container(),
+        SizedBox(
+          height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0,
+        ),
+        widget.asignacion.proyectomodulo == 'Mesh'
+            ? _showButtonContratoFirma()
+            : Container(),
       ],
     );
   }
@@ -1915,6 +2078,24 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   void _takeSignature() async {
     Response? response = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => const FirmaScreen()));
+    if (response != null) {
+      setState(() {
+        _signatureChanged = true;
+        _signature = response.result;
+      });
+    }
+  }
+
+//--------------------------------------------------------
+//--------------------- _takeContractSignature -----------
+//--------------------------------------------------------
+
+  void _takeContractSignature() async {
+    Response? response = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ContratoFirmaScreen(
+                asignacion: widget.asignacion, nroserie: _nroserie)));
     if (response != null) {
       setState(() {
         _signatureChanged = true;
@@ -2947,12 +3128,13 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //---------------- Pregunta si se envía recibo (sólo en DTV) --------------
     _mensajeRecibo = '';
-    if (widget.asignacion.proyectomodulo == 'DTV' ||
-        widget.asignacion.proyectomodulo == 'Tasa' ||
-        widget.asignacion.proyectomodulo == 'Cable' ||
-        widget.asignacion.proyectomodulo == 'Prisma' ||
-        widget.asignacion.proyectomodulo == 'SuperC' ||
-        widget.asignacion.proyectomodulo == 'TLC') {
+    if ((widget.asignacion.proyectomodulo == 'DTV' ||
+            widget.asignacion.proyectomodulo == 'Tasa' ||
+            widget.asignacion.proyectomodulo == 'Cable' ||
+            widget.asignacion.proyectomodulo == 'Prisma' ||
+            widget.asignacion.proyectomodulo == 'SuperC' ||
+            widget.asignacion.proyectomodulo == 'TLC') &&
+        estadogaos != 'INC') {
       await showDialog(
           context: context,
           builder: (context) {
@@ -3058,6 +3240,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //----- Fecha -----
     DateTime fechaYa = DateTime.now();
+    int hora = (fechaYa.hour * 3600 + fechaYa.minute * 60 + fechaYa.second);
 
 //----- Código de Cierre y Descripción elegido y final-----
 
@@ -3264,6 +3447,55 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             context: context,
             title: 'Error',
             message: response.message,
+            actions: <AlertDialogAction>[
+              const AlertDialogAction(key: null, label: 'Aceptar'),
+            ]);
+        return;
+      }
+
+      //--------------------------------------------------------------------
+      //---------------------------Grabar Asig Histórico -------------------
+      //--------------------------------------------------------------------
+
+      Response response2 = await ApiHelper.getAsigHistNroRegistroMax();
+      if (response2.isSuccess) {
+        _nroReg = int.parse(response2.result.toString()) + 1;
+      }
+
+      widget.codigoscierreAux.forEach((cc) {
+        if (cc.codigoCierre == asign.codigoCierre) {
+          _codCier =
+              cc.equivalenciaWS != null ? cc.equivalenciaWS.toString() : '';
+        }
+      });
+
+      Map<String, dynamic> requestAsigHisto = {
+        //----------------- Campos que mantienen el valor -----------------
+
+        'IDHISTO': _nroReg,
+        'PROYMODULO': asign.proyectomodulo,
+        'FECHA': fechaYa.toString(),
+        'HORA': hora.toString(),
+        'IDGAOS': asign.idregistro,
+        'CODIGOCIERRE': asign.codigoCierre,
+        'FECHAEVENTO': fechaYa.toString(),
+        'HORAEVENTO': hora.toString(),
+        'EQUIVALENCIA': _codCier,
+        'RESPUESTA': '',
+        'UserID': widget.user.idUser,
+        'Terminal': 'App',
+        'IDUserGaos': null,
+        'InformadaCliente': 0,
+      };
+
+      Response responseAsigHisto = await ApiHelper.post(
+          '/api/AsignacionesOTs/PostAsigHistorico', requestAsigHisto);
+
+      if (!responseAsigHisto.isSuccess) {
+        await showAlertDialog(
+            context: context,
+            title: 'Error',
+            message: responseAsigHisto.message,
             actions: <AlertDialogAction>[
               const AlertDialogAction(key: null, label: 'Aceptar'),
             ]);

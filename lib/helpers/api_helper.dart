@@ -805,4 +805,26 @@ class ApiHelper {
     }
     return Response(isSuccess: true, result: list);
   }
+
+  //---------------------------------------------------------------------------
+  static Future<Response> getAsigHistNroRegistroMax() async {
+    var url =
+        Uri.parse('${Constants.apiUrl}/api/AsignacionesOTs/GetNroRegistroMax');
+    var response = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    var decodedJson = jsonDecode(body);
+
+    return Response(isSuccess: true, result: decodedJson);
+  }
 }

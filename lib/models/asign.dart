@@ -124,6 +124,11 @@ class Asign {
   int? activo = 0;
   int? marcado = 0;
 
+  String? dniRecibe = '';
+  String? nombreRecibe = '';
+  String? nroSerieEntrega = '';
+  String? nroSerieEntrega1 = '';
+
   Asign(
       {required this.idregistro,
       required this.subagentemercado,
@@ -247,7 +252,11 @@ class Asign {
       required this.codigoequivalencia,
       required this.deco1descripcion,
       required this.activo,
-      required this.marcado});
+      required this.marcado,
+      required this.dniRecibe,
+      required this.nombreRecibe,
+      required this.nroSerieEntrega,
+      required this.nroSerieEntrega1});
 
   Asign.fromJson(Map<String, dynamic> json) {
     idregistro = json['idregistro'];
@@ -373,6 +382,10 @@ class Asign {
     deco1descripcion = json['deco1descripcion'];
     activo = json['activo'];
     marcado = json['marcado'];
+    dniRecibe = json['dniRecibe'];
+    nombreRecibe = json['nombreRecibe'];
+    nroSerieEntrega = json['nroSerieEntrega'];
+    nroSerieEntrega1 = json['nroSerieEntrega1'];
   }
 
   Map<String, dynamic> toJson() {
@@ -500,6 +513,10 @@ class Asign {
     data['deco1descripcion'] = deco1descripcion;
     data['activo'] = activo;
     data['marcado'] = marcado;
+    data['dniRecibe'] = dniRecibe;
+    data['nombreRecibe'] = nombreRecibe;
+    data['nroSerieEntrega'] = nroSerieEntrega;
+    data['nroSerieEntrega1'] = nroSerieEntrega1;
     return data;
   }
 
@@ -628,6 +645,10 @@ class Asign {
       'deco1descripcion': deco1descripcion,
       'activo': activo,
       'marcado': marcado,
+      'dniRecibe': dniRecibe,
+      'nombreRecibe': nombreRecibe,
+      'nroSerieEntrega': nroSerieEntrega,
+      'nroSerieEntrega1': nroSerieEntrega1,
     };
   }
 }
