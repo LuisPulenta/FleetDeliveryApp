@@ -69,7 +69,7 @@ class ContactoScreen extends StatelessWidget {
                       width: 20,
                     ),
                     Text(
-                      "54 9 3513002255",
+                      "54 9 11 5047-1015",
                       style: TextStyle(fontSize: 14, color: Colors.black),
                     ),
                   ],

@@ -45,6 +45,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
 
+  String _enviarMailSegunEstadoNuevo = '';
+
   bool _photoChanged = false;
   late XFile _image;
 
@@ -100,6 +102,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     enviadoseguimiento: 0,
     avonCodAmount: '',
     avonCodMemo: '',
+    enviarMailSegunEstado: '',
   );
 
   Parada paradaSelected = Parada(
@@ -1261,6 +1264,15 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       base64Image = base64Encode(imageBytes);
     }
 
+    _enviarMailSegunEstadoNuevo = widget.paradaenvio.enviarMailSegunEstado!;
+
+    if (widget.paradaenvio.idproveedor == 8) {
+      if (_enviarMailSegunEstadoNuevo[_estado - 1] != '2') {
+        _enviarMailSegunEstadoNuevo =
+            _enviarMailSegunEstadoNuevo.replaceRange(_estado - 1, _estado, '1');
+      }
+    }
+
     ParadaEnvio requestParadaEnvio = ParadaEnvio(
       idParada: widget.paradaenvio.idParada,
       idRuta: widget.paradaenvio.idRuta,
@@ -1293,6 +1305,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       enviadoseguimiento: 0,
       avonCodAmount: '',
       avonCodMemo: '',
+      enviarMailSegunEstado: _enviarMailSegunEstadoNuevo,
     );
 
     var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);

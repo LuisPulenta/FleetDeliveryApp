@@ -102,6 +102,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     enviadoseguimiento: 0,
     avonCodAmount: '',
     avonCodMemo: '',
+    enviarMailSegunEstado: '',
   );
 
   ParadaEnvio parenv = ParadaEnvio(
@@ -136,6 +137,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     enviadoseguimiento: 0,
     avonCodAmount: '',
     avonCodMemo: '',
+    enviarMailSegunEstado: '',
   );
 
   Parada paradaSelected = Parada(
@@ -592,6 +594,26 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     )
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text("EMSEst: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF781f1e),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      Expanded(
+                                        child: Text(
+                                            e.enviarMailSegunEstado.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold)),
+                                      ),
                                     ],
                                   ),
                                   const SizedBox(
@@ -1210,7 +1232,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         'ancho': envioSelected.ancho,
         'largo': envioSelected.largo,
         'idComprobante': envioSelected.idComprobante,
-        'enviarMailSegunEstado': envioSelected.enviarMailSegunEstado,
+        'enviarMailSegunEstado': paradaenvio.enviarMailSegunEstado,
         'fechaRuta': envioSelected.fechaRuta,
         'ordenIDparaOC': envioSelected.ordenIDparaOC,
         'hashUnico': envioSelected.hashUnico,
@@ -1350,6 +1372,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         enviadoseguimiento: paradaenvio.enviadoenvio,
         avonCodAmount: paradaenvio.avonCodAmount,
         avonCodMemo: paradaenvio.avonCodMemo,
+        enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
       );
 
       await DBParadasEnvios.update(paradaenvionueva);
@@ -1527,6 +1550,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
+      enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1575,6 +1599,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
+      enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1623,6 +1648,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       enviadoseguimiento: 1,
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
+      enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);

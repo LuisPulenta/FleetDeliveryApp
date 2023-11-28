@@ -130,6 +130,7 @@ class _HomeScreenState extends State<HomeScreen>
     enviadoseguimiento: 0,
     avonCodAmount: '',
     avonCodMemo: '',
+    enviarMailSegunEstado: '',
   );
 
   Parada paradaSelected = Parada(
@@ -1735,6 +1736,7 @@ class _HomeScreenState extends State<HomeScreen>
         enviadoseguimiento: 0,
         avonCodAmount: filteredEnvio.avonCodAmount,
         avonCodMemo: filteredEnvio.avonCodMemo,
+        enviarMailSegunEstado: filteredEnvio.enviarMailSegunEstado,
       );
 
       _paradasenvios.add(paradaEnvio);
@@ -2332,6 +2334,7 @@ class _HomeScreenState extends State<HomeScreen>
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
+      enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -2441,6 +2444,7 @@ class _HomeScreenState extends State<HomeScreen>
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
+      enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -2489,6 +2493,7 @@ class _HomeScreenState extends State<HomeScreen>
       enviadoseguimiento: paradaenvio.enviadoseguimiento,
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
+      enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -2537,6 +2542,7 @@ class _HomeScreenState extends State<HomeScreen>
       enviadoseguimiento: 1,
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
+      enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
