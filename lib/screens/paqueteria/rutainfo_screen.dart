@@ -596,26 +596,26 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                                     )
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Text("EMSEst: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF781f1e),
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Expanded(
-                                        child: Text(
-                                            e.enviarMailSegunEstado.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold)),
-                                      ),
-                                    ],
-                                  ),
+                                  // const SizedBox(
+                                  //   height: 5,
+                                  // ),
+                                  // Row(
+                                  //   children: [
+                                  //     const Text("EMSEst: ",
+                                  //         style: TextStyle(
+                                  //           fontSize: 12,
+                                  //           color: Color(0xFF781f1e),
+                                  //           fontWeight: FontWeight.bold,
+                                  //         )),
+                                  //     Expanded(
+                                  //       child: Text(
+                                  //           e.enviarMailSegunEstado.toString(),
+                                  //           style: const TextStyle(
+                                  //               fontSize: 12,
+                                  //               fontWeight: FontWeight.bold)),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   const SizedBox(
                                     height: 5,
                                   ),
