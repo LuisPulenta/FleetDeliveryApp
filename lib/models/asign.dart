@@ -128,6 +128,7 @@ class Asign {
   String? nombreRecibe = '';
   String? nroSerieEntrega = '';
   String? nroSerieEntrega1 = '';
+  String? codigO_PEDIDO_CABECERA = '';
 
   Asign(
       {required this.idregistro,
@@ -256,7 +257,8 @@ class Asign {
       required this.dniRecibe,
       required this.nombreRecibe,
       required this.nroSerieEntrega,
-      required this.nroSerieEntrega1});
+      required this.nroSerieEntrega1,
+      required this.codigO_PEDIDO_CABECERA});
 
   Asign.fromJson(Map<String, dynamic> json) {
     idregistro = json['idregistro'];
@@ -386,6 +388,7 @@ class Asign {
     nombreRecibe = json['nombreRecibe'];
     nroSerieEntrega = json['nroSerieEntrega'];
     nroSerieEntrega1 = json['nroSerieEntrega1'];
+    codigO_PEDIDO_CABECERA = json['codigO_PEDIDO_CABECERA'];
   }
 
   Map<String, dynamic> toJson() {
@@ -517,6 +520,7 @@ class Asign {
     data['nombreRecibe'] = nombreRecibe;
     data['nroSerieEntrega'] = nroSerieEntrega;
     data['nroSerieEntrega1'] = nroSerieEntrega1;
+    data['codigO_PEDIDO_CABECERA'] = codigO_PEDIDO_CABECERA;
     return data;
   }
 
@@ -649,6 +653,7 @@ class Asign {
       'nombreRecibe': nombreRecibe,
       'nroSerieEntrega': nroSerieEntrega,
       'nroSerieEntrega1': nroSerieEntrega1,
+      'codigO_PEDIDO_CABECERA': codigO_PEDIDO_CABECERA,
     };
   }
 }

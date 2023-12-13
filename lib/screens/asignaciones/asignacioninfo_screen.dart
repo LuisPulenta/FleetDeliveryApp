@@ -3486,6 +3486,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         'Terminal': 'App',
         'IDUserGaos': null,
         'InformadaCliente': 0,
+        'NroRemito': asign.ruta,
+        'NroPedidoCabecera': asign.codigO_PEDIDO_CABECERA,
       };
 
       Response responseAsigHisto = await ApiHelper.post(
