@@ -25,4 +25,5 @@ export 'package:fleetdeliveryapp/models/sub_contratista_user_vehiculo.dart';
 export 'package:fleetdeliveryapp/models/tipoasignacion.dart';
 export 'package:fleetdeliveryapp/models/turno.dart';
 export 'package:fleetdeliveryapp/models/usuario.dart';
+export 'package:fleetdeliveryapp/models/usuario2.dart';
 export 'package:fleetdeliveryapp/models/web_sesion.dart';

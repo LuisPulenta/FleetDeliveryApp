@@ -389,7 +389,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ModuloScreen(
+              builder: (context) => AdministradorScreen(
                     modulo: _modulo,
                   )));
       _email = '';
