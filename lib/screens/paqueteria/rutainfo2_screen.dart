@@ -1568,22 +1568,26 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     ));
 
     for (var motivo in widget.motivos) {
-      if (motivo.muestraParaEntregado == 1 &&
-          motivo.exclusivoCliente == idProveedor) {
-        motivosEntregados.add(DropdownMenuItem(
-          child: Text(motivo.motivo.toString()),
-          value: motivo.motivo.toString(),
-        ));
+      if (motivo.activo == 1) {
+        if (motivo.muestraParaEntregado == 1 &&
+            motivo.exclusivoCliente == idProveedor) {
+          motivosEntregados.add(DropdownMenuItem(
+            child: Text(motivo.motivo.toString()),
+            value: motivo.motivo.toString(),
+          ));
+        }
       }
     }
 
     for (var motivo in widget.motivos) {
-      if (motivo.muestraParaEntregado != 1 &&
-          motivo.exclusivoCliente == idProveedor) {
-        motivosNoEntregados.add(DropdownMenuItem(
-          child: Text(motivo.motivo.toString()),
-          value: motivo.motivo.toString(),
-        ));
+      if (motivo.activo == 1) {
+        if (motivo.muestraParaEntregado != 1 &&
+            motivo.exclusivoCliente == idProveedor) {
+          motivosNoEntregados.add(DropdownMenuItem(
+            child: Text(motivo.motivo.toString()),
+            value: motivo.motivo.toString(),
+          ));
+        }
       }
     }
   }
@@ -1928,6 +1932,11 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         _paradasenviosUnProveedor.add(paradasenvio);
       }
     }
+
+    for (ParadaEnvio paradasenvio in _paradasenviosUnProveedor) {
+      paradasenvio.enviado = 0;
+    }
+
     var a = 1;
     setState(() {});
   }
