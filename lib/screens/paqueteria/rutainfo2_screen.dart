@@ -19,7 +19,7 @@ class RutaInfo2Screen extends StatefulWidget {
   final List<Envio> envios;
   final List<ParadaEnvio> paradasenvios;
   final Position positionUser;
-  final List<Motivo> motivos;
+  final List<Motivo> motivosLista;
   final List<Proveedor> proveedores;
 
   const RutaInfo2Screen(
@@ -30,7 +30,7 @@ class RutaInfo2Screen extends StatefulWidget {
       required this.envios,
       required this.paradasenvios,
       required this.positionUser,
-      required this.motivos,
+      required this.motivosLista,
       required this.proveedores})
       : super(key: key);
 
@@ -62,6 +62,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   List<DropdownMenuItem<String>> motivosNoEntregados = [];
   List<DropdownMenuItem<String>> motivos = [];
 
+  int _nroMotivo = 0;
   String _motivo = 'Elija un Motivo...';
   final String _motivoError = '';
   final bool _motivoShowError = false;
@@ -1567,7 +1568,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       value: 'Elija un Motivo...',
     ));
 
-    for (var motivo in widget.motivos) {
+    for (var motivo in widget.motivosLista) {
       if (motivo.activo == 1) {
         if (motivo.muestraParaEntregado == 1 &&
             motivo.exclusivoCliente == idProveedor) {
@@ -1579,7 +1580,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       }
     }
 
-    for (var motivo in widget.motivos) {
+    for (var motivo in widget.motivosLista) {
       if (motivo.activo == 1) {
         if (motivo.muestraParaEntregado != 1 &&
             motivo.exclusivoCliente == idProveedor) {
@@ -1718,6 +1719,14 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       return;
     }
 
+    _nroMotivo = 0;
+
+    widget.motivosLista.forEach((mot) {
+      if (mot.motivo == _motivo) {
+        _nroMotivo = mot.id!;
+      }
+    });
+
     ParadaEnvio requestParadaEnvio = ParadaEnvio(
       idParada: paradaenvio.idParada,
       idRuta: paradaenvio.idRuta,
@@ -1727,7 +1736,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       latitud: paradaenvio.latitud,
       longitud: paradaenvio.longitud,
       idproveedor: paradaenvio.idproveedor,
-      estado: 4,
+      estado: _estado == "Entregado" ? 4 : 10,
       ordenid: paradaenvio.ordenid,
       titular: paradaenvio.titular,
       dni: paradaenvio.dni,
@@ -1738,8 +1747,8 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       localidad: paradaenvio.localidad,
       bultos: paradaenvio.bultos,
       proveedor: paradaenvio.proveedor,
-      motivo: 14,
-      motivodesc: '50 - Entregado en casa de lider',
+      motivo: _nroMotivo,
+      motivodesc: _motivo,
       notas: '',
       enviado: 0,
       fecha: DateTime.now().toString(),

@@ -1334,7 +1334,7 @@ class _HomeScreenState extends State<HomeScreen>
                   envios: _envios,
                   paradasenvios: _paradasenviosselected,
                   positionUser: _positionUser,
-                  motivos: _motivos,
+                  motivosLista: _motivos,
                   proveedores: _proveedores,
                 )));
     if (result == 'yes' || result != 'yes') {
