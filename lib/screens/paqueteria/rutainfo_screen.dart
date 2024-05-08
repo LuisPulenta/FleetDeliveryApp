@@ -718,7 +718,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           context: context,
           title: 'Aviso',
           message:
-              "Esta parada no tiene el Nombre del Cliente. Pruebe a volver a sincronizar/traer Rutas nuevamente.",
+              "Ruta con datos incongruentes. Chequee estados de pedidos. Esta parada no tiene el Nombre del Cliente. Pruebe a volver a sincronizar/traer Rutas nuevamente.",
           actions: <AlertDialogAction>[
             const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
