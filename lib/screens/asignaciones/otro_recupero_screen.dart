@@ -274,6 +274,50 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                       return;
                                                     }
 
+                                                    if (_nroserieextraOtroRecuperoController
+                                                        .text
+                                                        .contains("http")) {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return AlertDialog(
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              title: const Text(
+                                                                  'Aviso'),
+                                                              content: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: const <
+                                                                      Widget>[
+                                                                    Text(
+                                                                        'No puede registrar direcciones Web.'),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                  ]),
+                                                              actions: <Widget>[
+                                                                TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.of(context)
+                                                                            .pop(),
+                                                                    child: const Text(
+                                                                        'Ok')),
+                                                              ],
+                                                            );
+                                                          });
+                                                      FocusScope.of(context)
+                                                          .unfocus(); //Oculta el teclado
+                                                      return;
+                                                    }
+
                                                     _nroserieextraOtroRecupero =
                                                         _nroserieextraOtroRecuperoController
                                                             .text
