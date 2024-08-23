@@ -757,17 +757,21 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                                   ),
                                                 ),
                                                 onPressed: widget.hayInternet
-                                                    ? () {
-                                                        //----------------------------------------------
-                                                        //-------------- Guardar Catastro --------------
-                                                        //----------------------------------------------
-                                                        if (e.catastro == 0) {
-                                                          _ponerCatastroEnCero();
-                                                          e.catastro = 1;
-                                                        } else {
-                                                          e.catastro = 0;
+                                                    ? () async {
+                                                        _ponerCatastroEnCero();
+                                                        var existeCatastro =
+                                                            await _existeCatastro(
+                                                                e);
+                                                        if (!existeCatastro) {
+                                                          if (e.catastro == 0) {
+                                                            _ponerCatastroEnCero();
+
+                                                            e.catastro = 1;
+                                                          } else {
+                                                            e.catastro = 0;
+                                                          }
+                                                          setState(() {});
                                                         }
-                                                        setState(() {});
                                                       }
                                                     : null,
                                               ),
@@ -2111,6 +2115,39 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 //--------------- _guardarCatastro -------------------
 //--------------------------------------------------------
 
+  Future<bool> _existeCatastro(ParadaEnvio paradaEnvio) async {
+    Response response = await ApiHelper.getDestinosGeoCoding(
+        paradaEnvio.dni!, paradaEnvio.idproveedor.toString()!);
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return true;
+    }
+
+    if (response.result) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message:
+              'El Cliente ${paradaEnvio.titular} ya tiene Catastro registrado para el Proveedor ${paradaEnvio.proveedor}',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Ok'),
+          ]);
+      return true;
+    }
+    return false;
+  }
+
+//--------------------------------------------------------
+//--------------- _guardarCatastro -------------------
+//--------------------------------------------------------
+
   _guardarCatastro(ParadaEnvio paradaEnvio) async {
     if (paradaEnvio.titular == "" || paradaEnvio.titular == null) {
       showDialog(
@@ -2222,32 +2259,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       return;
     }
 
-    //Verifica si tiene Catastro Cargado
+    bool existeCatastro = await _existeCatastro(paradaEnvio);
 
-    Response response = await ApiHelper.getDestinosGeoCoding(
-        paradaEnvio.dni!, paradaEnvio.idproveedor.toString()!);
-
-    if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
-      return;
-    }
-
-    if (response.result) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Este Cliente ya tiene Catastro registrado',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Ok'),
-          ]);
-      return;
-    }
+    if (existeCatastro) return;
 
     //Guarda Catastro
 
@@ -2267,7 +2281,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       await showAlertDialog(
           context: context,
           title: 'Error',
-          message: response.message,
+          message: response2.message,
           actions: <AlertDialogAction>[
             const AlertDialogAction(key: null, label: 'Aceptar'),
           ]);
@@ -2276,7 +2290,8 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     await showAlertDialog(
         context: context,
         title: 'Aviso',
-        message: 'Catastro guardado con éxito!',
+        message:
+            'Catastro para el Cliente ${paradaEnvio.titular} en el proveedor ${paradaEnvio.proveedor} guardado con éxito!',
         actions: <AlertDialogAction>[
           const AlertDialogAction(key: null, label: 'Ok'),
         ]);
