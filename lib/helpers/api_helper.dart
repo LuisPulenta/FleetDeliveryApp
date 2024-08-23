@@ -827,4 +827,26 @@ class ApiHelper {
 
     return Response(isSuccess: true, result: decodedJson);
   }
+
+  //---------------------------------------------------------------------------
+  static Future<Response> getDestinosGeoCoding(
+      String documento, String proveedor) async {
+    var url = Uri.parse(
+        '${Constants.apiUrl}/api/DestinosGeoCoding/GetDestinosGeoCoding/$documento/$proveedor');
+    var response = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      },
+    );
+    var body = response.body;
+
+    if (response.statusCode >= 400) {
+      return Response(isSuccess: false, message: body);
+    }
+
+    var decodedJson = jsonDecode(body);
+    return Response(isSuccess: true, result: decodedJson);
+  }
 }

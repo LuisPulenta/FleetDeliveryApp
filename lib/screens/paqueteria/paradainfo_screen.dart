@@ -103,6 +103,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
     avonCodAmount: '',
     avonCodMemo: '',
     enviarMailSegunEstado: '',
+    catastro: 0,
+    latitudCatastro: 0,
+    longitudCatastro: 0,
+    domicilioCatastro: '',
   );
 
   Parada paradaSelected = Parada(
@@ -1306,6 +1310,10 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       avonCodAmount: '',
       avonCodMemo: '',
       enviarMailSegunEstado: _enviarMailSegunEstadoNuevo,
+      catastro: widget.paradaenvio.catastro,
+      latitudCatastro: widget.paradaenvio.latitudCatastro,
+      longitudCatastro: widget.paradaenvio.longitudCatastro,
+      domicilioCatastro: widget.paradaenvio.domicilioCatastro,
     );
 
     var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);

@@ -109,6 +109,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     avonCodAmount: '',
     avonCodMemo: '',
     enviarMailSegunEstado: '',
+    catastro: 0,
+    latitudCatastro: 0,
+    longitudCatastro: 0,
+    domicilioCatastro: '',
   );
 
   Position _positionUser = const Position(
@@ -154,6 +158,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     avonCodAmount: '',
     avonCodMemo: '',
     enviarMailSegunEstado: '',
+    catastro: 0,
+    latitudCatastro: 0,
+    longitudCatastro: 0,
+    domicilioCatastro: '',
   );
 
   Parada paradaSelected = Parada(
@@ -1060,6 +1068,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         avonCodAmount: paradaenvio.avonCodAmount,
         avonCodMemo: paradaenvio.avonCodMemo,
         enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+        catastro: paradaenvio.catastro,
+        latitudCatastro: paradaenvio.latitudCatastro,
+        longitudCatastro: paradaenvio.longitudCatastro,
+        domicilioCatastro: paradaenvio.domicilioCatastro,
       );
 
       await DBParadasEnvios.update(paradaenvionueva);
@@ -1238,6 +1250,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1287,6 +1303,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1336,6 +1356,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1760,6 +1784,10 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);

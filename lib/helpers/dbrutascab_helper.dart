@@ -7,9 +7,9 @@ class DBRutasCab {
     return openDatabase(join(await getDatabasesPath(), 'rutascab.db'),
         onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE rutascab(idRuta INTEGER, idUser INTEGER, fechaAlta TEXT, nombre TEXT, estado INTEGER, totalParadas INTEGER, pendientes INTEGER)",
+        "CREATE TABLE rutascab(idRuta INTEGER, idUser INTEGER, fechaAlta TEXT, nombre TEXT, estado INTEGER, habilitaCatastro INTEGER, totalParadas INTEGER, pendientes INTEGER)",
       );
-    }, version: 1);
+    }, version: 2);
   }
 
   static Future<int> insertRuta(RutaCab ruta) async {
@@ -45,6 +45,7 @@ class DBRutasCab {
               fechaAlta: rutasMap[i]['fechaAlta'],
               nombre: rutasMap[i]['nombre'],
               estado: rutasMap[i]['estado'],
+              habilitaCatastro: rutasMap[i]['habilitaCatastro'],
               totalParadas: rutasMap[i]['totalParadas'],
               pendientes: rutasMap[i]['pendientes'],
             ));

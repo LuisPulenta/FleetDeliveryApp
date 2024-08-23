@@ -31,6 +31,10 @@ class ParadaEnvio {
   String? avonCodAmount = '';
   String? avonCodMemo = '';
   String? enviarMailSegunEstado = '';
+  int? catastro = 0;
+  double? latitudCatastro;
+  double? longitudCatastro;
+  String? domicilioCatastro = '';
 
   ParadaEnvio({
     required this.idParada,
@@ -65,6 +69,10 @@ class ParadaEnvio {
     required this.avonCodAmount,
     required this.avonCodMemo,
     required this.enviarMailSegunEstado,
+    required this.catastro,
+    required this.latitudCatastro,
+    required this.longitudCatastro,
+    required this.domicilioCatastro,
   });
 
   ParadaEnvio.fromJson(Map<String, dynamic> json) {
@@ -101,6 +109,10 @@ class ParadaEnvio {
     avonCodAmount = json['avonCodAmount'];
     avonCodMemo = json['avonCodMemo'];
     enviarMailSegunEstado = json['enviarMailSegunEstado'];
+    catastro = json['catastro'];
+    latitudCatastro = json['latitudCatastro'];
+    longitudCatastro = json['longitudCatastro'];
+    domicilioCatastro = json['domicilioCatastro'];
   }
 
   Map<String, dynamic> toJson() {
@@ -138,6 +150,10 @@ class ParadaEnvio {
     data['avonCodAmount'] = avonCodAmount;
     data['avonCodMemo'] = avonCodMemo;
     data['enviarMailSegunEstado'] = enviarMailSegunEstado;
+    data['catastro'] = catastro;
+    data['latitudCatastro'] = latitudCatastro;
+    data['longitudCatastro'] = longitudCatastro;
+    data['domicilioCatastro'] = domicilioCatastro;
 
     return data;
   }
@@ -176,6 +192,10 @@ class ParadaEnvio {
       'avonCodAmount': avonCodAmount,
       'avonCodMemo': avonCodMemo,
       'enviarMailSegunEstado': enviarMailSegunEstado,
+      'catastro': catastro,
+      'latitudCatastro': latitudCatastro,
+      'longitudCatastro': longitudCatastro,
+      'domicilioCatastro': domicilioCatastro,
     };
   }
 }

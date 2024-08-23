@@ -79,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen>
       fechaAlta: '',
       nombre: '',
       estado: 0,
+      habilitaCatastro: 0,
       totalParadas: 0,
       pendientes: 0);
 
@@ -131,6 +132,10 @@ class _HomeScreenState extends State<HomeScreen>
     avonCodAmount: '',
     avonCodMemo: '',
     enviarMailSegunEstado: '',
+    catastro: 0,
+    latitudCatastro: 0,
+    longitudCatastro: 0,
+    domicilioCatastro: '',
   );
 
   Parada paradaSelected = Parada(
@@ -420,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen>
                 Column(
                   children: <Widget>[
                     AppBar(
-                      title: (const Text("Delivery")),
+                      title: (Text("Delivery - ${widget.user.apellidonombre}")),
                       actions: [
                         Row(
                           children: [
@@ -923,6 +928,19 @@ class _HomeScreenState extends State<HomeScreen>
                                   ),
                                 ],
                               ),
+                              e.habilitaCatastro == 1
+                                  ? const SizedBox(
+                                      height: 5,
+                                    )
+                                  : Container(),
+                              e.habilitaCatastro == 1
+                                  ? const Text("Catastro habilitado",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color.fromARGB(255, 255, 0, 0),
+                                        fontWeight: FontWeight.bold,
+                                      ))
+                                  : Container(),
                             ],
                           ),
                         ),
@@ -1286,6 +1304,11 @@ class _HomeScreenState extends State<HomeScreen>
         _paradasenviosselected.add(element);
       }
     }
+    var hayInternet = false;
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult != ConnectivityResult.none) {
+      hayInternet = true;
+    }
 
     String? result = await Navigator.push(
         context,
@@ -1298,6 +1321,7 @@ class _HomeScreenState extends State<HomeScreen>
                   paradasenvios: _paradasenviosselected,
                   positionUser: _positionUser,
                   motivos: _motivos,
+                  hayInternet: hayInternet,
                 )));
     if (result == 'yes' || result != 'yes') {
       setState(() {
@@ -1577,6 +1601,7 @@ class _HomeScreenState extends State<HomeScreen>
               fechaAlta: ruta.fechaAlta,
               nombre: ruta.nombre,
               estado: ruta.estado,
+              habilitaCatastro: ruta.habilitaCatastro,
               totalParadas: 0,
               pendientes: 0);
           DBRutasCab.insertRuta(rutaCab);
@@ -1737,6 +1762,10 @@ class _HomeScreenState extends State<HomeScreen>
         avonCodAmount: filteredEnvio.avonCodAmount,
         avonCodMemo: filteredEnvio.avonCodMemo,
         enviarMailSegunEstado: filteredEnvio.enviarMailSegunEstado,
+        catastro: 0,
+        latitudCatastro: 0,
+        longitudCatastro: 0,
+        domicilioCatastro: '',
       );
 
       _paradasenvios.add(paradaEnvio);
@@ -2335,6 +2364,10 @@ class _HomeScreenState extends State<HomeScreen>
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -2361,6 +2394,7 @@ class _HomeScreenState extends State<HomeScreen>
           fechaAlta: _ruta.fechaAlta,
           nombre: _ruta.nombre,
           estado: _ruta.estado,
+          habilitaCatastro: _ruta.habilitaCatastro,
           totalParadas: totParadas,
           pendientes: _ruta.pendientes);
 
@@ -2399,6 +2433,7 @@ class _HomeScreenState extends State<HomeScreen>
           fechaAlta: _ruta.fechaAlta,
           nombre: _ruta.nombre,
           estado: _ruta.estado,
+          habilitaCatastro: _ruta.habilitaCatastro,
           totalParadas: _ruta.totalParadas,
           pendientes: _ruta.totalParadas! - listas);
 
@@ -2445,6 +2480,10 @@ class _HomeScreenState extends State<HomeScreen>
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -2494,6 +2533,10 @@ class _HomeScreenState extends State<HomeScreen>
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -2543,6 +2586,10 @@ class _HomeScreenState extends State<HomeScreen>
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);

@@ -229,7 +229,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               }
 
                               if (empresa == 'Cable') {
-                                empresa = 'Cablevisión';
+                                empresa = 'Personal/Flow';
                               }
 
                               if (empresa == 'Tasa') {
@@ -518,7 +518,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               }
 
                               if (empresa == 'Cable') {
-                                empresa = 'Cablevisión';
+                                empresa = 'Personal/Flow';
                               }
 
                               if (empresa == 'Tasa') {

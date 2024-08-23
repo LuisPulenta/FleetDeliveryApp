@@ -7,6 +7,7 @@ class Ruta {
   String? fechaAlta = '';
   String? nombre = '';
   int? estado = 0;
+  int? habilitaCatastro = 0;
   List<Parada>? paradas = [];
   List<Envio>? envios = [];
 
@@ -16,6 +17,7 @@ class Ruta {
       required this.fechaAlta,
       required this.nombre,
       required this.estado,
+      required this.habilitaCatastro,
       required this.paradas,
       required this.envios});
 
@@ -25,6 +27,7 @@ class Ruta {
     fechaAlta = json['fechaAlta'];
     nombre = json['nombre'];
     estado = json['estado'];
+    habilitaCatastro = json['habilitaCatastro'];
 
     if (json['paradas'] != null) {
       paradas = <Parada>[];
@@ -47,6 +50,7 @@ class Ruta {
     data['fechaAlta'] = fechaAlta;
     data['nombre'] = nombre;
     data['estado'] = estado;
+    data['habilitaCatastro'] = habilitaCatastro;
     if (paradas != null) {
       data['paradas'] = paradas!.map((v) => v.toJson()).toList();
     }
@@ -64,6 +68,7 @@ class Ruta {
       'fechaAlta': fechaAlta,
       'nombre': nombre,
       'estado': estado,
+      'habilitaCatastro': habilitaCatastro,
       'paradas': paradas,
       'envios': envios,
     };

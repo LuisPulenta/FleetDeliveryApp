@@ -3521,7 +3521,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
 
     if (empresa == 'Cable') {
-      empresa = 'Cablevisión';
+      empresa = 'Personal/Flow';
     }
 
     if (empresa == 'Tasa') {
@@ -3923,7 +3923,7 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
 
     if (empresa == 'Cable') {
-      empresa = 'Cablevisión';
+      empresa = 'Personal/Flow';
     }
 
     if (empresa == 'Tasa') {

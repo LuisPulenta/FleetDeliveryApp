@@ -6,6 +6,7 @@ import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +25,7 @@ class RutaInfoScreen extends StatefulWidget {
   final List<ParadaEnvio> paradasenvios;
   final Position positionUser;
   final List<Motivo> motivos;
+  final bool hayInternet;
 
   const RutaInfoScreen(
       {Key? key,
@@ -33,7 +35,8 @@ class RutaInfoScreen extends StatefulWidget {
       required this.envios,
       required this.paradasenvios,
       required this.positionUser,
-      required this.motivos})
+      required this.motivos,
+      required this.hayInternet})
       : super(key: key);
 
   @override
@@ -54,6 +57,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   bool _isFiltered = false;
   String _search = '';
+
+  double latitud = 0;
+  double longitud = 0;
+  String direccion = '';
 
   bool _todas = true;
   bool _sincronizar = true;
@@ -103,6 +110,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     avonCodAmount: '',
     avonCodMemo: '',
     enviarMailSegunEstado: '',
+    catastro: 0,
+    latitudCatastro: 0,
+    longitudCatastro: 0,
+    domicilioCatastro: '',
   );
 
   ParadaEnvio parenv = ParadaEnvio(
@@ -138,6 +149,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     avonCodAmount: '',
     avonCodMemo: '',
     enviarMailSegunEstado: '',
+    catastro: 0,
+    latitudCatastro: 0,
+    longitudCatastro: 0,
+    domicilioCatastro: '',
   );
 
   Parada paradaSelected = Parada(
@@ -374,7 +389,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
   void initState() {
     super.initState();
     _llenarparadasenvios();
-
     setState(() {});
   }
 
@@ -688,8 +702,250 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                           onPressed: () => _navegar(e),
                                         ),
                                       ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      widget.ruta.habilitaCatastro == 1
+                                          ? SizedBox(
+                                              width: 135,
+                                              child: ElevatedButton(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(Icons.my_location,
+                                                        color: widget
+                                                                .hayInternet
+                                                            ? Color(0xff282886)
+                                                            : const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                116,
+                                                                116,
+                                                                139)),
+                                                    const SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    widget.hayInternet
+                                                        ? const Text(
+                                                            'Catastro',
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xff282886)),
+                                                          )
+                                                        : const Text(
+                                                            'Catastro',
+                                                            style: TextStyle(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        116,
+                                                                        116,
+                                                                        139)),
+                                                          ),
+                                                  ],
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      const Color(0xFFb3b3b4),
+                                                  minimumSize: const Size(
+                                                      double.infinity, 30),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                ),
+                                                onPressed: widget.hayInternet
+                                                    ? () {
+                                                        //----------------------------------------------
+                                                        //-------------- Guardar Catastro --------------
+                                                        //----------------------------------------------
+                                                        if (e.catastro == 0) {
+                                                          _ponerCatastroEnCero();
+                                                          e.catastro = 1;
+                                                        } else {
+                                                          e.catastro = 0;
+                                                        }
+                                                        setState(() {});
+                                                      }
+                                                    : null,
+                                              ),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
+                                  e.catastro == 1
+                                      ? Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                    "Dirección Catastro: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF781f1e),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Expanded(
+                                                  child: Text(
+                                                      e.domicilioCatastro
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                        fontSize: 12,
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text("Latitud Catastro: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF781f1e),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Expanded(
+                                                  child: Text(
+                                                      e.latitudCatastro != null
+                                                          ? e.latitudCatastro
+                                                              .toString()
+                                                          : "",
+                                                      style: const TextStyle(
+                                                        fontSize: 12,
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                    "Longitud Catastro: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF781f1e),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    )),
+                                                Expanded(
+                                                  child: Text(
+                                                      e.longitudCatastro != null
+                                                          ? e.longitudCatastro
+                                                              .toString()
+                                                          : "",
+                                                      style: const TextStyle(
+                                                        fontSize: 12,
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 3,
+                                                  child: ElevatedButton(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: const [
+                                                        Icon(Icons.my_location,
+                                                            color: Color(
+                                                                0xff282886)),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          'Obtener Domic.',
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xff282886)),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xFFb3b3b4),
+                                                      minimumSize: const Size(
+                                                          double.infinity, 30),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                    ),
+                                                    onPressed: () async {
+                                                      await _getPosition2();
+                                                      e.latitudCatastro =
+                                                          latitud;
+                                                      e.longitudCatastro =
+                                                          longitud;
+                                                      e.domicilioCatastro =
+                                                          direccion;
+                                                      latitud = 0;
+                                                      longitud = 0;
+                                                      direccion = '';
+                                                      setState(() {});
+                                                    },
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: ElevatedButton(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: const [
+                                                        Icon(Icons.save,
+                                                            color: Color(
+                                                                0xff282886)),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          'Guardar',
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xff282886)),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xFFb3b3b4),
+                                                      minimumSize: const Size(
+                                                          double.infinity, 30),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                    ),
+                                                    onPressed: () async {
+                                                      var _position =
+                                                          await _guardarCatastro(
+                                                              e);
+                                                      var a = 1;
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        )
+                                      : Container(),
                                 ],
                               ),
                             ),
@@ -698,6 +954,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                       ),
                     ),
                     const Icon(Icons.arrow_forward_ios),
+                    //e.catastro == 1
                   ],
                 ),
               ),
@@ -1373,6 +1630,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         avonCodAmount: paradaenvio.avonCodAmount,
         avonCodMemo: paradaenvio.avonCodMemo,
         enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+        catastro: paradaenvio.catastro,
+        latitudCatastro: paradaenvio.latitudCatastro,
+        longitudCatastro: paradaenvio.longitudCatastro,
+        domicilioCatastro: paradaenvio.domicilioCatastro,
       );
 
       await DBParadasEnvios.update(paradaenvionueva);
@@ -1513,6 +1774,85 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
         desiredAccuracy: LocationAccuracy.high);
   }
 
+  Future _getPosition2() async {
+    LocationPermission permission;
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                title: const Text('Aviso'),
+                content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const <Widget>[
+                      Text('El permiso de localización está negado.'),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ]),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Ok')),
+                ],
+              );
+            });
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text(
+                        'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+      return;
+    }
+
+    _positionUser = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    latitud = _positionUser.latitude.toString().isNotEmpty
+        ? _positionUser.latitude
+        : 0;
+    longitud = _positionUser.longitude.toString().isNotEmpty
+        ? _positionUser.longitude
+        : 0;
+
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        _positionUser.latitude, _positionUser.longitude);
+    direccion = placemarks[0].street.toString() +
+        " - " +
+        placemarks[0].locality.toString();
+    setState(() {});
+  }
+
 //--------------------------------------------------------
 //--------------------- _ponerEnviadoParada1 -------------
 //--------------------------------------------------------
@@ -1551,6 +1891,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1600,6 +1944,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1649,6 +1997,10 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       avonCodAmount: paradaenvio.avonCodAmount,
       avonCodMemo: paradaenvio.avonCodMemo,
       enviarMailSegunEstado: paradaenvio.enviarMailSegunEstado,
+      catastro: paradaenvio.catastro,
+      latitudCatastro: paradaenvio.latitudCatastro,
+      longitudCatastro: paradaenvio.longitudCatastro,
+      domicilioCatastro: paradaenvio.domicilioCatastro,
     );
 
     await DBParadasEnvios.update(paradaenvionueva);
@@ -1739,5 +2091,194 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
     });
 
     Navigator.of(context).pop();
+  }
+
+//--------------------------------------------------------
+//--------------- _ponerCatastroEnCero -------------------
+//--------------------------------------------------------
+
+  _ponerCatastroEnCero() {
+    _paradasenviosfiltered.forEach((element) {
+      element.catastro = 0;
+      element.latitudCatastro = null;
+      element.longitudCatastro = null;
+      element.domicilioCatastro = '';
+    });
+    setState(() {});
+  }
+
+//--------------------------------------------------------
+//--------------- _guardarCatastro -------------------
+//--------------------------------------------------------
+
+  _guardarCatastro(ParadaEnvio paradaEnvio) async {
+    if (paradaEnvio.titular == "" || paradaEnvio.titular == null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('El Cliente no tiene Nombre cargado'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+      return;
+    }
+    if (paradaEnvio.dni == "" || paradaEnvio.dni == null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('El Cliente no tiene DNI cargado'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+      return;
+    }
+    if (paradaEnvio.domicilioCatastro == "") {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('El Cliente no tiene Domicilio de Catastro'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+      return;
+    }
+    if (paradaEnvio.latitudCatastro == "" ||
+        paradaEnvio.latitudCatastro == 0 ||
+        paradaEnvio.latitudCatastro == null ||
+        paradaEnvio.longitudCatastro == "" ||
+        paradaEnvio.longitudCatastro == 0 ||
+        paradaEnvio.longitudCatastro == null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Aviso'),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('El Cliente no tiene Coordenadas de Catastro'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok')),
+              ],
+            );
+          });
+      return;
+    }
+
+    //Verifica si tiene Catastro Cargado
+
+    Response response = await ApiHelper.getDestinosGeoCoding(
+        paradaEnvio.dni!, paradaEnvio.idproveedor.toString()!);
+
+    if (!response.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+
+    if (response.result) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: 'Este Cliente ya tiene Catastro registrado',
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Ok'),
+          ]);
+      return;
+    }
+
+    //Guarda Catastro
+
+    Map<String, dynamic> request = {
+      'Documento': paradaEnvio.dni,
+      'PosX': paradaEnvio.latitudCatastro,
+      'PosY': paradaEnvio.longitudCatastro,
+      'FechaAlta': DateTime.now().toString(),
+      'DomicilioAPP': paradaEnvio.domicilioCatastro,
+      'DomicilioHere': "",
+      'IDProveedor': paradaEnvio.idproveedor,
+    };
+    Response response2 =
+        await ApiHelper.post('/api/DestinosGeoCoding/', request);
+
+    if (!response2.isSuccess) {
+      await showAlertDialog(
+          context: context,
+          title: 'Error',
+          message: response.message,
+          actions: <AlertDialogAction>[
+            const AlertDialogAction(key: null, label: 'Aceptar'),
+          ]);
+      return;
+    }
+    await showAlertDialog(
+        context: context,
+        title: 'Aviso',
+        message: 'Catastro guardado con éxito!',
+        actions: <AlertDialogAction>[
+          const AlertDialogAction(key: null, label: 'Ok'),
+        ]);
   }
 }
