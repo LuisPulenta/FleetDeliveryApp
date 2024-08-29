@@ -123,7 +123,9 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       altitude: 0,
       heading: 0,
       speed: 0,
-      speedAccuracy: 0);
+      speedAccuracy: 0,
+      altitudeAccuracy: 0,
+      headingAccuracy: 0);
 
   ParadaEnvio parenv = ParadaEnvio(
     idParada: 0,

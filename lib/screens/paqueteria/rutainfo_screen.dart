@@ -73,7 +73,9 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
       altitude: 0,
       heading: 0,
       speed: 0,
-      speedAccuracy: 0);
+      speedAccuracy: 0,
+      altitudeAccuracy: 0,
+      headingAccuracy: 0);
 
   LatLng _center = const LatLng(0, 0);
   final Set<Marker> _markers = {};
@@ -2117,7 +2119,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
   Future<bool> _existeCatastro(ParadaEnvio paradaEnvio) async {
     Response response = await ApiHelper.getDestinosGeoCoding(
-        paradaEnvio.dni!, paradaEnvio.idproveedor.toString()!);
+        paradaEnvio.dni!, paradaEnvio.idproveedor.toString());
 
     if (!response.isSuccess) {
       await showAlertDialog(

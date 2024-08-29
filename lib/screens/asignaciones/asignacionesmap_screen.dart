@@ -47,7 +47,9 @@ class _AsignacionesMapScreenState extends State<AsignacionesMapScreen> {
       altitude: 0,
       heading: 0,
       speed: 0,
-      speedAccuracy: 0);
+      speedAccuracy: 0,
+      altitudeAccuracy: 0,
+      headingAccuracy: 0);
   CameraPosition _initialPosition =
       const CameraPosition(target: LatLng(31, 64), zoom: 10.0);
 

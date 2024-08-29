@@ -31,7 +31,9 @@ class _Home2ScreenState extends State<Home2Screen> {
       altitude: 0,
       heading: 0,
       speed: 0,
-      speedAccuracy: 0);
+      speedAccuracy: 0,
+      altitudeAccuracy: 0,
+      headingAccuracy: 0);
 
   final Asignacion2 _asignacionVacia = Asignacion2(
       recupidjobcard: '',
