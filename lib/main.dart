@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+//-----Main-----
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
