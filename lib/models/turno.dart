@@ -36,17 +36,17 @@ class Turno {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['idTurno'] = this.idTurno;
-    data['idUser'] = this.idUser;
-    data['fechaCarga'] = this.fechaCarga;
-    data['fechaTurno'] = this.fechaTurno;
-    data['horaTurno'] = this.horaTurno;
-    data['fechaConfirmaTurno'] = this.fechaConfirmaTurno;
-    data['idUserConfirma'] = this.idUserConfirma;
-    data['fechaTurnoConfirmado'] = this.fechaTurnoConfirmado;
-    data['horaTurnoConfirmado'] = this.horaTurnoConfirmado;
-    data['concluido'] = this.concluido;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['idTurno'] = idTurno;
+    data['idUser'] = idUser;
+    data['fechaCarga'] = fechaCarga;
+    data['fechaTurno'] = fechaTurno;
+    data['horaTurno'] = horaTurno;
+    data['fechaConfirmaTurno'] = fechaConfirmaTurno;
+    data['idUserConfirma'] = idUserConfirma;
+    data['fechaTurnoConfirmado'] = fechaTurnoConfirmado;
+    data['horaTurnoConfirmado'] = horaTurnoConfirmado;
+    data['concluido'] = concluido;
     return data;
   }
 }

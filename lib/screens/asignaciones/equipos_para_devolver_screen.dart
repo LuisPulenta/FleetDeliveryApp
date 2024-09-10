@@ -634,35 +634,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
 
   bool validateFields() {
     bool isValid = true;
-
-    if (selectedDate == null) {
-      isValid = false;
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso!'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('Debe ingresar Fecha del Turno.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
-              ],
-            );
-          });
-      setState(() {});
-    }
-
+    
     setState(() {});
 
     return isValid;
@@ -1027,23 +999,21 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
             ],
           ),
         ),
-        Positioned(
+        const Positioned(
           left: 50,
           bottom: 50,
-          child: Container(
-              child: const Text(
+          child: Text(
             ' Fecha Turno: ',
             style: TextStyle(fontSize: 12),
-          )),
+          ),
         ),
-        Positioned(
+        const Positioned(
           left: 244,
           bottom: 50,
-          child: Container(
-              child: const Text(
+          child: Text(
             ' Hora Turno: ',
             style: TextStyle(fontSize: 12),
-          )),
+          ),
         )
       ],
     );

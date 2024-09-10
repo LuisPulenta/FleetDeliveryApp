@@ -421,7 +421,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
 
           border: OutlineInputBorder(
             borderSide: const BorderSide(
-              color: const Color(0xFF282886),
+              color: Color(0xFF282886),
             ),
             borderRadius: BorderRadius.circular(10),
           ),
@@ -821,7 +821,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color:
-                                                        const Color(0xFF0e4888),
+                                                        Color(0xFF0e4888),
                                                     fontWeight: FontWeight.bold,
                                                   )),
                                             )

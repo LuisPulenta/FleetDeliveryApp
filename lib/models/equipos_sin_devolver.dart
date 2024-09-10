@@ -36,17 +36,17 @@ class EquiposSinDevolver {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['userID'] = this.userID;
-    data['apellidonombre'] = this.apellidonombre;
-    data['sinIngresoDeposito'] = this.sinIngresoDeposito;
-    data['dtv'] = this.dtv;
-    data['cable'] = this.cable;
-    data['tasa'] = this.tasa;
-    data['tlc'] = this.tlc;
-    data['prisma'] = this.prisma;
-    data['teco'] = this.teco;
-    data['superC'] = this.superC;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['userID'] = userID;
+    data['apellidonombre'] = apellidonombre;
+    data['sinIngresoDeposito'] = sinIngresoDeposito;
+    data['dtv'] = dtv;
+    data['cable'] = cable;
+    data['tasa'] = tasa;
+    data['tlc'] = tlc;
+    data['prisma'] = prisma;
+    data['teco'] = teco;
+    data['superC'] = superC;
     return data;
   }
 }

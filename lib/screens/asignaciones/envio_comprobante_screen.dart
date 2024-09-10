@@ -1022,7 +1022,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     header.cells[2].value = """
     N° de Cuenta: 
     ${widget.asignacion.cliente}
-    OT: ${ot}
+    OT: $ot
     """;
 
     PdfGridRow row1 = grid.rows.add();
@@ -1473,7 +1473,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                       child: Text("OT: ",
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: const Color(0xFF0e4888),
+                                            color: Color(0xFF0e4888),
                                             fontWeight: FontWeight.bold,
                                           )),
                                     )

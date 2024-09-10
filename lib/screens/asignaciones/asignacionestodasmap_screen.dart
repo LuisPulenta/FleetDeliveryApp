@@ -91,7 +91,7 @@ class _AsignacionesTodasMapScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(('Asignaciones radio 20 km')),
+        title: const Text(('Asignaciones radio 20 km')),
         centerTitle: true,
       ),
       body: Stack(
@@ -272,7 +272,7 @@ class _AsignacionesTodasMapScreenState
                               children: [
                                 Expanded(
                                     child: Text(
-                                  '${asign.proyectomodulo.toString()}',
+                                  asign.proyectomodulo.toString(),
                                   style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold),

@@ -24,13 +24,13 @@ class AsignacionesConFechaCita {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['proyectomodulo'] = this.proyectomodulo;
-    data['year'] = this.year;
-    data['month'] = this.month;
-    data['day'] = this.day;
-    data['localidad'] = this.localidad;
-    data['cantidad'] = this.cantidad;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['proyectomodulo'] = proyectomodulo;
+    data['year'] = year;
+    data['month'] = month;
+    data['day'] = day;
+    data['localidad'] = localidad;
+    data['cantidad'] = cantidad;
     return data;
   }
 }

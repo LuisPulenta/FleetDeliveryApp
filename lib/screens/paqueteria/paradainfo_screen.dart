@@ -1251,16 +1251,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       }
     }
 
-    if (paradaSelected == null) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error 1',
-          message: "No se ha podido grabar",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
-      return;
-    }
+    
 
     String base64Image = '';
     if (_photoChanged) {
@@ -1318,7 +1309,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
     var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
 
-    if (parEnvio == null || parEnvio == 0) {
+    if (parEnvio == 0) {
       await showAlertDialog(
           context: context,
           title: 'Error 2',

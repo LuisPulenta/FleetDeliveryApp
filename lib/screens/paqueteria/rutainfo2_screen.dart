@@ -1515,7 +1515,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
             ),
             title: const Text(''),
             content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              Text('¿Está seguro de guardar ${cantidad} ${palabra}?'),
+              Text('¿Está seguro de guardar $cantidad $palabra?'),
               const SizedBox(
                 height: 10,
               ),
@@ -1734,17 +1734,6 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       }
     }
 
-    if (paradaSelected == null) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error 1',
-          message: "No se ha podido grabar",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
-      return;
-    }
-
     _nroMotivo = 0;
 
     widget.motivosLista.forEach((mot) {
@@ -1794,7 +1783,7 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
     var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
 
-    if (parEnvio == null || parEnvio == 0) {
+    if (parEnvio == 0) {
       await showAlertDialog(
           context: context,
           title: 'Error 2',

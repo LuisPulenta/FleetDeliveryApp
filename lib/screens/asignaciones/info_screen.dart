@@ -4,7 +4,6 @@ import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class InfoScreen extends StatefulWidget {
   final Usuario user;
