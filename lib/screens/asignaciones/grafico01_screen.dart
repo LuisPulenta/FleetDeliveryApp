@@ -1,7 +1,6 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
-import 'package:fleetdeliveryapp/helpers/api_helper.dart';
+import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -582,13 +581,8 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -837,13 +831,8 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 

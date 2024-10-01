@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
@@ -260,13 +259,8 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
   _search() async {
     FocusScope.of(context).unfocus();
     if (_codigo.isEmpty) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Ingrese LOGIN.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', 'Ingrese LOGIN.', 'Aceptar');
+
       return;
     }
     await _getUsuario();
@@ -286,13 +280,10 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estes conectado a internet.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+
+      showMyDialog(
+          'Error', 'Verifica que estes conectado a internet.', 'Aceptar');
+
       return;
     }
 
@@ -316,13 +307,9 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
         _showLoader = false;
         _user = _userVacio;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'LOGIN no válido.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+
+      showMyDialog('Error', 'LOGIN no válido.', 'Aceptar');
+
       return;
     }
 
@@ -334,13 +321,9 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Este Usuario está Activo',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+
+      showMyDialog('Error', 'Este Usuario está Activo', 'Aceptar');
+
       return;
     }
 
@@ -363,13 +346,10 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estes conectado a internet.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+
+      showMyDialog(
+          'Error', 'Verifica que estes conectado a internet.', 'Aceptar');
+
       return;
     }
 
@@ -389,22 +369,10 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
     });
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message: 'Usuario reactivado con éxito!',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', 'Usuario reactivado con éxito!', 'Aceptar');
       Navigator.pop(context, 'yes');
     }
   }

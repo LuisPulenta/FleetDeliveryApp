@@ -1,4 +1,3 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
@@ -170,13 +169,8 @@ class AsignacionesTodasMapScreenState
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -185,13 +179,7 @@ class AsignacionesTodasMapScreenState
     response = await ApiHelper.getAsignacionesTodas(widget.user.idUser);
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 
@@ -410,13 +398,8 @@ class AsignacionesTodasMapScreenState
         e.gryy == "" ||
         isNullOrEmpty(e.grxx) ||
         isNullOrEmpty(e.gryy)) {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message: "Este cliente no tiene coordenadas cargadas.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso', "Este cliente no tiene coordenadas cargadas.", 'Aceptar');
       return;
     }
 
@@ -432,13 +415,10 @@ class AsignacionesTodasMapScreenState
         throw 'Could not launch ${uri.toString()}';
       }
     } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso!',
-          message: "Necesita estar conectado a Internet para acceder al mapa",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso',
+          "Necesita estar conectado a Internet para acceder al mapa",
+          'Aceptar');
     }
   }
 

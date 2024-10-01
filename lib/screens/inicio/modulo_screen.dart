@@ -1,4 +1,3 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
@@ -150,13 +149,8 @@ class _ModuloScreenState extends State<ModuloScreen> {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -168,13 +162,7 @@ class _ModuloScreenState extends State<ModuloScreen> {
     Response response = await ApiHelper.put('/api/Modulos/', '4', request);
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
     Navigator.pop(context, 'yes');

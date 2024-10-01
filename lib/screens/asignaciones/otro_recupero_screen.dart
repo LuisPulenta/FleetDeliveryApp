@@ -1,6 +1,5 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:fleetdeliveryapp/helpers/api_helper.dart';
+import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -472,39 +471,25 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
 //---------------- Verifica que se haya elegido un modelo --------------
 
     if (_coddeco1OtroRecupero == 'Elija un Modelo...') {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Debe elegir un Modelo.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', 'Debe elegir un Modelo.', 'Aceptar');
+
       return;
     }
 
 //---------------- Verifica que se haya elegido un MacSerie --------------
 
     if (_nroserieextraOtroRecupero == '') {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Debe elegir un Mac/Serie.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', 'Debe elegir un Mac/Serie.', 'Aceptar');
+
       return;
     }
 
     //---------------- Verifica que MacSerie no tenga más de 30 caracteres --------------
 
     if (_nroserieextraOtroRecupero.length > 30) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Mac/Serie no puede tener más de 30 caracteres.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', 'Mac/Serie no puede tener más de 30 caracteres.', 'Aceptar');
+
       return;
     }
 

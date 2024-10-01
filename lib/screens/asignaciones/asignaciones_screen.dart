@@ -1,8 +1,7 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
-import 'package:fleetdeliveryapp/helpers/api_helper.dart';
+import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/models/zona.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
@@ -1320,13 +1319,8 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -1357,13 +1351,8 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -1390,13 +1379,8 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -1440,13 +1424,8 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -1456,13 +1435,7 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
         await ApiHelper.getAsignaciones(widget.user.idUser, _tipoasignacion);
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 
@@ -1472,24 +1445,12 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     response3 = await ApiHelper.getControlesEquivalencia(_tipoasignacion);
 
     if (!response2.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 
     if (!response3.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 
@@ -1553,13 +1514,8 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -1567,13 +1523,7 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     response = await ApiHelper.getCodigosCierre(_tipoasignacion);
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
     _codigoscierreAux = response.result;
@@ -2247,13 +2197,9 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
         e.gryy == "" ||
         isNullOrEmpty(e.grxx) ||
         isNullOrEmpty(e.gryy)) {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message: "Este cliente no tiene coordenadas cargadas.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso', "Este cliente no tiene coordenadas cargadas.", 'Aceptar');
+
       return;
     }
 
@@ -2269,13 +2215,10 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
         throw 'Could not launch ${uri.toString()}';
       }
     } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso!',
-          message: "Necesita estar conectado a Internet para acceder al mapa",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso',
+          "Necesita estar conectado a Internet para acceder al mapa",
+          'Aceptar');
     }
   }
 

@@ -1034,14 +1034,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     child: InkWell(
                       onTap: () async {
                         if (_nroserie.isEmpty) {
-                          await showAlertDialog(
-                              context: context,
-                              title: 'Error',
-                              message: 'Debe ingresar un N° de Serie',
-                              actions: <AlertDialogAction>[
-                                const AlertDialogAction(
-                                    key: null, label: 'Aceptar'),
-                              ]);
+                          showMyDialog('Error', "Debe ingresar un N° de Serie",
+                              'Aceptar');
+
                           return;
                         }
 
@@ -2112,13 +2107,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
     bandera = false;
@@ -2142,13 +2132,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 
@@ -2197,13 +2181,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
     bandera = false;
@@ -2223,13 +2202,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
   }
@@ -2817,13 +2790,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         asignacion.gryy == "0" ||
         isNullOrEmpty(asignacion.grxx) ||
         isNullOrEmpty(asignacion.gryy)) {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message: "Esta asignación no tiene coordenadas cargadas.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Esta asignación no tiene coordenadas cargadas.", 'Aceptar');
+
       return;
     }
 
@@ -2851,13 +2820,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         throw 'Could not launch ${uri.toString()}';
       }
     } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso!',
-          message: "Necesita estar conectado a Internet para acceder al mapa",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso',
+          "Necesita estar conectado a Internet para acceder al mapa",
+          'Aceptar');
     }
   }
 
@@ -2921,41 +2887,31 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //-------------------------- Verifica que no sea PEN --------------------------
   void _guardar() async {
     if (estadogaos == "PEN") {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'El Estado sigue "PEN". No tiene sentido guardar.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', 'El Estado sigue "PEN". No tiene sentido guardar.',
+          'Aceptar');
+
       return;
     }
 
 //---------------- Verifica que si es INC tenga Código de Cierre --------------
 
     if (estadogaos == "INC" && _codigocierre == -1) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message:
-              'Si la Orden tiene un Estado "INC", hay que cargar el Código Cierre.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error',
+          'Si la Orden tiene un Estado "INC", hay que cargar el Código Cierre.',
+          'Aceptar');
+
       return;
     }
 
 //---------------- Verifica que si es PAR tenga Código de Cierre --------------
 
     if (estadogaos == "PAR" && _codigocierre == -1) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message:
-              'Si la Orden tiene un Estado "PAR", hay que cargar el Código Cierre.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error',
+          'Si la Orden tiene un Estado "PAR", hay que cargar el Código Cierre.',
+          'Aceptar');
+
       return;
     }
 
@@ -2973,26 +2929,20 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
 
       if (elegidos == 0) {
-        await showAlertDialog(
-            context: context,
-            title: 'Error',
-            message:
-                'La Orden tiene un Estado "PAR" pero NO HA ELEGIDO ninguna asignación, ',
-            actions: <AlertDialogAction>[
-              const AlertDialogAction(key: null, label: 'Aceptar'),
-            ]);
+        showMyDialog(
+            'Error',
+            'La Orden tiene un Estado "PAR" pero NO HA ELEGIDO ninguna asignación, ',
+            'Aceptar');
+
         return;
       }
 
       if (noelegidos == 0) {
-        await showAlertDialog(
-            context: context,
-            title: 'Error',
-            message:
-                'La Orden tiene un Estado "PAR" pero HA ELEGIDO TODAS las asignaciones, ',
-            actions: <AlertDialogAction>[
-              const AlertDialogAction(key: null, label: 'Aceptar'),
-            ]);
+        showMyDialog(
+            'Error',
+            'La Orden tiene un Estado "PAR" pero HA ELEGIDO TODAS las asignaciones, ',
+            'Aceptar');
+
         return;
       }
     }
@@ -3002,13 +2952,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     if (widget.funcionApp.habilitaDNI == 1 &&
         _photoChangedDNI == false &&
         estadogaos == 'EJB') {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Debe cargar la Foto del DNI.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', 'Debe cargar la Foto del DNI.', 'Aceptar');
+
       return;
     }
 
@@ -3017,13 +2962,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     if (widget.funcionApp.habilitaFirma == 1 &&
         _signatureChanged == false &&
         estadogaos == 'EJB') {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Debe cargar la Firma.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', 'Debe cargar la Firma.', 'Aceptar');
+
       return;
     }
 
@@ -3439,13 +3379,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           '/api/AsignacionesOTs/', asign.idregistro.toString(), request);
 
       if (!response.isSuccess) {
-        await showAlertDialog(
-            context: context,
-            title: 'Error',
-            message: response.message,
-            actions: <AlertDialogAction>[
-              const AlertDialogAction(key: null, label: 'Aceptar'),
-            ]);
+        showMyDialog('Aviso', response.message, 'Aceptar');
         return;
       }
 
@@ -3490,13 +3424,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           '/api/AsignacionesOTs/PostAsigHistorico', requestAsigHisto);
 
       if (!responseAsigHisto.isSuccess) {
-        await showAlertDialog(
-            context: context,
-            title: 'Error',
-            message: responseAsigHisto.message,
-            actions: <AlertDialogAction>[
-              const AlertDialogAction(key: null, label: 'Aceptar'),
-            ]);
+        showMyDialog('Error', responseAsigHisto.message, 'Aceptar');
+
         return;
       }
     }
@@ -3699,13 +3628,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           '/api/AsignacionesOTs/', asign.idregistro.toString(), request);
 
       if (!response.isSuccess) {
-        await showAlertDialog(
-            context: context,
-            title: 'Error',
-            message: response.message,
-            actions: <AlertDialogAction>[
-              const AlertDialogAction(key: null, label: 'Aceptar'),
-            ]);
+        showMyDialog('Aviso', response.message, 'Aceptar');
         return;
       }
       _asignacion.observacion = _observaciones2Controller.text;
@@ -3724,13 +3647,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     var long = double.tryParse(asignacion.gryy.toString()) ?? 0;
 
     if (lat == 0 || long == 0 || isNullOrEmpty(lat) || isNullOrEmpty(long)) {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message: "Esta asignación no tiene coordenadas cargadas.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso', "Esta asignación no tiene coordenadas cargadas.", 'Aceptar');
+
       return;
     }
 

@@ -32,12 +32,16 @@ class ContratoFirmaScreenState extends State<ContratoFirmaScreen> {
   }
 
   void _handleSaveButtonPressed() async {
+    final navigator = Navigator.of(context);
     ui.Image image =
         await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
     ByteData? bytes = await image.toByteData(format: ui.ImageByteFormat.png);
 
     Response response = Response(isSuccess: true, result: bytes);
-    Navigator.pop(context, response);
+
+    navigator.pop(response);
+
+    //Navigator.pop(context, response);
   }
 
   List<String> meses = [

@@ -1,4 +1,3 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:flutter/material.dart';
@@ -332,13 +331,10 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estes conectado a internet.',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+
+      showMyDialog(
+          'Error', 'Verifica que estes conectado a internet.', 'Aceptar');
+
       return;
     }
 
@@ -355,23 +351,13 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     });
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 
-    await showAlertDialog(
-        context: context,
-        title: 'Confirmación',
-        message: 'Su contraseña ha sido cambiada con éxito.',
-        actions: <AlertDialogAction>[
-          const AlertDialogAction(key: null, label: 'Aceptar'),
-        ]);
+    showMyDialog(
+        'Confirmación', 'Su contraseña ha sido cambiada con éxito.', 'Aceptar');
+
     _user.usrcontrasena = _newPassword.toUpperCase();
     DBUsuarios.update(_user);
     Navigator.pop(context, 'yes');

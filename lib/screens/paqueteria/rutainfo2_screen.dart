@@ -1,4 +1,3 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
@@ -1467,13 +1466,8 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
 
     if (cantidad == 0) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Debe seleccionar al menos un envío!!',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', "Debe seleccionar al menos un envío!!", "Aceptar");
+
       return;
     }
 
@@ -1485,24 +1479,13 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
 
     if (_estado == "Elija un Estado...") {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Debe seleccionar un Estado!!',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', "Debe seleccionar un Estado!!", "Aceptar");
       return;
     }
 
     if (_motivo == "Elija un Motivo...") {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Debe seleccionar un Motivo!!',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', "Debe seleccionar un Motivo!!", "Aceptar");
+
       return;
     }
 
@@ -1784,13 +1767,7 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
 
     if (parEnvio == 0) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error 2',
-          message: "No se ha podido grabar",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', "No se ha podido grabar", 'Aceptar');
       return;
     }
   }

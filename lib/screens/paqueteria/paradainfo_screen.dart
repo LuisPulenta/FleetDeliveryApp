@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:fleetdeliveryapp/helpers/dbparadasenvios_helper.dart';
+import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:geolocator/geolocator.dart';
@@ -854,13 +854,9 @@ class ParadaInfoScreenState extends State<ParadaInfoScreen> {
         paradaenvio.longitud == 0 ||
         isNullOrEmpty(paradaenvio.latitud) ||
         isNullOrEmpty(paradaenvio.longitud)) {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message: "Esta parada no tiene coordenadas cargadas.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso', "Esta parada no tiene coordenadas cargadas.", 'Aceptar');
+
       return;
     }
     _center = LatLng(
@@ -1010,13 +1006,9 @@ class ParadaInfoScreenState extends State<ParadaInfoScreen> {
         e.longitud == 0 ||
         isNullOrEmpty(e.latitud) ||
         isNullOrEmpty(e.longitud)) {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message: "Esta parada no tiene coordenadas cargadas.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso', "Esta parada no tiene coordenadas cargadas.", 'Aceptar');
+
       return;
     }
 
@@ -1043,13 +1035,10 @@ class ParadaInfoScreenState extends State<ParadaInfoScreen> {
         throw 'Could not launch ${uri.toString()}';
       }
     } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso!',
-          message: "Necesita estar conectado a Internet para acceder al mapa",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso',
+          "Necesita estar conectado a Internet para acceder al mapa",
+          'Aceptar');
     }
   }
 
@@ -1308,13 +1297,8 @@ class ParadaInfoScreenState extends State<ParadaInfoScreen> {
     var parEnvio = await DBParadasEnvios.insertParadaEnvio(requestParadaEnvio);
 
     if (parEnvio == 0) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error 2',
-          message: "No se ha podido grabar",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', "No se ha podido grabar", 'Aceptar');
+
       return;
     }
 

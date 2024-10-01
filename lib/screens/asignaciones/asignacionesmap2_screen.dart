@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
@@ -359,13 +358,10 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
 
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+
       return;
     }
     bandera = false;
@@ -389,13 +385,7 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
     setState(() {});
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 
@@ -421,13 +411,7 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
     Response response = await ApiHelper.put(
         '/api/AsignacionesMarca/', asign.idregistro.toString(), request);
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
   }

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
@@ -12,7 +11,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:whatsapp_share/whatsapp_share.dart';
-//import 'package:whatsapp_share2/whatsapp_share2.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
@@ -1178,13 +1176,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                     ruta: ruta,
                   )));
     } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Ha ocurrido un error al generar el documento PDF',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', 'Ha ocurrido un error al generar el documento PDF',
+          'Aceptar');
+
       return;
     }
   }
@@ -1263,13 +1257,8 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
     bandera = false;
@@ -1292,13 +1281,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     setState(() {});
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 
@@ -1320,13 +1303,8 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
     bandera = false;
@@ -1346,13 +1324,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     setState(() {});
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 
@@ -1684,13 +1656,8 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -1701,13 +1668,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
         await ApiHelper.getFuncionesApp(widget.asignacion.proyectomodulo!);
 
     if (!response3.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 

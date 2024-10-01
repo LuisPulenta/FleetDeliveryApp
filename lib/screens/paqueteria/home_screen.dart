@@ -1,4 +1,3 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
@@ -1777,14 +1776,10 @@ class HomeScreenState extends State<HomeScreen>
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message:
-              "No se encontraron Rutas activas para su Usuario. Comuníquese con el Administrador.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error',
+          "No se encontraron Rutas activas para su Usuario. Comuníquese con el Administrador.",
+          'Aceptar');
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('usuariosconseguidos', false);
@@ -1979,15 +1974,11 @@ class HomeScreenState extends State<HomeScreen>
                           DBParadasEnvios.delete(element);
                         }
                         _paradasenviosdb = [];
-                        await showAlertDialog(
-                            context: context,
-                            title: 'Aviso',
-                            message:
-                                'Las paradas grabadas en forma local en este teléfono para el Usuario  ${widget.user.apellidonombre} han sido eliminadas',
-                            actions: <AlertDialogAction>[
-                              const AlertDialogAction(
-                                  key: null, label: 'Aceptar'),
-                            ]);
+                        showMyDialog(
+                            'Aviso',
+                            'Las paradas grabadas en forma local en este teléfono para el Usuario  ${widget.user.apellidonombre} han sido eliminadas',
+                            'Aceptar');
+
                         setState(() {});
                         _result2 = "yes";
                         Navigator.pop(context, 'yes');
@@ -2081,14 +2072,10 @@ class HomeScreenState extends State<HomeScreen>
         _showLoader = false;
       });
     } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message:
-              "No está conectado a Internet para subir los datos al Servidor",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso',
+          "No está conectado a Internet para subir los datos al Servidor",
+          'Aceptar');
     }
 
     setState(() {});

@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'package:fleetdeliveryapp/helpers/showmydialog.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_information/device_information.dart';
 import 'dart:math';
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
@@ -581,14 +579,10 @@ class LoginScreenState extends State<LoginScreen> {
           _showLoader = false;
         });
 
-        await showAlertDialog(
-            context: context,
-            title: 'Error',
-            message:
-                "Debe actualizar la Tabla Usuarios. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.",
-            actions: <AlertDialogAction>[
-              const AlertDialogAction(key: null, label: 'Aceptar'),
-            ]);
+        showMyDialog(
+            'Error',
+            "Debe actualizar la Tabla Usuarios. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.",
+            'Aceptar');
 
         return;
       }
@@ -616,14 +610,12 @@ class LoginScreenState extends State<LoginScreen> {
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message:
-              "La tabla Usuarios local está vacía. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+
+      showMyDialog(
+          'Error',
+          "La tabla Usuarios local está vacía. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.",
+          "Aceptar");
+
       SystemNavigator.pop();
       return;
     }

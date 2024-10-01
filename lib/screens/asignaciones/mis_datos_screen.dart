@@ -1893,13 +1893,8 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -1990,13 +1985,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       });
 
       if (!response.isSuccess) {
-        await showAlertDialog(
-            context: context,
-            title: 'Error',
-            message: response.message,
-            actions: <AlertDialogAction>[
-              const AlertDialogAction(key: null, label: 'Aceptar'),
-            ]);
+        showMyDialog('Aviso', response.message, 'Aceptar');
         return;
       }
     }
@@ -2012,13 +2001,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       });
 
       if (!response.isSuccess) {
-        await showAlertDialog(
-            context: context,
-            title: 'Error',
-            message: response.message,
-            actions: <AlertDialogAction>[
-              const AlertDialogAction(key: null, label: 'Aceptar'),
-            ]);
+        showMyDialog('Aviso', response.message, 'Aceptar');
         return;
       }
     }
@@ -2041,13 +2024,8 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       setState(() {
         _showLoader = false;
       });
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: 'Verifica que estés conectado a Internet',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
       return;
     }
 
@@ -2060,13 +2038,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     });
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
 

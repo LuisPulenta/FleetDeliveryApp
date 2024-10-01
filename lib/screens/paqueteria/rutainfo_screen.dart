@@ -1,4 +1,3 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
@@ -977,14 +976,11 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
 
   Future<void> _goInfoParada(ParadaEnvio e) async {
     if (e.titular == null || e.titular!.isEmpty) {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message:
-              "Ruta con datos incongruentes. Chequee estados de pedidos. Esta parada no tiene el Nombre del Cliente. Pruebe a volver a sincronizar/traer Rutas nuevamente.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso',
+          "Ruta con datos incongruentes. Chequee estados de pedidos. Esta parada no tiene el Nombre del Cliente. Pruebe a volver a sincronizar/traer Rutas nuevamente.",
+          'Aceptar');
+
       return;
     }
 
@@ -1015,13 +1011,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
         e.longitud == 0 ||
         isNullOrEmpty(e.latitud) ||
         isNullOrEmpty(e.longitud)) {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso',
-          message: "Esta parada no tiene coordenadas cargadas.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso', "Esta parada no tiene coordenadas cargadas.", 'Aceptar');
+
       return;
     }
 
@@ -1048,13 +1040,10 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
         throw 'Could not launch ${uri.toString()}';
       }
     } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso!',
-          message: "Necesita estar conectado a Internet para acceder al mapa",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso!',
+          "Necesita estar conectado a Internet para acceder al mapa",
+          "Aceptar");
     }
   }
 
@@ -1272,13 +1261,10 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
         ),
       );
     } else {
-      await showAlertDialog(
-          context: context,
-          title: 'Aviso!',
-          message: "Necesita estar conectado a Internet para acceder al mapa",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Aviso!',
+          "Necesita estar conectado a Internet para acceder al mapa",
+          'Aceptar');
     }
   }
 
@@ -2120,25 +2106,16 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
         paradaEnvio.dni!, paradaEnvio.idproveedor.toString());
 
     if (!response.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response.message, 'Aceptar');
       return true;
     }
 
     if (response.result) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message:
-              'El Cliente ${paradaEnvio.titular} ya tiene Catastro registrado para el Proveedor ${paradaEnvio.proveedor}',
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Ok'),
-          ]);
+      showMyDialog(
+          'Error',
+          'El Cliente ${paradaEnvio.titular} ya tiene Catastro registrado para el Proveedor ${paradaEnvio.proveedor}',
+          "Ok");
+
       return true;
     }
     return false;
@@ -2278,22 +2255,14 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
         await ApiHelper.post('/api/DestinosGeoCoding/', request);
 
     if (!response2.isSuccess) {
-      await showAlertDialog(
-          context: context,
-          title: 'Error',
-          message: response2.message,
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog('Error', response2.message, "Aceptar");
+
       return;
     }
-    await showAlertDialog(
-        context: context,
-        title: 'Aviso',
-        message:
-            'Catastro para el Cliente ${paradaEnvio.titular} en el proveedor ${paradaEnvio.proveedor} guardado con éxito!',
-        actions: <AlertDialogAction>[
-          const AlertDialogAction(key: null, label: 'Ok'),
-        ]);
+
+    showMyDialog(
+        'Aviso',
+        'Catastro para el Cliente ${paradaEnvio.titular} en el proveedor ${paradaEnvio.proveedor} guardado con éxito!',
+        "Ok");
   }
 }
