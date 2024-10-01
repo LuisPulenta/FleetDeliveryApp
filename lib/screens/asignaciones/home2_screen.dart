@@ -15,10 +15,10 @@ class Home2Screen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _Home2ScreenState createState() => _Home2ScreenState();
+  Home2ScreenState createState() => Home2ScreenState();
 }
 
-class _Home2ScreenState extends State<Home2Screen> {
+class Home2ScreenState extends State<Home2Screen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------

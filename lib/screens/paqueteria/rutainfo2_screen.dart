@@ -35,10 +35,10 @@ class RutaInfo2Screen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _RutaInfo2ScreenState createState() => _RutaInfo2ScreenState();
+  RutaInfo2ScreenState createState() => RutaInfo2ScreenState();
 }
 
-class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
+class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------

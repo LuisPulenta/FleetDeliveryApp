@@ -31,10 +31,10 @@ class AsignacionesMap2Screen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AsignacionesMap2ScreenState createState() => _AsignacionesMap2ScreenState();
+  AsignacionesMap2ScreenState createState() => AsignacionesMap2ScreenState();
 }
 
-class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
+class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------
@@ -42,8 +42,7 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
   List<Asignacion2> asignacionesTemporal = [];
   bool bandera = false;
   List<Asign> _asigns = [];
-  final CustomInfoWindowController _customInfoWindowController =
-      CustomInfoWindowController();
+
   bool ubicOk = false;
   int _valorMarcador = 0;
   double latitud = 0;

@@ -230,7 +230,7 @@ class _InfoScreenState extends State<InfoScreen> {
 
     do {
       Response response = Response(isSuccess: false);
-      response = await ApiHelper.GetConFechaCita(widget.user.idUser);
+      response = await ApiHelper.getConFechaCita(widget.user.idUser);
       intentos++;
       if (response.isSuccess) {
         bandera = true;

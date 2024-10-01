@@ -22,11 +22,11 @@ class AsignacionesTodasMapScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AsignacionesTodasMapScreenState createState() =>
-      _AsignacionesTodasMapScreenState();
+  AsignacionesTodasMapScreenState createState() =>
+      AsignacionesTodasMapScreenState();
 }
 
-class _AsignacionesTodasMapScreenState
+class AsignacionesTodasMapScreenState
     extends State<AsignacionesTodasMapScreen> {
 //--------------------------------------------------------------
 //------------------------- Variables --------------------------
@@ -288,8 +288,7 @@ class _AsignacionesTodasMapScreenState
                                     child: Text(asign.domicilio.toString(),
                                         style: const TextStyle(fontSize: 10))),
                                 Expanded(
-                                    child: Text(
-                                        "Distancia: " + dist.toString() + " km",
+                                    child: Text("Distancia: $dist km",
                                         style: const TextStyle(fontSize: 12))),
                                 Row(
                                   children: [

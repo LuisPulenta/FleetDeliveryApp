@@ -9,10 +9,10 @@ class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({Key? key, required this.camera}) : super(key: key);
 
   @override
-  _TakePictureScreenState createState() => _TakePictureScreenState();
+  TakePictureScreenState createState() => TakePictureScreenState();
 }
 
-class _TakePictureScreenState extends State<TakePictureScreen> {
+class TakePictureScreenState extends State<TakePictureScreen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------

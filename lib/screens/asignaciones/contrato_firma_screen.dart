@@ -12,10 +12,10 @@ class ContratoFirmaScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ContratoFirmaScreenState createState() => _ContratoFirmaScreenState();
+  ContratoFirmaScreenState createState() => ContratoFirmaScreenState();
 }
 
-class _ContratoFirmaScreenState extends State<ContratoFirmaScreen> {
+class ContratoFirmaScreenState extends State<ContratoFirmaScreen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------

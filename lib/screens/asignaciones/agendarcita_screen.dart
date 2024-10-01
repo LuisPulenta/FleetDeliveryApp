@@ -14,10 +14,10 @@ class AgendarCitaScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AgendarCitaScreenState createState() => _AgendarCitaScreenState();
+  AgendarCitaScreenState createState() => AgendarCitaScreenState();
 }
 
-class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
+class AgendarCitaScreenState extends State<AgendarCitaScreen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------

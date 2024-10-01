@@ -8,10 +8,10 @@ class FirmaScreen extends StatefulWidget {
   const FirmaScreen({Key? key}) : super(key: key);
 
   @override
-  _FirmaScreenState createState() => _FirmaScreenState();
+  FirmaScreenState createState() => FirmaScreenState();
 }
 
-class _FirmaScreenState extends State<FirmaScreen> {
+class FirmaScreenState extends State<FirmaScreen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------

@@ -34,10 +34,10 @@ class ParadaInfoScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ParadaInfoScreenState createState() => _ParadaInfoScreenState();
+  ParadaInfoScreenState createState() => ParadaInfoScreenState();
 }
 
-class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
+class ParadaInfoScreenState extends State<ParadaInfoScreen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------

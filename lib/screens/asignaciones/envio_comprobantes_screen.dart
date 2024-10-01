@@ -17,11 +17,10 @@ class EnvioComprobantesScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EnvioComprobantesScreenState createState() =>
-      _EnvioComprobantesScreenState();
+  EnvioComprobantesScreenState createState() => EnvioComprobantesScreenState();
 }
 
-class _EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
+class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
 //--------------------------------------------------------------
 //------------------------- Variables --------------------------
 //--------------------------------------------------------------

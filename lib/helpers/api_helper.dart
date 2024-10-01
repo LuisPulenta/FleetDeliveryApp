@@ -780,7 +780,7 @@ class ApiHelper {
   }
 
   //---------------------------------------------------------------------------
-  static Future<Response> GetConFechaCita(int userId) async {
+  static Future<Response> getConFechaCita(int userId) async {
     var url = Uri.parse(
         '${Constants.apiUrl}/api/AsignacionesOTs/GetConFechaCita/$userId/');
     var response = await http.post(

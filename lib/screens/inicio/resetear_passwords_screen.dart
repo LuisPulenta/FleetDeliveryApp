@@ -25,8 +25,6 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
   final bool _enabled = false;
   bool _showLoader = false;
 
-  final bool _isRunning = false;
-
   Usuario2 _user = Usuario2(
       idUsuario: 0,
       codigoCausante: '',

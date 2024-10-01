@@ -40,10 +40,10 @@ class RutaInfoScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _RutaInfoScreenState createState() => _RutaInfoScreenState();
+  RutaInfoScreenState createState() => RutaInfoScreenState();
 }
 
-class _RutaInfoScreenState extends State<RutaInfoScreen> {
+class RutaInfoScreenState extends State<RutaInfoScreen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------
@@ -1853,9 +1853,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
 
     List<Placemark> placemarks = await placemarkFromCoordinates(
         _positionUser.latitude, _positionUser.longitude);
-    direccion = placemarks[0].street.toString() +
-        " - " +
-        placemarks[0].locality.toString();
+    direccion = "${placemarks[0].street} - ${placemarks[0].locality}";
     setState(() {});
   }
 

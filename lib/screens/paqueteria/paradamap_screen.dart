@@ -22,10 +22,10 @@ class ParadaMapScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ParadaMapScreenState createState() => _ParadaMapScreenState();
+  ParadaMapScreenState createState() => ParadaMapScreenState();
 }
 
-class _ParadaMapScreenState extends State<ParadaMapScreen> {
+class ParadaMapScreenState extends State<ParadaMapScreen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------

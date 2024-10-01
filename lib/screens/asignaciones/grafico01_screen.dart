@@ -278,9 +278,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                       )
                     : Center(
                         child: Text(
-                            "No se encontraron datos de " +
-                                _tipoasignacion +
-                                " para el mes seleccionado.",
+                            "No se encontraron datos de $_tipoasignacion para el mes seleccionado.",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: Colors.red,
@@ -889,7 +887,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
     if (_porcentaje == "0" || _porcentaje == "0.0") {
       _porcentaje = "0.00 %";
     } else {
-      _porcentaje = _porcentaje.substring(0, 4) + " %";
+      _porcentaje = "${_porcentaje.substring(0, 4)} %";
     }
 
     bardata = [];
@@ -940,7 +938,7 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
           isSquare: false,
           color: Colors.transparent,
           size: 14,
-          text: _tipoasignacion + " - " + _nombreMes + "/" + _anio.toString(),
+          text: "$_tipoasignacion - $_nombreMes/$_anio",
         )
       ],
     );

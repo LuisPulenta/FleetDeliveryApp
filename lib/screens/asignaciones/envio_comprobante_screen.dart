@@ -27,10 +27,10 @@ class EnvioComprobanteScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EnvioComprobanteScreenState createState() => _EnvioComprobanteScreenState();
+  EnvioComprobanteScreenState createState() => EnvioComprobanteScreenState();
 }
 
-class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
+class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     with SingleTickerProviderStateMixin {
 //--------------------------------------------------------------
 //------------------------- Variables --------------------------
@@ -250,7 +250,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                     : asign.estadO3
                                         .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
                                 _mensajeRecibo =
-                                    _mensajeRecibo + "Equipo: " + mm + "\n";
+                                    "${_mensajeRecibo}Equipo: $mm\n";
                               }
 
                               message = 'Recibimos del cliente ' +
@@ -375,13 +375,11 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                         onPressed: () async {
                                                           if (_number2.length >
                                                               1) {
-                                                            _number2 = "549" +
-                                                                _number2;
+                                                            _number2 =
+                                                                "549$_number2";
                                                             _phoneController
                                                                     .text =
-                                                                "549" +
-                                                                    _phoneController
-                                                                        .text;
+                                                                "549${_phoneController.text}";
                                                             setState(() {});
                                                           }
                                                         }),
@@ -542,7 +540,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                     : asign.estadO3
                                         .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
                                 _mensajeRecibo =
-                                    _mensajeRecibo + "Equipo: " + mm + "\n";
+                                    "${_mensajeRecibo}Equipo: $mm\n";
                               }
 
                               message = 'Recibimos del cliente ' +
@@ -659,13 +657,11 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                         onPressed: () async {
                                                           if (_number2.length >
                                                               1) {
-                                                            _number2 = "549" +
-                                                                _number2;
+                                                            _number2 =
+                                                                "549$_number2";
                                                             _phoneController
                                                                     .text =
-                                                                "549" +
-                                                                    _phoneController
-                                                                        .text;
+                                                                "549${_phoneController.text}";
                                                             setState(() {});
                                                           }
                                                         }),
@@ -703,8 +699,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                                               3) !=
                                                                           '549'
                                                                       ? _number2 =
-                                                                          '549' +
-                                                                              _number2
+                                                                          '549$_number2'
                                                                       : _number2 =
                                                                           _number2;
 
@@ -754,12 +749,11 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                               onPressed: _number2 != ""
                                                   ? _existeChat == false
                                                       ? () async {
-                                                          _number2.substring(0,
-                                                                      3) !=
+                                                          _number2.substring(
+                                                                      0, 3) !=
                                                                   '549'
                                                               ? _number2 =
-                                                                  '549' +
-                                                                      _number2
+                                                                  '549$_number2'
                                                               : _number2 =
                                                                   _number2;
 
@@ -1029,7 +1023,7 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     row1.cells[0].value = "FLEET GROUP";
     row1.cells[1].value = "Fecha Retiro";
     row1.cells[2].value =
-        "  " + DateFormat('dd/MM/yyyy').format(DateTime.now());
+        "  ${DateFormat('dd/MM/yyyy').format(DateTime.now())}";
 
     header2.cells[0].value = "Apellido y Nombre del Cliente";
     header2.cells[1].value = widget.asignacion.nombre;
@@ -1210,12 +1204,12 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
         for (int x = 1; x < convertedDirectoryPath.length; x++) {
           String folder = paths[x];
           if (folder != "Android") {
-            newPath += "/" + folder;
+            newPath += "/$folder";
           } else {
             break;
           }
         }
-        newPath = newPath + "/fleetDeliveryApp/Pdf";
+        newPath = "$newPath/fleetDeliveryApp/Pdf";
 
         directory = Directory(newPath);
         if (!await directory.exists()) {

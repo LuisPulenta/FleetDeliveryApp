@@ -26,10 +26,10 @@ class AsignacionesScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AsignacionesScreenState createState() => _AsignacionesScreenState();
+  AsignacionesScreenState createState() => AsignacionesScreenState();
 }
 
-class _AsignacionesScreenState extends State<AsignacionesScreen> {
+class AsignacionesScreenState extends State<AsignacionesScreen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------
@@ -2197,7 +2197,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
     latcenter = (latmin + latmax) / 2;
     longcenter = (longmin + longmax) / 2;
 
-    String? result = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AsignacionesMap2Screen(

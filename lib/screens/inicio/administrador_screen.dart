@@ -86,7 +86,7 @@ class _AdministradorScreenState extends State<AdministradorScreen> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Row(
@@ -105,7 +105,8 @@ class _AdministradorScreenState extends State<AdministradorScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ResetearPasswordsScreen()));
+                            builder: (context) =>
+                                const ResetearPasswordsScreen()));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

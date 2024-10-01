@@ -22,10 +22,10 @@ class AsignacionMapScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AsignacionMapScreenState createState() => _AsignacionMapScreenState();
+  AsignacionMapScreenState createState() => AsignacionMapScreenState();
 }
 
-class _AsignacionMapScreenState extends State<AsignacionMapScreen> {
+class AsignacionMapScreenState extends State<AsignacionMapScreen> {
 //--------------------------------------------------------
 //--------------------- Variables ------------------------
 //--------------------------------------------------------

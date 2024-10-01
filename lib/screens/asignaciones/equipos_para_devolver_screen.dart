@@ -763,8 +763,6 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
       return;
     }
 
-    String ahora = DateTime.now().toString();
-
     Response response = await ApiHelper.delete(
         '/api/AsignacionesOtsTurnos/', _turno.idTurno.toString());
 
@@ -1063,9 +1061,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         ((valor - ((valor / 3600).floor()) * 3600) / 60).round().toString();
 
     if (minutos.length == 1) {
-      minutos = "0" + minutos;
+      minutos = "0$minutos";
     }
-    return hora.toString() + ':' + minutos.toString();
+    return '$hora:$minutos';
   }
 }
 
