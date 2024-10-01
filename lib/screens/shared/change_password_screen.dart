@@ -223,6 +223,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget _showChangePassword() {
     return Expanded(
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xff282886),
+          minimumSize: const Size(double.infinity, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+        onPressed: () => _save(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
@@ -233,14 +241,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             Text('Cambiar contraseña'),
           ],
         ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xff282886),
-          minimumSize: const Size(double.infinity, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-        ),
-        onPressed: () => _save(),
       ),
     );
   }

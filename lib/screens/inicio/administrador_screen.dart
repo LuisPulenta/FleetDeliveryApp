@@ -57,16 +57,6 @@ class _AdministradorScreenState extends State<AdministradorScreen> {
             children: <Widget>[
               Expanded(
                 child: ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.save),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text('Módulo'),
-                    ],
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF282886),
                     minimumSize: const Size(double.infinity, 50),
@@ -82,6 +72,16 @@ class _AdministradorScreenState extends State<AdministradorScreen> {
                                   modulo: widget.modulo,
                                 )));
                   },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.save),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text('Módulo'),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -94,16 +94,6 @@ class _AdministradorScreenState extends State<AdministradorScreen> {
             children: <Widget>[
               Expanded(
                 child: ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.password),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text('Reactivar Usuario'),
-                    ],
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF282886),
                     minimumSize: const Size(double.infinity, 50),
@@ -117,6 +107,16 @@ class _AdministradorScreenState extends State<AdministradorScreen> {
                         MaterialPageRoute(
                             builder: (context) => ResetearPasswordsScreen()));
                   },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.password),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text('Reactivar Usuario'),
+                    ],
+                  ),
                 ),
               ),
             ],

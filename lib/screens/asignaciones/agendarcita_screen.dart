@@ -374,7 +374,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
   List<DropdownMenuItem<String>> getOptionsDropDown() {
     List<DropdownMenuItem<String>> list = [];
     for (var element in medios) {
-      list.add(DropdownMenuItem(child: Text(element), value: element));
+      list.add(DropdownMenuItem(value: element, child: Text(element)));
     }
     return list;
   }
@@ -398,6 +398,12 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                 width: 20,
               ),
               Container(
+                width: 110,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(color: Colors.black, width: 1.0),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -412,12 +418,6 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                     ),
                   ],
                 ),
-                width: 110,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  border: Border.all(color: Colors.black, width: 1.0),
-                ),
               ),
               const SizedBox(
                 width: 40,
@@ -427,6 +427,12 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                 width: 20,
               ),
               Container(
+                width: 110,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(color: Colors.black, width: 1.0),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -440,12 +446,6 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                       ),
                     ),
                   ],
-                ),
-                width: 110,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  border: Border.all(color: Colors.black, width: 1.0),
                 ),
               ),
             ],
@@ -523,6 +523,14 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
             children: <Widget>[
               Expanded(
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF282886),
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () => _save(widget.asignacion, context),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
@@ -533,29 +541,11 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                       Text('Guardar'),
                     ],
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF282886),
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onPressed: () => _save(widget.asignacion, context),
                 ),
               ),
               const SizedBox(width: 20),
               Expanded(
                 child: ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.cancel),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text('Cancelar'),
-                    ],
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF637893),
                     minimumSize: const Size(double.infinity, 50),
@@ -566,6 +556,16 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.cancel),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text('Cancelar'),
+                    ],
+                  ),
                 ),
               ),
             ],

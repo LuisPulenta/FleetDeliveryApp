@@ -435,13 +435,13 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           FloatingActionButton(
             heroTag: "1",
             onPressed: () => _navegartodos(),
+            backgroundColor: const Color(0xff282886),
             child: _isFiltered
                 ? IconButton(
                     onPressed: _removeFilter,
                     icon: const Icon(Icons.filter_none))
                 : IconButton(
                     onPressed: _showFilter, icon: const Icon(Icons.filter_alt)),
-            backgroundColor: const Color(0xff282886),
           ),
           const SizedBox(
             width: 20,
@@ -449,11 +449,11 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
           FloatingActionButton(
             heroTag: "2",
             onPressed: () => _navegartodos(),
+            backgroundColor: const Color(0xff282886),
             child: const Icon(
               Icons.map,
               size: 30,
             ),
-            backgroundColor: const Color(0xff282886),
           ),
         ],
       ),
@@ -675,6 +675,17 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                       SizedBox(
                                         width: 135,
                                         child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                const Color(0xFFb3b3b4),
+                                            minimumSize:
+                                                const Size(double.infinity, 30),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                          ),
+                                          onPressed: () => _navegar(e),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -691,17 +702,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                               ),
                                             ],
                                           ),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color(0xFFb3b3b4),
-                                            minimumSize:
-                                                const Size(double.infinity, 30),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                            ),
-                                          ),
-                                          onPressed: () => _navegar(e),
                                         ),
                                       ),
                                       const SizedBox(
@@ -711,6 +711,35 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                           ? SizedBox(
                                               width: 135,
                                               child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      const Color(0xFFb3b3b4),
+                                                  minimumSize: const Size(
+                                                      double.infinity, 30),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                ),
+                                                onPressed: widget.hayInternet
+                                                    ? () async {
+                                                        _ponerCatastroEnCero();
+                                                        var existeCatastro =
+                                                            await _existeCatastro(
+                                                                e);
+                                                        if (!existeCatastro) {
+                                                          if (e.catastro == 0) {
+                                                            _ponerCatastroEnCero();
+
+                                                            e.catastro = 1;
+                                                          } else {
+                                                            e.catastro = 0;
+                                                          }
+                                                          setState(() {});
+                                                        }
+                                                      }
+                                                    : null,
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
@@ -747,35 +776,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                                           ),
                                                   ],
                                                 ),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color(0xFFb3b3b4),
-                                                  minimumSize: const Size(
-                                                      double.infinity, 30),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                ),
-                                                onPressed: widget.hayInternet
-                                                    ? () async {
-                                                        _ponerCatastroEnCero();
-                                                        var existeCatastro =
-                                                            await _existeCatastro(
-                                                                e);
-                                                        if (!existeCatastro) {
-                                                          if (e.catastro == 0) {
-                                                            _ponerCatastroEnCero();
-
-                                                            e.catastro = 1;
-                                                          } else {
-                                                            e.catastro = 0;
-                                                          }
-                                                          setState(() {});
-                                                        }
-                                                      }
-                                                    : null,
                                               ),
                                             )
                                           : Container(),
@@ -852,25 +852,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                                 Expanded(
                                                   flex: 3,
                                                   child: ElevatedButton(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: const [
-                                                        Icon(Icons.my_location,
-                                                            color: Color(
-                                                                0xff282886)),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          'Obtener Domic.',
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xff282886)),
-                                                        ),
-                                                      ],
-                                                    ),
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       backgroundColor:
@@ -898,6 +879,25 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                                       direccion = '';
                                                       setState(() {});
                                                     },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: const [
+                                                        Icon(Icons.my_location,
+                                                            color: Color(
+                                                                0xff282886)),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          'Obtener Domic.',
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xff282886)),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -906,25 +906,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                                 Expanded(
                                                   flex: 2,
                                                   child: ElevatedButton(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: const [
-                                                        Icon(Icons.save,
-                                                            color: Color(
-                                                                0xff282886)),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          'Guardar',
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xff282886)),
-                                                        ),
-                                                      ],
-                                                    ),
                                                     style: ElevatedButton
                                                         .styleFrom(
                                                       backgroundColor:
@@ -945,6 +926,25 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                                               e);
                                                       var a = 1;
                                                     },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: const [
+                                                        Icon(Icons.save,
+                                                            color: Color(
+                                                                0xff282886)),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          'Guardar',
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xff282886)),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -1166,6 +1166,17 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                 children: [
                                   Expanded(
                                     child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFFb3b3b4),
+                                        minimumSize:
+                                            const Size(double.infinity, 30),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () => _navegar(element),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -1182,6 +1193,13 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                           ),
                                         ],
                                       ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:
                                             const Color(0xFFb3b3b4),
@@ -1192,14 +1210,7 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                               BorderRadius.circular(5),
                                         ),
                                       ),
-                                      onPressed: () => _navegar(element),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
+                                      onPressed: () => _goInfoParada(element),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -1216,17 +1227,6 @@ class _RutaInfoScreenState extends State<RutaInfoScreen> {
                                               color: Color(0xff282886)),
                                         ],
                                       ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _goInfoParada(element),
                                     ),
                                   ),
                                 ],

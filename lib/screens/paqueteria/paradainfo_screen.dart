@@ -198,6 +198,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
         child: Column(
           children: [
             Container(
+              color: const Color(0xff8b8cb6),
+              width: double.infinity,
+              height: 40,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
@@ -207,13 +210,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                   ),
                 ],
               ),
-              color: const Color(0xff8b8cb6),
-              width: double.infinity,
-              height: 40,
             ),
             Container(
               padding: const EdgeInsets.all(10),
               height: 70,
+              color: const Color(0xffdadada),
+              width: double.infinity,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -241,8 +243,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                   ),
                 ],
               ),
-              color: const Color(0xffdadada),
-              width: double.infinity,
             ),
             const Divider(
               height: 3,
@@ -250,6 +250,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
             Container(
               padding: const EdgeInsets.all(10),
               height: 130,
+              color: const Color(0xffdadada),
+              width: double.infinity,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -289,14 +291,15 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                   ),
                 ],
               ),
-              color: const Color(0xffdadada),
-              width: double.infinity,
             ),
             const Divider(
               height: 3,
             ),
             Container(
               padding: const EdgeInsets.all(10),
+              color: const Color(0xffdadada),
+              width: double.infinity,
+              height: 60,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -340,9 +343,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                       }),
                 ],
               ),
-              color: const Color(0xffdadada),
-              width: double.infinity,
-              height: 60,
             ),
           ],
         ),
@@ -361,6 +361,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       child: Column(
         children: [
           Container(
+            color: const Color(0xff8b8cb6),
+            width: double.infinity,
+            height: 40,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -370,13 +373,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: const Color(0xff8b8cb6),
-            width: double.infinity,
-            height: 40,
           ),
           Container(
             padding: const EdgeInsets.all(10),
             height: 40,
+            color: const Color(0xffdadada),
+            width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -401,8 +403,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: const Color(0xffdadada),
-            width: double.infinity,
           ),
           const Divider(
             height: 3,
@@ -410,6 +410,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             height: 40,
+            color: const Color(0xffdadada),
+            width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -437,8 +439,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: const Color(0xffdadada),
-            width: double.infinity,
           ),
           const Divider(
             height: 3,
@@ -446,6 +446,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             height: 40,
+            color: const Color(0xffdadada),
+            width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -479,14 +481,14 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: const Color(0xffdadada),
-            width: double.infinity,
           ),
           const Divider(
             height: 3,
           ),
           Container(
             padding: const EdgeInsets.all(10),
+            color: const Color(0xffdadada),
+            width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -510,8 +512,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: const Color(0xffdadada),
-            width: double.infinity,
           ),
           const Divider(
             height: 3,
@@ -561,6 +561,9 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       child: Column(
         children: [
           Container(
+            color: const Color(0xff8b8cb6),
+            width: double.infinity,
+            height: 40,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
@@ -570,13 +573,12 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: const Color(0xff8b8cb6),
-            width: double.infinity,
-            height: 40,
           ),
           Container(
             padding: const EdgeInsets.all(10),
             height: 145,
+            color: const Color(0xffdadada),
+            width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -624,8 +626,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: const Color(0xffdadada),
-            width: double.infinity,
           ),
           (_optionEstado == 10 || _optionEstado == 7 || _optionEstado == 4)
               ? const Divider(
@@ -636,6 +636,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
               ? Container(
                   padding: const EdgeInsets.all(10),
                   height: 145,
+                  color: const Color(0xffdadada),
+                  width: double.infinity,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -688,8 +690,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                       ),
                     ],
                   ),
-                  color: const Color(0xffdadada),
-                  width: double.infinity,
                 )
               : Container(),
           const Divider(
@@ -698,6 +698,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             height: 170,
+            color: const Color(0xffdadada),
+            width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -740,8 +742,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: const Color(0xffdadada),
-            width: double.infinity,
           ),
           const Divider(
             height: 3,
@@ -749,6 +749,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             height: 140,
+            color: const Color(0xffdadada),
+            width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -809,8 +811,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                 ),
               ],
             ),
-            color: const Color(0xffdadada),
-            width: double.infinity,
           ),
         ],
       ),
@@ -828,7 +828,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           children: <Widget>[
             Expanded(
               child: ElevatedButton(
-                child: const Text('Guardar'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF120E43),
                   minimumSize: const Size(double.infinity, 50),
@@ -837,6 +836,7 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                   ),
                 ),
                 onPressed: _save,
+                child: const Text('Guardar'),
               ),
             ),
           ],
@@ -948,6 +948,14 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                           children: [
                             Expanded(
                               child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFb3b3b4),
+                                  minimumSize: const Size(double.infinity, 30),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                onPressed: () => _navegar2(paradaenvio),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: const [
@@ -962,14 +970,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
                                     ),
                                   ],
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFb3b3b4),
-                                  minimumSize: const Size(double.infinity, 30),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                                onPressed: () => _navegar2(paradaenvio),
                               ),
                             ),
                             const SizedBox(
@@ -1062,8 +1062,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
 //Agrega Seleccione un Motivo
     list.add(const DropdownMenuItem(
-      child: Text('Seleccione un Motivo...'),
       value: 0,
+      child: Text('Seleccione un Motivo...'),
     ));
 
 //Agrega motivos para No Entregados o Rechazados
@@ -1073,8 +1073,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           if (element.muestraParaEntregado == 0) {
             if (element.exclusivoCliente == widget.paradaenvio.idproveedor) {
               list.add(DropdownMenuItem(
-                child: Text(element.motivo.toString()),
                 value: element.id,
+                child: Text(element.motivo.toString()),
               ));
             }
           }
@@ -1089,8 +1089,8 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
           if (element.muestraParaEntregado == 1) {
             if (element.exclusivoCliente == widget.paradaenvio.idproveedor) {
               list.add(DropdownMenuItem(
-                child: Text(element.motivo.toString()),
                 value: element.id,
+                child: Text(element.motivo.toString()),
               ));
             }
           }
@@ -1251,8 +1251,6 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
       }
     }
 
-    
-
     String base64Image = '';
     if (_photoChanged) {
       List<int> imageBytes = await _image.readAsBytes();
@@ -1401,14 +1399,14 @@ class _ParadaInfoScreenState extends State<ParadaInfoScreen> {
 
     List<DropdownMenuItem<int>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Seleccione un Estado...'),
       value: 0,
+      child: Text('Seleccione un Estado...'),
     ));
 
     for (var _listoption in _listoptions) {
       list.add(DropdownMenuItem(
-        child: Text(_listoption.description),
         value: _listoption.id,
+        child: Text(_listoption.description),
       ));
     }
 

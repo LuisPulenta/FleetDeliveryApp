@@ -112,12 +112,12 @@ class _AsignacionMapScreenState extends State<AsignacionMapScreen> {
                     alignment: Alignment.topRight,
                     child: Column(children: <Widget>[
                       FloatingActionButton(
-                          child: const Icon(Icons.layers),
                           elevation: 5,
                           backgroundColor: const Color(0xfff4ab04),
                           onPressed: () {
                             _changeMapType();
-                          }),
+                          },
+                          child: const Icon(Icons.layers)),
                     ]),
                   ),
                 ])

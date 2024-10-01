@@ -106,16 +106,6 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.password),
-                      SizedBox(
-                        width: 35,
-                      ),
-                      Text('Reactivar Usuario'),
-                    ],
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF120E43),
                     minimumSize: const Size(100, 50),
@@ -126,6 +116,16 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
                   onPressed: _user.login == "" || _user.contrasena == 1
                       ? null
                       : _reactivarUsuario,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.password),
+                      SizedBox(
+                        width: 35,
+                      ),
+                      Text('Reactivar Usuario'),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -139,12 +139,12 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
       ),
       floatingActionButton: _enabled
           ? FloatingActionButton(
+              backgroundColor: const Color(0xFF282886),
+              onPressed: _enabled ? null : null,
               child: const Icon(
                 Icons.add,
                 size: 38,
               ),
-              backgroundColor: const Color(0xFF282886),
-              onPressed: _enabled ? null : null,
             )
           : Container(),
     );
@@ -193,6 +193,14 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
         children: <Widget>[
           Expanded(
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF282886),
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              onPressed: () => _search(),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
@@ -202,14 +210,6 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
                   ),
                 ],
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF282886),
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onPressed: () => _search(),
             ),
           ),
         ],

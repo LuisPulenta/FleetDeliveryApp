@@ -554,6 +554,14 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         children: <Widget>[
           Expanded(
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF282886),
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              onPressed: _save,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
@@ -564,14 +572,6 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                   Text('Solicitar Turno'),
                 ],
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF282886),
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onPressed: _save,
             ),
           ),
         ],
@@ -591,6 +591,14 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         children: <Widget>[
           Expanded(
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              onPressed: _delete,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
@@ -601,14 +609,6 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                   Text('Borrar Turno'),
                 ],
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onPressed: _delete,
             ),
           ),
         ],
@@ -634,7 +634,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
 
   bool validateFields() {
     bool isValid = true;
-    
+
     setState(() {});
 
     return isValid;
@@ -898,16 +898,6 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         children: <Widget>[
           Expanded(
             child: ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.save),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text('Turno cumplido'),
-                ],
-              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF282886),
                 minimumSize: const Size(double.infinity, 50),
@@ -918,6 +908,16 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
               onPressed: () {
                 _confirma();
               },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.save),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text('Turno cumplido'),
+                ],
+              ),
             ),
           ),
         ],
@@ -944,6 +944,13 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                 width: 20,
               ),
               Container(
+                width: 110,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(color: Colors.black, width: 1.0),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -958,13 +965,6 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                     ),
                   ],
                 ),
-                width: 110,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  border: Border.all(color: Colors.black, width: 1.0),
-                ),
               ),
               const SizedBox(
                 width: 40,
@@ -974,6 +974,13 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                 width: 20,
               ),
               Container(
+                width: 110,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(color: Colors.black, width: 1.0),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -987,13 +994,6 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                       ),
                     ),
                   ],
-                ),
-                width: 110,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  border: Border.all(color: Colors.black, width: 1.0),
                 ),
               ),
             ],

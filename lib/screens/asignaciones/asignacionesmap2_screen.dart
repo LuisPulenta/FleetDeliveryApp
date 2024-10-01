@@ -122,12 +122,12 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
                     alignment: Alignment.topRight,
                     child: Column(children: <Widget>[
                       FloatingActionButton(
-                          child: const Icon(Icons.layers),
                           elevation: 5,
                           backgroundColor: const Color(0xfff4ab04),
                           onPressed: () {
                             _changeMapType();
-                          }),
+                          },
+                          child: const Icon(Icons.layers)),
                     ]),
                   ),
                   Container(
@@ -139,17 +139,6 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
                         Expanded(
                           flex: 1,
                           child: ElevatedButton(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(Icons.pin),
-                                  SizedBox(
-                                    width: 3,
-                                  ),
-                                  Text('Renumerar',
-                                      style: TextStyle(fontSize: 12)),
-                                ],
-                              ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
                                     ui.Color.fromARGB(255, 108, 9, 126),
@@ -160,7 +149,18 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
                               ),
                               onPressed: () {
                                 _renumerar();
-                              }),
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.pin),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text('Renumerar',
+                                      style: TextStyle(fontSize: 12)),
+                                ],
+                              )),
                         ),
                         const SizedBox(
                           width: 3,
@@ -168,6 +168,16 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
                         Expanded(
                           flex: 1,
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xffdf281e),
+                              minimumSize: const Size(double.infinity, 40),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () {
+                              _borrar();
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
@@ -179,16 +189,6 @@ class _AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
                                     style: TextStyle(fontSize: 12)),
                               ],
                             ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xffdf281e),
-                              minimumSize: const Size(double.infinity, 40),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            onPressed: () {
-                              _borrar();
-                            },
                           ),
                         ),
                         const SizedBox(

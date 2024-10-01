@@ -72,6 +72,8 @@ class _ContratoFirmaScreenState extends State<ContratoFirmaScreen> {
           color: const Color(0xFFC7C7C8),
           child: SingleChildScrollView(
             child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text('Contrato de Comodato',
                       style: TextStyle(
@@ -251,73 +253,73 @@ class _ContratoFirmaScreenState extends State<ContratoFirmaScreen> {
                   Padding(
                       padding: const EdgeInsets.all(10),
                       child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey)),
                           child: SfSignaturePad(
                               key: signatureGlobalKey,
                               backgroundColor: Colors.white,
                               strokeColor: Colors.black,
                               minimumStrokeWidth: 1.0,
-                              maximumStrokeWidth: 4.0),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey)))),
+                              maximumStrokeWidth: 4.0))),
                   const SizedBox(height: 10),
-                  Row(children: <Widget>[
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.save),
-                              SizedBox(
-                                width: 12,
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF120E43),
+                                minimumSize: const Size(double.infinity, 40),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
                               ),
-                              Text('Usar Firma',
-                                  style: TextStyle(fontSize: 12)),
-                            ],
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF120E43),
-                            minimumSize: const Size(double.infinity, 40),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                              onPressed: _handleSaveButtonPressed,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.save),
+                                  SizedBox(
+                                    width: 12,
+                                  ),
+                                  Text('Usar Firma',
+                                      style: TextStyle(fontSize: 12)),
+                                ],
+                              )),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFE03B8B),
+                              minimumSize: const Size(double.infinity, 40),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: _handleClearButtonPressed,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.delete),
+                                SizedBox(
+                                  width: 12,
+                                ),
+                                Text('Borrar', style: TextStyle(fontSize: 12)),
+                              ],
                             ),
                           ),
-                          onPressed: _handleSaveButtonPressed),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.delete),
-                            SizedBox(
-                              width: 12,
-                            ),
-                            Text('Borrar', style: TextStyle(fontSize: 12)),
-                          ],
                         ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE03B8B),
-                          minimumSize: const Size(double.infinity, 40),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
+                        const SizedBox(
+                          width: 15,
                         ),
-                        onPressed: _handleClearButtonPressed,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                  ], mainAxisAlignment: MainAxisAlignment.spaceEvenly)
-                ],
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center),
+                      ])
+                ]),
           ),
         ));
   }

@@ -40,6 +40,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   int _valorMarcador = 0;
   late Usuario _user;
   bool _showLoader = false;
+  bool _isloading = false;
   bool _isFiltered = false;
   bool bandera = false;
 
@@ -227,7 +228,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
         Expanded(
           child: Container(
             padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-            child: _tiposasignacion.isEmpty
+            child: _isloading
                 ? Row(
                     children: const [
                       CircularProgressIndicator(),
@@ -237,31 +238,42 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                       Text('Cargando Tipos de Asignación...'),
                     ],
                   )
-                : DropdownButtonFormField(
-                    value: _tipoasignacion,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: 'Elija un Tipo de Asignación...',
-                      labelText: 'Tipo de Asignación',
-                      errorText: _tipoasignacionShowError
-                          ? _tipoasignacionError
-                          : null,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    items: _getComboTiposAsignacion(),
-                    onChanged: (value) {
-                      _tipoasignacion = value.toString();
-                    },
-                  ),
+                : _tiposasignacion.isEmpty
+                    ? Row(
+                        children: const [
+                          Text(
+                            'El Usuario no tiene Asignaciones',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      )
+                    : DropdownButtonFormField(
+                        value: _tipoasignacion,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Elija un Tipo de Asignación...',
+                          labelText: 'Tipo de Asignación',
+                          errorText: _tipoasignacionShowError
+                              ? _tipoasignacionError
+                              : null,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        items: _getComboTiposAsignacion(),
+                        onChanged: (value) {
+                          _tipoasignacion = value.toString();
+                        },
+                      ),
           ),
         ),
         const SizedBox(
           width: 10,
         ),
         ElevatedButton(
-            child: const Icon(Icons.search),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF282886),
               minimumSize: const Size(50, 50),
@@ -272,7 +284,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
             //onPressed: () => _getObras(),
             onPressed: () async {
               await _getObras();
-            }),
+            },
+            child: const Icon(Icons.search)),
       ],
     );
   }
@@ -284,14 +297,14 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   List<DropdownMenuItem<String>> _getComboTiposAsignacion() {
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija un Tipo de Asignación...'),
       value: 'Elija un Tipo de Asignación...',
+      child: Text('Elija un Tipo de Asignación...'),
     ));
 
     for (var tipoasignacion in _tiposasignacion) {
       list.add(DropdownMenuItem(
-        child: Text(tipoasignacion.proyectomodulo.toString()),
         value: tipoasignacion.proyectomodulo.toString(),
+        child: Text(tipoasignacion.proyectomodulo.toString()),
       ));
     }
 
@@ -369,15 +382,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               Expanded(
                 flex: 1,
                 child: ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.sort_by_alpha),
-                        SizedBox(
-                          width: 5,
-                        ),
-                      ],
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF282886),
                       minimumSize: const Size(50, 50),
@@ -388,7 +392,16 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                     onPressed: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                       _orderMethod();
-                    }),
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.sort_by_alpha),
+                        SizedBox(
+                          width: 5,
+                        ),
+                      ],
+                    )),
               ),
               Expanded(flex: 3, child: _showTextoBuscar()),
               Expanded(flex: 2, child: _showButtons()),
@@ -443,15 +456,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       children: <Widget>[
         Expanded(
           child: ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.search),
-                  SizedBox(
-                    width: 5,
-                  ),
-                ],
-              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF282886),
                 minimumSize: const Size(50, 50),
@@ -462,22 +466,22 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               onPressed: () {
                 FocusScope.of(context).requestFocus(FocusNode());
                 _filter();
-              }),
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.search),
+                  SizedBox(
+                    width: 5,
+                  ),
+                ],
+              )),
         ),
         const SizedBox(
           width: 5,
         ),
         Expanded(
           child: ElevatedButton(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.cancel),
-                SizedBox(
-                  width: 5,
-                ),
-              ],
-            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
               minimumSize: const Size(50, 50),
@@ -490,7 +494,16 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
               _search = '';
               _searchController.text = '';
               _filter();
-            }, //=> _search(),
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.cancel),
+                SizedBox(
+                  width: 5,
+                ),
+              ],
+            ), //=> _search(),
           ),
         ),
       ],
@@ -504,8 +517,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   List<DropdownMenuItem<String>> _getComboZonas() {
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija una Zona...'),
       value: 'Elija una Zona...',
+      child: Text('Elija una Zona...'),
     ));
 
     for (var zona in _zonas) {
@@ -514,8 +527,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       }
 
       list.add(DropdownMenuItem(
-        child: Text(zona.zona.toString()),
         value: zona.zona.toString(),
+        child: Text(zona.zona.toString()),
       ));
     }
 
@@ -584,8 +597,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
   List<DropdownMenuItem<String>> _getComboCarteras() {
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija una Cartera...'),
       value: 'Elija una Cartera...',
+      child: Text('Elija una Cartera...'),
     ));
 
     for (var cartera in _carteras) {
@@ -594,8 +607,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       }
 
       list.add(DropdownMenuItem(
-        child: Text(cartera.motivos.toString()),
         value: cartera.motivos.toString(),
+        child: Text(cartera.motivos.toString()),
       ));
     }
 
@@ -820,8 +833,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                               child: Text("OT: ",
                                                   style: TextStyle(
                                                     fontSize: 12,
-                                                    color:
-                                                        Color(0xFF0e4888),
+                                                    color: Color(0xFF0e4888),
                                                     fontWeight: FontWeight.bold,
                                                   )),
                                             )
@@ -1178,6 +1190,16 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                         child: Column(
                                           children: [
                                             ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    const Color(0xFF282886),
+                                                minimumSize: const Size(60, 36),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                              ),
+                                              onPressed: () => _agendarcita(e),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -1189,16 +1211,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                                   Text('Agendar Cita'),
                                                 ],
                                               ),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    const Color(0xFF282886),
-                                                minimumSize: const Size(60, 36),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                              ),
-                                              onPressed: () => _agendarcita(e),
                                             ),
                                           ],
                                         ),
@@ -1318,6 +1330,8 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       return;
     }
 
+    _isloading = true;
+    setState(() {});
     bandera = false;
     intentos = 0;
 
@@ -1331,6 +1345,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
       }
     } while (bandera == false);
 
+    _isloading = false;
     setState(() {});
   }
 
@@ -1892,6 +1907,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                 children: [
                                   Expanded(
                                     child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFFb3b3b4),
+                                        minimumSize:
+                                            const Size(double.infinity, 30),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () => _navegar(asign),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -1908,6 +1934,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                           ),
                                         ],
                                       ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:
                                             const Color(0xFFb3b3b4),
@@ -1918,14 +1951,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                               BorderRadius.circular(5),
                                         ),
                                       ),
-                                      onPressed: () => _navegar(asign),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
+                                      onPressed: () => _goInfoAsignacion(asign),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -1942,17 +1968,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                               color: Color(0xff282886)),
                                         ],
                                       ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _goInfoAsignacion(asign),
                                     ),
                                   ),
                                 ],
@@ -2096,6 +2111,17 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                 children: [
                                   Expanded(
                                     child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFFb3b3b4),
+                                        minimumSize:
+                                            const Size(double.infinity, 30),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () => _navegar(asign),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -2112,6 +2138,13 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                           ),
                                         ],
                                       ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:
                                             const Color(0xFFb3b3b4),
@@ -2122,14 +2155,7 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                               BorderRadius.circular(5),
                                         ),
                                       ),
-                                      onPressed: () => _navegar(asign),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
+                                      onPressed: () => _goInfoAsignacion(asign),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -2146,17 +2172,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                                               color: Color(0xff282886)),
                                         ],
                                       ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _goInfoAsignacion(asign),
                                     ),
                                   ),
                                 ],
@@ -2283,15 +2298,6 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                 height: 10,
               ),
               ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'N° Cliente ascendente',
-                      style: TextStyle(color: Color(0xffFFFFFF)),
-                    ),
-                  ],
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff282886),
                   minimumSize: const Size(double.infinity, 40),
@@ -2305,20 +2311,20 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   Navigator.pop(context);
                   _ordenar();
                 },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'N° Cliente ascendente',
+                      style: TextStyle(color: Color(0xffFFFFFF)),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 10,
               ),
               ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'Fechas más antiguas primero',
-                      style: TextStyle(color: Color(0xffFFFFFF)),
-                    ),
-                  ],
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff282886),
                   minimumSize: const Size(double.infinity, 40),
@@ -2332,6 +2338,15 @@ class _AsignacionesScreenState extends State<AsignacionesScreen> {
                   Navigator.pop(context);
                   _ordenar();
                 },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Fechas más antiguas primero',
+                      style: TextStyle(color: Color(0xffFFFFFF)),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 10,

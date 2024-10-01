@@ -116,12 +116,12 @@ class _AsignacionesTodasMapScreenState
                     alignment: Alignment.topRight,
                     child: Column(children: <Widget>[
                       FloatingActionButton(
-                          child: const Icon(Icons.layers),
                           elevation: 5,
                           backgroundColor: const Color(0xfff4ab04),
                           onPressed: () {
                             _changeMapType();
-                          }),
+                          },
+                          child: const Icon(Icons.layers)),
                     ]),
                   ),
                 ])
@@ -295,6 +295,17 @@ class _AsignacionesTodasMapScreenState
                                   children: [
                                     Expanded(
                                       child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFFb3b3b4),
+                                          minimumSize:
+                                              const Size(double.infinity, 30),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                        ),
+                                        onPressed: () => _navegar(asign),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -311,6 +322,13 @@ class _AsignacionesTodasMapScreenState
                                             ),
                                           ],
                                         ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Expanded(
+                                      child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:
                                               const Color(0xFFb3b3b4),
@@ -321,14 +339,8 @@ class _AsignacionesTodasMapScreenState
                                                 BorderRadius.circular(5),
                                           ),
                                         ),
-                                        onPressed: () => _navegar(asign),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                      child: ElevatedButton(
+                                        onPressed: () =>
+                                            _goInfoAsignacion(asign),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -345,18 +357,6 @@ class _AsignacionesTodasMapScreenState
                                                 color: Color(0xff282886)),
                                           ],
                                         ),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFFb3b3b4),
-                                          minimumSize:
-                                              const Size(double.infinity, 30),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                        ),
-                                        onPressed: () =>
-                                            _goInfoAsignacion(asign),
                                       ),
                                     ),
                                   ],

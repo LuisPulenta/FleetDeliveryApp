@@ -625,16 +625,6 @@ class _HomeScreenState extends State<HomeScreen>
                             height: 15,
                           ),
                           ElevatedButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.delete),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text('BORRAR PARADAS LOCALES'),
-                              ],
-                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
                               minimumSize: const Size(double.infinity, 50),
@@ -651,11 +641,29 @@ class _HomeScreenState extends State<HomeScreen>
                               // }
                               setState(() {});
                             },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.delete),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text('BORRAR PARADAS LOCALES'),
+                              ],
+                            ),
                           ),
                           const SizedBox(
                             height: 15,
                           ),
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xff282886),
+                              minimumSize: const Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () => _storage(),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
@@ -666,6 +674,11 @@ class _HomeScreenState extends State<HomeScreen>
                                 Text('DATOS EN BD LOCALES'),
                               ],
                             ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xff282886),
                               minimumSize: const Size(double.infinity, 50),
@@ -673,12 +686,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                             ),
-                            onPressed: () => _storage(),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          ElevatedButton(
+                            onPressed: () => _contacto(),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
@@ -689,6 +697,11 @@ class _HomeScreenState extends State<HomeScreen>
                                 Text('CONTACTO KEYPRESS'),
                               ],
                             ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xff282886),
                               minimumSize: const Size(double.infinity, 50),
@@ -696,12 +709,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                             ),
-                            onPressed: () => _contacto(),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          ElevatedButton(
+                            onPressed: () => _cambiarPassword(),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
@@ -712,29 +720,11 @@ class _HomeScreenState extends State<HomeScreen>
                                 Text('CAMBIAR CONTRASEÑA'),
                               ],
                             ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff282886),
-                              minimumSize: const Size(double.infinity, 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            onPressed: () => _cambiarPassword(),
                           ),
                           const SizedBox(
                             height: 15,
                           ),
                           ElevatedButton(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(Icons.exit_to_app),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  Text('CERRAR SESION'),
-                                ],
-                              ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xff282886),
                                 minimumSize: const Size(double.infinity, 50),
@@ -752,7 +742,17 @@ class _HomeScreenState extends State<HomeScreen>
                                 //await DBUsuarios.deleteall();
                                 await DBWebSesions.deleteall();
                                 _logOut();
-                              }),
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.exit_to_app),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Text('CERRAR SESION'),
+                                ],
+                              )),
                         ]),
                       ),
                     ],
@@ -1961,16 +1961,6 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 actions: <Widget>[
                   ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.delete),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('BORRAR'),
-                      ],
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       minimumSize: const Size(double.infinity, 50),
@@ -2003,21 +1993,21 @@ class _HomeScreenState extends State<HomeScreen>
                         Navigator.pop(context, 'yes');
                       }
                     },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.delete),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('BORRAR'),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.cancel),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('CANCELAR'),
-                      ],
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF9a6a2e),
                       minimumSize: const Size(double.infinity, 50),
@@ -2030,6 +2020,16 @@ class _HomeScreenState extends State<HomeScreen>
                       setState(() {});
                       Navigator.pop(context);
                     },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.cancel),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('CANCELAR'),
+                      ],
+                    ),
                   ),
                 ],
                 shape: Border.all(

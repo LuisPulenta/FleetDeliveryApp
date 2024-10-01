@@ -27,7 +27,6 @@ class PdfScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.share),
           elevation: 5,
           backgroundColor: Color.fromARGB(255, 4, 244, 100),
           onPressed: () {
@@ -36,7 +35,8 @@ class PdfScreen extends StatelessWidget {
                 text: 'Se adjunta Comprobante',
                 filePath: [ruta],
                 package: Package.whatsapp);
-          }),
+          },
+          child: const Icon(Icons.share)),
     );
   }
 }

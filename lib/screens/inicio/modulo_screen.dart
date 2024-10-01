@@ -115,6 +115,14 @@ class _ModuloScreenState extends State<ModuloScreen> {
             children: <Widget>[
               Expanded(
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF282886),
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () => _save(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
@@ -125,14 +133,6 @@ class _ModuloScreenState extends State<ModuloScreen> {
                       Text('Guardar'),
                     ],
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF282886),
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onPressed: () => _save(),
                 ),
               ),
             ],

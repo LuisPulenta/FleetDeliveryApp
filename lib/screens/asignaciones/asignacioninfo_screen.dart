@@ -315,8 +315,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           child:
                               SingleChildScrollView(child: _showAsignacion())),
                       Expanded(
-                        child: _showAutonumericos(),
                         flex: widget.funcionApp.habilitaDNI == 1 ? 7 : 6,
+                        child: _showAutonumericos(),
                       ),
                       _showButtonsGuardarCancelar(),
                     ],
@@ -441,20 +441,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             ),
                             !_editar
                                 ? ElevatedButton(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(Icons.edit),
-                                        SizedBox(
-                                          width: 2,
-                                        ),
-                                        Text(
-                                          'Editar Observaciones',
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           const Color.fromARGB(255, 242, 84, 5),
@@ -470,6 +456,20 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           _asignacion.observacion.toString();
                                       setState(() {});
                                     },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Icon(Icons.edit),
+                                        SizedBox(
+                                          width: 2,
+                                        ),
+                                        Text(
+                                          'Editar Observaciones',
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
                                   )
                                 : Container(),
                             _editar
@@ -510,19 +510,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     children: <Widget>[
                                       Expanded(
                                         child: ElevatedButton(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: const [
-                                                Icon(Icons.save),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                Text('Guardar',
-                                                    style: TextStyle(
-                                                        fontSize: 12)),
-                                              ],
-                                            ),
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor:
                                                   const Color(0xFF282886),
@@ -535,26 +522,26 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             ),
                                             onPressed: () {
                                               _guardar2();
-                                            }),
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(Icons.save),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text('Guardar',
+                                                    style: TextStyle(
+                                                        fontSize: 12)),
+                                              ],
+                                            )),
                                       ),
                                       const SizedBox(
                                         width: 15,
                                       ),
                                       Expanded(
                                         child: ElevatedButton(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: const [
-                                              Icon(Icons.cancel),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Text('Cancelar',
-                                                  style:
-                                                      TextStyle(fontSize: 12)),
-                                            ],
-                                          ),
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor:
                                                 const Color(0xffdf281e),
@@ -569,6 +556,19 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             _editar = false;
                                             setState(() {});
                                           },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              Icon(Icons.cancel),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text('Cancelar',
+                                                  style:
+                                                      TextStyle(fontSize: 12)),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -703,11 +703,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                               Expanded(
                                 flex: 1,
-                                child:
-                                    Text(_asignacion.documento.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                child: Text(_asignacion.documento.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                    )),
                               ),
                               _asignacion.proyectomodulo == 'Cable'
                                   ? const SizedBox(
@@ -1117,16 +1116,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             Expanded(
               flex: 6,
               child: ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.done),
-                      SizedBox(
-                        width: 3,
-                      ),
-                      Text('Realizado', style: TextStyle(fontSize: 12)),
-                    ],
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF282886),
                     minimumSize: const Size(double.infinity, 40),
@@ -1136,7 +1125,17 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   ),
                   onPressed: () {
                     _elegirtodos();
-                  }),
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.done),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      Text('Realizado', style: TextStyle(fontSize: 12)),
+                    ],
+                  )),
             ),
             const SizedBox(
               width: 3,
@@ -1144,16 +1143,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             Expanded(
               flex: 7,
               child: ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.cancel),
-                    SizedBox(
-                      width: 3,
-                    ),
-                    Text('No Realizado', style: TextStyle(fontSize: 12)),
-                  ],
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xffdf281e),
                   minimumSize: const Size(double.infinity, 40),
@@ -1164,6 +1153,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 onPressed: () {
                   _deselegirtodos();
                 },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.cancel),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Text('No Realizado', style: TextStyle(fontSize: 12)),
+                  ],
+                ),
               ),
             ),
             const SizedBox(
@@ -1173,16 +1172,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 ? Expanded(
                     flex: 6,
                     child: ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.star_half),
-                          SizedBox(
-                            width: 2,
-                          ),
-                          Text('Parcial', style: TextStyle(fontSize: 12)),
-                        ],
-                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 52, 52, 52),
                         minimumSize: const Size(double.infinity, 40),
@@ -1193,6 +1182,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       onPressed: () {
                         _elegiralgunos();
                       },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.star_half),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text('Parcial', style: TextStyle(fontSize: 12)),
+                        ],
+                      ),
                     ),
                   )
                 : Container(),
@@ -1335,16 +1334,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             children: <Widget>[
               Expanded(
                 child: ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.save),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text('Guardar', style: TextStyle(fontSize: 12)),
-                      ],
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF282886),
                       minimumSize: const Size(double.infinity, 40),
@@ -1354,23 +1343,23 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     ),
                     onPressed: () {
                       _guardar();
-                    }),
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.save),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text('Guardar', style: TextStyle(fontSize: 12)),
+                      ],
+                    )),
               ),
               const SizedBox(
                 width: 5,
               ),
               Expanded(
                 child: ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.cancel),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text('Cancelar', style: TextStyle(fontSize: 12)),
-                    ],
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xffdf281e),
                     minimumSize: const Size(double.infinity, 40),
@@ -1381,6 +1370,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   onPressed: () {
                     Navigator.pop(context, "No");
                   },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.cancel),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Text('Cancelar', style: TextStyle(fontSize: 12)),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(
@@ -1389,19 +1388,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               widget.funcionApp.habilitaOtroRecupero == 1
                   ? Expanded(
                       child: ElevatedButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.star_half),
-                            SizedBox(
-                              width: 2,
-                            ),
-                            Text(
-                              'Otro recup.',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               const Color.fromARGB(255, 52, 52, 52),
@@ -1423,6 +1409,19 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             ),
                           );
                         },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.star_half),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Text(
+                              'Otro recup.',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   : Container(),
@@ -1709,7 +1708,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       width: 5,
                                     ),
                                     ElevatedButton(
-                                      child: const Icon(Icons.qr_code_2),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:
                                             const Color(0xFF282886),
@@ -1765,9 +1763,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                           const SizedBox(
                                                               height: 10),
                                                           ElevatedButton(
-                                                              child: const Icon(
-                                                                  Icons
-                                                                      .qr_code_2),
                                                               style:
                                                                   ElevatedButton
                                                                       .styleFrom(
@@ -1809,7 +1804,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                 _macserieController
                                                                         .text =
                                                                     barcodeScanRes;
-                                                              }),
+                                                              },
+                                                              child: const Icon(
+                                                                  Icons
+                                                                      .qr_code_2)),
                                                         ],
                                                       ),
                                                       actions: [
@@ -1818,17 +1816,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                             Expanded(
                                                               child:
                                                                   ElevatedButton(
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceAround,
-                                                                        children: const [
-                                                                          Icon(Icons
-                                                                              .save),
-                                                                          Text(
-                                                                              'Aceptar'),
-                                                                        ],
-                                                                      ),
                                                                       style: ElevatedButton
                                                                           .styleFrom(
                                                                         backgroundColor:
@@ -1883,7 +1870,18 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                             context);
                                                                         setState(
                                                                             () {});
-                                                                      }),
+                                                                      },
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceAround,
+                                                                        children: const [
+                                                                          Icon(Icons
+                                                                              .save),
+                                                                          Text(
+                                                                              'Aceptar'),
+                                                                        ],
+                                                                      )),
                                                             ),
                                                             const SizedBox(
                                                               width: 10,
@@ -1891,17 +1889,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                             Expanded(
                                                               child:
                                                                   ElevatedButton(
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceAround,
-                                                                  children: const [
-                                                                    Icon(Icons
-                                                                        .cancel),
-                                                                    Text(
-                                                                        'Cancelar'),
-                                                                  ],
-                                                                ),
                                                                 style: ElevatedButton
                                                                     .styleFrom(
                                                                   backgroundColor:
@@ -1923,6 +1910,17 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                                   Navigator.pop(
                                                                       context);
                                                                 },
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
+                                                                  children: const [
+                                                                    Icon(Icons
+                                                                        .cancel),
+                                                                    Text(
+                                                                        'Cancelar'),
+                                                                  ],
+                                                                ),
                                                               ),
                                                             ),
                                                           ],
@@ -1935,12 +1933,12 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             },
                                             barrierDismissible: false);
                                       },
+                                      child: const Icon(Icons.qr_code_2),
                                     ),
                                     const SizedBox(
                                       width: 5,
                                     ),
                                     ElevatedButton(
-                                        child: const Icon(Icons.cancel),
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:
                                               const Color(0xffdf281e),
@@ -1958,7 +1956,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             }
                                           }
                                           setState(() {});
-                                        }),
+                                        },
+                                        child: const Icon(Icons.cancel)),
                                   ],
                                 )
                               : Container(),
@@ -2016,14 +2015,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   List<DropdownMenuItem<int>> _getComboCodigosCierre() {
     List<DropdownMenuItem<int>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija Código de Cierre.'),
       value: -1,
+      child: Text('Elija Código de Cierre.'),
     ));
 
     for (var codigocierre in __codigoscierre) {
       list.add(DropdownMenuItem(
-        child: Text(codigocierre.descripcion.toString()),
         value: codigocierre.codigoCierre,
+        child: Text(codigocierre.descripcion.toString()),
       ));
     }
 
@@ -2338,11 +2337,10 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     fontWeight: FontWeight.bold,
                                   )),
                               Expanded(
-                                child:
-                                    Text(_asignacion.documento.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                child: Text(_asignacion.documento.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                    )),
                               ),
                             ],
                           ),
@@ -3156,16 +3154,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   ]),
               actions: <Widget>[
                 ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.cancel),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('No enviar Comprobante'),
-                    ],
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     minimumSize: const Size(double.infinity, 50),
@@ -3177,21 +3165,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     _enviarRecibo = 0;
                     Navigator.of(context).pop();
                   },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.cancel),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text('No enviar Comprobante'),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.chat),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Enviar Comprobante como Texto'),
-                    ],
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     minimumSize: const Size(double.infinity, 50),
@@ -3203,21 +3191,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     _enviarRecibo = 1;
                     Navigator.of(context).pop();
                   },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.chat),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text('Enviar Comprobante como Texto'),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.picture_as_pdf),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Enviar Comprobante PDF'),
-                    ],
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
                     minimumSize: const Size(double.infinity, 50),
@@ -3229,6 +3217,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     _enviarRecibo = 2;
                     Navigator.of(context).pop();
                   },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.picture_as_pdf),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text('Enviar Comprobante PDF'),
+                    ],
+                  ),
                 ),
               ],
             );
@@ -3776,6 +3774,15 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFFb3b3b4),
+                                      minimumSize:
+                                          const Size(double.infinity, 30),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () => _navegar(asignacion),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -3792,15 +3799,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         ),
                                       ],
                                     ),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFFb3b3b4),
-                                      minimumSize:
-                                          const Size(double.infinity, 30),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                    ),
-                                    onPressed: () => _navegar(asignacion),
                                   ),
                                 ),
                               ],
@@ -3838,14 +3836,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   List<DropdownMenuItem<String>> _getComboEquipos() {
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija un Modelo...'),
       value: 'Elija un Modelo...',
+      child: Text('Elija un Modelo...'),
     ));
 
     for (var control in widget.controlesEquivalencia) {
       list.add(DropdownMenuItem(
-        child: Text(control.descripcion.toString()),
         value: control.decO1.toString(),
+        child: Text(control.descripcion.toString()),
       ));
     }
 
@@ -3861,8 +3859,8 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     cuandos.forEach((cuando) {
       list.add(DropdownMenuItem(
-        child: Text(cuando),
         value: cuando,
+        child: Text(cuando),
       ));
     });
 
@@ -4058,16 +4056,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       Expanded(
                         flex: 1,
                         child: ElevatedButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.cancel),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text('Cancelar'),
-                            ],
-                          ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,
                             minimumSize: const Size(double.infinity, 50),
@@ -4079,6 +4067,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             Navigator.pop(context);
                             return;
                           },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.cancel),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text('Cancelar'),
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -4090,16 +4088,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ? Expanded(
                               flex: 1,
                               child: ElevatedButton(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.insert_comment),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text('Continuar'),
-                                  ],
-                                ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.green,
                                   minimumSize: const Size(double.infinity, 50),
@@ -4116,6 +4104,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   );
                                   await launch('$link');
                                 },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.insert_comment),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text('Continuar'),
+                                  ],
+                                ),
                               ),
                             )
                           : Container(),
@@ -4125,16 +4123,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ? Expanded(
                               flex: 1,
                               child: ElevatedButton(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.insert_comment),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text('-> Mail'),
-                                  ],
-                                ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.green,
                                   minimumSize: const Size(double.infinity, 50),
@@ -4154,6 +4142,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   Navigator.pop(context);
                                   return;
                                 },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.insert_comment),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text('-> Mail'),
+                                  ],
+                                ),
                               ),
                             )
                           : Container(),
@@ -4268,16 +4266,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 ),
                 actions: <Widget>[
                   ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.insert_comment),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Continuar'),
-                      ],
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       minimumSize: const Size(double.infinity, 50),
@@ -4295,21 +4283,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             Navigator.of(context).pop();
                           }
                         : null,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.insert_comment),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('Continuar'),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.cancel),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Cancelar'),
-                      ],
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       minimumSize: const Size(double.infinity, 50),
@@ -4321,6 +4309,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       Navigator.pop(context);
                       return;
                     },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.cancel),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('Cancelar'),
+                      ],
+                    ),
                   ),
                 ],
                 shape: Border.all(
@@ -4428,16 +4426,6 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 ),
                 actions: <Widget>[
                   ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.insert_comment),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Crear Chat'),
-                      ],
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       minimumSize: const Size(double.infinity, 50),
@@ -4458,21 +4446,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               }
                             : null
                         : null,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.insert_comment),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('Crear Chat'),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.picture_as_pdf),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Enviar PDF'),
-                      ],
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       minimumSize: const Size(double.infinity, 50),
@@ -4487,21 +4475,21 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             return;
                           }
                         : null,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.picture_as_pdf),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('Enviar PDF'),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.cancel),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Cancelar'),
-                      ],
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       minimumSize: const Size(double.infinity, 50),
@@ -4513,6 +4501,16 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       Navigator.pop(context);
                       return;
                     },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.cancel),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text('Cancelar'),
+                      ],
+                    ),
                   ),
                 ],
                 shape: Border.all(
@@ -4907,14 +4905,14 @@ class _AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija un Teléfono...'),
       value: 'Elija un Teléfono...',
+      child: Text('Elija un Teléfono...'),
     ));
 
     for (var telefono in telefonos) {
       list.add(DropdownMenuItem(
-        child: Text(telefono),
         value: telefono,
+        child: Text(telefono),
       ));
     }
     return list;

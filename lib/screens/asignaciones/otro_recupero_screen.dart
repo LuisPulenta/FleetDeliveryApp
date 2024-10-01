@@ -120,7 +120,6 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                     width: 5,
                   ),
                   ElevatedButton(
-                      child: const Icon(Icons.qr_code_2),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF282886),
                         minimumSize: const Size(50, 50),
@@ -169,8 +168,6 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                           ),
                                           const SizedBox(height: 10),
                                           ElevatedButton(
-                                              child:
-                                                  const Icon(Icons.qr_code_2),
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor:
                                                     const Color(0xFF282886),
@@ -200,7 +197,9 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                 }
                                                 _nroserieextraOtroRecuperoController
                                                     .text = barcodeScanRes;
-                                              }),
+                                              },
+                                              child:
+                                                  const Icon(Icons.qr_code_2)),
                                         ],
                                       ),
                                       actions: [
@@ -208,15 +207,6 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                           children: [
                                             Expanded(
                                               child: ElevatedButton(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: const [
-                                                      Icon(Icons.save),
-                                                      Text('Aceptar'),
-                                                    ],
-                                                  ),
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     backgroundColor:
@@ -325,22 +315,22 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
 
                                                     Navigator.pop(context);
                                                     setState(() {});
-                                                  }),
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: const [
+                                                      Icon(Icons.save),
+                                                      Text('Aceptar'),
+                                                    ],
+                                                  )),
                                             ),
                                             const SizedBox(
                                               width: 10,
                                             ),
                                             Expanded(
                                               child: ElevatedButton(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: const [
-                                                    Icon(Icons.cancel),
-                                                    Text('Cancelar'),
-                                                  ],
-                                                ),
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor:
                                                       const Color(0xFFB4161B),
@@ -355,6 +345,15 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                                                 onPressed: () {
                                                   Navigator.pop(context);
                                                 },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: const [
+                                                    Icon(Icons.cancel),
+                                                    Text('Cancelar'),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -366,12 +365,12 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                               );
                             },
                             barrierDismissible: false);
-                      }),
+                      },
+                      child: const Icon(Icons.qr_code_2)),
                   const SizedBox(
                     width: 5,
                   ),
                   ElevatedButton(
-                      child: const Icon(Icons.cancel),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xffdf281e),
                         minimumSize: const Size(50, 50),
@@ -383,7 +382,8 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                         setState(() {
                           _nroserieextraOtroRecupero = '';
                         });
-                      }),
+                      },
+                      child: const Icon(Icons.cancel)),
                 ],
               ),
               const SizedBox(height: 30),
@@ -391,13 +391,6 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          Icon(Icons.save),
-                          Text('Guardar'),
-                        ],
-                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF120E43),
                         minimumSize: const Size(double.infinity, 50),
@@ -408,6 +401,13 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                       onPressed: () {
                         _grabar();
                       },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Icon(Icons.save),
+                          Text('Guardar'),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -415,13 +415,6 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                   ),
                   Expanded(
                     child: ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          Icon(Icons.cancel),
-                          Text('Cancelar'),
-                        ],
-                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFB4161B),
                         minimumSize: const Size(double.infinity, 50),
@@ -432,6 +425,13 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Icon(Icons.cancel),
+                          Text('Cancelar'),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -450,14 +450,14 @@ class _OtroRecuperoScreenState extends State<OtroRecuperoScreen> {
   List<DropdownMenuItem<String>> _getComboEquipos() {
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija un Modelo...'),
       value: 'Elija un Modelo...',
+      child: Text('Elija un Modelo...'),
     ));
 
     for (var control in widget.controlesEquivalencia) {
       list.add(DropdownMenuItem(
-        child: Text(control.descripcion.toString()),
         value: control.decO1.toString(),
+        child: Text(control.descripcion.toString()),
       ));
     }
 

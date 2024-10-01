@@ -211,12 +211,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 36),
                     child: ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.calendar_month),
-                        ],
-                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF282886),
                         minimumSize: const Size(40, 40),
@@ -225,6 +219,12 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                         ),
                       ),
                       onPressed: () => _selectDate(context),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.calendar_month),
+                        ],
+                      ),
                     ),
                   ),
                 )
@@ -241,6 +241,14 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
             Expanded(
               flex: 1,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF282886),
+                  minimumSize: const Size(40, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                onPressed: () => _grafico01(),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -250,14 +258,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                     ),
                   ],
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF282886),
-                  minimumSize: const Size(40, 40),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                onPressed: () => _grafico01(),
               ),
             ),
           ],
@@ -268,13 +268,13 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                 padding: const EdgeInsets.all(10.0),
                 child: _asignados > 0
                     ? Container(
-                        child: _buildGrafik(bardata),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius:
                               const BorderRadius.all(Radius.circular(0)),
                           border: Border.all(color: Colors.black, width: 1.0),
                         ),
+                        child: _buildGrafik(bardata),
                       )
                     : Center(
                         child: Text(
@@ -299,10 +299,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                       Container(
                         width: 150,
                         height: 20,
-                        child: const Text(
-                          "Ud. está al...",
-                          textAlign: TextAlign.center,
-                        ),
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 133, 230, 243),
                           borderRadius: const BorderRadius.only(
@@ -310,10 +306,21 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                               topRight: Radius.circular(15)),
                           border: Border.all(color: Colors.black, width: 1.0),
                         ),
+                        child: const Text(
+                          "Ud. está al...",
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       Container(
                         width: 150,
                         height: 140,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
                         child: CircularPercentIndicator(
                           radius: 60.0,
                           lineWidth: 5.0,
@@ -327,13 +334,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                                   fontWeight: FontWeight.bold)),
                           progressColor: Colors.green,
                         ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15)),
-                          border: Border.all(color: Colors.black, width: 1.0),
-                        ),
                       ),
                     ],
                   ),
@@ -343,10 +343,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                       Container(
                         width: 150,
                         height: 20,
-                        child: const Text(
-                          "Obj. 65%",
-                          textAlign: TextAlign.center,
-                        ),
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 133, 230, 243),
                           borderRadius: const BorderRadius.only(
@@ -354,10 +350,21 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                               topRight: Radius.circular(15)),
                           border: Border.all(color: Colors.black, width: 1.0),
                         ),
+                        child: const Text(
+                          "Obj. 65%",
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       Container(
                         width: 150,
                         height: 140,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
                         child: Center(
                           child: (_asignados * 0.65 - _ejecutados).round() > 0
                               ? Column(
@@ -397,13 +404,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                                   ],
                                 ),
                         ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15)),
-                          border: Border.all(color: Colors.black, width: 1.0),
-                        ),
                       ),
                     ],
                   ),
@@ -426,10 +426,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                       Container(
                         width: 150,
                         height: 20,
-                        child: const Text(
-                          "Obj. 70%",
-                          textAlign: TextAlign.center,
-                        ),
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 133, 230, 243),
                           borderRadius: const BorderRadius.only(
@@ -437,10 +433,21 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                               topRight: Radius.circular(15)),
                           border: Border.all(color: Colors.black, width: 1.0),
                         ),
+                        child: const Text(
+                          "Obj. 70%",
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       Container(
                         width: 150,
                         height: 140,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
                         child: Center(
                           child: (_asignados * 0.7 - _ejecutados).round() > 0
                               ? Column(
@@ -480,13 +487,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                                   ],
                                 ),
                         ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15)),
-                          border: Border.all(color: Colors.black, width: 1.0),
-                        ),
                       ),
                     ],
                   ),
@@ -496,10 +496,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                       Container(
                         width: 150,
                         height: 20,
-                        child: const Text(
-                          "Obj. 75%",
-                          textAlign: TextAlign.center,
-                        ),
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 133, 230, 243),
                           borderRadius: const BorderRadius.only(
@@ -507,10 +503,21 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                               topRight: Radius.circular(15)),
                           border: Border.all(color: Colors.black, width: 1.0),
                         ),
+                        child: const Text(
+                          "Obj. 75%",
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       Container(
                         width: 150,
                         height: 140,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15)),
+                          border: Border.all(color: Colors.black, width: 1.0),
+                        ),
                         child: Center(
                           child: (_asignados * 0.75 - _ejecutados).round() > 0
                               ? Column(
@@ -549,13 +556,6 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
                                             fontWeight: FontWeight.bold)),
                                   ],
                                 ),
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15)),
-                          border: Border.all(color: Colors.black, width: 1.0),
                         ),
                       ),
                     ],
@@ -665,14 +665,14 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
   List<DropdownMenuItem<String>> _getComboTiposAsignacion() {
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija un Tipo de Asignación...'),
       value: 'Elija un Tipo de Asignación...',
+      child: Text('Elija un Tipo de Asignación...'),
     ));
 
     for (var tipoasignacion in _tiposasignacion) {
       list.add(DropdownMenuItem(
-        child: Text(tipoasignacion.proyectomodulo.toString()),
         value: tipoasignacion.proyectomodulo.toString(),
+        child: Text(tipoasignacion.proyectomodulo.toString()),
       ));
     }
 
@@ -724,14 +724,14 @@ class _Grafico01ScreenState extends State<Grafico01Screen> {
 
     List<DropdownMenuItem<int>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Seleccione un Mes...'),
       value: 0,
+      child: Text('Seleccione un Mes...'),
     ));
 
     for (var _listoption in _listoptions) {
       list.add(DropdownMenuItem(
-        child: Text(_listoption.description),
         value: _listoption.id,
+        child: Text(_listoption.description),
       ));
     }
 

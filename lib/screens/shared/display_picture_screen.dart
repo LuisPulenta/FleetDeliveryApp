@@ -9,10 +9,10 @@ class DisplayPictureScreen extends StatefulWidget {
   const DisplayPictureScreen({Key? key, required this.image}) : super(key: key);
 
   @override
-  _DisplayPictureScreenState createState() => _DisplayPictureScreenState();
+  DisplayPictureScreenState createState() => DisplayPictureScreenState();
 }
 
-class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
+class DisplayPictureScreenState extends State<DisplayPictureScreen> {
 //--------------------------------------------------------
 //--------------------- Pantalla -------------------------
 //--------------------------------------------------------
@@ -36,7 +36,6 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                 children: <Widget>[
                   Expanded(
                     child: ElevatedButton(
-                      child: const Text('Usar Foto'),
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.resolveWith<Color>(
@@ -49,6 +48,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                             Response(isSuccess: true, result: widget.image);
                         Navigator.pop(context, response);
                       },
+                      child: const Text('Usar Foto'),
                     ),
                   ),
                   const SizedBox(
@@ -56,7 +56,6 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                   ),
                   Expanded(
                     child: ElevatedButton(
-                      child: const Text('Volver a tomar'),
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.resolveWith<Color>(
@@ -67,6 +66,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
+                      child: const Text('Volver a tomar'),
                     ),
                   ),
                 ],

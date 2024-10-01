@@ -218,18 +218,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                     child: Row(
                       children: [
                         ElevatedButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                const Icon(Icons.picture_as_pdf),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Text((base64imagePoliza == '')
-                                    ? 'Cargar Póliza'
-                                    : 'Borrar'),
-                              ],
-                            ),
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(80, 50),
                               backgroundColor: base64imagePoliza != ''
@@ -247,7 +235,19 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                               } else {
                                 _loadPdf(1);
                               }
-                            }),
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Icon(Icons.picture_as_pdf),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text((base64imagePoliza == '')
+                                    ? 'Cargar Póliza'
+                                    : 'Borrar'),
+                              ],
+                            )),
                         const SizedBox(
                           width: 15,
                         ),
@@ -257,14 +257,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                 namePdfPoliza == ''
                             ? Expanded(
                                 child: ElevatedButton(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: const [
-                                      Icon(Icons.picture_as_pdf),
-                                      Text('Póliza guardada'),
-                                    ],
-                                  ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         Color.fromARGB(255, 200, 14, 241),
@@ -280,6 +272,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                       throw 'No se puede conectar al Servidor';
                                     }
                                   },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: const [
+                                      Icon(Icons.picture_as_pdf),
+                                      Text('Póliza guardada'),
+                                    ],
+                                  ),
                                 ),
                               )
                             : Container()
@@ -302,18 +302,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                     child: Row(
                       children: [
                         ElevatedButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                const Icon(Icons.picture_as_pdf),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Text((base64imageCedula == '')
-                                    ? 'Cargar Cédula'
-                                    : 'Borrar'),
-                              ],
-                            ),
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(80, 50),
                               backgroundColor: base64imageCedula != ''
@@ -331,7 +319,19 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                               } else {
                                 _loadPdf(2);
                               }
-                            }),
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Icon(Icons.picture_as_pdf),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text((base64imageCedula == '')
+                                    ? 'Cargar Cédula'
+                                    : 'Borrar'),
+                              ],
+                            )),
                         const SizedBox(
                           width: 15,
                         ),
@@ -341,14 +341,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                 namePdfCedula == ''
                             ? Expanded(
                                 child: ElevatedButton(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: const [
-                                      Icon(Icons.picture_as_pdf),
-                                      Text('Cédula guardada'),
-                                    ],
-                                  ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         Color.fromARGB(255, 200, 14, 241),
@@ -364,6 +356,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                       throw 'No se puede conectar al Servidor';
                                     }
                                   },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: const [
+                                      Icon(Icons.picture_as_pdf),
+                                      Text('Cédula guardada'),
+                                    ],
+                                  ),
                                 ),
                               )
                             : Container()
@@ -386,18 +386,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                     child: Row(
                       children: [
                         ElevatedButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                const Icon(Icons.picture_as_pdf),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Text((base64imageAntecedentes == '')
-                                    ? 'Cargar Anteced.'
-                                    : 'Borrar'),
-                              ],
-                            ),
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(80, 50),
                               backgroundColor: base64imageAntecedentes != ''
@@ -415,7 +403,19 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                               } else {
                                 _loadPdf(3);
                               }
-                            }),
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Icon(Icons.picture_as_pdf),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text((base64imageAntecedentes == '')
+                                    ? 'Cargar Anteced.'
+                                    : 'Borrar'),
+                              ],
+                            )),
                         const SizedBox(
                           width: 15,
                         ),
@@ -425,14 +425,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                 namePdfAntecedentes == ''
                             ? Expanded(
                                 child: ElevatedButton(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: const [
-                                      Icon(Icons.picture_as_pdf),
-                                      Text('Anteced. guardados'),
-                                    ],
-                                  ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         Color.fromARGB(255, 200, 14, 241),
@@ -448,6 +440,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                       throw 'No se puede conectar al Servidor';
                                     }
                                   },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: const [
+                                      Icon(Icons.picture_as_pdf),
+                                      Text('Anteced. guardados'),
+                                    ],
+                                  ),
                                 ),
                               )
                             : Container()
@@ -1183,12 +1183,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.calendar_month),
-                          ],
-                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF282886),
                           minimumSize: const Size(double.infinity, 50),
@@ -1197,6 +1191,12 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                         onPressed: () => fechaVencCarnet(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.calendar_month),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -1288,12 +1288,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.calendar_month),
-                          ],
-                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF282886),
                           minimumSize: const Size(double.infinity, 50),
@@ -1302,6 +1296,12 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                         onPressed: () => fechaVVTV(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.calendar_month),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -1396,12 +1396,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.calendar_month),
-                          ],
-                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF282886),
                           minimumSize: const Size(double.infinity, 50),
@@ -1410,6 +1404,12 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                         onPressed: () => fechaVGNC(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.calendar_month),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -1504,12 +1504,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.calendar_month),
-                          ],
-                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF282886),
                           minimumSize: const Size(double.infinity, 50),
@@ -1518,6 +1512,12 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                         onPressed: () => fechaSeguro(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.calendar_month),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -1563,6 +1563,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         children: <Widget>[
           Expanded(
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF282886),
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              onPressed: _save,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
@@ -1573,14 +1581,6 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                   Text('Guardar'),
                 ],
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF282886),
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onPressed: _save,
             ),
           ),
         ],

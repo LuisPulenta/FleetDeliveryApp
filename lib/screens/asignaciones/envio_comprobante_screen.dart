@@ -202,16 +202,6 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: ElevatedButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.chat),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text('Enviar Comprobante como Texto'),
-                              ],
-                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.deepPurple,
                               minimumSize: const Size(double.infinity, 50),
@@ -402,17 +392,6 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                           ),
                                           actions: <Widget>[
                                             ElevatedButton(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(Icons.insert_comment),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text('Continuar'),
-                                                ],
-                                              ),
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.green,
                                                 minimumSize: const Size(
@@ -436,22 +415,22 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                           .pop();
                                                     }
                                                   : null,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  Icon(Icons.insert_comment),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Text('Continuar'),
+                                                ],
+                                              ),
                                             ),
                                             const SizedBox(
                                               height: 10,
                                             ),
                                             ElevatedButton(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(Icons.cancel),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text('Cancelar'),
-                                                ],
-                                              ),
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.red,
                                                 minimumSize: const Size(
@@ -465,6 +444,17 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                 Navigator.pop(context);
                                                 return;
                                               },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  Icon(Icons.cancel),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Text('Cancelar'),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                           shape: Border.all(
@@ -479,6 +469,16 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
                               //------------------------------------------------
                             },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.chat),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text('Enviar Comprobante como Texto'),
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -487,16 +487,6 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: ElevatedButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.picture_as_pdf),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text('Enviar Comprobante PDF'),
-                              ],
-                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.purple,
                               minimumSize: const Size(double.infinity, 50),
@@ -691,19 +681,6 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                             .symmetric(
                                                         horizontal: 0.0),
                                                     child: ElevatedButton(
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: const [
-                                                          Icon(Icons
-                                                              .picture_as_pdf),
-                                                          SizedBox(
-                                                            width: 15,
-                                                          ),
-                                                          Text('Ver PDF'),
-                                                        ],
-                                                      ),
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
@@ -743,6 +720,19 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                                 }
                                                               : null
                                                           : null,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: const [
+                                                          Icon(Icons
+                                                              .picture_as_pdf),
+                                                          SizedBox(
+                                                            width: 15,
+                                                          ),
+                                                          Text('Ver PDF'),
+                                                        ],
+                                                      ),
                                                     ),
                                                   )
                                                 : Container(),
@@ -752,17 +742,6 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                   )
                                                 : Container(),
                                             ElevatedButton(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(Icons.insert_comment),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text('Crear Chat'),
-                                                ],
-                                              ),
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.green,
                                                 minimumSize: const Size(
@@ -791,22 +770,22 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                         }
                                                       : null
                                                   : null,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  Icon(Icons.insert_comment),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Text('Crear Chat'),
+                                                ],
+                                              ),
                                             ),
                                             const SizedBox(
                                               height: 10,
                                             ),
                                             ElevatedButton(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(Icons.picture_as_pdf),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text('Enviar PDF'),
-                                                ],
-                                              ),
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.blue,
                                                 minimumSize: const Size(
@@ -825,22 +804,22 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                       return;
                                                     }
                                                   : null,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  Icon(Icons.picture_as_pdf),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Text('Enviar PDF'),
+                                                ],
+                                              ),
                                             ),
                                             const SizedBox(
                                               height: 10,
                                             ),
                                             ElevatedButton(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(Icons.cancel),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text('Cancelar'),
-                                                ],
-                                              ),
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.red,
                                                 minimumSize: const Size(
@@ -854,6 +833,17 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                 Navigator.pop(context);
                                                 return;
                                               },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  Icon(Icons.cancel),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Text('Cancelar'),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                           shape: Border.all(
@@ -868,6 +858,16 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
                               Navigator.of(context).pop();
                             },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.picture_as_pdf),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text('Enviar Comprobante PDF'),
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -1662,14 +1662,14 @@ class _EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija un Teléfono...'),
       value: 'Elija un Teléfono...',
+      child: Text('Elija un Teléfono...'),
     ));
 
     for (var telefono in telefonos) {
       list.add(DropdownMenuItem(
-        child: Text(telefono),
         value: telefono,
+        child: Text(telefono),
       ));
     }
     return list;

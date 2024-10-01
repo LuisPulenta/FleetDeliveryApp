@@ -271,6 +271,14 @@ class _LoginScreenState extends State<LoginScreen> {
             children: <Widget>[
               Expanded(
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF282886),
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () => _login(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
@@ -281,14 +289,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text('Iniciar Sesión'),
                     ],
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF282886),
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onPressed: () => _login(),
                 ),
               ),
             ],
@@ -301,6 +301,14 @@ class _LoginScreenState extends State<LoginScreen> {
             children: <Widget>[
               Expanded(
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF637893),
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () => _launchURL(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
@@ -311,14 +319,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text('Web Fleet'),
                     ],
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF637893),
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onPressed: () => _launchURL(),
                 ),
               ),
             ],
@@ -334,6 +334,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                     Expanded(
                       child: TextButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onPressed: () => _launchURL2(),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
@@ -345,14 +353,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontWeight: FontWeight.bold)),
                           ],
                         ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey,
-                          minimumSize: const Size(double.infinity, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        onPressed: () => _launchURL2(),
                       ),
                     ),
                   ],

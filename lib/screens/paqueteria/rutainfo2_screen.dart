@@ -1585,13 +1585,13 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     motivosEntregados = [];
     motivosNoEntregados = [];
     motivosEntregados.add(const DropdownMenuItem(
-      child: Text('Elija un Motivo...'),
       value: 'Elija un Motivo...',
+      child: Text('Elija un Motivo...'),
     ));
 
     motivosNoEntregados.add(const DropdownMenuItem(
-      child: Text('Elija un Motivo...'),
       value: 'Elija un Motivo...',
+      child: Text('Elija un Motivo...'),
     ));
 
     for (var motivo in widget.motivosLista) {
@@ -1599,8 +1599,8 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         if (motivo.muestraParaEntregado == 1 &&
             motivo.exclusivoCliente == idProveedor) {
           motivosEntregados.add(DropdownMenuItem(
-            child: Text(motivo.motivo.toString()),
             value: motivo.motivo.toString(),
+            child: Text(motivo.motivo.toString()),
           ));
         }
       }
@@ -1611,8 +1611,8 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         if (motivo.muestraParaEntregado != 1 &&
             motivo.exclusivoCliente == idProveedor) {
           motivosNoEntregados.add(DropdownMenuItem(
-            child: Text(motivo.motivo.toString()),
             value: motivo.motivo.toString(),
+            child: Text(motivo.motivo.toString()),
           ));
         }
       }
@@ -1681,18 +1681,18 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   List<DropdownMenuItem<String>> _getComboEstados() {
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija un Estado...'),
       value: 'Elija un Estado...',
+      child: Text('Elija un Estado...'),
     ));
 
     list.add(const DropdownMenuItem(
-      child: Text('Entregado'),
       value: 'Entregado',
+      child: Text('Entregado'),
     ));
 
     list.add(const DropdownMenuItem(
-      child: Text('No Entregado'),
       value: 'No Entregado',
+      child: Text('No Entregado'),
     ));
 
     return list;
@@ -1821,16 +1821,6 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
           child: Container(
             padding: EdgeInsets.all(10),
             child: ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.save),
-                    SizedBox(
-                      width: 25,
-                    ),
-                    Text('Guardar')
-                  ],
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF282886),
                   minimumSize: const Size(50, 50),
@@ -1841,7 +1831,17 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                 onPressed: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                   _guardar();
-                }),
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.save),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    Text('Guardar')
+                  ],
+                )),
           ),
         ),
         const SizedBox(
@@ -1899,7 +1899,6 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
           width: 10,
         ),
         ElevatedButton(
-            child: const Icon(Icons.search),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF282886),
               minimumSize: const Size(50, 50),
@@ -1910,7 +1909,8 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
             //onPressed: () => _getObras(),
             onPressed: () async {
               _getParadasenviosUnProveedor();
-            }),
+            },
+            child: const Icon(Icons.search)),
         const SizedBox(
           width: 10,
         ),
@@ -1935,14 +1935,14 @@ class _RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
     List<DropdownMenuItem<String>> list = [];
     list.add(const DropdownMenuItem(
-      child: Text('Elija un Proveedor...'),
       value: 'Elija un Proveedor...',
+      child: Text('Elija un Proveedor...'),
     ));
 
     for (String proveedor in _proveedores) {
       list.add(DropdownMenuItem(
-        child: Text(proveedor),
         value: proveedor,
+        child: Text(proveedor),
       ));
     }
 
