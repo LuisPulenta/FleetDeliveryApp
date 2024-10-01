@@ -85,7 +85,6 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   String codCierre = '';
   String codCierreGenerico = '';
 
-  late File? _imagen;
   String newPath = "";
 
   bool _editar = false;

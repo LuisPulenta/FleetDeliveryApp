@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fleetdeliveryapp/helpers/showmydialog.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -398,14 +399,11 @@ class LoginScreenState extends State<LoginScreen> {
     }
 
     if (_modulo.nroVersion != '' && _modulo.nroVersion != Constants.version) {
-      await showAlertDialog(
-          context: context,
-          title: 'Atención!',
-          message:
-              "Debe instalar la nueva versión disponible en Google Play para poder continuar.",
-          actions: <AlertDialogAction>[
-            const AlertDialogAction(key: null, label: 'Aceptar'),
-          ]);
+      showMyDialog(
+          'Atención!',
+          "Debe instalar la nueva versión disponible en Google Play para poder continuar.",
+          'Aceptar');
+
       return;
     }
 

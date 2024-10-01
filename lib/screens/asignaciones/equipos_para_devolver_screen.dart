@@ -771,7 +771,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     });
 
     if (!response.isSuccess) {
-      await showAlertDialog(
+      showAlertDialog(
           context: context,
           title: 'Error',
           message: response.message,

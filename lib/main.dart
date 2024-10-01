@@ -7,6 +7,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //-----Main-----
+
+final navigatorKey = GlobalKey<NavigatorState>();
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
@@ -60,6 +62,7 @@ class _MyAppState extends State<MyApp> {
         colorScheme:
             ColorScheme.fromSwatch().copyWith(secondary: Colors.cyan[300]),
       ),
+      navigatorKey: navigatorKey,
       home: _isLoading
           ? const WaitScreen()
           : _showLoginPage

@@ -504,7 +504,7 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
 //--------------------------------------------------------------
 
   void _goInfoAsignacion(Asignacion2 asignacion) async {
-    String? result = await Navigator.push(
+    await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => EnvioComprobanteScreen(
