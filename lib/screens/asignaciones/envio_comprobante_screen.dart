@@ -756,7 +756,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                                   _number2;
 
                                                           await _creaChat(
-                                                              _number2);
+                                                              _number2
+                                                                  .replaceAll(
+                                                                      " ", ""));
                                                           setState(() {});
                                                           return;
                                                         }
@@ -791,7 +793,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                   ? () async {
                                                       verPDF = false;
                                                       await _createPDF(
-                                                          _number2, message);
+                                                          _number2.replaceAll(
+                                                              " ", ""),
+                                                          message);
                                                       Navigator.pop(context);
                                                       return;
                                                     }

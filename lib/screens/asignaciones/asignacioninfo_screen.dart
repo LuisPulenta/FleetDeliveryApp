@@ -4358,7 +4358,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     ? _number2 = '549$_number2'
                                     : _number2 = _number2;
 
-                                await _creaChat(_number2);
+                                await _creaChat(_number2.replaceAll(" ", ""));
                                 setState(() {});
                                 return;
                               }
@@ -4388,7 +4388,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     ),
                     onPressed: _existeChat
                         ? () async {
-                            await _createPDF(_number2, message);
+                            await _createPDF(
+                                _number2.replaceAll(" ", ""), message);
                             Navigator.pop(context);
                             return;
                           }

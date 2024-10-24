@@ -145,8 +145,15 @@ class Home2ScreenState extends State<Home2Screen> {
                 "assets/logo2.png",
                 height: 200,
               ),
+              const Text(
+                'Bienvenido/a',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0e4888)),
+              ),
               Text(
-                'Bienvenido/a ${widget.user.apellidonombre}',
+                widget.user.apellidonombre.toString().replaceAll("  ", ""),
                 style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
