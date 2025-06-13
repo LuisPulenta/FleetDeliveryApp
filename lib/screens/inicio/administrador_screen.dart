@@ -1,6 +1,7 @@
-import 'package:fleetdeliveryapp/models/models.dart';
-import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/models.dart';
+import '../screens.dart';
 
 class AdministradorScreen extends StatefulWidget {
   final Modulo modulo;
@@ -115,7 +116,7 @@ class _AdministradorScreenState extends State<AdministradorScreen> {
                       SizedBox(
                         width: 20,
                       ),
-                      Text('Reactivar Usuario'),
+                      Text('Reactivar Usuario GAOS'),
                     ],
                   ),
                 ),

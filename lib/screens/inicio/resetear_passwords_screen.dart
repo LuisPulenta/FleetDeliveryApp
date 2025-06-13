@@ -1,10 +1,12 @@
 import 'dart:convert';
+
 import 'package:connectivity/connectivity.dart';
-import 'package:fleetdeliveryapp/components/loader_component.dart';
-import 'package:fleetdeliveryapp/helpers/helpers.dart';
-import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../../components/loader_component.dart';
+import '../../helpers/helpers.dart';
+import '../../models/models.dart';
 
 class ResetearPasswordsScreen extends StatefulWidget {
   const ResetearPasswordsScreen({Key? key}) : super(key: key);
@@ -57,7 +59,7 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 201, 201, 211),
       appBar: AppBar(
-        title: const Text("Reactivar Usuario"),
+        title: const Text('Reactivar Usuario GAOS'),
         centerTitle: true,
         backgroundColor: const Color(0xFF282886),
       ),
@@ -110,7 +112,7 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  onPressed: _user.login == "" || _user.contrasena == 1
+                  onPressed: _user.login == '' || _user.contrasena == 1
                       ? null
                       : _reactivarUsuario,
                   child: Row(
