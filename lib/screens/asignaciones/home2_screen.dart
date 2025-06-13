@@ -1,11 +1,12 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:fleetdeliveryapp/helpers/api_helper.dart';
-import 'package:fleetdeliveryapp/helpers/dbwebsesions_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:fleetdeliveryapp/models/models.dart';
-import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../helpers/api_helper.dart';
+import '../../helpers/dbwebsesions_helper.dart';
+import '../../models/models.dart';
+import '../screens.dart';
 
 class Home2Screen extends StatefulWidget {
   final Usuario user;
@@ -142,7 +143,7 @@ class Home2ScreenState extends State<Home2Screen> {
           child: Column(
             children: [
               Image.asset(
-                "assets/logo2.png",
+                'assets/logo2.png',
                 height: 200,
               ),
               const Text(
@@ -153,7 +154,7 @@ class Home2ScreenState extends State<Home2Screen> {
                     color: Color(0xFF0e4888)),
               ),
               Text(
-                widget.user.apellidonombre.toString().replaceAll("  ", ""),
+                widget.user.apellidonombre.toString().replaceAll('  ', ''),
                 style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -209,7 +210,7 @@ class Home2ScreenState extends State<Home2Screen> {
                   Row(
                     children: [
                       const Text(
-                        "Usuario: ",
+                        'Usuario: ',
                         style: (TextStyle(
                             color: Color(0xff0e4888),
                             fontWeight: FontWeight.bold)),

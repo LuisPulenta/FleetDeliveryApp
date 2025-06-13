@@ -1,14 +1,14 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:fleetdeliveryapp/components/loader_component.dart';
-import 'package:fleetdeliveryapp/helpers/helpers.dart';
-import 'package:fleetdeliveryapp/models/models.dart';
-import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../components/loader_component.dart';
+import '../../helpers/helpers.dart';
+import '../../models/models.dart';
+import '../screens.dart';
 
 class HomeScreen extends StatefulWidget {
   final Usuario user;
@@ -59,7 +59,7 @@ class HomeScreenState extends State<HomeScreen>
   bool _passwordShowError = false;
   bool _passwordShow = false;
 
-  String _result2 = "no";
+  String _result2 = 'no';
 
   bool _hayInternet = false;
   bool _showLoader = false;
@@ -426,12 +426,12 @@ class HomeScreenState extends State<HomeScreen>
                 Column(
                   children: <Widget>[
                     AppBar(
-                      title: (Text("Delivery - ${widget.user.apellidonombre}")),
+                      title: (Text('Delivery - ${widget.user.apellidonombre}')),
                       actions: [
                         Row(
                           children: [
                             const Text(
-                              "Sincr:",
+                              'Sincr:',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 14),
                             ),
@@ -466,7 +466,7 @@ class HomeScreenState extends State<HomeScreen>
                 Column(
                   children: [
                     AppBar(
-                      title: (const Text("Completas")),
+                      title: (const Text('Completas')),
                       centerTitle: true,
                       actions: <Widget>[
                         Padding(
@@ -501,7 +501,7 @@ class HomeScreenState extends State<HomeScreen>
                   child: Column(
                     children: [
                       AppBar(
-                        title: (const Text("Usuario")),
+                        title: (const Text('Usuario')),
                         centerTitle: true,
                         backgroundColor: const Color(0xff282886),
                       ),
@@ -529,7 +529,7 @@ class HomeScreenState extends State<HomeScreen>
                           Row(
                             children: const [
                               Text(
-                                "Conectado desde:",
+                                'Conectado desde:',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
@@ -554,7 +554,7 @@ class HomeScreenState extends State<HomeScreen>
                           Row(
                             children: const [
                               Text(
-                                "Válido hasta:",
+                                'Válido hasta:',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
@@ -579,7 +579,7 @@ class HomeScreenState extends State<HomeScreen>
                           Row(
                             children: const [
                               Text(
-                                "Ultima actualización de Usuarios:",
+                                'Ultima actualización de Usuarios:',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
@@ -604,7 +604,7 @@ class HomeScreenState extends State<HomeScreen>
                           Row(
                             children: const [
                               Text(
-                                "Versión:",
+                                'Versión:',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
@@ -633,7 +633,7 @@ class HomeScreenState extends State<HomeScreen>
                             ),
                             onPressed: () async {
                               _password = '';
-                              _result2 = "no";
+                              _result2 = 'no';
                               await _borrarMedicionesLocales();
                               // if (_result2 == 'yes') {
                               //   await _borrarMedicionesLocales();
@@ -789,7 +789,7 @@ class HomeScreenState extends State<HomeScreen>
                       width: 5,
                     ),
                     Text(
-                      "Delivery",
+                      'Delivery',
                       style: TextStyle(fontSize: 14),
                     ),
                   ],
@@ -803,7 +803,7 @@ class HomeScreenState extends State<HomeScreen>
                       width: 5,
                     ),
                     Text(
-                      "Completas",
+                      'Completas',
                       style: TextStyle(fontSize: 14),
                     ),
                   ],
@@ -817,7 +817,7 @@ class HomeScreenState extends State<HomeScreen>
                       width: 5,
                     ),
                     Text(
-                      "Usuario",
+                      'Usuario',
                       style: TextStyle(fontSize: 14),
                     ),
                   ],
@@ -875,7 +875,7 @@ class HomeScreenState extends State<HomeScreen>
                             children: [
                               Row(
                                 children: [
-                                  const Text("Fecha: ",
+                                  const Text('Fecha: ',
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Color(0xFF781f1e),
@@ -896,7 +896,7 @@ class HomeScreenState extends State<HomeScreen>
                               ),
                               Row(
                                 children: [
-                                  const Text("Nombre: ",
+                                  const Text('Nombre: ',
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Color(0xFF781f1e),
@@ -915,7 +915,7 @@ class HomeScreenState extends State<HomeScreen>
                               ),
                               Row(
                                 children: [
-                                  const Text("Ruta N°: ",
+                                  const Text('Ruta N°: ',
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Color(0xFF781f1e),
@@ -935,7 +935,7 @@ class HomeScreenState extends State<HomeScreen>
                                     )
                                   : Container(),
                               e.habilitaCatastro == 1
-                                  ? const Text("Catastro habilitado",
+                                  ? const Text('Catastro habilitado',
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Color.fromARGB(255, 255, 0, 0),
@@ -975,7 +975,7 @@ class HomeScreenState extends State<HomeScreen>
                               ),
                               Row(
                                 children: [
-                                  const Text("Paradas: ",
+                                  const Text('Paradas: ',
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Color(0xFF781f1e),
@@ -994,7 +994,7 @@ class HomeScreenState extends State<HomeScreen>
                               ),
                               Row(
                                 children: [
-                                  const Text("Pendientes: ",
+                                  const Text('Pendientes: ',
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Color(0xFF781f1e),
@@ -1136,19 +1136,19 @@ class HomeScreenState extends State<HomeScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const <Widget>[
-                              Text("Ruta N°: ",
+                              Text('Ruta N°: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF781f1e),
                                     fontWeight: FontWeight.bold,
                                   )),
-                              Text("Parada N°: ",
+                              Text('Parada N°: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF781f1e),
                                     fontWeight: FontWeight.bold,
                                   )),
-                              Text("Remito N°: ",
+                              Text('Remito N°: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF781f1e),
@@ -1181,19 +1181,19 @@ class HomeScreenState extends State<HomeScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const <Widget>[
-                              Text("Fecha: ",
+                              Text('Fecha: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF781f1e),
                                     fontWeight: FontWeight.bold,
                                   )),
-                              Text("",
+                              Text('',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF781f1e),
                                     fontWeight: FontWeight.bold,
                                   )),
-                              Text("",
+                              Text('',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF781f1e),
@@ -1211,7 +1211,7 @@ class HomeScreenState extends State<HomeScreen>
                                   style: const TextStyle(
                                     fontSize: 12,
                                   )),
-                              const Text("",
+                              const Text('',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF781f1e),
@@ -1219,27 +1219,27 @@ class HomeScreenState extends State<HomeScreen>
                                   )),
                               (e.estado == 4)
                                   ? const Text(
-                                      "ENTREGADO",
+                                      'ENTREGADO',
                                       style: TextStyle(
                                           color: Colors.green,
                                           fontWeight: FontWeight.bold),
                                     )
                                   : (e.estado == 10)
                                       ? const Text(
-                                          "NO ENTREGADO",
+                                          'NO ENTREGADO',
                                           style: TextStyle(
                                               color: Colors.red,
                                               fontWeight: FontWeight.bold),
                                         )
                                       : (e.estado == 7)
                                           ? const Text(
-                                              "RECHAZADO",
+                                              'RECHAZADO',
                                               style: TextStyle(
                                                   color: Colors.purple,
                                                   fontWeight: FontWeight.bold),
                                             )
                                           : const Text(
-                                              "PENDIENTE",
+                                              'PENDIENTE',
                                               style: TextStyle(
                                                   color: Colors.blue,
                                                   fontWeight: FontWeight.bold),
@@ -1326,7 +1326,7 @@ class HomeScreenState extends State<HomeScreen>
                 )));
     if (result == 'yes' || result != 'yes') {
       setState(() {
-        _textComponent = "";
+        _textComponent = '';
         _showLoader = true;
       });
       await _actualizaParadasEnvios();
@@ -1364,7 +1364,7 @@ class HomeScreenState extends State<HomeScreen>
                 )));
     if (result == 'yes' || result != 'yes') {
       setState(() {
-        _textComponent = "Actualizando envíos en el Servidor";
+        _textComponent = 'Actualizando envíos en el Servidor';
         _showLoader = true;
       });
 
@@ -1515,7 +1515,7 @@ class HomeScreenState extends State<HomeScreen>
 
   Future<void> _getProveedores() async {
     setState(() {
-      _textComponent = "Cargando Proveedores.";
+      _textComponent = 'Cargando Proveedores.';
       _showLoader = true;
     });
 
@@ -1565,7 +1565,7 @@ class HomeScreenState extends State<HomeScreen>
 
   Future<void> _getRutas() async {
     setState(() {
-      _textComponent = "Cargando Rutas.";
+      _textComponent = 'Cargando Rutas.';
       _showLoader = true;
     });
 
@@ -1642,71 +1642,71 @@ class HomeScreenState extends State<HomeScreen>
         idproveedor: 0,
         agencianr: 0,
         estado: 0,
-        envia: "",
-        ruta: "",
-        ordenid: "",
+        envia: '',
+        ruta: '',
+        ordenid: '',
         fecha: 0,
-        hora: "",
-        imei: "",
-        transporte: "",
-        contrato: "",
-        titular: "",
-        dni: "",
-        domicilio: "",
-        cp: "",
+        hora: '',
+        imei: '',
+        transporte: '',
+        contrato: '',
+        titular: '',
+        dni: '',
+        domicilio: '',
+        cp: '',
         latitud: 0,
         longitud: 0,
-        autorizado: "",
-        observaciones: "",
+        autorizado: '',
+        observaciones: '',
         idCabCertificacion: 0,
         idRemitoProveedor: 0,
         idSubconUsrWeb: 0,
-        fechaAlta: "",
-        fechaEnvio: "",
-        fechaDistribucion: "",
-        entreCalles: "",
-        mail: "",
-        telefonos: "",
-        localidad: "",
+        fechaAlta: '',
+        fechaEnvio: '',
+        fechaDistribucion: '',
+        entreCalles: '',
+        mail: '',
+        telefonos: '',
+        localidad: '',
         tag: 0,
-        provincia: "",
-        fechaEntregaCliente: "",
-        scaneadoIn: "",
-        scaneadoOut: "",
+        provincia: '',
+        fechaEntregaCliente: '',
+        scaneadoIn: '',
+        scaneadoOut: '',
         ingresoDeposito: 0,
         salidaDistribucion: 0,
         idRuta: 0,
         nroSecuencia: 0,
-        fechaHoraOptimoCamino: "",
+        fechaHoraOptimoCamino: '',
         bultos: 0,
-        peso: "",
-        alto: "",
-        ancho: "",
-        largo: "",
+        peso: '',
+        alto: '',
+        ancho: '',
+        largo: '',
         idComprobante: 0,
-        enviarMailSegunEstado: "",
-        fechaRuta: "",
-        ordenIDparaOC: "",
-        hashUnico: "",
+        enviarMailSegunEstado: '',
+        fechaRuta: '',
+        ordenIDparaOC: '',
+        hashUnico: '',
         bultosPikeados: 0,
-        centroDistribucion: "",
-        fechaUltimaActualizacion: "",
-        volumen: "",
+        centroDistribucion: '',
+        fechaUltimaActualizacion: '',
+        volumen: '',
         avonZoneNumber: 0,
         avonSectorNumber: 0,
-        avonAccountNumber: "",
+        avonAccountNumber: '',
         avonCampaignNumber: 0,
         avonCampaignYear: 0,
-        domicilioCorregido: "",
+        domicilioCorregido: '',
         domicilioCorregidoUsando: 0,
-        urlFirma: "",
-        urlDNI: "",
+        urlFirma: '',
+        urlDNI: '',
         ultimoIdMotivo: 0,
-        ultimaNotaFletero: "",
+        ultimaNotaFletero: '',
         idComprobanteDevolucion: 0,
-        turno: "",
-        barrioEntrega: "",
-        partidoEntrega: "",
+        turno: '',
+        barrioEntrega: '',
+        partidoEntrega: '',
         avonDayRoute: 0,
         avonTravelRoute: 0,
         avonSecuenceRoute: 0,
@@ -1776,15 +1776,44 @@ class HomeScreenState extends State<HomeScreen>
       setState(() {
         _showLoader = false;
       });
-      showMyDialog(
-          'Error',
-          "No se encontraron Rutas activas para su Usuario. Comuníquese con el Administrador.",
-          'Aceptar');
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('usuariosconseguidos', false);
-      SystemNavigator.pop();
-      return;
+      // showMyDialog(
+      //     'Error',
+      //     "No se encontraron Rutas activas para su Usuario. Comuníquese con el Administrador.",
+      //     'Aceptar');
+
+      await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: const Text('Error'),
+              content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text(
+                        'No se encontraron Rutas activas para su Usuario. Comuníquese con el Administrador.'),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Aceptar')),
+              ],
+            );
+          });
+
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // await prefs.setBool('usuariosconseguidos', false);
+      // SystemNavigator.pop();
+
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
     }
 
     setState(() {
@@ -1800,7 +1829,7 @@ class HomeScreenState extends State<HomeScreen>
 
   Future<void> _getMotivos() async {
     setState(() {
-      _textComponent = "Cargando Motivos.";
+      _textComponent = 'Cargando Motivos.';
       _showLoader = true;
     });
 
@@ -1845,9 +1874,11 @@ class HomeScreenState extends State<HomeScreen>
     }
     _motivos = await DBMotivos.motivos();
 
-    setState(() {
-      _showLoader = false;
-    });
+    if (mounted) {
+      setState(() {
+        _showLoader = false;
+      });
+    }
 
     _getParadasEnvios();
   }
@@ -1868,9 +1899,11 @@ class HomeScreenState extends State<HomeScreen>
   void _getTablaMedicionesCab() async {
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
 
-    setState(() {
-      _showLoader = false;
-    });
+    if (mounted) {
+      setState(() {
+        _showLoader = false;
+      });
+    }
   }
 
 //--------------------------------------------------------
@@ -1911,7 +1944,7 @@ class HomeScreenState extends State<HomeScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: const [
                     Text(
-                      "Atención!!",
+                      'Atención!!',
                       style: TextStyle(color: Colors.red, fontSize: 20),
                     ),
                   ],
@@ -1921,10 +1954,10 @@ class HomeScreenState extends State<HomeScreen>
                   child: Column(
                     children: [
                       Text(
-                        "Para borrar las paradas grabadas en forma local de este teléfono para el Usuario  ${widget.user.apellidonombre} debe escribir su contraseña",
+                        'Para borrar las paradas grabadas en forma local de este teléfono para el Usuario  ${widget.user.apellidonombre} debe escribir su contraseña',
                         style: const TextStyle(fontSize: 14),
                       ),
-                      const Text(""),
+                      const Text(''),
                       TextField(
                         obscureText: !_passwordShow,
                         decoration: InputDecoration(
@@ -1980,7 +2013,7 @@ class HomeScreenState extends State<HomeScreen>
                             'Aceptar');
 
                         setState(() {});
-                        _result2 = "yes";
+                        _result2 = 'yes';
                         Navigator.pop(context, 'yes');
                       }
                     },
@@ -2058,7 +2091,7 @@ class HomeScreenState extends State<HomeScreen>
 
     if (connectivityResult != ConnectivityResult.none) {
       setState(() {
-        _textComponent = "Actualizando envíos en el Servidor";
+        _textComponent = 'Actualizando envíos en el Servidor';
         _showLoader = true;
       });
 
@@ -2074,7 +2107,7 @@ class HomeScreenState extends State<HomeScreen>
     } else {
       showMyDialog(
           'Aviso',
-          "No está conectado a Internet para subir los datos al Servidor",
+          'No está conectado a Internet para subir los datos al Servidor',
           'Aceptar');
     }
 

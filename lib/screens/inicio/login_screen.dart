@@ -1,17 +1,19 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:connectivity/connectivity.dart';
+import 'package:device_information/device_information.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:device_information/device_information.dart';
-import 'dart:math';
-import 'package:connectivity/connectivity.dart';
-import 'package:fleetdeliveryapp/components/loader_component.dart';
-import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:fleetdeliveryapp/screens/screens.dart';
-import 'package:fleetdeliveryapp/models/models.dart';
+
+import '../../components/loader_component.dart';
+import '../../helpers/helpers.dart';
+import '../../models/models.dart';
+import '../screens.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -41,7 +43,7 @@ class LoginScreenState extends State<LoginScreen> {
       fechaRelease: '',
       actualizOblig: 0);
 
-  String _imeiNo = "";
+  String _imeiNo = '';
 
   Usuario _usuarioLogueado = Usuario(
       idUser: 0,
@@ -64,8 +66,8 @@ class LoginScreenState extends State<LoginScreen> {
   String _email = '';
   String _password = '';
 
-  //String _email = '*TEVEZ';
-  //String _password = '123456';
+  // String _email = '*TEVEZ';
+  // String _password = '123456';
 
   // String _email = 'jona';
   // String _password = '123456';
@@ -107,31 +109,43 @@ class LoginScreenState extends State<LoginScreen> {
       body: Stack(
         children: <Widget>[
           Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 60),
-              decoration: const BoxDecoration(
-                // ignore: unnecessary_const
-                gradient: const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(
-                      (0xfff6faf8),
-                    ),
-                    Color(
-                      (0xfff6faf8),
-                    ),
-                  ],
-                ),
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(
+                    (0xfff6faf8),
+                  ),
+                  Color(
+                    (0xfff6faf8),
+                  ),
+                ],
               ),
+            ),
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   const SizedBox(
-                    height: 20,
-                  ),
-                  Image.asset(
-                    "assets/logo2.png",
                     height: 100,
+                  ),
+                  GestureDetector(
+                    onLongPress: () async {
+                      _ultimaactualizacion = 'null';
+                      _usuariosApi = [];
+                      await _getUsuarios(2);
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 100,
+                      color: Colors.white,
+                      child: Image.asset(
+                        'assets/logo2.png',
+                        height: 100,
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -147,41 +161,32 @@ class LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                ],
-              )),
-          Transform.translate(
-            offset: const Offset(0, -60),
-            child: Center(
-              child: SingleChildScrollView(
-                child: Card(
-                  color: Colors.grey,
-
-                  //  const Color(
-                  //   (0xffb3b3b4),
-                  // ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  elevation: 15,
-                  margin: const EdgeInsets.only(
-                      left: 20, right: 20, top: 260, bottom: 20),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 35, vertical: 20),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        _showEmail(),
-                        _showPassword(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _showRememberme(),
-                        _showButtons(),
-                      ],
+                  Card(
+                    color: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    elevation: 15,
+                    margin: const EdgeInsets.only(
+                        left: 20, right: 20, top: 20, bottom: 20),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 35, vertical: 20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _showEmail(),
+                          _showPassword(),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          _showRememberme(),
+                          _showButtons(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
@@ -399,7 +404,7 @@ class LoginScreenState extends State<LoginScreen> {
     if (_modulo.nroVersion != '' && _modulo.nroVersion != Constants.version) {
       showMyDialog(
           'Atención!',
-          "Debe instalar la nueva versión disponible en Google Play para poder continuar.",
+          'Debe instalar la nueva versión disponible en Google Play para poder continuar.',
           'Aceptar');
 
       return;
@@ -460,7 +465,7 @@ class LoginScreenState extends State<LoginScreen> {
         loginDate: DateTime.now().toString(),
         loginTime: hora.round(),
         modulo: 'App-${_usuarioLogueado.codigo}',
-        logoutDate: "",
+        logoutDate: '',
         logoutTime: 0,
         conectAverage: 0,
         id_ws: 0,
@@ -491,7 +496,7 @@ class LoginScreenState extends State<LoginScreen> {
       await DBWebSesions.delete();
     }
 
-    if (_usuarioLogueado.codigo == "PQ") {
+    if (_usuarioLogueado.codigo == 'PQ') {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -501,7 +506,7 @@ class LoginScreenState extends State<LoginScreen> {
                   )));
     }
 
-    if (_usuarioLogueado.codigo == "TR") {
+    if (_usuarioLogueado.codigo == 'TR') {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -544,14 +549,14 @@ class LoginScreenState extends State<LoginScreen> {
 //--------------------- _getUsuarios -----------------------
 //----------------------------------------------------------
 
-  Future<void> _getUsuarios() async {
+  Future<void> _getUsuarios(int option) async {
     var connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult != ConnectivityResult.none) {
-      Response response2 = await ApiHelper.getModulo("4");
+      Response response2 = await ApiHelper.getModulo('4');
       _modulo = response2.result;
     }
 
-    if ((_ultimaactualizacion == "null") ||
+    if ((_ultimaactualizacion == 'null') ||
         (DateTime.parse(_ultimaactualizacion)
             .isBefore(DateTime.now().add(const Duration(days: -1))))) {
       setState(() {
@@ -563,6 +568,9 @@ class LoginScreenState extends State<LoginScreen> {
 
         do {
           Response response = await ApiHelper.getUsuarios();
+          setState(() {
+            _showLoader = false;
+          });
 
           if (response.isSuccess) {
             _usuariosApi = response.result;
@@ -581,10 +589,18 @@ class LoginScreenState extends State<LoginScreen> {
 
         showMyDialog(
             'Error',
-            "Debe actualizar la Tabla Usuarios. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.",
+            'Debe actualizar la Tabla Usuarios. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.',
             'Aceptar');
 
         return;
+      }
+    }
+
+    if (option == 2) {
+      if (_usuariosApi.isEmpty) {
+        _showSnackbar('No se puedo actualizar Usuarios!!', Colors.red);
+      } else {
+        _showSnackbar('Usuarios actualizados con éxito!!', Colors.lightGreen);
       }
     }
 
@@ -613,8 +629,8 @@ class LoginScreenState extends State<LoginScreen> {
 
       showMyDialog(
           'Error',
-          "La tabla Usuarios local está vacía. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.",
-          "Aceptar");
+          'La tabla Usuarios local está vacía. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.',
+          'Aceptar');
 
       SystemNavigator.pop();
       return;
@@ -632,7 +648,7 @@ class LoginScreenState extends State<LoginScreen> {
   void _getprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _ultimaactualizacion = prefs.getString('ultimaactualizacion').toString();
-    _getUsuarios();
+    _getUsuarios(1);
   }
 
   void _launchURL() async {
@@ -697,7 +713,7 @@ class LoginScreenState extends State<LoginScreen> {
 
     try {
       imeiNo = await DeviceInformation.deviceIMEINumber;
-    } on PlatformException catch (e) {}
+    } on PlatformException {}
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -742,5 +758,15 @@ class LoginScreenState extends State<LoginScreen> {
     await prefs.setString('websesion', wsesion);
     await prefs.setString('date', DateTime.now().toString());
     await prefs.setBool('usuariosconseguidos', _usuariosConseguidos);
+  }
+
+  //--------------------- _showSnackbar --------------------
+
+  void _showSnackbar(String text, Color color) {
+    SnackBar snackbar = SnackBar(
+      content: Text(text),
+      backgroundColor: color,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 }

@@ -205,7 +205,7 @@ class Envio {
     ancho = json['ancho'];
     largo = json['largo'];
     idComprobante = json['idComprobante'];
-    enviarMailSegunEstado = json['enviarMailSegunEstado'];
+    enviarMailSegunEstado = json['enviarMailSegunEstado'] ?? '               .';
     fechaRuta = json['fechaRuta'];
     ordenIDparaOC = json['ordenIDparaOC'];
     hashUnico = json['hashUnico'];
@@ -287,7 +287,7 @@ class Envio {
     data['ancho'] = ancho;
     data['largo'] = largo;
     data['idComprobante'] = idComprobante;
-    data['enviarMailSegunEstado'] = enviarMailSegunEstado;
+    data['enviarMailSegunEstado'] = enviarMailSegunEstado ?? '               .';
     data['fechaRuta'] = fechaRuta;
     data['ordenIDparaOC'] = ordenIDparaOC;
     data['hashUnico'] = hashUnico;
