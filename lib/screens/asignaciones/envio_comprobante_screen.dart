@@ -1,18 +1,20 @@
 import 'dart:io';
-import 'package:fleetdeliveryapp/helpers/helpers.dart';
-import 'package:fleetdeliveryapp/screens/screens.dart';
-import 'package:flutter/material.dart';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
-import 'package:fleetdeliveryapp/models/models.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:whatsapp_share/whatsapp_share.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
+
+import '../../helpers/helpers.dart';
+import '../../models/models.dart';
+import '../screens.dart';
 
 class EnvioComprobanteScreen extends StatefulWidget {
   final Usuario user;
@@ -41,7 +43,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
   List<Asign> _asigns = [];
   List<AsignacionesOtsEquiposExtra> _equiposExtra = [];
 
-  String newPath = "";
+  String newPath = '';
 
   bool _showLoader = false;
 
@@ -59,20 +61,20 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
       habilitaVerPdf: 0);
 
   final List<String> cuandos = [
-    "esta semana",
-    "mañana",
-    "pasado mañana",
-    "el día lunes por la mañana",
-    "el día lunes por la tarde",
-    "el día martes por la mañana",
-    "el día martes por la tarde",
-    "el día miércoles por la mañana",
-    "el día miércoles por la tarde",
-    "el día jueves por la mañana",
-    "el día jueves por la tarde",
-    "el día viernes por la mañana",
-    "el día viernes por la tarde",
-    "el día sábado por la mañana",
+    'esta semana',
+    'mañana',
+    'pasado mañana',
+    'el día lunes por la mañana',
+    'el día lunes por la tarde',
+    'el día martes por la mañana',
+    'el día martes por la tarde',
+    'el día miércoles por la mañana',
+    'el día miércoles por la tarde',
+    'el día jueves por la mañana',
+    'el día jueves por la tarde',
+    'el día viernes por la mañana',
+    'el día viernes por la tarde',
+    'el día sábado por la mañana',
   ];
 
   bool _existeChat = false;
@@ -84,8 +86,8 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
   String _mensajeRecibo = '';
 
   String _telefono = 'Elija un Teléfono...';
-  String _telefonoError = '';
-  bool _telefonoShowError = false;
+  final String _telefonoError = '';
+  final bool _telefonoShowError = false;
 
   final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
 
@@ -184,7 +186,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
             child: Column(
               children: [
                 AppBar(
-                  title: (const Text("Envío de Comprobante")),
+                  title: (const Text('Envío de Comprobante')),
                   centerTitle: true,
                   backgroundColor: const Color(0xff282886),
                 ),
@@ -225,7 +227,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               }
 
                               if (empresa == 'Prisma') {
-                                empresa = 'Prisma';
+                                empresa = 'Payway';
                               }
 
                               if (empresa == 'SuperC') {
@@ -248,30 +250,30 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                     : asign.estadO3
                                         .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
                                 _mensajeRecibo =
-                                    "${_mensajeRecibo}Equipo: $mm\n";
+                                    '${_mensajeRecibo}Equipo: $mm\n';
                               }
 
                               message = 'Recibimos del cliente ' +
                                   _asignacion.nombre.toString() +
-                                  " - " +
+                                  ' - ' +
                                   _asignacion.domicilio.toString() +
                                   ' los equipos detallados a continuación: ' +
-                                  "\n" +
+                                  '\n' +
                                   _mensajeRecibo +
-                                  "\n" +
+                                  '\n' +
                                   'Atentamente' +
-                                  "\n" +
+                                  '\n' +
                                   widget.user.apellidonombre.toString() +
-                                  " - Empresa Fleet al servicio de " +
+                                  ' - Empresa Fleet al servicio de ' +
                                   empresa;
 
                               //_sendMessage2(message);
 
                               //------------------------------------------------
-                              String _number2 = "";
-                              TextEditingController _phoneController =
+                              String number2 = '';
+                              TextEditingController phoneController =
                                   TextEditingController();
-                              _phoneController.text = "";
+                              phoneController.text = '';
 
                               await showDialog(
                                   barrierDismissible: false,
@@ -285,7 +287,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                 MainAxisAlignment.spaceAround,
                                             children: const [
                                               Text(
-                                                "Atención!!",
+                                                'Atención!!',
                                                 style: TextStyle(
                                                     color: Colors.green,
                                                     fontSize: 20),
@@ -298,11 +300,11 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                               child: Column(
                                                 children: [
                                                   const Text(
-                                                    "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                                                    'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
                                                     style:
                                                         TextStyle(fontSize: 14),
                                                   ),
-                                                  const Text(""),
+                                                  const Text(''),
                                                   DropdownButtonFormField(
                                                     value: _telefono,
                                                     decoration: InputDecoration(
@@ -326,10 +328,10 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                     onChanged: (value) {
                                                       _telefono =
                                                           value.toString();
-                                                      _number2 =
+                                                      number2 =
                                                           value.toString();
-                                                      _phoneController.text =
-                                                          _number2;
+                                                      phoneController.text =
+                                                          number2;
                                                       setState(() {});
                                                     },
                                                   ),
@@ -337,8 +339,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                     height: 10,
                                                   ),
                                                   TextField(
-                                                    controller:
-                                                        _phoneController,
+                                                    controller: phoneController,
                                                     //enabled: false,
                                                     decoration: InputDecoration(
                                                       fillColor: Colors.white,
@@ -358,7 +359,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                       ),
                                                     ),
                                                     onChanged: (value) {
-                                                      _number2 = value;
+                                                      number2 = value;
                                                       //_phoneController.text = _number2;
                                                     },
                                                   ),
@@ -369,15 +370,15 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                     flex: 1,
                                                     child: ElevatedButton(
                                                         child:
-                                                            const Text("+549"),
+                                                            const Text('+549'),
                                                         onPressed: () async {
-                                                          if (_number2.length >
+                                                          if (number2.length >
                                                               1) {
-                                                            _number2 =
-                                                                "549$_number2";
-                                                            _phoneController
+                                                            number2 =
+                                                                '549$number2';
+                                                            phoneController
                                                                     .text =
-                                                                "549${_phoneController.text}";
+                                                                '549${phoneController.text}';
                                                             setState(() {});
                                                           }
                                                         }),
@@ -397,11 +398,11 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                       BorderRadius.circular(5),
                                                 ),
                                               ),
-                                              onPressed: _number2 != ""
+                                              onPressed: number2 != ''
                                                   ? () async {
                                                       final link =
                                                           WhatsAppUnilink(
-                                                        phoneNumber: _number2,
+                                                        phoneNumber: number2,
                                                         text: message,
                                                       );
                                                       await launch('$link');
@@ -493,7 +494,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             onPressed: () async {
                               _enviarRecibo = 2;
 
-                              String _number2 = "";
+                              String number2 = '';
 
                               String message = '';
 
@@ -516,7 +517,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               }
 
                               if (empresa == 'Prisma') {
-                                empresa = 'Prisma';
+                                empresa = 'Payway';
                               }
                               if (empresa == 'SuperC') {
                                 empresa = 'SuperC';
@@ -538,25 +539,25 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                     : asign.estadO3
                                         .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
                                 _mensajeRecibo =
-                                    "${_mensajeRecibo}Equipo: $mm\n";
+                                    '${_mensajeRecibo}Equipo: $mm\n';
                               }
 
                               message = 'Recibimos del cliente ' +
                                   _asignacion.nombre.toString() +
-                                  " - " +
+                                  ' - ' +
                                   _asignacion.domicilio.toString() +
                                   ' los equipos detallados a continuación: ' +
-                                  "\n" +
+                                  '\n' +
                                   _mensajeRecibo +
-                                  "\n" +
+                                  '\n' +
                                   'Atentamente' +
-                                  "\n" +
+                                  '\n' +
                                   widget.user.apellidonombre.toString() +
-                                  " - Empresa Fleet al servicio de " +
+                                  ' - Empresa Fleet al servicio de ' +
                                   empresa;
-                              TextEditingController _phoneController =
+                              TextEditingController phoneController =
                                   TextEditingController();
-                              _phoneController.text = "";
+                              phoneController.text = '';
                               _existeChat = false;
 
                               await showDialog(
@@ -571,7 +572,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                 MainAxisAlignment.spaceAround,
                                             children: const [
                                               Text(
-                                                "Atención!!",
+                                                'Atención!!',
                                                 style: TextStyle(
                                                     color: Colors.green,
                                                     fontSize: 20),
@@ -584,11 +585,11 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                               child: Column(
                                                 children: [
                                                   const Text(
-                                                    "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                                                    'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
                                                     style:
                                                         TextStyle(fontSize: 14),
                                                   ),
-                                                  const Text(""),
+                                                  const Text(''),
                                                   DropdownButtonFormField(
                                                     value: _telefono,
                                                     decoration: InputDecoration(
@@ -612,10 +613,10 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                     onChanged: (value) {
                                                       _telefono =
                                                           value.toString();
-                                                      _number2 =
+                                                      number2 =
                                                           value.toString();
-                                                      _phoneController.text =
-                                                          _number2;
+                                                      phoneController.text =
+                                                          number2;
                                                       setState(() {});
                                                     },
                                                   ),
@@ -623,8 +624,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                     height: 10,
                                                   ),
                                                   TextField(
-                                                    controller:
-                                                        _phoneController,
+                                                    controller: phoneController,
                                                     decoration: InputDecoration(
                                                         fillColor: Colors.white,
                                                         filled: true,
@@ -641,7 +641,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                                     .circular(
                                                                         10))),
                                                     onChanged: (value) {
-                                                      _number2 = value;
+                                                      number2 = value;
                                                     },
                                                   ),
                                                   const SizedBox(
@@ -651,15 +651,15 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                     flex: 1,
                                                     child: ElevatedButton(
                                                         child:
-                                                            const Text("+549"),
+                                                            const Text('+549'),
                                                         onPressed: () async {
-                                                          if (_number2.length >
+                                                          if (number2.length >
                                                               1) {
-                                                            _number2 =
-                                                                "549$_number2";
-                                                            _phoneController
+                                                            number2 =
+                                                                '549$number2';
+                                                            phoneController
                                                                     .text =
-                                                                "549${_phoneController.text}";
+                                                                '549${phoneController.text}';
                                                             setState(() {});
                                                           }
                                                         }),
@@ -689,22 +689,22 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                                   .circular(5),
                                                         ),
                                                       ),
-                                                      onPressed: _number2 != ""
+                                                      onPressed: number2 != ''
                                                           ? _existeChat == false
                                                               ? () async {
-                                                                  _number2.substring(
+                                                                  number2.substring(
                                                                               0,
                                                                               3) !=
                                                                           '549'
-                                                                      ? _number2 =
-                                                                          '549$_number2'
-                                                                      : _number2 =
-                                                                          _number2;
+                                                                      ? number2 =
+                                                                          '549$number2'
+                                                                      : number2 =
+                                                                          number2;
 
                                                                   verPDF = true;
                                                                   //Navigator.pop(context);
                                                                   _createPDF(
-                                                                      _number2,
+                                                                      number2,
                                                                       message);
 
                                                                   setState(
@@ -744,21 +744,21 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                       BorderRadius.circular(5),
                                                 ),
                                               ),
-                                              onPressed: _number2 != ""
+                                              onPressed: number2 != ''
                                                   ? _existeChat == false
                                                       ? () async {
-                                                          _number2.substring(
+                                                          number2.substring(
                                                                       0, 3) !=
                                                                   '549'
-                                                              ? _number2 =
-                                                                  '549$_number2'
-                                                              : _number2 =
-                                                                  _number2;
+                                                              ? number2 =
+                                                                  '549$number2'
+                                                              : number2 =
+                                                                  number2;
 
                                                           await _creaChat(
-                                                              _number2
+                                                              number2
                                                                   .replaceAll(
-                                                                      " ", ""));
+                                                                      ' ', ''));
                                                           setState(() {});
                                                           return;
                                                         }
@@ -793,8 +793,8 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                                   ? () async {
                                                       verPDF = false;
                                                       await _createPDF(
-                                                          _number2.replaceAll(
-                                                              " ", ""),
+                                                          number2.replaceAll(
+                                                              ' ', ''),
                                                           message);
                                                       Navigator.pop(context);
                                                       return;
@@ -1002,8 +1002,8 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
         font: PdfStandardFont(PdfFontFamily.helvetica, 12),
         cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
 
-    header.cells[0].value = "";
-    header.cells[1].value = "Formulario de Recepción de Equipos";
+    header.cells[0].value = '';
+    header.cells[1].value = 'Formulario de Recepción de Equipos';
 
     String? ot = widget.asignacion.proyectomodulo != 'TLC'
         ? (widget.asignacion.reclamoTecnicoID != null &&
@@ -1015,25 +1015,25 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
             ? widget.asignacion.documento
             : '';
 
-    header.cells[2].value = """
+    header.cells[2].value = '''
     N° de Cuenta: 
     ${widget.asignacion.cliente}
     OT: $ot
-    """;
+    ''';
 
     PdfGridRow row1 = grid.rows.add();
-    row1.cells[0].value = "FLEET GROUP";
-    row1.cells[1].value = "Fecha Retiro";
+    row1.cells[0].value = 'FLEET GROUP';
+    row1.cells[1].value = 'Fecha Retiro';
     row1.cells[2].value =
         "  ${DateFormat('dd/MM/yyyy').format(DateTime.now())}";
 
-    header2.cells[0].value = "Apellido y Nombre del Cliente";
+    header2.cells[0].value = 'Apellido y Nombre del Cliente';
     header2.cells[1].value = widget.asignacion.nombre;
     PdfGridRow row2 = grid2.rows.add();
-    row2.cells[0].value = "Documento de identidad";
+    row2.cells[0].value = 'Documento de identidad';
     row2.cells[1].value = widget.asignacion.documento;
     PdfGridRow row3 = grid2.rows.add();
-    row3.cells[0].value = "Dirección";
+    row3.cells[0].value = 'Dirección';
     row3.cells[1].value =
         '${widget.asignacion.domicilio} - ${widget.asignacion.localidad}';
 
@@ -1046,11 +1046,11 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     grid2.draw(
         page: document.pages[0], bounds: const Rect.fromLTWH(0, 85, 0, 0));
 
-    header3.cells[0].value = "Datos del Equipo";
+    header3.cells[0].value = 'Datos del Equipo';
 
-    header4.cells[0].value = "MODELO";
-    header4.cells[1].value = "SERIE";
-    header4.cells[2].value = "ACCESORIOS";
+    header4.cells[0].value = 'MODELO';
+    header4.cells[1].value = 'SERIE';
+    header4.cells[2].value = 'ACCESORIOS';
 
     //*********** AGREGA EQUIPOS ************
 
@@ -1069,7 +1069,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
         PdfGridRow row = grid4.rows.add();
         row.cells[0].value = modelo;
         row.cells[1].value = serie;
-        row.cells[2].value = " ";
+        row.cells[2].value = ' ';
         contador++;
       }
     }
@@ -1086,18 +1086,18 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
       PdfGridRow row = grid4.rows.add();
       row.cells[0].value = modelo;
       row.cells[1].value = serie;
-      row.cells[2].value = " ";
+      row.cells[2].value = ' ';
       contador++;
     }
 
-    header5.cells[0].value = "Observaciones";
+    header5.cells[0].value = 'Observaciones';
     header5.cells[1].value = widget.asignacion.observacion;
     PdfGridRow row5 = grid5.rows.add();
-    row5.cells[0].value = "Firma recuperador";
-    row5.cells[1].value = "";
-    header6.cells[0].value = "Nro. Documento";
+    row5.cells[0].value = 'Firma recuperador';
+    row5.cells[1].value = '';
+    header6.cells[0].value = 'Nro. Documento';
     header6.cells[1].value = widget.user.dni ?? '';
-    header6.cells[2].value = "Alcaración";
+    header6.cells[2].value = 'Alcaración';
     header6.cells[3].value = widget.user.apellidonombre;
 
     grid3.draw(
@@ -1196,18 +1196,18 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     if (Platform.isAndroid) {
       if (permission) {
         var directory = await getExternalStorageDirectory();
-        newPath = "";
+        newPath = '';
         String convertedDirectoryPath = (directory?.path).toString();
-        List<String> paths = convertedDirectoryPath.split("/");
+        List<String> paths = convertedDirectoryPath.split('/');
         for (int x = 1; x < convertedDirectoryPath.length; x++) {
           String folder = paths[x];
-          if (folder != "Android") {
-            newPath += "/$folder";
+          if (folder != 'Android') {
+            newPath += '/$folder';
           } else {
             break;
           }
         }
-        newPath = "$newPath/fleetDeliveryApp/Pdf";
+        newPath = '$newPath/fleetDeliveryApp/Pdf';
 
         directory = Directory(newPath);
         if (!await directory.exists()) {
@@ -1262,7 +1262,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+          'Error', 'Verifica que estés conectado a Internet', 'Aceptar');
       return;
     }
     bandera = false;
@@ -1308,7 +1308,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+          'Error', 'Verifica que estés conectado a Internet', 'Aceptar');
       return;
     }
     bandera = false;
@@ -1363,7 +1363,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text("Proyecto: ",
+                                child: Text('Proyecto: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.red,
@@ -1380,7 +1380,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               ),
                               const SizedBox(
                                 width: 80,
-                                child: Text("Hora Cump.: ",
+                                child: Text('Hora Cump.: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1400,7 +1400,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text("Cliente: ",
+                                child: Text('Cliente: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1423,7 +1423,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text("DNI: ",
+                                child: Text('DNI: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1440,7 +1440,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               _asignacion.proyectomodulo == 'Cable'
                                   ? const SizedBox(
                                       width: 30,
-                                      child: Text("OT: ",
+                                      child: Text('OT: ',
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFF0e4888),
@@ -1467,7 +1467,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text("Dirección: ",
+                                child: Text('Dirección: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1489,7 +1489,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text("Entre calles: ",
+                                child: Text('Entre calles: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1510,7 +1510,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                         style: const TextStyle(
                                           fontSize: 12,
                                         ))
-                                    : const Text(""),
+                                    : const Text(''),
                               ),
                             ],
                           ),
@@ -1521,7 +1521,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text("Localidad: ",
+                                child: Text('Localidad: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1544,7 +1544,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text("Teléfono: ",
+                                child: Text('Teléfono: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1566,7 +1566,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text("Cant. Eq.: ",
+                                child: Text('Cant. Eq.: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1661,7 +1661,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+          'Error', 'Verifica que estés conectado a Internet', 'Aceptar');
       return;
     }
 

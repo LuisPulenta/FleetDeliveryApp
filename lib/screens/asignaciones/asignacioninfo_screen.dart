@@ -1,17 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:fleetdeliveryapp/helpers/helpers.dart';
-import 'package:fleetdeliveryapp/screens/asignaciones/contrato_firma_screen.dart';
-import 'package:flutter/material.dart';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:custom_info_window/custom_info_window.dart';
-import 'package:fleetdeliveryapp/models/models.dart';
-import 'package:fleetdeliveryapp/screens/screens.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,12 +17,16 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:whatsapp_share/whatsapp_share.dart';
 //import 'package:whatsapp_share2/whatsapp_share2.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
-import 'package:email_validator/email_validator.dart';
+
+import '../../helpers/helpers.dart';
+import '../../models/models.dart';
+import '../screens.dart';
+import 'contrato_firma_screen.dart';
 
 class AsignacionInfoScreen extends StatefulWidget {
   final Usuario user;
@@ -66,26 +68,26 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       CustomInfoWindowController();
 
   final List<String> cuandos = [
-    "esta semana",
-    "mañana",
-    "pasado mañana",
-    "el día lunes por la mañana",
-    "el día lunes por la tarde",
-    "el día martes por la mañana",
-    "el día martes por la tarde",
-    "el día miércoles por la mañana",
-    "el día miércoles por la tarde",
-    "el día jueves por la mañana",
-    "el día jueves por la tarde",
-    "el día viernes por la mañana",
-    "el día viernes por la tarde",
-    "el día sábado por la mañana",
+    'esta semana',
+    'mañana',
+    'pasado mañana',
+    'el día lunes por la mañana',
+    'el día lunes por la tarde',
+    'el día martes por la mañana',
+    'el día martes por la tarde',
+    'el día miércoles por la mañana',
+    'el día miércoles por la tarde',
+    'el día jueves por la mañana',
+    'el día jueves por la tarde',
+    'el día viernes por la mañana',
+    'el día viernes por la tarde',
+    'el día sábado por la mañana',
   ];
 
   String codCierre = '';
   String codCierreGenerico = '';
 
-  String newPath = "";
+  String newPath = '';
 
   bool _editar = false;
   bool _existeChat = false;
@@ -117,8 +119,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   final TextEditingController _macserieController = TextEditingController();
 
   String _telefono = 'Elija un Teléfono...';
-  String _telefonoError = '';
-  bool _telefonoShowError = false;
+  final String _telefonoError = '';
+  final bool _telefonoShowError = false;
 
   List<CodigoCierre> __codigoscierre = [];
   bool _photoChangedDNI = false;
@@ -142,7 +144,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   final Set<Marker> _markers = {};
 
-  String estadogaos = "";
+  String estadogaos = '';
 
   String _recibe = '';
   final String _recibeError = '';
@@ -253,7 +255,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     ));
 
     for (var control in widget.controlesEquivalencia) {
-      if (control.codigoequivalencia == "Genérico") {
+      if (control.codigoequivalencia == 'Genérico') {
         codCierreGenerico = control.decO1;
       }
     }
@@ -329,7 +331,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 Column(
                   children: [
                     AppBar(
-                      title: (const Text("Teléfonos")),
+                      title: (const Text('Teléfonos')),
                       centerTitle: true,
                       backgroundColor: const Color(0xff282886),
                     ),
@@ -352,7 +354,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 Column(
                   children: [
                     AppBar(
-                      title: (const Text("Observaciones")),
+                      title: (const Text('Observaciones')),
                       centerTitle: true,
                       backgroundColor: const Color(0xff282886),
                     ),
@@ -364,7 +366,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           children: [
                             Row(
                               children: [
-                                const Text("Novedades: ",
+                                const Text('Novedades: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -383,7 +385,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             ),
                             Row(
                               children: [
-                                const Text("N° Series Extras: ",
+                                const Text('N° Series Extras: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -402,7 +404,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             ),
                             Row(
                               children: [
-                                const Text("Cartera: ",
+                                const Text('Cartera: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -421,7 +423,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             ),
                             Row(
                               children: [
-                                const Text("Obs. Cliente: ",
+                                const Text('Obs. Cliente: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -602,7 +604,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       width: 2,
                     ),
                     Text(
-                      "Asignación",
+                      'Asignación',
                       style: TextStyle(fontSize: 14),
                     ),
                   ],
@@ -616,7 +618,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       width: 2,
                     ),
                     Text(
-                      "Teléfonos",
+                      'Teléfonos',
                       style: TextStyle(fontSize: 14),
                     ),
                   ],
@@ -630,7 +632,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       width: 2,
                     ),
                     Text(
-                      "Observ.",
+                      'Observ.',
                       style: TextStyle(fontSize: 14),
                     ),
                   ],
@@ -670,7 +672,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text("Cliente: ",
+                                child: Text('Cliente: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -693,7 +695,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text("DNI: ",
+                                child: Text('DNI: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -710,7 +712,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               _asignacion.proyectomodulo == 'Cable'
                                   ? const SizedBox(
                                       width: 30,
-                                      child: Text("OT: ",
+                                      child: Text('OT: ',
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFF0e4888),
@@ -743,7 +745,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       children: [
                                         const SizedBox(
                                           width: 80,
-                                          child: Text("Dirección: ",
+                                          child: Text('Dirección: ',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: Color(0xFF0e4888),
@@ -766,7 +768,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       children: [
                                         const SizedBox(
                                           width: 80,
-                                          child: Text("Entre calles: ",
+                                          child: Text('Entre calles: ',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: Color(0xFF0e4888),
@@ -789,7 +791,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       children: [
                                         const SizedBox(
                                           width: 80,
-                                          child: Text("Localidad: ",
+                                          child: Text('Localidad: ',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: Color(0xFF0e4888),
@@ -812,7 +814,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       children: [
                                         const SizedBox(
                                           width: 80,
-                                          child: Text("Cód. Cierre: ",
+                                          child: Text('Cód. Cierre: ',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: Color(0xFF0e4888),
@@ -1034,7 +1036,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     child: InkWell(
                       onTap: () async {
                         if (_nroserie.isEmpty) {
-                          showMyDialog('Error', "Debe ingresar un N° de Serie",
+                          showMyDialog('Error', 'Debe ingresar un N° de Serie',
                               'Aceptar');
 
                           return;
@@ -1073,7 +1075,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       children: [
         Row(
           children: [
-            const Text("Est. Gaos: ",
+            const Text('Est. Gaos: ',
                 style: TextStyle(
                   fontSize: 12,
                   color: Color(0xFF0e4888),
@@ -1087,7 +1089,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 ),
               ),
             ),
-            const Text("Cód. Cierre: ",
+            const Text('Cód. Cierre: ',
                 style: TextStyle(
                   fontSize: 12,
                   color: Color(0xFF0e4888),
@@ -1362,7 +1364,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pop(context, "No");
+                    Navigator.pop(context, 'No');
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1457,7 +1459,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             children: [
                               const SizedBox(
                                 width: 90,
-                                child: Text("Id Gaos: ",
+                                child: Text('Id Gaos: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1493,7 +1495,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             children: [
                               const SizedBox(
                                 width: 90,
-                                child: Text("Equipo: ",
+                                child: Text('Equipo: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1516,7 +1518,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   children: [
                                     const SizedBox(
                                       width: 90,
-                                      child: Text("Smartcard: ",
+                                      child: Text('Smartcard: ',
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFF0e4888),
@@ -1531,7 +1533,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     ),
                                     const SizedBox(
                                       width: 70,
-                                      child: Text("      Dev. : SI",
+                                      child: Text('      Dev. : SI',
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFF0e4888),
@@ -1554,7 +1556,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         }),
                                     const SizedBox(
                                       width: 25,
-                                      child: Text("NO",
+                                      child: Text('NO',
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFF0e4888),
@@ -1585,7 +1587,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             children: [
                               const SizedBox(
                                 width: 90,
-                                child: Text("Descripción: ",
+                                child: Text('Descripción: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1598,7 +1600,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         style: const TextStyle(
                                           fontSize: 12,
                                         ))
-                                    : const Text(""),
+                                    : const Text(''),
                               ),
                             ],
                           ),
@@ -1613,7 +1615,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       children: [
                                         const SizedBox(
                                           width: 90,
-                                          child: Text("Conf. Modelo:   ",
+                                          child: Text('Conf. Modelo:   ',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: Color(0xFF0e4888),
@@ -1653,7 +1655,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             ),
                                           ),
                                         ),
-                                        const Text("        ",
+                                        const Text('        ',
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: Color(0xFF0e4888),
@@ -1681,12 +1683,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           widget.funcionApp.serieObligatoria == 1 ||
                                   (e.proyectomodulo == 'Cable' &&
-                                      e.motivos.toString().contains("VDSL"))
+                                      e.motivos.toString().contains('VDSL'))
                               ? Row(
                                   children: [
                                     const SizedBox(
                                       width: 90,
-                                      child: Text("Mac/Serie: ",
+                                      child: Text('Mac/Serie: ',
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFF0e4888),
@@ -1725,7 +1727,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                       backgroundColor:
                                                           Colors.grey[300],
                                                       title: const Text(
-                                                          "Ingrese o escanee el código"),
+                                                          'Ingrese o escanee el código'),
                                                       content: Column(
                                                         children: [
                                                           TextField(
@@ -1962,7 +1964,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             children: [
                               const SizedBox(
                                 width: 90,
-                                child: Text("Obs. Captura: ",
+                                child: Text('Obs. Captura: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
@@ -1984,7 +1986,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         style: const TextStyle(
                                           fontSize: 12,
                                         ))
-                                    : const Text(""),
+                                    : const Text(''),
                               ),
                             ],
                           ),
@@ -2108,7 +2110,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+          'Error', 'Verifica que estés conectado a Internet', 'Aceptar');
       return;
     }
     bandera = false;
@@ -2152,7 +2154,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     for (var asign in _asigns) {
       asign.marcaModeloId ??= codCierreGenerico;
 
-      if (asign.marcaModeloId == "") {
+      if (asign.marcaModeloId == '') {
         asign.marcaModeloId = codCierreGenerico;
       }
 
@@ -2182,7 +2184,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+          'Error', 'Verifica que estés conectado a Internet', 'Aceptar');
       return;
     }
     bandera = false;
@@ -2234,7 +2236,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         children: [
                           Row(
                             children: [
-                              const Text("Mail: ",
+                              const Text('Mail: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -2250,7 +2252,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           Row(
                             children: [
-                              const Text("Clave: ",
+                              const Text('Clave: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -2266,7 +2268,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           Row(
                             children: [
-                              const Text("Mail Cliente: ",
+                              const Text('Mail Cliente: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -2282,7 +2284,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           Row(
                             children: [
-                              const Text("Cliente: ",
+                              const Text('Cliente: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -2302,7 +2304,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           Row(
                             children: [
-                              const Text("DNI: ",
+                              const Text('DNI: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -2321,7 +2323,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           Row(
                             children: [
-                              const Text("Dirección: ",
+                              const Text('Dirección: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -2340,7 +2342,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           Row(
                             children: [
-                              const Text("Localidad: ",
+                              const Text('Localidad: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -2359,7 +2361,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           Row(
                             children: [
-                              const Text("Provincia: ",
+                              const Text('Provincia: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -2379,7 +2381,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           _asignacion.hayTelefono
                               ? Row(
                                   children: [
-                                    const Text("Teléfono: ",
+                                    const Text('Teléfono: ',
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xFF0e4888),
@@ -2405,7 +2407,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           ),
                                           onPressed: () => _sendMessage(
                                               _asignacion.telefono.toString(),
-                                              "ws"),
+                                              'ws'),
                                         ),
                                       ),
                                     ),
@@ -2417,11 +2419,11 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       color: Colors.green,
                                       onPressed: () {
                                         if (_asignacion.telefono.toString() !=
-                                                "Sin Dato" &&
+                                                'Sin Dato' &&
                                             _asignacion.telefono.toString() !=
-                                                "xxx" &&
+                                                'xxx' &&
                                             _asignacion.telefono.toString() !=
-                                                "XXX") {
+                                                'XXX') {
                                           launch(
                                               'tel://${_asignacion.telefono.toString()}');
                                         }
@@ -2438,7 +2440,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           _asignacion.hayTelefAlternativo1
                               ? Row(
                                   children: [
-                                    const Text("Tel. Alt. 1: ",
+                                    const Text('Tel. Alt. 1: ',
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xFF0e4888),
@@ -2466,7 +2468,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           onPressed: () => _sendMessage(
                                               _asignacion.telefAlternativo1
                                                   .toString(),
-                                              "ws"),
+                                              'ws'),
                                         ),
                                       ),
                                     ),
@@ -2479,13 +2481,13 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       onPressed: () {
                                         if (_asignacion.telefAlternativo1
                                                     .toString() !=
-                                                "Sin Dato" &&
+                                                'Sin Dato' &&
                                             _asignacion.telefAlternativo1
                                                     .toString() !=
-                                                "xxx" &&
+                                                'xxx' &&
                                             _asignacion.telefAlternativo1
                                                     .toString() !=
-                                                "XXX") {
+                                                'XXX') {
                                           launch(
                                               'tel://${_asignacion.telefAlternativo1.toString()}');
                                         }
@@ -2502,7 +2504,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           _asignacion.hayTelefAlternativo2
                               ? Row(
                                   children: [
-                                    const Text("Tel. Alt. 2: ",
+                                    const Text('Tel. Alt. 2: ',
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xFF0e4888),
@@ -2530,7 +2532,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           onPressed: () => _sendMessage(
                                               _asignacion.telefAlternativo2
                                                   .toString(),
-                                              "ws"),
+                                              'ws'),
                                         ),
                                       ),
                                     ),
@@ -2543,13 +2545,13 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       onPressed: () {
                                         if (_asignacion.telefAlternativo2
                                                     .toString() !=
-                                                "Sin Dato" &&
+                                                'Sin Dato' &&
                                             _asignacion.telefAlternativo2
                                                     .toString() !=
-                                                "xxx" &&
+                                                'xxx' &&
                                             _asignacion.telefAlternativo2
                                                     .toString() !=
-                                                "XXX") {
+                                                'XXX') {
                                           launch(
                                               'tel://${_asignacion.telefAlternativo2.toString()}');
                                         }
@@ -2566,7 +2568,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           _asignacion.hayTelefAlternativo3
                               ? Row(
                                   children: [
-                                    const Text("Tel. Alt. 3: ",
+                                    const Text('Tel. Alt. 3: ',
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xFF0e4888),
@@ -2594,7 +2596,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           onPressed: () => _sendMessage(
                                               _asignacion.telefAlternativo3
                                                   .toString(),
-                                              "ws"),
+                                              'ws'),
                                         ),
                                       ),
                                     ),
@@ -2607,13 +2609,13 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       onPressed: () {
                                         if (_asignacion.telefAlternativo3
                                                     .toString() !=
-                                                "Sin Dato" &&
+                                                'Sin Dato' &&
                                             _asignacion.telefAlternativo3
                                                     .toString() !=
-                                                "xxx" &&
+                                                'xxx' &&
                                             _asignacion.telefAlternativo3
                                                     .toString() !=
-                                                "XXX") {
+                                                'XXX') {
                                           launch(
                                               'tel://${_asignacion.telefAlternativo3.toString()}');
                                         }
@@ -2630,7 +2632,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           _asignacion.hayTelefAlternativo4
                               ? Row(
                                   children: [
-                                    const Text("Tel. Alt. 4: ",
+                                    const Text('Tel. Alt. 4: ',
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xFF0e4888),
@@ -2658,7 +2660,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                           onPressed: () => _sendMessage(
                                               _asignacion.telefAlternativo4
                                                   .toString(),
-                                              "ws"),
+                                              'ws'),
                                         ),
                                       ),
                                     ),
@@ -2671,13 +2673,13 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       onPressed: () {
                                         if (_asignacion.telefAlternativo4
                                                     .toString() !=
-                                                "Sin Dato" &&
+                                                'Sin Dato' &&
                                             _asignacion.telefAlternativo4
                                                     .toString() !=
-                                                "xxx" &&
+                                                'xxx' &&
                                             _asignacion.telefAlternativo4
                                                     .toString() !=
-                                                "XXX") {
+                                                'XXX') {
                                           launch(
                                               'tel://${_asignacion.telefAlternativo4.toString()}');
                                         }
@@ -2725,7 +2727,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           // ),
                           Row(
                             children: [
-                              const Text("Mail Cliente: ",
+                              const Text('Mail Cliente: ',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFF0e4888),
@@ -2760,7 +2762,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                     onPressed: (EmailValidator.validate(
                                             _asignacion.emailCliente!))
                                         ? () {
-                                            _sendMessage("", "mail");
+                                            _sendMessage('', 'mail');
                                           }
                                         : null,
                                   ),
@@ -2786,12 +2788,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //--------------------------------------------------------
 
   _navegar(Asignacion2 asignacion) async {
-    if (asignacion.grxx == "0" ||
-        asignacion.gryy == "0" ||
+    if (asignacion.grxx == '0' ||
+        asignacion.gryy == '0' ||
         isNullOrEmpty(asignacion.grxx) ||
         isNullOrEmpty(asignacion.gryy)) {
       showMyDialog(
-          'Error', "Esta asignación no tiene coordenadas cargadas.", 'Aceptar');
+          'Error', 'Esta asignación no tiene coordenadas cargadas.', 'Aceptar');
 
       return;
     }
@@ -2813,7 +2815,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     if (connectivityResult != ConnectivityResult.none) {
       var uri = Uri.parse(
-          "google.navigation:q=${double.parse(asignacion.grxx!)},${double.parse(asignacion.gryy!)}&mode=d");
+          'google.navigation:q=${double.parse(asignacion.grxx!)},${double.parse(asignacion.gryy!)}&mode=d');
       if (await canLaunch(uri.toString())) {
         await launch(uri.toString());
       } else {
@@ -2822,7 +2824,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     } else {
       showMyDialog(
           'Aviso',
-          "Necesita estar conectado a Internet para acceder al mapa",
+          'Necesita estar conectado a Internet para acceder al mapa',
           'Aceptar');
     }
   }
@@ -2840,12 +2842,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //--------------------------------------------------------
 
   void _elegirtodos() {
-    estadogaos = "EJB";
+    estadogaos = 'EJB';
     _codigocierre = -1;
     _key.currentState?.reset();
 
     for (Asign asign in _asigns) {
-      asign.estadO2 = "SI";
+      asign.estadO2 = 'SI';
       asign.elegir = 1;
       asign.activo = 1;
     }
@@ -2857,9 +2859,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //--------------------------------------------------------
 
   void _deselegirtodos() {
-    estadogaos = "INC";
+    estadogaos = 'INC';
     for (Asign asign in _asigns) {
-      asign.estadO2 = "NO";
+      asign.estadO2 = 'NO';
       asign.elegir = 0;
       asign.activo = 0;
     }
@@ -2871,9 +2873,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //--------------------------------------------------------
 
   void _elegiralgunos() {
-    estadogaos = "PAR";
+    estadogaos = 'PAR';
     for (Asign asign in _asigns) {
-      asign.estadO2 = "NO";
+      asign.estadO2 = 'NO';
       asign.elegir = 0;
       asign.activo = 1;
     }
@@ -2886,7 +2888,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //-------------------------- Verifica que no sea PEN --------------------------
   void _guardar() async {
-    if (estadogaos == "PEN") {
+    if (estadogaos == 'PEN') {
       showMyDialog('Error', 'El Estado sigue "PEN". No tiene sentido guardar.',
           'Aceptar');
 
@@ -2895,7 +2897,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //---------------- Verifica que si es INC tenga Código de Cierre --------------
 
-    if (estadogaos == "INC" && _codigocierre == -1) {
+    if (estadogaos == 'INC' && _codigocierre == -1) {
       showMyDialog(
           'Error',
           'Si la Orden tiene un Estado "INC", hay que cargar el Código Cierre.',
@@ -2906,7 +2908,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //---------------- Verifica que si es PAR tenga Código de Cierre --------------
 
-    if (estadogaos == "PAR" && _codigocierre == -1) {
+    if (estadogaos == 'PAR' && _codigocierre == -1) {
       showMyDialog(
           'Error',
           'Si la Orden tiene un Estado "PAR", hay que cargar el Código Cierre.',
@@ -2917,7 +2919,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
 //---------------- Verifica que si es PAR haya elegidos y no elegidos -------
 
-    if (estadogaos == "PAR") {
+    if (estadogaos == 'PAR') {
       int elegidos = 0;
       int noelegidos = 0;
       for (Asign asign in _asigns) {
@@ -2971,7 +2973,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     if (widget.funcionApp.serieObligatoria == 1 ||
         (_asignacion.proyectomodulo == 'Cable' &&
-            _asignacion.motivos.toString().contains("VDSL"))) {
+            _asignacion.motivos.toString().contains('VDSL'))) {
       for (Asign asign in _asigns) {
         bool band = false;
 
@@ -3020,11 +3022,11 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         if ((estadogaos == 'EJB' &&
                 (asign.elegirSI == null &&
                     asign.elegirNO == null &&
-                    asign.smartcard != "")) ||
+                    asign.smartcard != '')) ||
             (estadogaos == 'PAR' && asign.elegir == 1) &&
                 (asign.elegirSI == null &&
                     asign.elegirNO == null &&
-                    asign.smartcard != "")) {
+                    asign.smartcard != '')) {
           band = true;
           showDialog(
               context: context,
@@ -3222,7 +3224,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             ? asign.decO1.toString() //campo deco1 de la base.
             : asign.estadO3
                 .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
-        _mensajeRecibo = "${_mensajeRecibo}Equipo: $mm\n";
+        _mensajeRecibo = '${_mensajeRecibo}Equipo: $mm\n';
       }
 
       String base64imageDNI = '';
@@ -3345,8 +3347,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         //----------------- Campos que cambian el valor -----------------
         'estadogaos': asign.estadogaos,
         'estadO3': (asign.decO1 == 'SinDatos' ||
-                asign.decO1 == "" ||
-                asign.decO1 == "xxx")
+                asign.decO1 == '' ||
+                asign.decO1 == 'xxx')
             ? asign.estadO3
             : widget.funcionApp.serieObligatoria == 1
                 ? asign.estadO3
@@ -3392,12 +3394,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         _nroReg = int.parse(response2.result.toString()) + 1;
       }
 
-      widget.codigoscierreAux.forEach((cc) {
+      for (var cc in widget.codigoscierreAux) {
         if (cc.codigoCierre == asign.codigoCierre) {
           _codCier =
               cc.equivalenciaWS != null ? cc.equivalenciaWS.toString() : '';
         }
-      });
+      }
 
       Map<String, dynamic> requestAsigHisto = {
         //----------------- Campos que mantienen el valor -----------------
@@ -3454,7 +3456,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
 
     if (empresa == 'Prisma') {
-      empresa = 'Prisma';
+      empresa = 'Payway';
     }
 
     if (empresa == 'SuperC') {
@@ -3467,20 +3469,20 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     message = 'Recibimos del cliente ' +
         _asignacion.nombre.toString() +
-        " - " +
+        ' - ' +
         _asignacion.domicilio.toString() +
         ' los equipos detallados a continuación: ' +
-        "\n" +
+        '\n' +
         _mensajeRecibo +
-        "\n" +
+        '\n' +
         'Atentamente' +
-        "\n" +
+        '\n' +
         widget.user.apellidonombre.toString() +
-        " - Empresa Fleet al servicio de " +
+        ' - Empresa Fleet al servicio de ' +
         empresa;
 
     setState(() {});
-    Navigator.pop(context, "Yes");
+    Navigator.pop(context, 'Yes');
     if (_enviarRecibo == 1) {
       _sendMessage2(message);
     }
@@ -3648,7 +3650,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     if (lat == 0 || long == 0 || isNullOrEmpty(lat) || isNullOrEmpty(long)) {
       showMyDialog(
-          'Aviso', "Esta asignación no tiene coordenadas cargadas.", 'Aceptar');
+          'Aviso', 'Esta asignación no tiene coordenadas cargadas.', 'Aceptar');
 
       return;
     }
@@ -3775,12 +3777,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   List<DropdownMenuItem<String>> _getComboCuandos() {
     List<DropdownMenuItem<String>> list = [];
 
-    cuandos.forEach((cuando) {
+    for (var cuando in cuandos) {
       list.add(DropdownMenuItem(
         value: cuando,
         child: Text(cuando),
       ));
-    });
+    }
 
     return list;
   }
@@ -3790,8 +3792,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //--------------------------------------------------------
 
   void _selectPicture() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
         _photoChangedDNI = true;
@@ -3807,11 +3809,11 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   void _sendMessage(String number, String metodo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String _cuando = prefs.getString('cuando') ?? "esta semana";
+    String cuando = prefs.getString('cuando') ?? 'esta semana';
 
-    String _number2 = number;
-    TextEditingController _phoneController = TextEditingController();
-    _phoneController.text = number;
+    String number2 = number;
+    TextEditingController phoneController = TextEditingController();
+    phoneController.text = number;
 
     if (number == 'xxx' || number == 'XXX') return;
 
@@ -3845,7 +3847,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       empresa = 'Movistar';
     }
     if (empresa == 'Prisma') {
-      empresa = 'Prisma';
+      empresa = 'Payway';
     }
     if (empresa == 'SuperC') {
       empresa = 'SuperC';
@@ -3858,11 +3860,11 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       empresa = 'Supercanal';
     }
 
-    String palabraEquipo = _asignacion.cantAsign == 1 ? "equipo" : "equipos";
+    String palabraEquipo = _asignacion.cantAsign == 1 ? 'equipo' : 'equipos';
 
     if (empresa == 'Telecentro') {
       palabraEquipo =
-          _asignacion.cantAsign == 1 ? "control remoto" : "controles remotos";
+          _asignacion.cantAsign == 1 ? 'control remoto' : 'controles remotos';
     }
 
     await showDialog(
@@ -3876,7 +3878,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: const [
                     Text(
-                      "Mensaje a enviar",
+                      'Mensaje a enviar',
                       style: TextStyle(color: Colors.green, fontSize: 20),
                     ),
                   ],
@@ -3889,7 +3891,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         DropdownButtonFormField(
                           key: _key,
                           isExpanded: true,
-                          value: _cuando,
+                          value: cuando,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -3903,9 +3905,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                           items: _getComboCuandos(),
                           onChanged: (value) {
-                            _cuando = value.toString();
+                            cuando = value.toString();
 
-                            prefs.setString('cuando', _cuando);
+                            prefs.setString('cuando', cuando);
                             setState(() {});
                           },
                         ),
@@ -3913,7 +3915,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           height: 10,
                         ),
                         Text(
-                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1 de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $_cuando?. Muchas gracias.',
+                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1 de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.',
                             style: const TextStyle(
                                 color: Colors.blue, fontSize: 12)),
                         const SizedBox(
@@ -3922,19 +3924,19 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         const Divider(
                           color: Colors.black,
                         ),
-                        metodo == "ws"
+                        metodo == 'ws'
                             ? const Text(
-                                "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                                'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
                                 style: TextStyle(fontSize: 14),
                               )
                             : Container(),
-                        const Text(""),
+                        const Text(''),
                         const SizedBox(
                           height: 10,
                         ),
-                        metodo == "ws"
+                        metodo == 'ws'
                             ? TextField(
-                                controller: _phoneController,
+                                controller: phoneController,
                                 decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
@@ -3946,21 +3948,21 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         borderRadius:
                                             BorderRadius.circular(10))),
                                 onChanged: (value) {
-                                  _number2 = value;
+                                  number2 = value;
                                 },
                               )
                             : Container(),
                         const SizedBox(
                           height: 10,
                         ),
-                        metodo == "ws"
+                        metodo == 'ws'
                             ? Expanded(
                                 flex: 1,
                                 child: ElevatedButton(
-                                    child: const Text("+549"),
+                                    child: const Text('+549'),
                                     onPressed: () async {
-                                      _phoneController.text =
-                                          "549${_phoneController.text}";
+                                      phoneController.text =
+                                          '549${phoneController.text}';
                                     }),
                               )
                             : Container(),
@@ -4002,7 +4004,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       ),
 
                       //------------ Botón para enviar por WhatsApp ------------
-                      metodo == "ws"
+                      metodo == 'ws'
                           ? Expanded(
                               flex: 1,
                               child: ElevatedButton(
@@ -4015,10 +4017,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 ),
                                 onPressed: () async {
                                   final link = WhatsAppUnilink(
-                                    phoneNumber: _number2,
+                                    phoneNumber: number2,
                                     //***** MENSAJE DE CONTACTO *****
                                     text:
-                                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $_cuando?. Muchas gracias.',
+                                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.',
                                   );
                                   await launch('$link');
                                 },
@@ -4037,7 +4039,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           : Container(),
 
                       //------------ Botón para enviar por Mail ------------
-                      metodo == "mail"
+                      metodo == 'mail'
                           ? Expanded(
                               flex: 1,
                               child: ElevatedButton(
@@ -4050,12 +4052,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 ),
                                 onPressed: () async {
                                   final body =
-                                      'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $_cuando?. Muchas gracias.';
+                                      'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.';
 
-                                  final _url =
+                                  final url =
                                       'mailto:${_asignacion.emailCliente}?subject=Mensaje de la empresa Fleet al servicio de $empresa&body=$body';
 
-                                  await launch(_url);
+                                  await launch(url);
 
                                   Navigator.pop(context);
                                   return;
@@ -4090,9 +4092,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //--------------------------------------------------------
 
   void _sendMessage2(String message) async {
-    String _number2 = "";
-    TextEditingController _phoneController = TextEditingController();
-    _phoneController.text = "";
+    String number2 = '';
+    TextEditingController phoneController = TextEditingController();
+    phoneController.text = '';
 
     await showDialog(
         barrierDismissible: false,
@@ -4105,7 +4107,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: const [
                     Text(
-                      "Atención!!",
+                      'Atención!!',
                       style: TextStyle(color: Colors.green, fontSize: 20),
                     ),
                   ],
@@ -4116,10 +4118,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     child: Column(
                       children: [
                         const Text(
-                          "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                          'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
                           style: TextStyle(fontSize: 14),
                         ),
-                        const Text(""),
+                        const Text(''),
                         DropdownButtonFormField(
                           value: _telefono,
                           decoration: InputDecoration(
@@ -4135,8 +4137,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           items: _getComboTelefonos(),
                           onChanged: (value) {
                             _telefono = value.toString();
-                            _number2 = value.toString();
-                            _phoneController.text = _number2;
+                            number2 = value.toString();
+                            phoneController.text = number2;
                             setState(() {});
                           },
                         ),
@@ -4144,7 +4146,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           height: 10,
                         ),
                         TextField(
-                          controller: _phoneController,
+                          controller: phoneController,
                           //enabled: false,
                           decoration: InputDecoration(
                             fillColor: Colors.white,
@@ -4158,7 +4160,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             ),
                           ),
                           onChanged: (value) {
-                            _number2 = value;
+                            number2 = value;
                             //_phoneController.text = _number2;
                           },
                         ),
@@ -4168,12 +4170,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         Expanded(
                           flex: 1,
                           child: ElevatedButton(
-                              child: const Text("+549"),
+                              child: const Text('+549'),
                               onPressed: () async {
-                                if (_number2.length > 1) {
-                                  _number2 = "549$_number2";
-                                  _phoneController.text =
-                                      "549${_phoneController.text}";
+                                if (number2.length > 1) {
+                                  number2 = '549$number2';
+                                  phoneController.text =
+                                      '549${phoneController.text}';
                                   setState(() {});
                                 }
                               }),
@@ -4191,10 +4193,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    onPressed: _number2 != ""
+                    onPressed: number2 != ''
                         ? () async {
                             final link = WhatsAppUnilink(
-                              phoneNumber: _number2,
+                              phoneNumber: number2,
                               text: message,
                             );
                             await launch('$link');
@@ -4253,9 +4255,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 //--------------------------------------------------------
 
   void _sendMessage3(String message) async {
-    String _number2 = "";
-    TextEditingController _phoneController = TextEditingController();
-    _phoneController.text = "";
+    String number2 = '';
+    TextEditingController phoneController = TextEditingController();
+    phoneController.text = '';
     _existeChat = false;
 
     await showDialog(
@@ -4269,7 +4271,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: const [
                     Text(
-                      "Atención!!",
+                      'Atención!!',
                       style: TextStyle(color: Colors.green, fontSize: 20),
                     ),
                   ],
@@ -4280,10 +4282,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     child: Column(
                       children: [
                         const Text(
-                          "Verifique si el N° de teléfono tiene el formato correcto para WhatsApp",
+                          'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
                           style: TextStyle(fontSize: 14),
                         ),
-                        const Text(""),
+                        const Text(''),
                         DropdownButtonFormField(
                           value: _telefono,
                           decoration: InputDecoration(
@@ -4299,8 +4301,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           items: _getComboTelefonos(),
                           onChanged: (value) {
                             _telefono = value.toString();
-                            _number2 = value.toString();
-                            _phoneController.text = _number2;
+                            number2 = value.toString();
+                            phoneController.text = number2;
                             setState(() {});
                           },
                         ),
@@ -4308,7 +4310,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           height: 10,
                         ),
                         TextField(
-                          controller: _phoneController,
+                          controller: phoneController,
                           decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -4319,7 +4321,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10))),
                           onChanged: (value) {
-                            _number2 = value;
+                            number2 = value;
                           },
                         ),
                         const SizedBox(
@@ -4328,12 +4330,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         Expanded(
                           flex: 1,
                           child: ElevatedButton(
-                              child: const Text("+549"),
+                              child: const Text('+549'),
                               onPressed: () async {
-                                if (_number2.length > 1) {
-                                  _number2 = "549$_number2";
-                                  _phoneController.text =
-                                      "549${_phoneController.text}";
+                                if (number2.length > 1) {
+                                  number2 = '549$number2';
+                                  phoneController.text =
+                                      '549${phoneController.text}';
                                   setState(() {});
                                 }
                               }),
@@ -4351,14 +4353,14 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    onPressed: _number2 != ""
+                    onPressed: number2 != ''
                         ? _existeChat == false
                             ? () async {
-                                _number2.substring(0, 3) != '549'
-                                    ? _number2 = '549$_number2'
-                                    : _number2 = _number2;
+                                number2.substring(0, 3) != '549'
+                                    ? number2 = '549$number2'
+                                    : number2 = number2;
 
-                                await _creaChat(_number2.replaceAll(" ", ""));
+                                await _creaChat(number2.replaceAll(' ', ''));
                                 setState(() {});
                                 return;
                               }
@@ -4389,7 +4391,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     onPressed: _existeChat
                         ? () async {
                             await _createPDF(
-                                _number2.replaceAll(" ", ""), message);
+                                number2.replaceAll(' ', ''), message);
                             Navigator.pop(context);
                             return;
                           }
@@ -4548,8 +4550,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         font: PdfStandardFont(PdfFontFamily.helvetica, 12),
         cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
 
-    header.cells[0].value = "";
-    header.cells[1].value = "Formulario de Recepción de Equipos";
+    header.cells[0].value = '';
+    header.cells[1].value = 'Formulario de Recepción de Equipos';
 
     String? ot = widget.asignacion.proyectomodulo != 'TLC'
         ? (widget.asignacion.reclamoTecnicoID != null &&
@@ -4561,25 +4563,25 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             ? widget.asignacion.documento
             : '';
 
-    header.cells[2].value = """
+    header.cells[2].value = '''
     N° de Cuenta: 
     ${widget.asignacion.cliente}
     OT: $ot
-    """;
+    ''';
 
     PdfGridRow row1 = grid.rows.add();
-    row1.cells[0].value = "FLEET GROUP";
-    row1.cells[1].value = "Fecha Retiro";
+    row1.cells[0].value = 'FLEET GROUP';
+    row1.cells[1].value = 'Fecha Retiro';
     row1.cells[2].value =
         "  ${DateFormat('dd/MM/yyyy').format(DateTime.now())}";
 
-    header2.cells[0].value = "Apellido y Nombre del Cliente";
+    header2.cells[0].value = 'Apellido y Nombre del Cliente';
     header2.cells[1].value = widget.asignacion.nombre;
     PdfGridRow row2 = grid2.rows.add();
-    row2.cells[0].value = "Documento de identidad";
+    row2.cells[0].value = 'Documento de identidad';
     row2.cells[1].value = widget.asignacion.documento;
     PdfGridRow row3 = grid2.rows.add();
-    row3.cells[0].value = "Dirección";
+    row3.cells[0].value = 'Dirección';
     row3.cells[1].value =
         '${widget.asignacion.domicilio} - ${widget.asignacion.localidad}';
 
@@ -4592,11 +4594,11 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     grid2.draw(
         page: document.pages[0], bounds: const Rect.fromLTWH(0, 85, 0, 0));
 
-    header3.cells[0].value = "Datos del Equipo";
+    header3.cells[0].value = 'Datos del Equipo';
 
-    header4.cells[0].value = "MODELO";
-    header4.cells[1].value = "SERIE";
-    header4.cells[2].value = "ACCESORIOS";
+    header4.cells[0].value = 'MODELO';
+    header4.cells[1].value = 'SERIE';
+    header4.cells[2].value = 'ACCESORIOS';
 
     //*********** AGREGA EQUIPOS ************
 
@@ -4617,7 +4619,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         PdfGridRow row = grid4.rows.add();
         row.cells[0].value = modelo;
         row.cells[1].value = serie;
-        row.cells[2].value = " ";
+        row.cells[2].value = ' ';
         contador++;
       }
     }
@@ -4634,18 +4636,18 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       PdfGridRow row = grid4.rows.add();
       row.cells[0].value = modelo;
       row.cells[1].value = serie;
-      row.cells[2].value = " ";
+      row.cells[2].value = ' ';
       contador++;
     }
 
-    header5.cells[0].value = "Observaciones";
+    header5.cells[0].value = 'Observaciones';
     header5.cells[1].value = widget.asignacion.observacion;
     PdfGridRow row5 = grid5.rows.add();
-    row5.cells[0].value = "Firma recuperador";
-    row5.cells[1].value = "";
-    header6.cells[0].value = "Nro. Documento";
+    row5.cells[0].value = 'Firma recuperador';
+    row5.cells[1].value = '';
+    header6.cells[0].value = 'Nro. Documento';
     header6.cells[1].value = widget.user.dni ?? '';
-    header6.cells[2].value = "Alcaración";
+    header6.cells[2].value = 'Alcaración';
     header6.cells[3].value = widget.user.apellidonombre;
 
     grid3.draw(
@@ -4771,18 +4773,18 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     if (Platform.isAndroid) {
       if (permission) {
         var directory = await getExternalStorageDirectory();
-        newPath = "";
+        newPath = '';
         String convertedDirectoryPath = (directory?.path).toString();
-        List<String> paths = convertedDirectoryPath.split("/");
+        List<String> paths = convertedDirectoryPath.split('/');
         for (int x = 1; x < convertedDirectoryPath.length; x++) {
           String folder = paths[x];
-          if (folder != "Android") {
-            newPath += "/$folder";
+          if (folder != 'Android') {
+            newPath += '/$folder';
           } else {
             break;
           }
         }
-        newPath = "$newPath/fleetDeliveryApp/Pdf";
+        newPath = '$newPath/fleetDeliveryApp/Pdf';
 
         directory = Directory(newPath);
         if (!await directory.exists()) {
