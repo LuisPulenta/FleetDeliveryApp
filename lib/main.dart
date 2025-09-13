@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -42,8 +43,10 @@ class _MyAppState extends State<MyApp> {
   //--------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
 
     return MaterialApp(
       localizationsDelegates: const [
@@ -54,28 +57,32 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: const [Locale('en'), Locale('es')],
       debugShowCheckedModeBanner: false,
       title: 'Fleet Delivery App',
+
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: const Color(0xFF781f1e),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+          ),
+        ),
         appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xFF242424), foregroundColor: Colors.white),
-        colorScheme:
-            ColorScheme.fromSwatch().copyWith(secondary: Colors.cyan[300]),
+          backgroundColor: Color(0xFF242424),
+          foregroundColor: Colors.white,
+        ),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          secondary: Colors.cyan[300],
+        ),
       ),
+
       navigatorKey: navigatorKey,
       home: _isLoading
           ? const WaitScreen()
           : _showLoginPage
-              ? const LoginScreen()
-              : _user.codigo == "PQ"
-                  ? HomeScreen(
-                      user: _user,
-                      webSesion: _webSesion,
-                    )
-                  : Home2Screen(
-                      user: _user,
-                      webSesion: _webSesion,
-                    ),
+          ? const LoginScreen()
+          : _user.codigo == "PQ"
+          ? HomeScreen(user: _user, webSesion: _webSesion)
+          : Home2Screen(user: _user, webSesion: _webSesion),
     );
   }
 

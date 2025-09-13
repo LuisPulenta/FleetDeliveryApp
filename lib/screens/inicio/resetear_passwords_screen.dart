@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,9 +17,9 @@ class ResetearPasswordsScreen extends StatefulWidget {
 }
 
 class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
-//---------------------------------------------------------------
-//----------------------- Variables -----------------------------
-//---------------------------------------------------------------
+  //---------------------------------------------------------------
+  //----------------------- Variables -----------------------------
+  //---------------------------------------------------------------
   String _codigo = '';
   final String _codigoError = '';
   final bool _codigoShowError = false;
@@ -27,22 +27,23 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
   bool _showLoader = false;
 
   Usuario2 _user = Usuario2(
-      idUsuario: 0,
-      codigoCausante: '',
-      login: '',
-      contrasena: '',
-      nombre: '',
-      apellido: '',
-      estado: 0,
-      fechaCaduca: 0,
-      intentosInvDiario: 0,
-      opeAutorizo: 0);
+    idUsuario: 0,
+    codigoCausante: '',
+    login: '',
+    contrasena: '',
+    nombre: '',
+    apellido: '',
+    estado: 0,
+    fechaCaduca: 0,
+    intentosInvDiario: 0,
+    opeAutorizo: 0,
+  );
 
   late Usuario2 _userVacio;
 
-//---------------------------------------------------------------
-//----------------------- initState -----------------------------
-//---------------------------------------------------------------
+  //---------------------------------------------------------------
+  //----------------------- initState -----------------------------
+  //---------------------------------------------------------------
 
   @override
   void initState() {
@@ -50,9 +51,9 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
     _userVacio = _user;
   }
 
-//---------------------------------------------------------------
-//----------------------- Pantalla ------------------------------
-//---------------------------------------------------------------
+  //---------------------------------------------------------------
+  //----------------------- Pantalla ------------------------------
+  //---------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -67,17 +68,18 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
         children: [
           Column(
             children: [
-              const SizedBox(
-                height: 25,
-              ),
+              const SizedBox(height: 25),
               Card(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 elevation: 25,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 0,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -88,20 +90,14 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
                           Expanded(flex: 2, child: _showButton()),
                         ],
                       ),
-                      const SizedBox(
-                        height: 0,
-                      ),
+                      const SizedBox(height: 0),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 5,
-              ),
+              const SizedBox(height: 5),
               _showInfo(),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
@@ -119,9 +115,7 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Icon(Icons.password),
-                      SizedBox(
-                        width: 35,
-                      ),
+                      SizedBox(width: 35),
                       Text('Reactivar Usuario'),
                     ],
                   ),
@@ -130,9 +124,7 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
             ],
           ),
           _showLoader
-              ? const LoaderComponent(
-                  text: 'Por favor espere...',
-                )
+              ? const LoaderComponent(text: 'Por favor espere...')
               : Container(),
         ],
       ),
@@ -140,18 +132,15 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
           ? FloatingActionButton(
               backgroundColor: const Color(0xFF282886),
               onPressed: _enabled ? null : null,
-              child: const Icon(
-                Icons.add,
-                size: 38,
-              ),
+              child: const Icon(Icons.add, size: 38),
             )
           : Container(),
     );
   }
 
-//-----------------------------------------------------------
-//--------------------- _showLegajo -------------------------
-//-----------------------------------------------------------
+  //-----------------------------------------------------------
+  //--------------------- _showLegajo -------------------------
+  //-----------------------------------------------------------
 
   Widget _showLegajo() {
     return Container(
@@ -180,9 +169,9 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
     );
   }
 
-//-----------------------------------------------------------
-//--------------------- _showButton -------------------------
-//-----------------------------------------------------------
+  //-----------------------------------------------------------
+  //--------------------- _showButton -------------------------
+  //-----------------------------------------------------------
 
   Widget _showButton() {
     return Container(
@@ -202,12 +191,7 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
               onPressed: () => _search(),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.search),
-                  SizedBox(
-                    width: 5,
-                  ),
-                ],
+                children: const [Icon(Icons.search), SizedBox(width: 5)],
               ),
             ),
           ),
@@ -216,9 +200,9 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
     );
   }
 
-//-----------------------------------------------------------
-//--------------------- _showInfo ---------------------------
-//-----------------------------------------------------------
+  //-----------------------------------------------------------
+  //--------------------- _showInfo ---------------------------
+  //-----------------------------------------------------------
 
   Widget _showInfo() {
     return Card(
@@ -254,9 +238,9 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
     );
   }
 
-//-----------------------------------------------------------
-//--------------------- _search -----------------------------
-//-----------------------------------------------------------
+  //-----------------------------------------------------------
+  //--------------------- _search -----------------------------
+  //-----------------------------------------------------------
 
   _search() async {
     FocusScope.of(context).unfocus();
@@ -268,9 +252,9 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
     await _getUsuario();
   }
 
-//----------------------------------------------------------
-//--------------------- _getUsuario ------------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _getUsuario ------------------------
+  //----------------------------------------------------------
 
   Future<void> _getUsuario() async {
     setState(() {
@@ -284,15 +268,15 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
       });
 
       showMyDialog(
-          'Error', 'Verifica que estes conectado a internet.', 'Aceptar');
+        'Error',
+        'Verifica que estes conectado a internet.',
+        'Aceptar',
+      );
 
       return;
     }
 
-    Map<String, dynamic> request = {
-      'Email': _codigo,
-      'password': '123456',
-    };
+    Map<String, dynamic> request = {'Email': _codigo, 'password': '123456'};
 
     var url = Uri.parse('${Constants.apiUrl}/Api/Account/GetUserByLogin');
     var response = await http.post(
@@ -334,9 +318,9 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
     });
   }
 
-//----------------------------------------------------------
-//--------------------- _reactivarUsuario ------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _reactivarUsuario ------------------
+  //----------------------------------------------------------
 
   Future<void> _reactivarUsuario() async {
     setState(() {
@@ -350,7 +334,10 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
       });
 
       showMyDialog(
-          'Error', 'Verifica que estes conectado a internet.', 'Aceptar');
+        'Error',
+        'Verifica que estes conectado a internet.',
+        'Aceptar',
+      );
 
       return;
     }
@@ -363,8 +350,11 @@ class _ResetearPasswordsScreenState extends State<ResetearPasswordsScreen> {
       //Calculo dif entre hoy y el 1 de Enero de 2022 que es el 80723 y le sumo el 80723 y 70 días más
     };
 
-    Response response =
-        await ApiHelper.put('/api/Account/', _codigo.toString(), request);
+    Response response = await ApiHelper.put(
+      '/api/Account/',
+      _codigo.toString(),
+      request,
+    );
 
     setState(() {
       _showLoader = false;
@@ -387,13 +377,13 @@ class CustomRow extends StatelessWidget {
   final String? dato;
   bool? alert;
 
-  CustomRow(
-      {Key? key,
-      this.icon,
-      required this.nombredato,
-      required this.dato,
-      this.alert})
-      : super(key: key);
+  CustomRow({
+    Key? key,
+    this.icon,
+    required this.nombredato,
+    required this.dato,
+    this.alert,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -404,22 +394,16 @@ class CustomRow extends StatelessWidget {
         children: <Widget>[
           icon != null
               ? alert == true
-                  ? const Icon(
-                      Icons.warning,
-                      color: Colors.red,
-                    )
-                  : Icon(
-                      icon,
-                      color: const Color(0xFF282886),
-                    )
+                    ? const Icon(Icons.warning, color: Colors.red)
+                    : Icon(icon, color: const Color(0xFF282886))
               : Container(),
-          const SizedBox(
-            width: 15,
-          ),
+          const SizedBox(width: 15),
           Text(
             nombredato,
             style: const TextStyle(
-                fontWeight: FontWeight.bold, color: Color(0xFF282886)),
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF282886),
+            ),
           ),
           Expanded(
             child: Text(

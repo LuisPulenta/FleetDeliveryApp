@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 class EquiposParaDevolverScreen extends StatefulWidget {
   final Usuario user;
   const EquiposParaDevolverScreen({Key? key, required this.user})
-      : super(key: key);
+    : super(key: key);
 
   @override
   State<EquiposParaDevolverScreen> createState() =>
@@ -16,9 +16,9 @@ class EquiposParaDevolverScreen extends StatefulWidget {
 }
 
 class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
-//-----------------------------------------------------------------------------
-//---------------------------- Variables --------------------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //---------------------------- Variables --------------------------------------
+  //-----------------------------------------------------------------------------
 
   bool _showLoader = false;
   late EquiposSinDevolver _equiposSinDevolver;
@@ -31,24 +31,25 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
   DateTime selectedDate = DateTime.now().add(const Duration(days: 1));
   TimeOfDay selectedTime = TimeOfDay.now();
 
-//-----------------------------------------------------------------------------
-//--------------------------- initState ---------------------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //--------------------------- initState ---------------------------------------
+  //-----------------------------------------------------------------------------
 
   @override
   void initState() {
     super.initState();
     _equiposSinDevolver = EquiposSinDevolver(
-        userID: 0,
-        apellidonombre: '',
-        sinIngresoDeposito: 0,
-        dtv: 0,
-        cable: 0,
-        tasa: 0,
-        tlc: 0,
-        prisma: 0,
-        teco: 0,
-        superC: 0);
+      userID: 0,
+      apellidonombre: '',
+      sinIngresoDeposito: 0,
+      dtv: 0,
+      cable: 0,
+      tasa: 0,
+      tlc: 0,
+      prisma: 0,
+      teco: 0,
+      superC: 0,
+    );
 
     _turno = Turno(
       idTurno: 0,
@@ -66,9 +67,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     _getEquiposParaDevolver();
   }
 
-//-----------------------------------------------------------------------------
-//---------------------------- Pantalla ---------------------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //---------------------------- Pantalla ---------------------------------------
+  //-----------------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +85,10 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
           Column(
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
+                ),
                 child: Container(
                   color: Colors.white,
                   child: Table(
@@ -105,44 +108,56 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                             color: const Color.fromARGB(255, 33, 172, 236),
                             child: const Padding(
                               padding: EdgeInsets.only(left: 8.0),
-                              child: Text("Empresa",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold)),
+                              child: Text(
+                                "Empresa",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           Container(
                             color: const Color.fromARGB(255, 33, 172, 236),
                             child: const Padding(
                               padding: EdgeInsets.only(left: 8.0),
-                              child: Text("Cantidad",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold)),
+                              child: Text(
+                                "Cantidad",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           Container(
                             color: const Color.fromARGB(255, 33, 172, 236),
                             child: const Padding(
                               padding: EdgeInsets.only(left: 8.0),
-                              child: Text("Empresa",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold)),
+                              child: Text(
+                                "Empresa",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           Container(
                             color: const Color.fromARGB(255, 33, 172, 236),
                             child: const Padding(
                               padding: EdgeInsets.only(left: 8.0),
-                              child: Text("Cantidad",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold)),
+                              child: Text(
+                                "Cantidad",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -152,8 +167,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                       TableRow(
                         children: [
                           const _celda(
-                              valor: "DTV",
-                              color: Color.fromARGB(255, 130, 205, 239)),
+                            valor: "DTV",
+                            color: Color.fromARGB(255, 130, 205, 239),
+                          ),
                           _celda(
                             valor: _equiposSinDevolver.dtv! > 0
                                 ? _equiposSinDevolver.dtv.toString()
@@ -161,8 +177,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                             color: Colors.white,
                           ),
                           const _celda(
-                              valor: "Tasa",
-                              color: Color.fromARGB(255, 130, 205, 239)),
+                            valor: "Tasa",
+                            color: Color.fromARGB(255, 130, 205, 239),
+                          ),
                           _celda(
                             valor: _equiposSinDevolver.tasa! > 0
                                 ? _equiposSinDevolver.tasa.toString()
@@ -175,8 +192,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                       TableRow(
                         children: [
                           const _celda(
-                              valor: "Cable",
-                              color: Color.fromARGB(255, 130, 205, 239)),
+                            valor: "Cable",
+                            color: Color.fromARGB(255, 130, 205, 239),
+                          ),
                           _celda(
                             valor: _equiposSinDevolver.cable! > 0
                                 ? _equiposSinDevolver.cable.toString()
@@ -184,8 +202,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                             color: Colors.white,
                           ),
                           const _celda(
-                              valor: "TLC",
-                              color: Color.fromARGB(255, 130, 205, 239)),
+                            valor: "TLC",
+                            color: Color.fromARGB(255, 130, 205, 239),
+                          ),
                           _celda(
                             valor: _equiposSinDevolver.tlc! > 0
                                 ? _equiposSinDevolver.tlc.toString()
@@ -198,8 +217,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                       TableRow(
                         children: [
                           const _celda(
-                              valor: "Prisma",
-                              color: Color.fromARGB(255, 130, 205, 239)),
+                            valor: "Prisma",
+                            color: Color.fromARGB(255, 130, 205, 239),
+                          ),
                           _celda(
                             valor: _equiposSinDevolver.prisma! > 0
                                 ? _equiposSinDevolver.prisma.toString()
@@ -207,8 +227,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                             color: Colors.white,
                           ),
                           const _celda(
-                              valor: "Teco",
-                              color: Color.fromARGB(255, 130, 205, 239)),
+                            valor: "Teco",
+                            color: Color.fromARGB(255, 130, 205, 239),
+                          ),
                           _celda(
                             valor: _equiposSinDevolver.teco! > 0
                                 ? _equiposSinDevolver.teco.toString()
@@ -221,22 +242,20 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                       TableRow(
                         children: [
                           const _celda(
-                              valor: "SuperC",
-                              color: Color.fromARGB(255, 130, 205, 239)),
+                            valor: "SuperC",
+                            color: Color.fromARGB(255, 130, 205, 239),
+                          ),
                           _celda(
                             valor: _equiposSinDevolver.superC! > 0
                                 ? _equiposSinDevolver.superC.toString()
                                 : '',
                             color: Colors.white,
                           ),
-                          const _celda(
-                            valor: "TOTAL",
-                            color: Colors.yellow,
-                          ),
+                          const _celda(valor: "TOTAL", color: Colors.yellow),
                           _celda(
                             valor: _equiposSinDevolver.sinIngresoDeposito! > 0
                                 ? _equiposSinDevolver.sinIngresoDeposito
-                                    .toString()
+                                      .toString()
                                 : '',
                             color: Colors.yellow,
                           ),
@@ -246,26 +265,26 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                   ),
                 ),
               ),
-              const Divider(
-                color: Colors.black,
-              ),
+              const Divider(color: Colors.black),
               const Text(
                 'TURNO PARA DEVOLUCION',
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               _equiposSinDevolver.sinIngresoDeposito! == 0
-                  ? const Text('No tiene equipos para devolver',
+                  ? const Text(
+                      'No tiene equipos para devolver',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold))
+                        color: Colors.red,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
                   : Container(),
               _turno.idUser == 0 &&
                       mostrar &&
@@ -273,12 +292,14 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                   ? Column(
                       children: [
                         const Text(
-                            'No tiene ningún Turno en gestión. Debería Solicitar un Turno.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)),
+                          'No tiene ningún Turno en gestión. Debería Solicitar un Turno.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: _getFecha(context),
@@ -286,9 +307,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                       ],
                     )
                   : Container(),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               _turno.idUser == 0 &&
                       mostrar &&
                       _equiposSinDevolver.sinIngresoDeposito! > 0
@@ -303,13 +322,12 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                           'Usted tiene un turno pendiente de confirmación',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.red,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Card(
@@ -319,29 +337,42 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                                 const Text(' '),
                                 Row(
                                   children: [
-                                    const Text('  Fecha: ',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
+                                    const Text(
+                                      '  Fecha: ',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     Text(
-                                        DateFormat('dd/MM/yyyy').format(
-                                            DateTime.parse(
-                                                _turno.fechaTurno.toString())),
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.normal)),
-                                    const Text('  -  Hora: ',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
-                                    Text(_horaMinuto(_turno.horaTurno!),
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.normal)),
+                                      DateFormat('dd/MM/yyyy').format(
+                                        DateTime.parse(
+                                          _turno.fechaTurno.toString(),
+                                        ),
+                                      ),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                    const Text(
+                                      '  -  Hora: ',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      _horaMinuto(_turno.horaTurno!),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 const Text(' '),
@@ -362,15 +393,16 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                       mostrar
                   ? Column(
                       children: [
-                        const Text('Usted tiene un turno confirmado',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)),
-                        const SizedBox(
-                          height: 20,
+                        const Text(
+                          'Usted tiene un turno confirmado',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
+                        const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Card(
@@ -380,32 +412,43 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                                 const Text(' '),
                                 Row(
                                   children: [
-                                    const Text('  Fecha: ',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
+                                    const Text(
+                                      '  Fecha: ',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     Text(
-                                        DateFormat('dd/MM/yyyy').format(
-                                            DateTime.parse(_turno
-                                                .fechaTurnoConfirmado
-                                                .toString())),
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.normal)),
-                                    const Text('  -  Hora: ',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
+                                      DateFormat('dd/MM/yyyy').format(
+                                        DateTime.parse(
+                                          _turno.fechaTurnoConfirmado
+                                              .toString(),
+                                        ),
+                                      ),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                    const Text(
+                                      '  -  Hora: ',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     Text(
-                                        _horaMinuto(
-                                            _turno.horaTurnoConfirmado!),
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.normal)),
+                                      _horaMinuto(_turno.horaTurnoConfirmado!),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 const Text(' '),
@@ -413,9 +456,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 20),
                       ],
                     )
                   : Container(),
@@ -424,24 +465,20 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                       mostrar
                   ? _showButtonConfirma()
                   : Container(),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
             ],
           ),
           _showLoader
-              ? const LoaderComponent(
-                  text: 'Por favor espere...',
-                )
+              ? const LoaderComponent(text: 'Por favor espere...')
               : Container(),
         ],
       ),
     );
   }
 
-//----------------------------------------------------------------------------
-//--------------------------- _getEquiposParaDevolver ------------------------
-//----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+  //--------------------------- _getEquiposParaDevolver ------------------------
+  //----------------------------------------------------------------------------
 
   Future<void> _getEquiposParaDevolver() async {
     setState(() {
@@ -455,14 +492,18 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
     Response response = Response(isSuccess: false);
 
-    response =
-        await ApiHelper.getEquiposSinDevolver(widget.user.idUser.toString());
+    response = await ApiHelper.getEquiposSinDevolver(
+      widget.user.idUser.toString(),
+    );
 
     setState(() {
       _showLoader = false;
@@ -480,9 +521,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     _getTurnos();
   }
 
-//----------------------------------------------------------------------------
-//--------------------------- _getTurnos -------------------------------------
-//----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+  //--------------------------- _getTurnos -------------------------------------
+  //----------------------------------------------------------------------------
 
   Future<void> _getTurnos() async {
     setState(() {
@@ -496,7 +537,10 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -519,9 +563,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     });
   }
 
-//-----------------------------------------------------------------
-//---------------------  _showButtonTurno -------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //---------------------  _showButtonTurno -------------------------
+  //-----------------------------------------------------------------
 
   Widget _showButtonTurno() {
     return Container(
@@ -543,9 +587,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   Icon(Icons.save),
-                  SizedBox(
-                    width: 20,
-                  ),
+                  SizedBox(width: 20),
                   Text('Solicitar Turno'),
                 ],
               ),
@@ -556,9 +598,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//---------------------  _showButtonDeleteTurno -------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //---------------------  _showButtonDeleteTurno -------------------
+  //-----------------------------------------------------------------
 
   Widget _showButtonDeleteTurno() {
     return Container(
@@ -580,9 +622,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   Icon(Icons.delete_forever),
-                  SizedBox(
-                    width: 20,
-                  ),
+                  SizedBox(width: 20),
                   Text('Borrar Turno'),
                 ],
               ),
@@ -593,9 +633,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     );
   }
 
-//-----------------------------------------------------------------------------
-//-------------------------------- _save --------------------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //-------------------------------- _save --------------------------------------
+  //-----------------------------------------------------------------------------
 
   _save() {
     if (!validateFields()) {
@@ -605,9 +645,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     _addRecord();
   }
 
-//-----------------------------------------------------------------------------
-//-------------------------------- validateFields -----------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //-------------------------------- validateFields -----------------------------
+  //-----------------------------------------------------------------------------
 
   bool validateFields() {
     bool isValid = true;
@@ -633,7 +673,10 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -652,8 +695,10 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
       'Concluido': "NO",
     };
 
-    Response response =
-        await ApiHelper.post('/api/AsignacionesOtsTurnos/', request);
+    Response response = await ApiHelper.post(
+      '/api/AsignacionesOtsTurnos/',
+      request,
+    );
 
     setState(() {
       _showLoader = false;
@@ -673,35 +718,38 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
 
   void _delete() async {
     await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            title: const Text(''),
-            content:
-                Column(mainAxisSize: MainAxisSize.min, children: const <Widget>[
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Text(''),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const <Widget>[
               Text('¿Está seguro de borrar el turno?'),
-              SizedBox(
-                height: 10,
-              ),
-            ]),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('NO')),
-              TextButton(
-                  child: const Text('SI'),
-                  onPressed: () {
-                    _deleteRecord();
-                    Navigator.of(context).pop();
-                  }),
+              SizedBox(height: 10),
             ],
-          );
-        });
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('NO'),
+            ),
+            TextButton(
+              child: const Text('SI'),
+              onPressed: () {
+                _deleteRecord();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   //--------------------------------------------------------------------------
@@ -720,12 +768,17 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
     Response response = await ApiHelper.delete(
-        '/api/AsignacionesOtsTurnos/', _turno.idTurno.toString());
+      '/api/AsignacionesOtsTurnos/',
+      _turno.idTurno.toString(),
+    );
 
     setState(() {
       _showLoader = false;
@@ -748,35 +801,38 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
 
   void _confirma() async {
     await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            title: const Text(''),
-            content:
-                Column(mainAxisSize: MainAxisSize.min, children: const <Widget>[
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Text(''),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const <Widget>[
               Text('¿Está seguro de dar por cumplido este Turno?'),
-              SizedBox(
-                height: 10,
-              ),
-            ]),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('NO')),
-              TextButton(
-                  child: const Text('SI'),
-                  onPressed: () {
-                    _confirmaRecord();
-                    Navigator.of(context).pop();
-                  }),
+              SizedBox(height: 10),
             ],
-          );
-        });
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('NO'),
+            ),
+            TextButton(
+              child: const Text('SI'),
+              onPressed: () {
+                _confirmaRecord();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   //--------------------------------------------------------------------------
@@ -795,7 +851,10 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -815,7 +874,10 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     };
 
     Response response = await ApiHelper.put(
-        '/api/AsignacionesOtsTurnos/', _turno.idTurno.toString(), request);
+      '/api/AsignacionesOtsTurnos/',
+      _turno.idTurno.toString(),
+      request,
+    );
 
     setState(() {
       _showLoader = false;
@@ -829,9 +891,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     setState(() {});
   }
 
-//-----------------------------------------------------------------
-//---------------------  _showButtonConfirma ----------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //---------------------  _showButtonConfirma ----------------------
+  //-----------------------------------------------------------------
 
   Widget _showButtonConfirma() {
     return Container(
@@ -855,9 +917,7 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   Icon(Icons.save),
-                  SizedBox(
-                    width: 20,
-                  ),
+                  SizedBox(width: 20),
                   Text('Turno cumplido'),
                 ],
               ),
@@ -868,24 +928,20 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     );
   }
 
-//----------------------------------------------------------------------------
-//------------------------------- _getFecha ----------------------------------
-//----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+  //------------------------------- _getFecha ----------------------------------
+  //----------------------------------------------------------------------------
 
   Widget _getFecha(context) {
     return Stack(
       children: <Widget>[
-        Container(
-          height: 80,
-        ),
+        Container(height: 80),
         Positioned(
           bottom: 0,
           child: Row(
             children: [
               const Icon(Icons.calendar_today),
-              const SizedBox(
-                width: 20,
-              ),
+              const SizedBox(width: 20),
               Container(
                 width: 110,
                 height: 50,
@@ -903,19 +959,16 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                       },
                       child: InkWell(
                         child: Text(
-                            "    ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"),
+                          "    ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}",
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                width: 40,
-              ),
+              const SizedBox(width: 40),
               const Icon(Icons.schedule),
-              const SizedBox(
-                width: 20,
-              ),
+              const SizedBox(width: 20),
               Container(
                 width: 110,
                 height: 50,
@@ -933,7 +986,8 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
                       },
                       child: InkWell(
                         child: Text(
-                            "        ${selectedTime.hour}:${selectedTime.minute}"),
+                          "        ${selectedTime.hour}:${selectedTime.minute}",
+                        ),
                       ),
                     ),
                   ],
@@ -945,26 +999,20 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
         const Positioned(
           left: 50,
           bottom: 50,
-          child: Text(
-            ' Fecha Turno: ',
-            style: TextStyle(fontSize: 12),
-          ),
+          child: Text(' Fecha Turno: ', style: TextStyle(fontSize: 12)),
         ),
         const Positioned(
           left: 244,
           bottom: 50,
-          child: Text(
-            ' Hora Turno: ',
-            style: TextStyle(fontSize: 12),
-          ),
-        )
+          child: Text(' Hora Turno: ', style: TextStyle(fontSize: 12)),
+        ),
       ],
     );
   }
 
-//----------------------------------------------------------------------------
-//------------------------------- _selectDate --------------------------------
-//----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+  //------------------------------- _selectDate --------------------------------
+  //----------------------------------------------------------------------------
 
   void _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
@@ -980,9 +1028,9 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     }
   }
 
-//----------------------------------------------------------------------------
-//------------------------------- _selectTime --------------------------------
-//----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+  //------------------------------- _selectTime --------------------------------
+  //----------------------------------------------------------------------------
 
   void _selectTime(BuildContext context) async {
     final TimeOfDay? selected = await showTimePicker(
@@ -996,14 +1044,15 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
     }
   }
 
-//----------------------------------------------------------------------------
-//----------------------------- _horaMinuto ----------------------------------
-//----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+  //----------------------------- _horaMinuto ----------------------------------
+  //----------------------------------------------------------------------------
 
   String _horaMinuto(int valor) {
     String hora = (valor / 3600).floor().toString();
-    String minutos =
-        ((valor - ((valor / 3600).floor()) * 3600) / 60).round().toString();
+    String minutos = ((valor - ((valor / 3600).floor()) * 3600) / 60)
+        .round()
+        .toString();
 
     if (minutos.length == 1) {
       minutos = "0$minutos";
@@ -1019,11 +1068,8 @@ class _EquiposParaDevolverScreenState extends State<EquiposParaDevolverScreen> {
 class _celda extends StatelessWidget {
   final String valor;
   final Color color;
-  const _celda({
-    Key? key,
-    required this.valor,
-    required this.color,
-  }) : super(key: key);
+  const _celda({Key? key, required this.valor, required this.color})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -1031,9 +1077,11 @@ class _celda extends StatelessWidget {
       color: color,
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0),
-        child: Text(valor,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        child: Text(
+          valor,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

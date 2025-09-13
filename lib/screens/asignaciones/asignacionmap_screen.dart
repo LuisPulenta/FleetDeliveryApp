@@ -12,23 +12,23 @@ class AsignacionMapScreen extends StatefulWidget {
   final Set<Marker> markers;
   final CustomInfoWindowController customInfoWindowController;
 
-  const AsignacionMapScreen(
-      {Key? key,
-      required this.user,
-      required this.positionUser,
-      required this.asignacion,
-      required this.markers,
-      required this.customInfoWindowController})
-      : super(key: key);
+  const AsignacionMapScreen({
+    super.key,
+    required this.user,
+    required this.positionUser,
+    required this.asignacion,
+    required this.markers,
+    required this.customInfoWindowController,
+  });
 
   @override
   AsignacionMapScreenState createState() => AsignacionMapScreenState();
 }
 
 class AsignacionMapScreenState extends State<AsignacionMapScreen> {
-//--------------------------------------------------------
-//--------------------- Variables ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
 
   bool ubicOk = false;
   double latitud = 0;
@@ -37,23 +37,26 @@ class AsignacionMapScreenState extends State<AsignacionMapScreen> {
   Set<Marker> _markers = {};
   MapType _defaultMapType = MapType.normal;
   String direccion = '';
-  Position position = const Position(
-      longitude: 0,
-      latitude: 0,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0,
-      altitudeAccuracy: 0,
-      headingAccuracy: 0);
-  CameraPosition _initialPosition =
-      const CameraPosition(target: LatLng(31, 64), zoom: 16.0);
+  Position position = Position(
+    longitude: 0,
+    latitude: 0,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
+  );
+  CameraPosition _initialPosition = const CameraPosition(
+    target: LatLng(31, 64),
+    zoom: 16.0,
+  );
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
 
   @override
   void initState() {
@@ -64,10 +67,10 @@ class AsignacionMapScreenState extends State<AsignacionMapScreen> {
 
     _initialPosition =
         (widget.markers.length == 1 && grxx != null && gryy != null)
-            ? CameraPosition(target: LatLng(grxx, gryy), zoom: 16.0)
-            : (widget.markers.length > 1 && grxx != null && gryy != null)
-                ? CameraPosition(target: LatLng(grxx, gryy), zoom: 12.0)
-                : const CameraPosition(target: LatLng(0, 0), zoom: 12.0);
+        ? CameraPosition(target: LatLng(grxx, gryy), zoom: 16.0)
+        : (widget.markers.length > 1 && grxx != null && gryy != null)
+        ? CameraPosition(target: LatLng(grxx, gryy), zoom: 12.0)
+        : const CameraPosition(target: LatLng(0, 0), zoom: 12.0);
     ubicOk = true;
 
     _markers = widget.markers;
@@ -79,9 +82,9 @@ class AsignacionMapScreenState extends State<AsignacionMapScreen> {
     super.dispose();
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -93,39 +96,42 @@ class AsignacionMapScreenState extends State<AsignacionMapScreen> {
       body: Stack(
         children: [
           ubicOk == true
-              ? Stack(children: <Widget>[
-                  GoogleMap(
-                    onTap: (position) {
-                      widget.customInfoWindowController.hideInfoWindow!();
-                    },
-                    myLocationEnabled: true,
-                    initialCameraPosition: _initialPosition,
-                    markers: _markers,
-                    mapType: _defaultMapType,
-                    onMapCreated: (GoogleMapController controller) async {
-                      widget.customInfoWindowController.googleMapController =
-                          controller;
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 80, right: 10),
-                    alignment: Alignment.topRight,
-                    child: Column(children: <Widget>[
-                      FloatingActionButton(
-                          elevation: 5,
-                          backgroundColor: const Color(0xfff4ab04),
-                          onPressed: () {
-                            _changeMapType();
-                          },
-                          child: const Icon(Icons.layers)),
-                    ]),
-                  ),
-                ])
+              ? Stack(
+                  children: <Widget>[
+                    GoogleMap(
+                      onTap: (position) {
+                        widget.customInfoWindowController.hideInfoWindow!();
+                      },
+                      myLocationEnabled: true,
+                      initialCameraPosition: _initialPosition,
+                      markers: _markers,
+                      mapType: _defaultMapType,
+                      onMapCreated: (GoogleMapController controller) async {
+                        widget.customInfoWindowController.googleMapController =
+                            controller;
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 80, right: 10),
+                      alignment: Alignment.topRight,
+                      child: Column(
+                        children: <Widget>[
+                          FloatingActionButton(
+                            elevation: 5,
+                            backgroundColor: const Color(0xfff4ab04),
+                            onPressed: () {
+                              _changeMapType();
+                            },
+                            child: const Icon(Icons.layers),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
               : Container(),
           _showLoader
-              ? const LoaderComponent(
-                  text: 'Por favor espere...',
-                )
+              ? const LoaderComponent(text: 'Por favor espere...')
               : Container(),
           CustomInfoWindow(
             controller: widget.customInfoWindowController,
@@ -138,16 +144,16 @@ class AsignacionMapScreenState extends State<AsignacionMapScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _changeMapType -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _changeMapType -------------------
+  //--------------------------------------------------------
 
   void _changeMapType() {
     _defaultMapType = _defaultMapType == MapType.normal
         ? MapType.satellite
         : _defaultMapType == MapType.satellite
-            ? MapType.hybrid
-            : MapType.normal;
+        ? MapType.hybrid
+        : MapType.normal;
     setState(() {});
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'package:connectivity/connectivity.dart';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
@@ -18,25 +19,25 @@ class AsignacionesMap2Screen extends StatefulWidget {
   final CustomInfoWindowController customInfoWindowController;
   final int valorMarcador;
 
-  const AsignacionesMap2Screen(
-      {Key? key,
-      required this.user,
-      required this.positionUser,
-      required this.asignacion,
-      required this.posicion,
-      required this.asignaciones2,
-      required this.customInfoWindowController,
-      required this.valorMarcador})
-      : super(key: key);
+  const AsignacionesMap2Screen({
+    super.key,
+    required this.user,
+    required this.positionUser,
+    required this.asignacion,
+    required this.posicion,
+    required this.asignaciones2,
+    required this.customInfoWindowController,
+    required this.valorMarcador,
+  });
 
   @override
   AsignacionesMap2ScreenState createState() => AsignacionesMap2ScreenState();
 }
 
 class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
-//--------------------------------------------------------
-//--------------------- Variables ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
 
   List<Asignacion2> asignacionesTemporal = [];
   bool bandera = false;
@@ -47,26 +48,29 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
   double latitud = 0;
   double longitud = 0;
   final bool _showLoader = false;
-  Set<Marker> _markers = {};
+  final Set<Marker> _markers = {};
   MapType _defaultMapType = MapType.normal;
   String direccion = '';
-  Position position = const Position(
-      longitude: 0,
-      latitude: 0,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0,
-      altitudeAccuracy: 0,
-      headingAccuracy: 0);
-  CameraPosition _initialPosition =
-      const CameraPosition(target: LatLng(31, 64), zoom: 10.0);
+  Position position = Position(
+    longitude: 0,
+    latitude: 0,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
+  );
+  CameraPosition _initialPosition = const CameraPosition(
+    target: LatLng(31, 64),
+    zoom: 10.0,
+  );
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
   @override
   void initState() {
     super.initState();
@@ -87,9 +91,9 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
     super.dispose();
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -101,45 +105,53 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
       body: Stack(
         children: [
           ubicOk == true
-              ? Stack(children: <Widget>[
-                  GoogleMap(
-                    onTap: (position) {
-                      widget.customInfoWindowController.hideInfoWindow!();
-                    },
-                    myLocationEnabled: true,
-                    initialCameraPosition: _initialPosition,
-                    markers: _markers,
-                    mapType: _defaultMapType,
-                    onMapCreated: (GoogleMapController controller) async {
-                      widget.customInfoWindowController.googleMapController =
-                          controller;
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 80, right: 10),
-                    alignment: Alignment.topRight,
-                    child: Column(children: <Widget>[
-                      FloatingActionButton(
-                          elevation: 5,
-                          backgroundColor: const Color(0xfff4ab04),
-                          onPressed: () {
-                            _changeMapType();
-                          },
-                          child: const Icon(Icons.layers)),
-                    ]),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 10, left: 10),
-                    alignment: Alignment.bottomLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: ElevatedButton(
+              ? Stack(
+                  children: <Widget>[
+                    GoogleMap(
+                      onTap: (position) {
+                        widget.customInfoWindowController.hideInfoWindow!();
+                      },
+                      myLocationEnabled: true,
+                      initialCameraPosition: _initialPosition,
+                      markers: _markers,
+                      mapType: _defaultMapType,
+                      onMapCreated: (GoogleMapController controller) async {
+                        widget.customInfoWindowController.googleMapController =
+                            controller;
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 80, right: 10),
+                      alignment: Alignment.topRight,
+                      child: Column(
+                        children: <Widget>[
+                          FloatingActionButton(
+                            elevation: 5,
+                            backgroundColor: const Color(0xfff4ab04),
+                            onPressed: () {
+                              _changeMapType();
+                            },
+                            child: const Icon(Icons.layers),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 10, left: 10),
+                      alignment: Alignment.bottomLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    ui.Color.fromARGB(255, 108, 9, 126),
+                                backgroundColor: ui.Color.fromARGB(
+                                  255,
+                                  108,
+                                  9,
+                                  126,
+                                ),
                                 minimumSize: const Size(double.infinity, 40),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5),
@@ -152,55 +164,51 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [
                                   Icon(Icons.pin),
-                                  SizedBox(
-                                    width: 3,
+                                  SizedBox(width: 3),
+                                  Text(
+                                    'Renumerar',
+                                    style: TextStyle(fontSize: 12),
                                   ),
-                                  Text('Renumerar',
-                                      style: TextStyle(fontSize: 12)),
                                 ],
-                              )),
-                        ),
-                        const SizedBox(
-                          width: 3,
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xffdf281e),
-                              minimumSize: const Size(double.infinity, 40),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
                               ),
                             ),
-                            onPressed: () {
-                              _borrar();
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.cancel),
-                                SizedBox(
-                                  width: 3,
+                          ),
+                          const SizedBox(width: 3),
+                          Expanded(
+                            flex: 1,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xffdf281e),
+                                minimumSize: const Size(double.infinity, 40),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
-                                Text('Borrar todo',
-                                    style: TextStyle(fontSize: 12)),
-                              ],
+                              ),
+                              onPressed: () {
+                                _borrar();
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.cancel),
+                                  SizedBox(width: 3),
+                                  Text(
+                                    'Borrar todo',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 80,
-                        ),
-                      ],
+                          const SizedBox(width: 80),
+                        ],
+                      ),
                     ),
-                  ),
-                ])
+                  ],
+                )
               : Container(),
           _showLoader
-              ? const LoaderComponent(
-                  text: 'Por favor espere...',
-                )
+              ? const LoaderComponent(text: 'Por favor espere...')
               : Container(),
           CustomInfoWindow(
             controller: widget.customInfoWindowController,
@@ -213,24 +221,24 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _changeMapType -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _changeMapType -------------------
+  //--------------------------------------------------------
 
   void _changeMapType() {
     _defaultMapType = _defaultMapType == MapType.normal
         ? MapType.satellite
         : _defaultMapType == MapType.satellite
-            ? MapType.hybrid
-            : MapType.normal;
+        ? MapType.hybrid
+        : MapType.normal;
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _getMarkers ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getMarkers ----------------------
+  //--------------------------------------------------------
 
-  _getMarkers() async {
+  Future<void> _getMarkers() async {
     _markers.clear();
 
     Uint8List markerIcon = await getBytesFromCanvas(1, 20, 20, 3);
@@ -260,7 +268,8 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
           longmax = long;
         }
 
-        _markers.add(Marker(
+        _markers.add(
+          Marker(
             markerId: MarkerId(asign.cliente.toString()),
             position: LatLng(lat, long),
             onTap: () {
@@ -275,15 +284,21 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
             },
             icon: asign.marcado == 0
                 ? asign.proyectomodulo == 'Otro' && asign.fechaCita != null
-                    ? BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueBlue)
-                    : (asign.codigoCierre == 0)
-                        ? BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueRed)
-                        : BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueOrange)
+                      ? BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueBlue,
+                        )
+                      : (asign.codigoCierre == 0)
+                      ? BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueRed,
+                        )
+                      : BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueOrange,
+                        )
                 : BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueViolet)));
+                    BitmapDescriptor.hueViolet,
+                  ),
+          ),
+        );
       }
     }
 
@@ -295,7 +310,11 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
           !isNullOrEmpty(asign.gryy) &&
           asign.marcado! > 0) {
         markerIcon = await getBytesFromCanvas(
-            asign.marcado!.toInt(), 100, 100, asign.marcado!.toInt());
+          asign.marcado!.toInt(),
+          100,
+          100,
+          asign.marcado!.toInt(),
+        );
         _markers.add(
           Marker(
             markerId: MarkerId(asign.marcado!.toString()),
@@ -312,12 +331,16 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- getBytesFromCanvas ---------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- getBytesFromCanvas ---------------
+  //--------------------------------------------------------
 
   Future<Uint8List> getBytesFromCanvas(
-      int customNum, int width, int height, int estado) async {
+    int customNum,
+    int width,
+    int height,
+    int estado,
+  ) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
@@ -326,30 +349,36 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
     painter.text = TextSpan(
       text: customNum.toString(), // your custom number here
       style: const TextStyle(
-          fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.bold),
+        fontSize: 28.0,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
     );
 
     painter.layout();
     painter.paint(
-        canvas,
-        Offset((width * 0.5) - painter.width * 0.5,
-            (height * .5) - painter.height * 0.5));
+      canvas,
+      Offset(
+        (width * 0.5) - painter.width * 0.5,
+        (height * .5) - painter.height * 0.5,
+      ),
+    );
     final img = await pictureRecorder.endRecording().toImage(width, height);
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
     return data!.buffer.asUint8List();
   }
 
-//--------------------------------------------------------
-//--------------------- isNullOrEmpty --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- isNullOrEmpty --------------------
+  //--------------------------------------------------------
 
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
 
-//--------------------------------------------------------
-//--------------------- _getAsigns -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getAsigns -----------------------
+  //--------------------------------------------------------
 
   Future<void> _getAsigns(Asignacion2 asignacion) async {
     setState(() {});
@@ -360,7 +389,10 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
       setState(() {});
 
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
 
       return;
     }
@@ -399,9 +431,9 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _guardar -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _guardar -------------------------
+  //--------------------------------------------------------
   void _guardar(Asign asign) async {
     Map<String, dynamic> request = {
       //----------------- Campos que mantienen el valor -----------------
@@ -409,16 +441,19 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
       'Marcado': asign.marcado,
     };
     Response response = await ApiHelper.put(
-        '/api/AsignacionesMarca/', asign.idregistro.toString(), request);
+      '/api/AsignacionesMarca/',
+      asign.idregistro.toString(),
+      request,
+    );
     if (!response.isSuccess) {
       showMyDialog('Error', response.message, 'Aceptar');
       return;
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _borrar --------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _borrar --------------------------
+  //--------------------------------------------------------
   void _borrar() async {
     for (Asignacion2 asignacion in widget.asignaciones2) {
       if (asignacion.marcado! > 0) {
@@ -430,9 +465,9 @@ class AsignacionesMap2ScreenState extends State<AsignacionesMap2Screen> {
     _getMarkers();
   }
 
-//--------------------------------------------------------
-//--------------------- _renumerar -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _renumerar -----------------------
+  //--------------------------------------------------------
   void _renumerar() async {
     int numero = 1;
 

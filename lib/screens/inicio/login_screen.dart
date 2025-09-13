@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:connectivity/connectivity.dart';
-import 'package:device_information/device_information.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_device_imei/flutter_device_imei.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,7 +16,7 @@ import '../../models/models.dart';
 import '../screens.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   LoginScreenState createState() => LoginScreenState();
@@ -36,44 +36,43 @@ class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
 
   Modulo _modulo = Modulo(
-      idModulo: 0,
-      nombre: '',
-      nroVersion: '',
-      link: '',
-      fechaRelease: '',
-      actualizOblig: 0);
+    idModulo: 0,
+    nombre: '',
+    nroVersion: '',
+    link: '',
+    fechaRelease: '',
+    actualizOblig: 0,
+  );
 
   String _imeiNo = '';
 
   Usuario _usuarioLogueado = Usuario(
-      idUser: 0,
-      codigo: '',
-      apellidonombre: '',
-      usrlogin: '',
-      usrcontrasena: '',
-      habilitadoWeb: 0,
-      vehiculo: '',
-      dominio: '',
-      celular: '',
-      orden: 0,
-      centroDistribucion: 0,
-      dni: '',
-      mail: '',
-      claveEmail: '');
+    idUser: 0,
+    codigo: '',
+    apellidonombre: '',
+    usrlogin: '',
+    usrcontrasena: '',
+    habilitadoWeb: 0,
+    vehiculo: '',
+    dominio: '',
+    celular: '',
+    orden: 0,
+    centroDistribucion: 0,
+    dni: '',
+    mail: '',
+    claveEmail: '',
+  );
 
   List<WebSesion> _webSesionsdb = [];
 
   String _email = '';
   String _password = '';
 
-  // String _email = '*TEVEZ';
+  // String _email = 'TEST';
   // String _password = '123456';
 
   // String _email = 'jona';
   // String _password = '123456';
-
-  //String _email = 'TEST';
-  //String _password = '123456';
 
   String _emailError = '';
   bool _emailShowError = false;
@@ -87,9 +86,9 @@ class LoginScreenState extends State<LoginScreen> {
 
   String _ultimaactualizacion = '';
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
 
   @override
   void initState() {
@@ -98,9 +97,9 @@ class LoginScreenState extends State<LoginScreen> {
     _getprefs();
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -115,22 +114,13 @@ class LoginScreenState extends State<LoginScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Color(
-                    (0xfff6faf8),
-                  ),
-                  Color(
-                    (0xfff6faf8),
-                  ),
-                ],
+                colors: [Color((0xfff6faf8)), Color((0xfff6faf8))],
               ),
             ),
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 100,
-                  ),
+                  const SizedBox(height: 100),
                   GestureDetector(
                     onLongPress: () async {
                       _ultimaactualizacion = 'null';
@@ -141,45 +131,43 @@ class LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       height: 100,
                       color: Colors.white,
-                      child: Image.asset(
-                        'assets/logo2.png',
-                        height: 100,
-                      ),
+                      child: Image.asset('assets/logo2.png', height: 100),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         Constants.version,
-                        style: const TextStyle(
-                          fontSize: 20,
-                        ),
+                        style: const TextStyle(fontSize: 20),
                       ),
                     ],
                   ),
                   Card(
                     color: Colors.grey,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     elevation: 15,
                     margin: const EdgeInsets.only(
-                        left: 20, right: 20, top: 20, bottom: 20),
+                      left: 20,
+                      right: 20,
+                      top: 20,
+                      bottom: 20,
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 35, vertical: 20),
+                        horizontal: 35,
+                        vertical: 20,
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           _showEmail(),
                           _showPassword(),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          const SizedBox(height: 10),
                           _showRememberme(),
                           _showButtons(),
                         ],
@@ -194,15 +182,15 @@ class LoginScreenState extends State<LoginScreen> {
             child: _showLoader
                 ? const LoaderComponent(text: 'Cargando USUARIOS.')
                 : Container(),
-          )
+          ),
         ],
       ),
     );
   }
 
-//----------------------------------------------------------
-//--------------------- _showEmail -------------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _showEmail -------------------------
+  //----------------------------------------------------------
 
   Widget _showEmail() {
     return Container(
@@ -211,14 +199,14 @@ class LoginScreenState extends State<LoginScreen> {
         keyboardType: TextInputType.emailAddress,
         controller: _emailController,
         decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: 'Usuario...',
-            labelText: 'Usuario',
-            errorText: _emailShowError ? _emailError : null,
-            prefixIcon: const Icon(Icons.person),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          fillColor: Colors.white,
+          filled: true,
+          hintText: 'Usuario...',
+          labelText: 'Usuario',
+          errorText: _emailShowError ? _emailError : null,
+          prefixIcon: const Icon(Icons.person),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
         onChanged: (value) {
           _email = value;
         },
@@ -226,9 +214,9 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-//----------------------------------------------------------
-//--------------------- _showPassword ----------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _showPassword ----------------------
+  //----------------------------------------------------------
 
   Widget _showPassword() {
     return Container(
@@ -236,24 +224,24 @@ class LoginScreenState extends State<LoginScreen> {
       child: TextField(
         obscureText: !_passwordShow,
         decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: 'Contraseña...',
-            labelText: 'Contraseña',
-            errorText: _passwordShowError ? _passwordError : null,
-            prefixIcon: const Icon(Icons.lock),
-            suffixIcon: IconButton(
-              icon: _passwordShow
-                  ? const Icon(Icons.visibility)
-                  : const Icon(Icons.visibility_off),
-              onPressed: () {
-                setState(() {
-                  _passwordShow = !_passwordShow;
-                });
-              },
-            ),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          fillColor: Colors.white,
+          filled: true,
+          hintText: 'Contraseña...',
+          labelText: 'Contraseña',
+          errorText: _passwordShowError ? _passwordError : null,
+          prefixIcon: const Icon(Icons.lock),
+          suffixIcon: IconButton(
+            icon: _passwordShow
+                ? const Icon(Icons.visibility)
+                : const Icon(Icons.visibility_off),
+            onPressed: () {
+              setState(() {
+                _passwordShow = !_passwordShow;
+              });
+            },
+          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
         onChanged: (value) {
           _password = value;
         },
@@ -261,9 +249,9 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-//----------------------------------------------------------
-//--------------------- _showButtons -----------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _showButtons -----------------------
+  //----------------------------------------------------------
 
   Widget _showButtons() {
     return Container(
@@ -287,9 +275,7 @@ class LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Icon(Icons.login),
-                      SizedBox(
-                        width: 20,
-                      ),
+                      SizedBox(width: 20),
                       Text('Iniciar Sesión'),
                     ],
                   ),
@@ -297,9 +283,7 @@ class LoginScreenState extends State<LoginScreen> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -317,9 +301,7 @@ class LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Icon(Icons.language),
-                      SizedBox(
-                        width: 20,
-                      ),
+                      SizedBox(width: 20),
                       Text('Web Fleet'),
                     ],
                   ),
@@ -328,9 +310,7 @@ class LoginScreenState extends State<LoginScreen> {
             ],
           ),
           _modulo.nroVersion != '' && _modulo.nroVersion != Constants.version
-              ? const SizedBox(
-                  height: 20,
-                )
+              ? const SizedBox(height: 20)
               : Container(),
           _modulo.nroVersion != '' && _modulo.nroVersion != Constants.version
               ? Row(
@@ -349,12 +329,15 @@ class LoginScreenState extends State<LoginScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
-                            Text('   Nueva versión disponible   ',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.bold)),
+                            Text(
+                              '   Nueva versión disponible   ',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -367,11 +350,11 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-//----------------------------------------------------------
-//--------------------- _showRememberme --------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _showRememberme --------------------
+  //----------------------------------------------------------
 
-  _showRememberme() {
+  CheckboxListTile _showRememberme() {
     return CheckboxListTile(
       activeColor: const Color(0xFF282886),
       title: const Text('Recordarme:'),
@@ -384,18 +367,18 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-//----------------------------------------------------------
-//--------------------- _login -----------------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _login -----------------------------
+  //----------------------------------------------------------
 
   void _login() async {
     if (_email.toLowerCase() == 'modulo') {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AdministradorScreen(
-                    modulo: _modulo,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => AdministradorScreen(modulo: _modulo),
+        ),
+      );
       _email = '';
       _emailController.text = '';
       return;
@@ -403,9 +386,10 @@ class LoginScreenState extends State<LoginScreen> {
 
     if (_modulo.nroVersion != '' && _modulo.nroVersion != Constants.version) {
       showMyDialog(
-          'Atención!',
-          'Debe instalar la nueva versión disponible en Google Play para poder continuar.',
-          'Aceptar');
+        'Atención!',
+        'Debe instalar la nueva versión disponible en Google Play para poder continuar.',
+        'Aceptar',
+      );
 
       return;
     }
@@ -444,32 +428,36 @@ class LoginScreenState extends State<LoginScreen> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('conectadodesde', DateTime.now().toString());
-    await prefs.setString('validohasta',
-        DateTime.now().add(const Duration(hours: 12)).toString());
+    await prefs.setString(
+      'validohasta',
+      DateTime.now().add(const Duration(hours: 12)).toString(),
+    );
     await prefs.setBool('sincronizar', true);
 
     // Agregar registro a bd local websesion
 
     Random r = Random();
     int resultado = r.nextInt((99999999 - 10000000) + 1) + 10000000;
-    double hora = (DateTime.now().hour * 3600 +
+    double hora =
+        (DateTime.now().hour * 3600 +
             DateTime.now().minute * 60 +
             DateTime.now().second +
             DateTime.now().millisecond * 0.001) *
         100;
 
     WebSesion webSesion = WebSesion(
-        nroConexion: resultado,
-        usuario: _usuarioLogueado.idUser.toString(),
-        iP: _imeiNo,
-        loginDate: DateTime.now().toString(),
-        loginTime: hora.round(),
-        modulo: 'App-${_usuarioLogueado.codigo}',
-        logoutDate: '',
-        logoutTime: 0,
-        conectAverage: 0,
-        id_ws: 0,
-        version: Constants.version);
+      nroConexion: resultado,
+      usuario: _usuarioLogueado.idUser.toString(),
+      iP: _imeiNo,
+      loginDate: DateTime.now().toString(),
+      loginTime: hora.round(),
+      modulo: 'App-${_usuarioLogueado.codigo}',
+      logoutDate: '',
+      logoutTime: 0,
+      conectAverage: 0,
+      id_ws: 0,
+      version: Constants.version,
+    );
 
     DBWebSesions.insertWebSesion(webSesion);
 
@@ -498,28 +486,28 @@ class LoginScreenState extends State<LoginScreen> {
 
     if (_usuarioLogueado.codigo == 'PQ') {
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => HomeScreen(
-                    user: _usuarioLogueado,
-                    webSesion: webSesion,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              HomeScreen(user: _usuarioLogueado, webSesion: webSesion),
+        ),
+      );
     }
 
     if (_usuarioLogueado.codigo == 'TR') {
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Home2Screen(
-                    user: _usuarioLogueado,
-                    webSesion: webSesion,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              Home2Screen(user: _usuarioLogueado, webSesion: webSesion),
+        ),
+      );
     }
   }
 
-//----------------------------------------------------------
-//--------------------- validateFields ---------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- validateFields ---------------------
+  //----------------------------------------------------------
 
   bool validateFields() {
     bool isValid = true;
@@ -545,9 +533,9 @@ class LoginScreenState extends State<LoginScreen> {
     return isValid;
   }
 
-//----------------------------------------------------------
-//--------------------- _getUsuarios -----------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _getUsuarios -----------------------
+  //----------------------------------------------------------
 
   Future<void> _getUsuarios(int option) async {
     var connectivityResult = await Connectivity().checkConnectivity();
@@ -557,8 +545,9 @@ class LoginScreenState extends State<LoginScreen> {
     }
 
     if ((_ultimaactualizacion == 'null') ||
-        (DateTime.parse(_ultimaactualizacion)
-            .isBefore(DateTime.now().add(const Duration(days: -1))))) {
+        (DateTime.parse(
+          _ultimaactualizacion,
+        ).isBefore(DateTime.now().add(const Duration(days: -1))))) {
       setState(() {
         _showLoader = true;
       });
@@ -580,17 +569,20 @@ class LoginScreenState extends State<LoginScreen> {
         } while (_usuariosConseguidos == false);
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('ultimaactualizacion',
-            DateTime.now().add(const Duration(days: 0)).toString());
+        await prefs.setString(
+          'ultimaactualizacion',
+          DateTime.now().add(const Duration(days: 0)).toString(),
+        );
       } else {
         setState(() {
           _showLoader = false;
         });
 
         showMyDialog(
-            'Error',
-            'Debe actualizar la Tabla Usuarios. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.',
-            'Aceptar');
+          'Error',
+          'Debe actualizar la Tabla Usuarios. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.',
+          'Aceptar',
+        );
 
         return;
       }
@@ -628,9 +620,10 @@ class LoginScreenState extends State<LoginScreen> {
       });
 
       showMyDialog(
-          'Error',
-          'La tabla Usuarios local está vacía. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.',
-          'Aceptar');
+        'Error',
+        'La tabla Usuarios local está vacía. Por favor arranque la App desde un lugar con acceso a Internet para poder conectarse al Servidor.',
+        'Aceptar',
+      );
 
       SystemNavigator.pop();
       return;
@@ -641,9 +634,9 @@ class LoginScreenState extends State<LoginScreen> {
     });
   }
 
-//----------------------------------------------------------
-//--------------------- _getprefs --------------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _getprefs --------------------------
+  //----------------------------------------------------------
 
   void _getprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -659,14 +652,15 @@ class LoginScreenState extends State<LoginScreen> {
 
   void _launchURL2() async {
     if (!await launch(
-        'https://play.google.com/store/apps/details?id=com.luisnu.fleetdeliveryapp')) {
+      'https://play.google.com/store/apps/details?id=com.luisnu.fleetdeliveryapp',
+    )) {
       throw 'No se puede conectar a la tienda';
     }
   }
 
-//----------------------------------------------------------
-//--------------------- initPlatformState ------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- initPlatformState ------------------
+  //----------------------------------------------------------
 
   Future<void> initPlatformState() async {
     late String imeiNo = '';
@@ -678,41 +672,42 @@ class LoginScreenState extends State<LoginScreen> {
 
     if (status.isDenied) {
       await showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso'),
-              content: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('''
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('''
                         Debe habilitar los permisos:
                         - Almacenamiento
                         - Cámara
                         - Teléfono
                         - Ubicación
                         '''),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       openAppSettings();
       //exit(0);
     }
 
     try {
-      imeiNo = await DeviceInformation.deviceIMEINumber;
+      imeiNo = await FlutterDeviceImei.instance.getIMEI() ?? '';
     } on PlatformException {}
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -725,9 +720,9 @@ class LoginScreenState extends State<LoginScreen> {
     });
   }
 
-//----------------------------------------------------------
-//--------------------- _postWebSesion ---------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _postWebSesion ---------------------
+  //----------------------------------------------------------
 
   Future<void> _postWebSesion(WebSesion webSesion) async {
     Map<String, dynamic> requestWebSesion = {
@@ -747,9 +742,9 @@ class LoginScreenState extends State<LoginScreen> {
     await ApiHelper.post('/api/WebSesions/', requestWebSesion);
   }
 
-//----------------------------------------------------------
-//--------------------- _storeUser -------------------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _storeUser -------------------------
+  //----------------------------------------------------------
 
   void _storeUser(String body, String wsesion) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -763,10 +758,7 @@ class LoginScreenState extends State<LoginScreen> {
   //--------------------- _showSnackbar --------------------
 
   void _showSnackbar(String text, Color color) {
-    SnackBar snackbar = SnackBar(
-      content: Text(text),
-      backgroundColor: color,
-    );
+    SnackBar snackbar = SnackBar(content: Text(text), backgroundColor: color);
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 }

@@ -1,8 +1,8 @@
-import 'package:connectivity/connectivity.dart';
-import 'package:fleetdeliveryapp/helpers/helpers.dart';
-import 'package:flutter/material.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
+import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
+import 'package:flutter/material.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   final Usuario user;
@@ -13,27 +13,28 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class ChangePasswordScreenState extends State<ChangePasswordScreen> {
-//--------------------------------------------------------
-//--------------------- Variables ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
 
   bool _showLoader = false;
 
   Usuario _user = Usuario(
-      idUser: 0,
-      codigo: '',
-      apellidonombre: '',
-      usrlogin: '',
-      usrcontrasena: '',
-      habilitadoWeb: 0,
-      vehiculo: '',
-      dominio: '',
-      celular: '',
-      orden: 0,
-      centroDistribucion: 0,
-      dni: '',
-      mail: '',
-      claveEmail: '');
+    idUser: 0,
+    codigo: '',
+    apellidonombre: '',
+    usrlogin: '',
+    usrcontrasena: '',
+    habilitadoWeb: 0,
+    vehiculo: '',
+    dominio: '',
+    celular: '',
+    orden: 0,
+    centroDistribucion: 0,
+    dni: '',
+    mail: '',
+    claveEmail: '',
+  );
 
   String _currentPassword = '';
   String _currentPasswordError = '';
@@ -52,9 +53,9 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   bool _passwordShow = false;
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
 
   @override
   void initState() {
@@ -62,41 +63,40 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     _user = widget.user;
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xffe9dac2),
-        appBar: AppBar(
-          title: const Text('Cambio de Contraseña'),
-          centerTitle: true,
-          backgroundColor: const Color(0xff282886),
-        ),
-        body: Stack(
-          children: [
-            Column(
-              children: <Widget>[
-                _showCurrentPassword(),
-                _showNewPassword(),
-                _showConfirmPassword(),
-                _showButtons(),
-              ],
-            ),
-            _showLoader
-                ? const LoaderComponent(
-                    text: 'Por favor espere...',
-                  )
-                : Container(),
-          ],
-        ));
+      backgroundColor: const Color(0xffe9dac2),
+      appBar: AppBar(
+        title: const Text('Cambio de Contraseña'),
+        centerTitle: true,
+        backgroundColor: const Color(0xff282886),
+      ),
+      body: Stack(
+        children: [
+          Column(
+            children: <Widget>[
+              _showCurrentPassword(),
+              _showNewPassword(),
+              _showConfirmPassword(),
+              _showButtons(),
+            ],
+          ),
+          _showLoader
+              ? const LoaderComponent(text: 'Por favor espere...')
+              : Container(),
+        ],
+      ),
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _showCurrentPassword -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showCurrentPassword -------------
+  //--------------------------------------------------------
 
   Widget _showCurrentPassword() {
     return Container(
@@ -129,9 +129,9 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showNewPassword -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showNewPassword -----------------
+  //--------------------------------------------------------
 
   Widget _showNewPassword() {
     return Container(
@@ -164,9 +164,9 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showConfirmPassword -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showConfirmPassword -------------
+  //--------------------------------------------------------
 
   Widget _showConfirmPassword() {
     return Container(
@@ -199,25 +199,23 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showButtons ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showButtons ---------------------
+  //--------------------------------------------------------
 
   Widget _showButtons() {
     return Container(
       margin: const EdgeInsets.only(left: 10, right: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          _showChangePassword(),
-        ],
+        children: <Widget>[_showChangePassword()],
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showChangePassword --------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showChangePassword --------------
+  //--------------------------------------------------------
 
   Widget _showChangePassword() {
     return Expanded(
@@ -225,18 +223,14 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xff282886),
           minimumSize: const Size(double.infinity, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         ),
         onPressed: () => _save(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
             Icon(Icons.lock),
-            SizedBox(
-              width: 15,
-            ),
+            SizedBox(width: 15),
             Text('Cambiar contraseña'),
           ],
         ),
@@ -244,9 +238,9 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _save ----------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _save ----------------------------
+  //--------------------------------------------------------
 
   void _save() async {
     if (!validateFields()) {
@@ -255,9 +249,9 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     _changePassword();
   }
 
-//--------------------------------------------------------
-//--------------------- validateFields -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- validateFields -------------------
+  //--------------------------------------------------------
 
   bool validateFields() {
     bool isValid = true;
@@ -317,9 +311,9 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return isValid;
   }
 
-//--------------------------------------------------------
-//--------------------- _changePassword ------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _changePassword ------------------
+  //--------------------------------------------------------
 
   void _changePassword() async {
     setState(() {
@@ -333,7 +327,10 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
       });
 
       showMyDialog(
-          'Error', 'Verifica que estes conectado a internet.', 'Aceptar');
+        'Error',
+        'Verifica que estes conectado a internet.',
+        'Aceptar',
+      );
 
       return;
     }
@@ -344,7 +341,10 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     };
 
     Response response = await ApiHelper.put(
-        '/api/Usuarios/', widget.user.idUser.toString(), request);
+      '/api/Usuarios/',
+      widget.user.idUser.toString(),
+      request,
+    );
 
     setState(() {
       _showLoader = false;
@@ -356,7 +356,10 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     }
 
     showMyDialog(
-        'Confirmación', 'Su contraseña ha sido cambiada con éxito.', 'Aceptar');
+      'Confirmación',
+      'Su contraseña ha sido cambiada con éxito.',
+      'Aceptar',
+    );
 
     _user.usrcontrasena = _newPassword.toUpperCase();
     DBUsuarios.update(_user);

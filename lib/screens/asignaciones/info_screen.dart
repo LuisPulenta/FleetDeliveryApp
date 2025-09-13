@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
@@ -56,9 +56,9 @@ class _InfoScreenState extends State<InfoScreen> {
     );
   }
 
-//---------------------------------------------------------------------
-//------------------------------ _getContent --------------------------
-//---------------------------------------------------------------------
+  //---------------------------------------------------------------------
+  //------------------------------ _getContent --------------------------
+  //---------------------------------------------------------------------
 
   Widget _getContent() {
     return Column(
@@ -70,51 +70,54 @@ class _InfoScreenState extends State<InfoScreen> {
             style: TextStyle(color: Colors.red),
           ),
         ),
-        const SizedBox(
-          height: 15,
-        ),
+        const SizedBox(height: 15),
         Card(
           color: Colors.yellow,
           child: Row(
             children: const [
               Expanded(
                 flex: 3,
-                child: Text('Proy.Mód.',
-                    style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                child: Text(
+                  'Proy.Mód.',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
               ),
               Expanded(
                 flex: 3,
-                child: Text('    Fecha',
-                    style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                child: Text(
+                  '    Fecha',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
               ),
               Expanded(
                 flex: 6,
-                child: Text('Localidad',
-                    style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                child: Text(
+                  'Localidad',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
               ),
               Expanded(
                 flex: 2,
-                child: Text('Cantidad',
-                    style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                child: Text(
+                  'Cantidad',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
         ),
         Expanded(
-          child:
-              _asignacionesConFechaCita.isEmpty ? _noContent() : _getListView(),
-        )
+          child: _asignacionesConFechaCita.isEmpty
+              ? _noContent()
+              : _getListView(),
+        ),
       ],
     );
   }
 
-//-----------------------------------------------------------------------
-//------------------------------ _noContent -----------------------------
-//-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //------------------------------ _noContent -----------------------------
+  //-----------------------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -128,9 +131,9 @@ class _InfoScreenState extends State<InfoScreen> {
     );
   }
 
-//-----------------------------------------------------------------------
-//------------------------------ _getListView ---------------------------
-//-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //------------------------------ _getListView ---------------------------
+  //-----------------------------------------------------------------------
 
   Widget _getListView() {
     return ListView(
@@ -159,38 +162,35 @@ class _InfoScreenState extends State<InfoScreen> {
                                 children: [
                                   Expanded(
                                     flex: 3,
-                                    child: Text(e.proyectomodulo.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                    child: Text(
+                                      e.proyectomodulo.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
                                   ),
                                   Expanded(
                                     flex: 3,
                                     child: Text(
-                                        '${e.day.toString()}/${e.month.toString()}/${e.year.toString()}',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                      '${e.day.toString()}/${e.month.toString()}/${e.year.toString()}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
                                   ),
                                   Expanded(
                                     flex: 6,
-                                    child: Text(e.localidad.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                    child: Text(
+                                      e.localidad.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
                                   ),
                                   Expanded(
                                     flex: 1,
-                                    child: Text(e.cantidad.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                    child: Text(
+                                      e.cantidad.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 1,
-                              ),
+                              const SizedBox(height: 1),
                             ],
                           ),
                         ),
@@ -215,7 +215,10 @@ class _InfoScreenState extends State<InfoScreen> {
 
     if (connectivityResult == ConnectivityResult.none) {
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 

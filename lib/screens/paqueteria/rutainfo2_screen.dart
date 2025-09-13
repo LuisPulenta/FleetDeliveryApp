@@ -1,15 +1,15 @@
-import 'package:connectivity/connectivity.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:ui' as ui;
-import 'dart:typed_data';
 
 class RutaInfo2Screen extends StatefulWidget {
   final Usuario user;
@@ -21,30 +21,30 @@ class RutaInfo2Screen extends StatefulWidget {
   final List<Motivo> motivosLista;
   final List<Proveedor> proveedores;
 
-  const RutaInfo2Screen(
-      {Key? key,
-      required this.user,
-      required this.ruta,
-      required this.paradas,
-      required this.envios,
-      required this.paradasenvios,
-      required this.positionUser,
-      required this.motivosLista,
-      required this.proveedores})
-      : super(key: key);
+  const RutaInfo2Screen({
+    super.key,
+    required this.user,
+    required this.ruta,
+    required this.paradas,
+    required this.envios,
+    required this.paradasenvios,
+    required this.positionUser,
+    required this.motivosLista,
+    required this.proveedores,
+  });
 
   @override
   RutaInfo2ScreenState createState() => RutaInfo2ScreenState();
 }
 
 class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
-//--------------------------------------------------------
-//--------------------- Variables ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
   int idProveedor = 0;
   String _proveedor = 'Elija un Proveedor...';
-  String _proveedorError = '';
-  bool _proveedorShowError = false;
+  final String _proveedorError = '';
+  final bool _proveedorShowError = false;
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -114,17 +114,18 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     domicilioCatastro: '',
   );
 
-  Position _positionUser = const Position(
-      longitude: 0,
-      latitude: 0,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0,
-      altitudeAccuracy: 0,
-      headingAccuracy: 0);
+  Position _positionUser = Position(
+    longitude: 0,
+    latitude: 0,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
+  );
 
   ParadaEnvio parenv = ParadaEnvio(
     idParada: 0,
@@ -166,50 +167,52 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   );
 
   Parada paradaSelected = Parada(
-      idParada: 0,
-      idRuta: 0,
-      idEnvio: 0,
-      tag: 0,
-      secuencia: 0,
-      leyenda: '',
-      latitud: 0,
-      longitud: 0,
-      iconoPropio: '',
-      iDmapa: '',
-      distancia: 0,
-      tiempo: 0,
-      estado: 0,
-      fecha: '',
-      hora: '',
-      idMotivo: 0,
-      notaChofer: '',
-      nuevoOrden: 0,
-      idCabCertificacion: 0,
-      idLiquidacionFletero: 0,
-      turno: '');
+    idParada: 0,
+    idRuta: 0,
+    idEnvio: 0,
+    tag: 0,
+    secuencia: 0,
+    leyenda: '',
+    latitud: 0,
+    longitud: 0,
+    iconoPropio: '',
+    iDmapa: '',
+    distancia: 0,
+    tiempo: 0,
+    estado: 0,
+    fecha: '',
+    hora: '',
+    idMotivo: 0,
+    notaChofer: '',
+    nuevoOrden: 0,
+    idCabCertificacion: 0,
+    idLiquidacionFletero: 0,
+    turno: '',
+  );
 
   Parada paradaSaved = Parada(
-      idParada: 0,
-      idRuta: 0,
-      idEnvio: 0,
-      tag: 0,
-      secuencia: 0,
-      leyenda: '',
-      latitud: 0,
-      longitud: 0,
-      iconoPropio: '',
-      iDmapa: '',
-      distancia: 0,
-      tiempo: 0,
-      estado: 0,
-      fecha: '',
-      hora: '',
-      idMotivo: 0,
-      notaChofer: '',
-      nuevoOrden: 0,
-      idCabCertificacion: 0,
-      idLiquidacionFletero: 0,
-      turno: '');
+    idParada: 0,
+    idRuta: 0,
+    idEnvio: 0,
+    tag: 0,
+    secuencia: 0,
+    leyenda: '',
+    latitud: 0,
+    longitud: 0,
+    iconoPropio: '',
+    iDmapa: '',
+    distancia: 0,
+    tiempo: 0,
+    estado: 0,
+    fecha: '',
+    hora: '',
+    idMotivo: 0,
+    notaChofer: '',
+    nuevoOrden: 0,
+    idCabCertificacion: 0,
+    idLiquidacionFletero: 0,
+    turno: '',
+  );
 
   Envio envioSelected = Envio(
     idEnvio: 0,
@@ -374,16 +377,17 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
   );
 
   Seguimiento seguimientoSaved = Seguimiento(
-      id: 0,
-      idenvio: 0,
-      idetapa: 0,
-      estado: 0,
-      idusuario: 0,
-      fecha: 0,
-      hora: '',
-      observaciones: '',
-      motivo: '',
-      notachofer: '');
+    id: 0,
+    idenvio: 0,
+    idetapa: 0,
+    estado: 0,
+    idusuario: 0,
+    fecha: 0,
+    hora: '',
+    observaciones: '',
+    motivo: '',
+    notachofer: '',
+  );
 
   List<ParadaEnvio> _paradasenvios = [];
   List<ParadaEnvio> _paradasenviosUnProveedor = [];
@@ -393,9 +397,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
   int _nroReg = 0;
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
 
   @override
   void initState() {
@@ -406,9 +410,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _loadData ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _loadData ------------------------
+  //--------------------------------------------------------
 
   void _loadData() async {
     await _getEstados();
@@ -416,9 +420,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     _getComboProveedores();
   }
 
-//--------------------------------------------------------
-//--------------------- _getEstados ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getEstados ----------------------
+  //--------------------------------------------------------
 
   Future<void> _getEstados() async {
     _estados = [];
@@ -426,48 +430,45 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     _estados.add('No Entregado');
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffdadada),
       appBar: AppBar(
-          backgroundColor: const Color(0xff282886),
-          title: Text(widget.ruta.nombre!),
-          centerTitle: false,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 15),
-              child: CircleAvatar(
-                backgroundColor: Color(0xff282886),
-                child: _isFiltered
-                    ? IconButton(
-                        onPressed: _removeFilter,
-                        icon: const Icon(
-                          Icons.filter_none,
-                          color: Colors.white,
-                        ))
-                    : IconButton(
-                        onPressed: _showFilter,
-                        icon: const Icon(
-                          Icons.filter_alt,
-                          color: Colors.white,
-                        )),
-              ),
+        backgroundColor: const Color(0xff282886),
+        title: Text(widget.ruta.nombre!),
+        centerTitle: false,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: CircleAvatar(
+              backgroundColor: Color(0xff282886),
+              child: _isFiltered
+                  ? IconButton(
+                      onPressed: _removeFilter,
+                      icon: const Icon(Icons.filter_none, color: Colors.white),
+                    )
+                  : IconButton(
+                      onPressed: _showFilter,
+                      icon: const Icon(Icons.filter_alt, color: Colors.white),
+                    ),
             ),
-          ]),
+          ),
+        ],
+      ),
       body: Center(
         child: _showLoader ? const LoaderComponent(text: '') : _getContent(),
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getContent ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getContent ----------------------
+  //--------------------------------------------------------
 
   Widget _getContent() {
     return Column(
@@ -475,16 +476,17 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         _showProveedores(),
         _showParadasCount(),
         Expanded(
-          child:
-              _paradasenviosUnProveedor.isEmpty ? _noContent() : _getListView(),
-        )
+          child: _paradasenviosUnProveedor.isEmpty
+              ? _noContent()
+              : _getListView(),
+        ),
       ],
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showParadasCount ----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showParadasCount ----------------
+  //--------------------------------------------------------
 
   Widget _showParadasCount() {
     int pendientes = 0;
@@ -501,41 +503,47 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       child: pendientes > 0
           ? Row(
               children: [
-                const Text("Cantidad de Paradas Pendientes: ",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xff282886),
-                      fontWeight: FontWeight.bold,
-                    )),
+                const Text(
+                  "Cantidad de Paradas Pendientes: ",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xff282886),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 // Text(_paradasenviosUnProveedor.length.toString(),
                 //     style: const TextStyle(
                 //       fontSize: 14,
                 //       color: Color(0xff282886),
                 //       fontWeight: FontWeight.bold,
                 //     )),
-                Text((' $pendientes'),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Color(0xff282886),
-                      fontWeight: FontWeight.bold,
-                    )),
-              ],
-            )
-          : const Center(
-              child: Text("",
-                  maxLines: 2,
-                  style: TextStyle(
+                Text(
+                  (' $pendientes'),
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Color(0xff282886),
                     fontWeight: FontWeight.bold,
-                  )),
+                  ),
+                ),
+              ],
+            )
+          : const Center(
+              child: Text(
+                "",
+                maxLines: 2,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xff282886),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _noContent -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _noContent -----------------------
+  //--------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -549,9 +557,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getListView ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getListView ---------------------
+  //--------------------------------------------------------
 
   Widget _getListView() {
     return Column(
@@ -575,7 +583,8 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                               Expanded(
                                 child: Container(
                                   margin: const EdgeInsets.symmetric(
-                                      horizontal: 10),
+                                    horizontal: 10,
+                                  ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -586,103 +595,103 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                      e.secuencia.toString(),
-                                                      style: const TextStyle(
-                                                          fontSize: 24,
-                                                          color:
-                                                              Color(0xffbc2b51),
-                                                          fontWeight:
-                                                              FontWeight.bold)),
+                                                    e.secuencia.toString(),
+                                                    style: const TextStyle(
+                                                      fontSize: 24,
+                                                      color: Color(0xffbc2b51),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                      e.proveedor.toString(),
-                                                      style: const TextStyle(
-                                                          color:
-                                                              Color(0xff282886),
-                                                          fontWeight:
-                                                              FontWeight.bold)),
+                                                    e.proveedor.toString(),
+                                                    style: const TextStyle(
+                                                      color: Color(0xff282886),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
                                                 ),
                                                 (e.estado == 4)
                                                     ? const Text(
                                                         "ENTREGADO",
                                                         style: TextStyle(
-                                                            color: Colors.green,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                          color: Colors.green,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
                                                       )
                                                     : (e.estado == 10)
-                                                        ? const Text(
-                                                            "NO ENTREGADO",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.red,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          )
-                                                        : (e.estado == 7)
-                                                            ? const Text(
-                                                                "RECHAZADO",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .purple,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              )
-                                                            : const Text(
-                                                                "PENDIENTE",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .blue,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              )
+                                                    ? const Text(
+                                                        "NO ENTREGADO",
+                                                        style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      )
+                                                    : (e.estado == 7)
+                                                    ? const Text(
+                                                        "RECHAZADO",
+                                                        style: TextStyle(
+                                                          color: Colors.purple,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      )
+                                                    : const Text(
+                                                        "PENDIENTE",
+                                                        style: TextStyle(
+                                                          color: Colors.blue,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
                                               ],
                                             ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
+                                            const SizedBox(height: 5),
                                             Row(
                                               children: [
-                                                const Text("Nombre: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF781f1e),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
+                                                const Text(
+                                                  "Nombre: ",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF781f1e),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                                 Expanded(
                                                   child: Text(
-                                                      e.titular.toString(),
-                                                      style: const TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
+                                                    e.titular.toString(),
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
+                                            const SizedBox(height: 5),
                                             Row(
                                               children: [
-                                                const Text("Dirección: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF781f1e),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
+                                                const Text(
+                                                  "Dirección: ",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF781f1e),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                                 Expanded(
                                                   child: Text(
-                                                      e.leyenda.toString(),
-                                                      style: const TextStyle(
-                                                        fontSize: 12,
-                                                      )),
+                                                    e.leyenda.toString(),
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -693,7 +702,8 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                                   ),
                                 ),
                               ),
-                              e.estado == 3 //En Fletero
+                              e.estado ==
+                                      3 //En Fletero
                                   ? Checkbox(
                                       value: e.enviado == 1 ? true : false,
                                       onChanged: (value) {
@@ -702,13 +712,15 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                                           if (paradaEnvio.idEnvio ==
                                                   e.idEnvio &&
                                               paradaEnvio.estado == 3) {
-                                            paradaEnvio.enviado =
-                                                value == true ? 1 : 0;
+                                            paradaEnvio.enviado = value == true
+                                                ? 1
+                                                : 0;
                                           }
                                         }
                                         setState(() {});
-                                      })
-                                  : Container()
+                                      },
+                                    )
+                                  : Container(),
                             ],
                           ),
                         )
@@ -725,9 +737,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _llenarparadasenvios -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _llenarparadasenvios -------------
+  //--------------------------------------------------------
 
   Future<void> _llenarparadasenvios() async {
     _paradasenvios = [];
@@ -739,8 +751,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
 
     for (var paradaenvio in _paradasenviosdb) {
-      if (DateTime.parse(paradaenvio.fecha!)
-              .isBefore(DateTime.now().add(const Duration(days: -7))) &&
+      if (DateTime.parse(
+            paradaenvio.fecha!,
+          ).isBefore(DateTime.now().add(const Duration(days: -7))) &&
           paradaenvio.enviado != 0) {
         DBParadasEnvios.delete(paradaenvio);
       }
@@ -798,9 +811,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _putParada -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _putParada -----------------------
+  //--------------------------------------------------------
 
   Future<void> _putParada(ParadaEnvio paradaenvio) async {
     for (var element in widget.paradas) {
@@ -838,11 +851,15 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       };
 
       Response response = await ApiHelper.put(
-          '/api/Paradas/', paradaSelected.idParada.toString(), requestParada);
+        '/api/Paradas/',
+        paradaSelected.idParada.toString(),
+        requestParada,
+      );
 
       if (response.isSuccess) {
         Response response2 = await ApiHelper.getParadaByIDParada(
-            paradaSelected.idParada.toString());
+          paradaSelected.idParada.toString(),
+        );
         if (response2.isSuccess) {
           paradaSaved = response2.result;
           if (paradaSaved.estado == paradaenvio.estado) {
@@ -854,9 +871,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     await _putEnvio(paradaenvio);
   }
 
-//--------------------------------------------------------
-//--------------------- _putEnvio ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _putEnvio ------------------------
+  //--------------------------------------------------------
 
   Future<void> _putEnvio(ParadaEnvio paradaenvio) async {
     for (var element in widget.envios) {
@@ -934,8 +951,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
         'hashUnico': envioSelected.hashUnico,
         'bultosPikeados': envioSelected.bultosPikeados,
         'centroDistribucion': envioSelected.centroDistribucion,
-        'fechaUltimaActualizacion':
-            DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'fechaUltimaActualizacion': DateFormat(
+          'yyyy-MM-dd',
+        ).format(DateTime.now()),
         'volumen': envioSelected.volumen,
         'avonZoneNumber': envioSelected.avonZoneNumber,
         'avonSectorNumber': envioSelected.avonSectorNumber,
@@ -962,10 +980,14 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       };
 
       Response response = await ApiHelper.put(
-          '/api/Envios/', envioSelected.idEnvio.toString(), requestEnvio);
+        '/api/Envios/',
+        envioSelected.idEnvio.toString(),
+        requestEnvio,
+      );
       if (response.isSuccess) {
-        Response response2 =
-            await ApiHelper.getEnvioByIdEnvio(envioSelected.idEnvio.toString());
+        Response response2 = await ApiHelper.getEnvioByIdEnvio(
+          envioSelected.idEnvio.toString(),
+        );
         if (response2.isSuccess) {
           envioSaved = response2.result;
           if (envioSaved.estado == paradaenvio.estado) {
@@ -977,9 +999,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     await _postSeguimiento(paradaenvio);
   }
 
-//--------------------------------------------------------
-//--------------------- _postSeguimiento -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _postSeguimiento -----------------
+  //--------------------------------------------------------
 
   Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
@@ -1010,7 +1032,8 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
       if (response.isSuccess) {
         Response response2 = await ApiHelper.getUltimoSeguimientoByIdEnvio(
-            paradaenvio.idEnvio.toString());
+          paradaenvio.idEnvio.toString(),
+        );
         if (response2.isSuccess) {
           //CHEQUEAR SI FECHA GUARDADA ES IGUAL A FECHA EN EL CELULAR
           seguimientoSaved = response2.result;
@@ -1029,9 +1052,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviado1 -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviado1 -------------------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
     _puso1 = false;
@@ -1086,34 +1109,40 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     } while (_puso1 == false);
   }
 
-//--------------------------------------------------------
-//--------------------- isNullOrEmpty --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- isNullOrEmpty --------------------
+  //--------------------------------------------------------
 
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
 
-//--------------------------------------------------------
-//--------------------- getBytesFromAsset ----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- getBytesFromAsset ----------------
+  //--------------------------------------------------------
 
   Future<Uint8List> getBytesFromAsset({String? path, int? width}) async {
     ByteData? data = await rootBundle.load(path.toString());
-    ui.Codec? codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
+    ui.Codec? codec = await ui.instantiateImageCodec(
+      data.buffer.asUint8List(),
+      targetWidth: width,
+    );
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-        .buffer
-        .asUint8List();
+    return (await fi.image.toByteData(
+      format: ui.ImageByteFormat.png,
+    ))!.buffer.asUint8List();
   }
 
-//--------------------------------------------------------
-//--------------------- getBytesFromCanvas ---------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- getBytesFromCanvas ---------------
+  //--------------------------------------------------------
 
   Future<Uint8List> getBytesFromCanvas(
-      int customNum, int width, int height, int estado) async {
+    int customNum,
+    int width,
+    int height,
+    int estado,
+  ) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
@@ -1130,22 +1159,28 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     painter.text = TextSpan(
       text: customNum.toString(), // your custom number here
       style: const TextStyle(
-          fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.bold),
+        fontSize: 28.0,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
     );
 
     painter.layout();
     painter.paint(
-        canvas,
-        Offset((width * 0.5) - painter.width * 0.5,
-            (height * .5) - painter.height * 0.5));
+      canvas,
+      Offset(
+        (width * 0.5) - painter.width * 0.5,
+        (height * .5) - painter.height * 0.5,
+      ),
+    );
     final img = await pictureRecorder.endRecording().toImage(width, height);
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
     return data!.buffer.asUint8List();
   }
 
-//--------------------------------------------------------
-//--------------------- _getPosition ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getPosition ---------------------
+  //--------------------------------------------------------
 
   Future _getPosition() async {
     LocationPermission permission;
@@ -1155,34 +1190,6 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                title: const Text('Aviso'),
-                content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const <Widget>[
-                      Text('El permiso de localización está negado.'),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ]),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Ok')),
-                ],
-              );
-            });
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -1191,31 +1198,63 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
               ),
               title: const Text('Aviso'),
               content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text(
-                        'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
+                mainAxisSize: MainAxisSize.min,
+                children: const <Widget>[
+                  Text('El permiso de localización está negado.'),
+                  SizedBox(height: 10),
+                ],
+              ),
               actions: <Widget>[
                 TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Ok'),
+                ),
               ],
             );
-          });
+          },
+        );
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text(
+                  'El permiso de localización está negado permanentemente. No se puede requerir este permiso.',
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       return;
     }
 
     _positionUser = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviadoParada1 -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviadoParada1 -------------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviadoParada1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -1266,9 +1305,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviadoEnvio1 --------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviadoEnvio1 --------------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviadoEnvio1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -1319,9 +1358,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviadoSeguimiento1 --------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviadoSeguimiento1 --------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviadoSeguimiento1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -1372,9 +1411,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _removeFilter --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _removeFilter --------------------
+  //--------------------------------------------------------
 
   void _removeFilter() {
     setState(() {
@@ -1385,61 +1424,68 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     _filter();
   }
 
-//--------------------------------------------------------
-//--------------------- _showFilter ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showFilter ----------------------
+  //--------------------------------------------------------
 
   void _showFilter() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            title: const Text('Filtrar Paradas'),
-            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Text('Filtrar Paradas'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
               const Text('Escriba texto a buscar en Nombre o Dirección'),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               TextField(
                 autofocus: true,
                 decoration: InputDecoration(
-                    hintText: 'Criterio de búsqueda...',
-                    labelText: 'Buscar',
-                    suffixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                  hintText: 'Criterio de búsqueda...',
+                  labelText: 'Buscar',
+                  suffixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 onChanged: (value) {
                   _search = value;
                 },
               ),
-            ]),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancelar')),
-              TextButton(
-                  onPressed: () => _filter(), child: const Text('Filtrar')),
             ],
-          );
-        });
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () => _filter(),
+              child: const Text('Filtrar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _filter --------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _filter --------------------------
+  //--------------------------------------------------------
 
-  _filter() {
+  void _filter() {
     if (_search.isEmpty) {
       return;
     }
     List<ParadaEnvio> filteredList = [];
     for (var paradasenvio in _paradasenvios) {
-      if (paradasenvio.domicilio!
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
+      if (paradasenvio.domicilio!.toLowerCase().contains(
+            _search.toLowerCase(),
+          ) ||
           paradasenvio.titular!.toLowerCase().contains(_search.toLowerCase())) {
         filteredList.add(paradasenvio);
       }
@@ -1453,11 +1499,11 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     Navigator.of(context).pop();
   }
 
-//--------------------------------------------------------
-//--------------------- _guardar ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _guardar ------------------------
+  //--------------------------------------------------------
 
-  _guardar() async {
+  Future<void> _guardar() async {
     int cantidad = 0;
     for (var paradaenvio in _paradasenviosfiltered) {
       if (paradaenvio.enviado == 1) {
@@ -1490,34 +1536,37 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
 
     await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            title: const Text(''),
-            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Text(''),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
               Text('¿Está seguro de guardar $cantidad $palabra?'),
-              const SizedBox(
-                height: 10,
-              ),
-            ]),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('NO')),
-              TextButton(onPressed: _saveRecords, child: const Text('SI')),
+              const SizedBox(height: 10),
             ],
-          );
-        });
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('NO'),
+            ),
+            TextButton(onPressed: _saveRecords, child: const Text('SI')),
+          ],
+        );
+      },
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _showMotivos ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showMotivos ---------------------
+  //--------------------------------------------------------
 
   Widget _showMotivos() {
     return Row(
@@ -1527,7 +1576,7 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
             padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
             height: 66,
             child: DropdownButtonFormField(
-              value: _motivo,
+              initialValue: _motivo,
               isExpanded: true,
               isDense: true,
               style: const TextStyle(fontSize: 14, color: Colors.black),
@@ -1536,8 +1585,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                 filled: true,
                 hintText: 'Elija un Motivo...',
                 labelText: 'Motivo',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 errorText: _motivoShowError ? _motivoError : null,
               ),
               items: motivos,
@@ -1560,31 +1610,37 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getComboMotivos -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getComboMotivos -----------------
+  //--------------------------------------------------------
 
   void _getComboMotivos() {
     motivosEntregados = [];
     motivosNoEntregados = [];
-    motivosEntregados.add(const DropdownMenuItem(
-      value: 'Elija un Motivo...',
-      child: Text('Elija un Motivo...'),
-    ));
+    motivosEntregados.add(
+      const DropdownMenuItem(
+        value: 'Elija un Motivo...',
+        child: Text('Elija un Motivo...'),
+      ),
+    );
 
-    motivosNoEntregados.add(const DropdownMenuItem(
-      value: 'Elija un Motivo...',
-      child: Text('Elija un Motivo...'),
-    ));
+    motivosNoEntregados.add(
+      const DropdownMenuItem(
+        value: 'Elija un Motivo...',
+        child: Text('Elija un Motivo...'),
+      ),
+    );
 
     for (var motivo in widget.motivosLista) {
       if (motivo.activo == 1) {
         if (motivo.muestraParaEntregado == 1 &&
             motivo.exclusivoCliente == idProveedor) {
-          motivosEntregados.add(DropdownMenuItem(
-            value: motivo.motivo.toString(),
-            child: Text(motivo.motivo.toString()),
-          ));
+          motivosEntregados.add(
+            DropdownMenuItem(
+              value: motivo.motivo.toString(),
+              child: Text(motivo.motivo.toString()),
+            ),
+          );
         }
       }
     }
@@ -1593,18 +1649,20 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
       if (motivo.activo == 1) {
         if (motivo.muestraParaEntregado != 1 &&
             motivo.exclusivoCliente == idProveedor) {
-          motivosNoEntregados.add(DropdownMenuItem(
-            value: motivo.motivo.toString(),
-            child: Text(motivo.motivo.toString()),
-          ));
+          motivosNoEntregados.add(
+            DropdownMenuItem(
+              value: motivo.motivo.toString(),
+              child: Text(motivo.motivo.toString()),
+            ),
+          );
         }
       }
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _showEstados ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showEstados ---------------------
+  //--------------------------------------------------------
 
   Widget _showEstados() {
     return Row(
@@ -1617,14 +1675,12 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                 ? Row(
                     children: const [
                       CircularProgressIndicator(),
-                      SizedBox(
-                        width: 10,
-                      ),
+                      SizedBox(width: 10),
                       Text('Cargando Estados...'),
                     ],
                   )
                 : DropdownButtonFormField(
-                    value: _estado,
+                    initialValue: _estado,
                     isExpanded: true,
                     isDense: true,
                     style: const TextStyle(fontSize: 14, color: Colors.black),
@@ -1635,7 +1691,8 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                       labelText: 'Estado',
                       errorText: _estadoShowError ? _estadoError : null,
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                     items: _getComboEstados(),
                     onChanged: (value) {
@@ -1645,8 +1702,8 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                       _estado == 'Entregado'
                           ? motivos = motivosEntregados
                           : _estado == 'No Entregado'
-                              ? motivos = motivosNoEntregados
-                              : motivos = [];
+                          ? motivos = motivosNoEntregados
+                          : motivos = [];
 
                       setState(() {});
                     },
@@ -1657,33 +1714,36 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getComboEstados -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getComboEstados -----------------
+  //--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboEstados() {
     List<DropdownMenuItem<String>> list = [];
-    list.add(const DropdownMenuItem(
-      value: 'Elija un Estado...',
-      child: Text('Elija un Estado...'),
-    ));
+    list.add(
+      const DropdownMenuItem(
+        value: 'Elija un Estado...',
+        child: Text('Elija un Estado...'),
+      ),
+    );
 
-    list.add(const DropdownMenuItem(
-      value: 'Entregado',
-      child: Text('Entregado'),
-    ));
+    list.add(
+      const DropdownMenuItem(value: 'Entregado', child: Text('Entregado')),
+    );
 
-    list.add(const DropdownMenuItem(
-      value: 'No Entregado',
-      child: Text('No Entregado'),
-    ));
+    list.add(
+      const DropdownMenuItem(
+        value: 'No Entregado',
+        child: Text('No Entregado'),
+      ),
+    );
 
     return list;
   }
 
-//--------------------------------------------------------
-//--------------------- _saveRecords ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _saveRecords ---------------------
+  //--------------------------------------------------------
 
   Future<void> _saveRecords() async {
     _paradasenviosfiltered2 = _paradasenviosfiltered;
@@ -1706,9 +1766,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     Navigator.pop(context, 'yes');
   }
 
-//--------------------------------------------------------
-//--------------------- _guardaParadaEnBDLocal -----------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _guardaParadaEnBDLocal -----------
+  //--------------------------------------------------------
 
   Future<void> _guardaParadaEnBDLocal(ParadaEnvio paradaenvio) async {
     for (var element in widget.paradas) {
@@ -1719,11 +1779,11 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
 
     _nroMotivo = 0;
 
-    widget.motivosLista.forEach((mot) {
+    for (var mot in widget.motivosLista) {
       if (mot.motivo == _motivo) {
         _nroMotivo = mot.id!;
       }
-    });
+    }
 
     ParadaEnvio requestParadaEnvio = ParadaEnvio(
       idParada: paradaenvio.idParada,
@@ -1772,9 +1832,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _showSnackbar --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showSnackbar --------------------
+  //--------------------------------------------------------
 
   void _showSnackbar() {
     SnackBar snackbar = const SnackBar(
@@ -1786,9 +1846,9 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     //ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
-//--------------------------------------------------------
-//--------------------- _showButton ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showButton ----------------------
+  //--------------------------------------------------------
 
   Widget _showButton() {
     return Row(
@@ -1798,39 +1858,36 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
           child: Container(
             padding: EdgeInsets.all(10),
             child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF282886),
-                  minimumSize: const Size(50, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF282886),
+                minimumSize: const Size(50, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
                 ),
-                onPressed: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  _guardar();
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.save),
-                    SizedBox(
-                      width: 25,
-                    ),
-                    Text('Guardar')
-                  ],
-                )),
+              ),
+              onPressed: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+                _guardar();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.save),
+                  SizedBox(width: 25),
+                  Text('Guardar'),
+                ],
+              ),
+            ),
           ),
         ),
-        const SizedBox(
-          width: 5,
-        ),
+        const SizedBox(width: 5),
       ],
     );
   }
 
-//--------------------------------------------------------
-//--------------- _showProveedores -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------- _showProveedores -----------------------
+  //--------------------------------------------------------
 
   Widget _showProveedores() {
     return Row(
@@ -1842,14 +1899,12 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                 ? Row(
                     children: const [
                       CircularProgressIndicator(),
-                      SizedBox(
-                        width: 10,
-                      ),
+                      SizedBox(width: 10),
                       Text('Cargando Proveedores...'),
                     ],
                   )
                 : DropdownButtonFormField(
-                    value: _proveedor,
+                    initialValue: _proveedor,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -1857,7 +1912,8 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                       labelText: 'Proveedores',
                       errorText: _proveedorShowError ? _proveedorError : null,
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                     items: _getComboProveedores(),
                     onChanged: (value) {
@@ -1872,32 +1928,29 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
                   ),
           ),
         ),
-        const SizedBox(
-          width: 10,
-        ),
+        const SizedBox(width: 10),
         ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF282886),
-              minimumSize: const Size(50, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF282886),
+            minimumSize: const Size(50, 50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
             ),
-            //onPressed: () => _getObras(),
-            onPressed: () async {
-              _getParadasenviosUnProveedor();
-            },
-            child: const Icon(Icons.search)),
-        const SizedBox(
-          width: 10,
+          ),
+          //onPressed: () => _getObras(),
+          onPressed: () async {
+            _getParadasenviosUnProveedor();
+          },
+          child: const Icon(Icons.search),
         ),
+        const SizedBox(width: 10),
       ],
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getComboProveedores -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getComboProveedores -------------
+  //--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboProveedores() {
     _proveedores = [];
@@ -1911,26 +1964,25 @@ class RutaInfo2ScreenState extends State<RutaInfo2Screen> {
     _proveedores = paradasenviostiposSet.toList();
 
     List<DropdownMenuItem<String>> list = [];
-    list.add(const DropdownMenuItem(
-      value: 'Elija un Proveedor...',
-      child: Text('Elija un Proveedor...'),
-    ));
+    list.add(
+      const DropdownMenuItem(
+        value: 'Elija un Proveedor...',
+        child: Text('Elija un Proveedor...'),
+      ),
+    );
 
     for (String proveedor in _proveedores) {
-      list.add(DropdownMenuItem(
-        value: proveedor,
-        child: Text(proveedor),
-      ));
+      list.add(DropdownMenuItem(value: proveedor, child: Text(proveedor)));
     }
 
     return list;
   }
 
-//--------------------------------------------------------
-//------------------ _getParadasenviosUnProveedor --------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //------------------ _getParadasenviosUnProveedor --------
+  //--------------------------------------------------------
 
-  _getParadasenviosUnProveedor() {
+  void _getParadasenviosUnProveedor() {
     _paradasenviosUnProveedor = [];
     for (ParadaEnvio paradasenvio in widget.paradasenvios) {
       if (paradasenvio.proveedor == _proveedor && paradasenvio.estado == 3) {

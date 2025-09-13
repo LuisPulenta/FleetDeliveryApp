@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:flutter/material.dart';

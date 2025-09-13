@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
@@ -16,22 +16,22 @@ class AsignacionesScreen extends StatefulWidget {
   final Position positionUser;
   final int opcion;
   final Asignacion2 asignacion;
-  const AsignacionesScreen(
-      {Key? key,
-      required this.user,
-      required this.positionUser,
-      required this.opcion,
-      required this.asignacion})
-      : super(key: key);
+  const AsignacionesScreen({
+    super.key,
+    required this.user,
+    required this.positionUser,
+    required this.opcion,
+    required this.asignacion,
+  });
 
   @override
   AsignacionesScreenState createState() => AsignacionesScreenState();
 }
 
 class AsignacionesScreenState extends State<AsignacionesScreen> {
-//--------------------------------------------------------
-//--------------------- Variables ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -65,16 +65,17 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
 
   List<FuncionesApp> _funcionesApp = [];
   FuncionesApp _funcionApp = FuncionesApp(
-      proyectomodulo: '',
-      habilitaFoto: 0,
-      habilitaDNI: 0,
-      habilitaEstadisticas: 0,
-      habilitaFirma: 0,
-      serieObligatoria: 0,
-      codigoFinal: 0,
-      habilitaOtroRecupero: 0,
-      habilitaCambioModelo: 0,
-      habilitaVerPdf: 0);
+    proyectomodulo: '',
+    habilitaFoto: 0,
+    habilitaDNI: 0,
+    habilitaEstadisticas: 0,
+    habilitaFirma: 0,
+    serieObligatoria: 0,
+    codigoFinal: 0,
+    habilitaOtroRecupero: 0,
+    habilitaCambioModelo: 0,
+    habilitaVerPdf: 0,
+  );
 
   List<CodigoCierre> _codigoscierreAux = [];
   final List<CodigoCierre> _codigoscierre = [];
@@ -94,66 +95,67 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
   int intentos = 0;
 
   Asignacion2 asignacionSelected = Asignacion2(
-      recupidjobcard: '',
-      cliente: '',
-      documento: '',
-      nombre: '',
-      domicilio: '',
-      cp: '',
-      entrecallE1: '',
-      entrecallE2: '',
-      partido: '',
-      localidad: '',
-      telefono: '',
-      grxx: '',
-      gryy: '',
-      estadogaos: '',
-      proyectomodulo: '',
-      userID: 0,
-      causantec: '',
-      subcon: '',
-      fechaAsignada: '',
-      fechacaptura: '',
-      codigoCierre: 0,
-      descripcion: '',
-      cierraenapp: 0,
-      nomostrarapp: 0,
-      novedades: '',
-      provincia: '',
-      reclamoTecnicoID: 0,
-      motivos: '',
-      fechaCita: '',
-      medioCita: '',
-      nroSeriesExtras: '',
-      evento1: '',
-      fechaEvento1: '',
-      evento2: '',
-      fechaEvento2: '',
-      evento3: '',
-      fechaEvento3: '',
-      evento4: '',
-      fechaEvento4: '',
-      observacion: '',
-      telefAlternativo1: '',
-      telefAlternativo2: '',
-      telefAlternativo3: '',
-      telefAlternativo4: '',
-      cantAsign: 0,
-      codigoequivalencia: '',
-      deco1descripcion: '',
-      elegir: 0,
-      observacionCaptura: '',
-      zona: '',
-      modificadoAPP: 0,
-      hsCumplidaTime: '',
-      marcado: 0,
-      emailCliente: '');
+    recupidjobcard: '',
+    cliente: '',
+    documento: '',
+    nombre: '',
+    domicilio: '',
+    cp: '',
+    entrecallE1: '',
+    entrecallE2: '',
+    partido: '',
+    localidad: '',
+    telefono: '',
+    grxx: '',
+    gryy: '',
+    estadogaos: '',
+    proyectomodulo: '',
+    userID: 0,
+    causantec: '',
+    subcon: '',
+    fechaAsignada: '',
+    fechacaptura: '',
+    codigoCierre: 0,
+    descripcion: '',
+    cierraenapp: 0,
+    nomostrarapp: 0,
+    novedades: '',
+    provincia: '',
+    reclamoTecnicoID: 0,
+    motivos: '',
+    fechaCita: '',
+    medioCita: '',
+    nroSeriesExtras: '',
+    evento1: '',
+    fechaEvento1: '',
+    evento2: '',
+    fechaEvento2: '',
+    evento3: '',
+    fechaEvento3: '',
+    evento4: '',
+    fechaEvento4: '',
+    observacion: '',
+    telefAlternativo1: '',
+    telefAlternativo2: '',
+    telefAlternativo3: '',
+    telefAlternativo4: '',
+    cantAsign: 0,
+    codigoequivalencia: '',
+    deco1descripcion: '',
+    elegir: 0,
+    observacionCaptura: '',
+    zona: '',
+    modificadoAPP: 0,
+    hsCumplidaTime: '',
+    marcado: 0,
+    emailCliente: '',
+  );
 
   final Set<Marker> _markers = {};
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
 
   @override
   void initState() {
@@ -167,9 +169,9 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +180,8 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
         title: _tipoasignacion != 'Elija un Tipo de Asignación...'
             ? FittedBox(
                 child: Text(
-                    'Asig. $_tipoasignacion: ${_asignaciones2.length.toString()}'),
+                  'Asig. $_tipoasignacion: ${_asignaciones2.length.toString()}',
+                ),
               )
             : Text('Asignaciones: ${_asignaciones2.length.toString()}'),
         backgroundColor: const Color(0xFF282886),
@@ -188,19 +191,23 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
           _asignaciones.isEmpty
               ? Container()
               : IconButton(
-                  onPressed: _showMap2, icon: const Icon(Icons.directions)),
+                  onPressed: _showMap2,
+                  icon: const Icon(Icons.directions),
+                ),
           _asignaciones.isEmpty
               ? Container()
               : IconButton(onPressed: _showMap, icon: const Icon(Icons.map)),
           _asignaciones.isEmpty
               ? Container()
               : _isFiltered
-                  ? IconButton(
-                      onPressed: _removeFilter,
-                      icon: const Icon(Icons.filter_none))
-                  : IconButton(
-                      onPressed: _showFilter,
-                      icon: const Icon(Icons.filter_alt)),
+              ? IconButton(
+                  onPressed: _removeFilter,
+                  icon: const Icon(Icons.filter_none),
+                )
+              : IconButton(
+                  onPressed: _showFilter,
+                  icon: const Icon(Icons.filter_alt),
+                ),
         ],
       ),
       body: Container(
@@ -208,111 +215,108 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
         color: const Color(0xFFC7C7C8),
         child: Center(
           child: _showLoader
-              ? const LoaderComponent(
-                  text: 'Cargando ASIGNACIONES.',
-                )
+              ? const LoaderComponent(text: 'Cargando ASIGNACIONES.')
               : _getContent(),
         ),
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showTipos -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showTipos -----------------------
+  //--------------------------------------------------------
 
   Widget _showTipos() {
     return Row(
       children: [
         Expanded(
           child: Container(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
+            padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
             child: _isloading
                 ? Row(
                     children: const [
                       CircularProgressIndicator(),
-                      SizedBox(
-                        width: 10,
-                      ),
+                      SizedBox(width: 10),
                       Text('Cargando Tipos de Asignación...'),
                     ],
                   )
                 : _tiposasignacion.isEmpty
-                    ? Row(
-                        children: const [
-                          Text(
-                            'El Usuario no tiene Asignaciones',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      )
-                    : DropdownButtonFormField(
-                        value: _tipoasignacion,
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          hintText: 'Elija un Tipo de Asignación...',
-                          labelText: 'Tipo de Asignación',
-                          errorText: _tipoasignacionShowError
-                              ? _tipoasignacionError
-                              : null,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                        ),
-                        items: _getComboTiposAsignacion(),
-                        onChanged: (value) {
-                          _tipoasignacion = value.toString();
-                        },
+                ? Row(
+                    children: const [
+                      Text(
+                        'El Usuario no tiene Asignaciones',
+                        style: TextStyle(color: Colors.red, fontSize: 18),
                       ),
+                    ],
+                  )
+                : DropdownButtonFormField(
+                    initialValue: _tipoasignacion,
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Elija un Tipo de Asignación...',
+                      labelText: 'Tipo de Asignación',
+                      errorText: _tipoasignacionShowError
+                          ? _tipoasignacionError
+                          : null,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    items: _getComboTiposAsignacion(),
+                    onChanged: (value) {
+                      _tipoasignacion = value.toString();
+                    },
+                  ),
           ),
         ),
-        const SizedBox(
-          width: 10,
-        ),
+        const SizedBox(width: 5),
         ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF282886),
-              minimumSize: const Size(50, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF282886),
+            minimumSize: const Size(40, 50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
             ),
-            //onPressed: () => _getObras(),
-            onPressed: () async {
-              await _getObras();
-            },
-            child: const Icon(Icons.search)),
+          ),
+          //onPressed: () => _getObras(),
+          onPressed: () async {
+            await _getObras();
+          },
+          child: const Icon(Icons.search),
+        ),
       ],
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getComboTiposAsignacion ---------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getComboTiposAsignacion ---------
+  //--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboTiposAsignacion() {
     List<DropdownMenuItem<String>> list = [];
-    list.add(const DropdownMenuItem(
-      value: 'Elija un Tipo de Asignación...',
-      child: Text('Elija un Tipo de Asignación...'),
-    ));
+    list.add(
+      const DropdownMenuItem(
+        value: 'Elija un Tipo de Asignación...',
+        child: Text('Elija un Tipo de Asignación...'),
+      ),
+    );
 
     for (var tipoasignacion in _tiposasignacion) {
-      list.add(DropdownMenuItem(
-        value: tipoasignacion.proyectomodulo.toString(),
-        child: Text(tipoasignacion.proyectomodulo.toString()),
-      ));
+      list.add(
+        DropdownMenuItem(
+          value: tipoasignacion.proyectomodulo.toString(),
+          child: Text(tipoasignacion.proyectomodulo.toString()),
+        ),
+      );
     }
 
     return list;
   }
 
-//--------------------------------------------------------
-//--------------------- _showZonas -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showZonas -----------------------
+  //--------------------------------------------------------
 
   Widget _showZonas() {
     return Row(
@@ -325,14 +329,12 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                 ? Row(
                     children: const [
                       CircularProgressIndicator(),
-                      SizedBox(
-                        width: 10,
-                      ),
+                      SizedBox(width: 10),
                       Text('Cargando Zonas...'),
                     ],
                   )
                 : DropdownButtonFormField(
-                    value: _zona,
+                    initialValue: _zona,
                     isExpanded: true,
                     isDense: true,
                     style: const TextStyle(fontSize: 12, color: Colors.black),
@@ -343,7 +345,8 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                       labelText: 'Zona',
                       errorText: _zonaShowError ? _zonaError : null,
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                     items: _getComboZonas(),
                     onChanged: (value) {
@@ -365,9 +368,9 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showTextFilter ------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showTextFilter ------------------
+  //--------------------------------------------------------
 
   Widget _showTextFilter() {
     return Padding(
@@ -381,42 +384,33 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
               Expanded(
                 flex: 1,
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF282886),
-                      minimumSize: const Size(50, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF282886),
+                    minimumSize: const Size(50, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    onPressed: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      _orderMethod();
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.sort_by_alpha),
-                        SizedBox(
-                          width: 5,
-                        ),
-                      ],
-                    )),
+                  ),
+                  onPressed: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    _orderMethod();
+                  },
+                  child: Icon(Icons.sort_by_alpha),
+                ),
               ),
               Expanded(flex: 3, child: _showTextoBuscar()),
               Expanded(flex: 2, child: _showButtons()),
             ],
           ),
-          const SizedBox(
-            height: 0,
-          ),
+          const SizedBox(height: 0),
         ],
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showTextoBuscar -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showTextoBuscar -----------------
+  //--------------------------------------------------------
 
   Widget _showTextoBuscar() {
     return Container(
@@ -429,12 +423,10 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
           filled: true,
           hintText: 'Texto a buscar...',
           labelText: 'Texto a buscar',
-          //errorText: _codigoShowError ? _codigoError : null,
 
+          //errorText: _codigoShowError ? _codigoError : null,
           border: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Color(0xFF282886),
-            ),
+            borderSide: const BorderSide(color: Color(0xFF282886)),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
@@ -445,9 +437,9 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showButtons ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showButtons ---------------------
+  //--------------------------------------------------------
 
   Widget _showButtons() {
     return Row(
@@ -455,30 +447,21 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
       children: <Widget>[
         Expanded(
           child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF282886),
-                minimumSize: const Size(50, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF282886),
+              minimumSize: const Size(50, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
               ),
-              onPressed: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                _filter();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.search),
-                  SizedBox(
-                    width: 5,
-                  ),
-                ],
-              )),
+            ),
+            onPressed: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+              _filter();
+            },
+            child: Icon(Icons.search),
+          ),
         ),
-        const SizedBox(
-          width: 5,
-        ),
+        const SizedBox(width: 5),
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -494,49 +477,45 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
               _searchController.text = '';
               _filter();
             },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.cancel),
-                SizedBox(
-                  width: 5,
-                ),
-              ],
-            ), //=> _search(),
+            child: Icon(Icons.cancel), //=> _search(),
           ),
         ),
       ],
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getComboZonas -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getComboZonas -------------------
+  //--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboZonas() {
     List<DropdownMenuItem<String>> list = [];
-    list.add(const DropdownMenuItem(
-      value: 'Elija una Zona...',
-      child: Text('Elija una Zona...'),
-    ));
+    list.add(
+      const DropdownMenuItem(
+        value: 'Elija una Zona...',
+        child: Text('Elija una Zona...'),
+      ),
+    );
 
     for (var zona in _zonas) {
       if (zona.zona == '') {
         zona.zona = ' Sin Zona';
       }
 
-      list.add(DropdownMenuItem(
-        value: zona.zona.toString(),
-        child: Text(zona.zona.toString()),
-      ));
+      list.add(
+        DropdownMenuItem(
+          value: zona.zona.toString(),
+          child: Text(zona.zona.toString()),
+        ),
+      );
     }
 
     return list;
   }
 
-//--------------------------------------------------------
-//--------------------- _showCarteras --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showCarteras --------------------
+  //--------------------------------------------------------
 
   Widget _showCarteras() {
     return Row(
@@ -549,14 +528,12 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                 ? Row(
                     children: const [
                       CircularProgressIndicator(),
-                      SizedBox(
-                        width: 10,
-                      ),
+                      SizedBox(width: 10),
                       Text('Cargando Carteras...'),
                     ],
                   )
                 : DropdownButtonFormField(
-                    value: _cartera,
+                    initialValue: _cartera,
                     isExpanded: true,
                     isDense: true,
                     style: const TextStyle(fontSize: 12, color: Colors.black),
@@ -566,7 +543,8 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                       hintText: 'Elija una Cartera...',
                       labelText: 'Cartera',
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       errorText: _carteraShowError ? _carteraError : null,
                     ),
                     items: _getComboCarteras(),
@@ -589,50 +567,52 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getComboCarteras ----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getComboCarteras ----------------
+  //--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboCarteras() {
     List<DropdownMenuItem<String>> list = [];
-    list.add(const DropdownMenuItem(
-      value: 'Elija una Cartera...',
-      child: Text('Elija una Cartera...'),
-    ));
+    list.add(
+      const DropdownMenuItem(
+        value: 'Elija una Cartera...',
+        child: Text('Elija una Cartera...'),
+      ),
+    );
 
     for (var cartera in _carteras) {
       if (cartera.motivos == '') {
         cartera.motivos = ' Sin Cartera';
       }
 
-      list.add(DropdownMenuItem(
-        value: cartera.motivos.toString(),
-        child: Text(cartera.motivos.toString()),
-      ));
+      list.add(
+        DropdownMenuItem(
+          value: cartera.motivos.toString(),
+          child: Text(cartera.motivos.toString()),
+        ),
+      );
     }
 
     return list;
   }
 
-//--------------------------------------------------------
-//--------------------- _getContent ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getContent ----------------------
+  //--------------------------------------------------------
 
   Widget _getContent() {
     return Column(
       children: <Widget>[
         _asignaciones.isEmpty ? _showTipos() : _showTextFilter(),
         _showFiltros(),
-        Expanded(
-          child: _asignaciones2.isEmpty ? _noContent() : _getListView(),
-        )
+        Expanded(child: _asignaciones2.isEmpty ? _noContent() : _getListView()),
       ],
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showFiltros ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showFiltros ---------------------
+  //--------------------------------------------------------
 
   Widget _showFiltros() {
     return Container(
@@ -642,54 +622,53 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
         children: [
           Row(
             children: [
-              const Text("Prioridad: ",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  )),
+              const Text(
+                "Prioridad: ",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
               Checkbox(
-                  value: _prioridad,
-                  focusColor: const Color(0xFF282886),
-                  fillColor: MaterialStateProperty.all(const Color(0xFF282886)),
-                  onChanged: (value) {
-                    _prioridad = value!;
-                    _filter();
-                  }),
-              const Text("C/Cita HOY: ",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  )),
+                value: _prioridad,
+                focusColor: const Color(0xFF282886),
+                fillColor: WidgetStateProperty.all(const Color(0xFF282886)),
+                onChanged: (value) {
+                  _prioridad = value!;
+                  _filter();
+                },
+              ),
+              const Text(
+                "C/Cita HOY: ",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
               Checkbox(
-                  value: _citaHoy,
-                  focusColor: const Color(0xFF282886),
-                  fillColor: MaterialStateProperty.all(const Color(0xFF282886)),
-                  onChanged: (value) {
-                    _citaHoy = value!;
-                    _filter();
-                  }),
-              const Text("C/Ruta: ",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  )),
+                value: _citaHoy,
+                focusColor: const Color(0xFF282886),
+                fillColor: WidgetStateProperty.all(const Color(0xFF282886)),
+                onChanged: (value) {
+                  _citaHoy = value!;
+                  _filter();
+                },
+              ),
+              const Text(
+                "C/Ruta: ",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
               Checkbox(
-                  value: _marcado,
-                  focusColor: const Color(0xFF282886),
-                  fillColor: MaterialStateProperty.all(const Color(0xFF282886)),
-                  onChanged: (value) {
-                    _marcado = value!;
-                    _filter();
-                  }),
+                value: _marcado,
+                focusColor: const Color(0xFF282886),
+                fillColor: WidgetStateProperty.all(const Color(0xFF282886)),
+                onChanged: (value) {
+                  _marcado = value!;
+                  _filter();
+                },
+              ),
             ],
           ),
           Row(
             children: [
-              const Text("Antig.(días): ",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  )),
+              const Text(
+                "Antig.(días): ",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
               Slider(
                 min: 0,
                 max: 6,
@@ -723,9 +702,7 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                 divisions: 6,
               ),
               Center(child: Text(_sliderValue.round().toString())),
-              const SizedBox(
-                width: 25,
-              ),
+              const SizedBox(width: 25),
             ],
           ),
         ],
@@ -733,9 +710,9 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _noContent -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _noContent -----------------------
+  //--------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -751,9 +728,9 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getListView ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getListView ---------------------
+  //--------------------------------------------------------
 
   Widget _getListView() {
     return RefreshIndicator(
@@ -789,106 +766,109 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Cliente: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Cliente: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
                                         child: Text(
-                                            '${e.cliente.toString()} - ${e.nombre.toString()}',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                          '${e.cliente.toString()} - ${e.nombre.toString()}',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("DNI: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "DNI: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
                                         flex: 1,
-                                        child: Text(e.documento.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        child: Text(
+                                          e.documento.toString(),
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                       e.proyectomodulo == 'Cable'
                                           ? const SizedBox(
                                               width: 30,
-                                              child: Text("OT: ",
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xFF0e4888),
-                                                    fontWeight: FontWeight.bold,
-                                                  )),
+                                              child: Text(
+                                                "OT: ",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xFF0e4888),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             )
                                           : Container(),
                                       e.proyectomodulo == 'Cable'
                                           ? Expanded(
                                               flex: 1,
                                               child: Text(
-                                                  e.recupidjobcard.toString(),
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                  )),
+                                                e.recupidjobcard.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              ),
                                             )
                                           : Container(),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Dirección: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Dirección: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
-                                        child: Text(e.domicilio.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        child: Text(
+                                          e.domicilio.toString(),
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Entre calles: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Entre calles: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
-                                        child: (e.entrecallE1
-                                                        .toString()
-                                                        .length >
+                                        child:
+                                            (e.entrecallE1.toString().length >
                                                     1 &&
                                                 e.entrecallE2
                                                         .toString()
@@ -898,95 +878,97 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                                                 '${e.entrecallE1.toString()} y ${e.entrecallE2.toString()}',
                                                 style: const TextStyle(
                                                   fontSize: 12,
-                                                ))
+                                                ),
+                                              )
                                             : const Text(""),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Localidad: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Localidad: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
                                         child: Text(
-                                            'CP: ${e.cp.toString()} - ${e.localidad.toString()} - ${e.partido.toString()}',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                          'CP: ${e.cp.toString()} - ${e.localidad.toString()} - ${e.partido.toString()}',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       e.zona != ""
                                           ? const SizedBox(
                                               width: 80,
-                                              child: Text("Zona: ",
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xFF0e4888),
-                                                    fontWeight: FontWeight.bold,
-                                                  )),
+                                              child: Text(
+                                                "Zona: ",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xFF0e4888),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             )
                                           : Container(),
                                       e.zona != ""
                                           ? Expanded(
-                                              child: Text(e.zona.toString(),
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                  )),
+                                              child: Text(
+                                                e.zona.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              ),
                                             )
                                           : Container(),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Teléfono: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Teléfono: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
-                                        child: Text(e.telefono.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        child: Text(
+                                          e.telefono.toString(),
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Cant. Eq.: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Cant. Eq.: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
                                         child: Text(
@@ -1002,85 +984,90 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Cód. Cierre: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Cód. Cierre: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
-                                        child: Text(e.descripcion.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        child: Text(
+                                          e.descripcion.toString(),
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Fec. Capt.: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Fec. Capt.: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
                                         child: e.fechacaptura == null
                                             ? const Text("")
                                             : Text(
                                                 DateFormat('dd/MM/yyyy').format(
-                                                    DateTime.parse(e
-                                                        .fechacaptura
-                                                        .toString())),
+                                                  DateTime.parse(
+                                                    e.fechacaptura.toString(),
+                                                  ),
+                                                ),
                                                 style: const TextStyle(
                                                   fontSize: 12,
-                                                )),
+                                                ),
+                                              ),
                                       ),
                                       const SizedBox(
-                                        width: 40,
-                                        child: Text("Antig.: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        width: 42,
+                                        child: Text(
+                                          "Antig.: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
                                         child: e.fechacaptura == null
                                             ? const Text("")
                                             : Text(
                                                 DateTime.now()
-                                                    .difference(DateTime.parse(
-                                                        e.fechacaptura!))
+                                                    .difference(
+                                                      DateTime.parse(
+                                                        e.fechacaptura!,
+                                                      ),
+                                                    )
                                                     .inDays
                                                     .toString(),
                                                 textAlign: TextAlign.left,
                                                 style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                  fontSize: 12,
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       Expanded(
@@ -1091,93 +1078,103 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                                               children: [
                                                 const SizedBox(
                                                   width: 80,
-                                                  child: Text("Fec. Asig.: ",
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        color:
-                                                            Color(0xFF0e4888),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      )),
+                                                  child: Text(
+                                                    "Fec. Asig.: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF0e4888),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
                                                 ),
                                                 Expanded(
                                                   child: e.fechaAsignada == null
                                                       ? const Text("")
                                                       : Text(
                                                           DateFormat(
-                                                                  'dd/MM/yyyy')
-                                                              .format(DateTime.parse(e
-                                                                  .fechaAsignada
-                                                                  .toString())),
+                                                            'dd/MM/yyyy',
+                                                          ).format(
+                                                            DateTime.parse(
+                                                              e.fechaAsignada
+                                                                  .toString(),
+                                                            ),
+                                                          ),
                                                           style:
                                                               const TextStyle(
-                                                            fontSize: 12,
-                                                          )),
+                                                                fontSize: 12,
+                                                              ),
+                                                        ),
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(
-                                              height: 1,
-                                            ),
+                                            const SizedBox(height: 1),
                                             Row(
                                               children: [
                                                 const SizedBox(
                                                   width: 80,
-                                                  child: Text("Fec. Cita: ",
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        color:
-                                                            Color(0xFF0e4888),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      )),
+                                                  child: Text(
+                                                    "Fec. Cita: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF0e4888),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
                                                 ),
                                                 Expanded(
                                                   child: e.fechaCita == null
                                                       ? const Text("")
                                                       : Text(
                                                           DateFormat(
-                                                                  'dd/MM/yyyy')
-                                                              .format(DateTime
-                                                                  .parse(e
-                                                                      .fechaCita
-                                                                      .toString())),
+                                                            'dd/MM/yyyy',
+                                                          ).format(
+                                                            DateTime.parse(
+                                                              e.fechaCita
+                                                                  .toString(),
+                                                            ),
+                                                          ),
                                                           style:
                                                               const TextStyle(
-                                                            fontSize: 12,
-                                                          )),
+                                                                fontSize: 12,
+                                                              ),
+                                                        ),
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(
-                                              height: 1,
-                                            ),
+                                            const SizedBox(height: 1),
                                             Row(
                                               children: [
                                                 const SizedBox(
                                                   width: 80,
-                                                  child: Text("Hora Cita: ",
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        color:
-                                                            Color(0xFF0e4888),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      )),
+                                                  child: Text(
+                                                    "Hora Cita: ",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFF0e4888),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
                                                 ),
                                                 Expanded(
                                                   child: e.fechaCita == null
                                                       ? const Text("")
                                                       : Text(
-                                                          DateFormat('HH:mm')
-                                                              .format(DateTime
-                                                                  .parse(e
-                                                                      .fechaCita
-                                                                      .toString())),
+                                                          DateFormat(
+                                                            'HH:mm',
+                                                          ).format(
+                                                            DateTime.parse(
+                                                              e.fechaCita
+                                                                  .toString(),
+                                                            ),
+                                                          ),
                                                           style:
                                                               const TextStyle(
-                                                            fontSize: 12,
-                                                          )),
+                                                                fontSize: 12,
+                                                              ),
+                                                        ),
                                                 ),
                                               ],
                                             ),
@@ -1190,9 +1187,10 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                                           children: [
                                             ElevatedButton(
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    const Color(0xFF282886),
-                                                minimumSize: const Size(60, 36),
+                                                backgroundColor: const Color(
+                                                  0xFF282886,
+                                                ),
+                                                minimumSize: const Size(64, 36),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(5),
@@ -1204,37 +1202,35 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                                                     MainAxisAlignment.center,
                                                 children: const [
                                                   Icon(Icons.fact_check),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text('Agendar Cita'),
+                                                  SizedBox(width: 10),
+                                                  Text('Agend. Cita'),
                                                 ],
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 1,
-                                      ),
+                                      const SizedBox(height: 1),
                                     ],
                                   ),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Cartera: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Cartera: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
-                                        child: Text(e.motivos.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        child: Text(
+                                          e.motivos.toString(),
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                       e.observacion != ""
                                           ? ClipRRect(
@@ -1264,21 +1260,22 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                       children: [
                         const Icon(Icons.arrow_forward_ios),
                         e.marcado != 0
-                            ? const SizedBox(
-                                height: 40,
-                              )
+                            ? const SizedBox(height: 40)
                             : Container(),
                         e.marcado != 0
                             ? CircleAvatar(
                                 radius: 12,
                                 backgroundColor: Colors.purple,
-                                child: Text(e.marcado.toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold)),
+                                child: Text(
+                                  e.marcado.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               )
-                            : Container()
+                            : Container(),
                       ],
                     ),
                   ],
@@ -1291,36 +1288,39 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _loadData ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _loadData ------------------------
+  //--------------------------------------------------------
 
   void _loadData() async {
     await _getTiposAsignaciones();
   }
 
-//--------------------------------------------------------
-//--------------------- _loadData2 -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _loadData2 -----------------------
+  //--------------------------------------------------------
 
   void _loadData2() async {
     _tipoasignacion = widget.asignacion.proyectomodulo.toString();
     await _getObras();
     _searchController.text = widget.asignacion.cliente.toString();
     _search = widget.asignacion.cliente.toString();
-    await _filter();
+    _filter();
   }
 
-//--------------------------------------------------------
-//--------------------- _getTiposAsignaciones ------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getTiposAsignaciones ------------
+  //--------------------------------------------------------
 
   Future<void> _getTiposAsignaciones() async {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -1343,16 +1343,19 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _getZonas ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getZonas ------------------------
+  //--------------------------------------------------------
 
   Future<void> _getZonas() async {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -1371,16 +1374,19 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _getCarteras ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getCarteras ---------------------
+  //--------------------------------------------------------
 
   Future<void> _getCarteras() async {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -1389,8 +1395,10 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
 
     do {
       Response response = Response(isSuccess: false);
-      response =
-          await ApiHelper.getCarteras(widget.user.idUser, _tipoasignacion);
+      response = await ApiHelper.getCarteras(
+        widget.user.idUser,
+        _tipoasignacion,
+      );
       intentos++;
       if (response.isSuccess) {
         bandera = true;
@@ -1400,9 +1408,9 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _getObras ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getObras ------------------------
+  //--------------------------------------------------------
 
   Future<void> _getObras() async {
     if (_tipoasignacion == 'Elija un Tipo de Asignación...') {
@@ -1425,14 +1433,19 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
     Response response = Response(isSuccess: false);
 
-    response =
-        await ApiHelper.getAsignaciones(widget.user.idUser, _tipoasignacion);
+    response = await ApiHelper.getAsignaciones(
+      widget.user.idUser,
+      _tipoasignacion,
+    );
 
     if (!response.isSuccess) {
       showMyDialog('Error', response.message, 'Aceptar');
@@ -1464,19 +1477,17 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
 
     if (_ordenarPorCliente) {
       _asignaciones.sort((a, b) {
-        return a.cliente
-            .toString()
-            .toLowerCase()
-            .compareTo(b.cliente.toString().toLowerCase());
+        return a.cliente.toString().toLowerCase().compareTo(
+          b.cliente.toString().toLowerCase(),
+        );
       });
     }
 
     if (_ordenarPorFecha) {
       _asignaciones.sort((a, b) {
-        return a.fechaAsignada
-            .toString()
-            .toLowerCase()
-            .compareTo(b.fechaAsignada.toString().toLowerCase());
+        return a.fechaAsignada.toString().toLowerCase().compareTo(
+          b.fechaAsignada.toString().toLowerCase(),
+        );
       });
     }
 
@@ -1494,9 +1505,9 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     });
   }
 
-//--------------------------------------------------------
-//--------------------- _getCodigosCierre ----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getCodigosCierre ----------------
+  //--------------------------------------------------------
 
   Future<void> _getCodigosCierre() async {
     if (_tipoasignacion == 'Elija un Tipo de Asignación...') {
@@ -1515,7 +1526,10 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -1536,40 +1550,41 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     }
 
     _codigoscierre.sort((a, b) {
-      return a.codigoCierre
-          .toString()
-          .toLowerCase()
-          .compareTo(b.codigoCierre.toString().toLowerCase());
+      return a.codigoCierre.toString().toLowerCase().compareTo(
+        b.codigoCierre.toString().toLowerCase(),
+      );
     });
   }
 
-//--------------------------------------------------------
-//--------------------- _goInfoAsignacion ----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _goInfoAsignacion ----------------
+  //--------------------------------------------------------
 
   void _goInfoAsignacion(Asignacion2 asignacion) async {
     asignacion.emailCliente ??= '';
 
     String? result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => AsignacionInfoScreen(
-                  user: _user,
-                  asignacion: asignacion,
-                  codigoscierre: _codigoscierre,
-                  codigoscierreAux: _codigoscierreAux,
-                  positionUser: widget.positionUser,
-                  funcionApp: _funcionApp,
-                  controlesEquivalencia: _controlesEquivalencia,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => AsignacionInfoScreen(
+          user: _user,
+          asignacion: asignacion,
+          codigoscierre: _codigoscierre,
+          codigoscierreAux: _codigoscierreAux,
+          positionUser: widget.positionUser,
+          funcionApp: _funcionApp,
+          controlesEquivalencia: _controlesEquivalencia,
+        ),
+      ),
+    );
     if (result == 'Yes') {
       await _getObras();
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _removeFilter --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _removeFilter --------------------
+  //--------------------------------------------------------
 
   void _removeFilter() {
     setState(() {
@@ -1580,36 +1595,38 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     _filter();
   }
 
-//--------------------------------------------------------
-//--------------------- _showFilter ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showFilter ----------------------
+  //--------------------------------------------------------
 
   void _showFilter() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            title: const Text('Filtrar Asignaciones'),
-            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Text('Filtrar Asignaciones'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
               const Text('Seleccione un valor de las listas desplegables'),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               _zonas.length > 1 ? _showZonas() : Container(),
               _carteras.length > 1 ? _showCarteras() : Container(),
-            ]),
-          );
-        });
+            ],
+          ),
+        );
+      },
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _filter --------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _filter --------------------------
+  //--------------------------------------------------------
 
-  _filter() {
+  void _filter() {
     List<Asignacion2> filteredList = [];
     bool condicionTexto = false;
     bool condicionAntig = false;
@@ -1646,47 +1663,42 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
           ? asignacion.fechaCita = null
           : asignacion.fechaCita = asignacion.fechaCita;
 
-//----------- Condiciones ---------------------------
-//------------------------------------------------------------------------
-      condicionTexto = (asignacion.nombre
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.cliente
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.reclamoTecnicoID
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.domicilio
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.localidad
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.partido
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
-          asignacion.cp
-              .toString()
-              .toLowerCase()
-              .contains(_search.toLowerCase()));
-//------------------------------------------------------------------------
-      condicionAntig = DateTime.now()
+      //----------- Condiciones ---------------------------
+      //------------------------------------------------------------------------
+      condicionTexto =
+          (asignacion.nombre.toString().toLowerCase().contains(
+            _search.toLowerCase(),
+          ) ||
+          asignacion.cliente.toString().toLowerCase().contains(
+            _search.toLowerCase(),
+          ) ||
+          asignacion.reclamoTecnicoID.toString().toLowerCase().contains(
+            _search.toLowerCase(),
+          ) ||
+          asignacion.domicilio.toString().toLowerCase().contains(
+            _search.toLowerCase(),
+          ) ||
+          asignacion.localidad.toString().toLowerCase().contains(
+            _search.toLowerCase(),
+          ) ||
+          asignacion.partido.toString().toLowerCase().contains(
+            _search.toLowerCase(),
+          ) ||
+          asignacion.cp.toString().toLowerCase().contains(
+            _search.toLowerCase(),
+          ));
+      //------------------------------------------------------------------------
+      condicionAntig =
+          DateTime.now()
               .difference(DateTime.parse(asignacion.fechacaptura!))
               //se cambia fechaasign a fechacaptura, pedido por Nicolas Arias 18/10/2023
               .inDays >=
           _sliderValue;
-//------------------------------------------------------------------------
+      //------------------------------------------------------------------------
       condicionCodCierre = _prioridad
           ? asignacion.codigoCierre == 45
           : asignacion.codigoCierre != 9999;
-//------------------------------------------------------------------------
+      //------------------------------------------------------------------------
       if (!_citaHoy) {
         condicionCitaHoy = true;
       } else {
@@ -1694,15 +1706,18 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
           DateTime now = DateTime.now();
           DateTime hoy = DateTime(now.year, now.month, now.day);
           DateTime fechaAsigAux = DateTime.parse(asignacion.fechaCita!);
-          DateTime fechaAsig =
-              DateTime(fechaAsigAux.year, fechaAsigAux.month, fechaAsigAux.day);
+          DateTime fechaAsig = DateTime(
+            fechaAsigAux.year,
+            fechaAsigAux.month,
+            fechaAsigAux.day,
+          );
 
           condicionCitaHoy = _citaHoy ? fechaAsig == hoy : true;
         } else {
           condicionCitaHoy = false;
         }
       }
-//------------------------------------------------------------------------
+      //------------------------------------------------------------------------
       if (!_marcado) {
         condicionMarcado = true;
       } else {
@@ -1713,9 +1728,9 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
         }
       }
 
-//------------------------------------------------------------------------
+      //------------------------------------------------------------------------
       condicionFechaCita = (asignacion.fechaCita != null);
-//------------------------------------------------------------------------
+      //------------------------------------------------------------------------
       if (condicionTexto &&
           condicionAntig &&
           (condicionCodCierre || condicionFechaCita) &&
@@ -1727,7 +1742,7 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
       }
     }
 
-//Ordenar Lista Filtrada por ,arcado si esta _marcado en true
+    //Ordenar Lista Filtrada por ,arcado si esta _marcado en true
 
     if (_marcado) {
       filteredList.sort((a, b) {
@@ -1740,27 +1755,27 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     });
   }
 
-//--------------------------------------------------------
-//--------------------- _agendarcita ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _agendarcita ---------------------
+  //--------------------------------------------------------
 
   void _agendarcita(Asignacion2 asignacion) async {
     String? result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => AgendarCitaScreen(
-                  user: widget.user,
-                  asignacion: asignacion,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            AgendarCitaScreen(user: widget.user, asignacion: asignacion),
+      ),
+    );
     if (result == 'yes') {
       _getObras();
       setState(() {});
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _showMap -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showMap -------------------------
+  //--------------------------------------------------------
 
   void _showMap() {
     if (_asignaciones2.isEmpty) {
@@ -1794,7 +1809,8 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
           longmax = long;
         }
 
-        _markers.add(Marker(
+        _markers.add(
+          Marker(
             markerId: MarkerId(asign.cliente.toString()),
             position: LatLng(lat, long),
             // infoWindow: InfoWindow(
@@ -1807,137 +1823,152 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
               //         element.longitud!.toDouble()),
               //     zoom: 16.0);
               _customInfoWindowController.addInfoWindow!(
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.info),
-                        const SizedBox(
-                          width: 8.0,
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                  child: Text(
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.info),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
                                 asign.proyectomodulo.toString(),
                                 style: const TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold),
-                              )),
-                              Expanded(
-                                  child: Text(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
                                 '${asign.cliente.toString()} - ${asign.nombre.toString()}',
                                 style: const TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold),
-                              )),
-                              Expanded(
-                                  child: Text(asign.domicilio.toString(),
-                                      style: const TextStyle(fontSize: 12))),
-                              asign.fechaCita != null
-                                  ? Expanded(
-                                      child: Text(
-                                          'Fecha Cita: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(asign.fechaCita.toString()))}',
-                                          style: const TextStyle(fontSize: 12)))
-                                  : Container(),
-                              asign.fechaCita != null
-                                  ? Expanded(
-                                      child: Text(
-                                          'Hora Cita: ${DateFormat('HH:mm').format(DateTime.parse(asign.fechaCita.toString()))}',
-                                          style: const TextStyle(fontSize: 12)))
-                                  : Container(),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _navegar(asign),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Icon(Icons.map,
-                                              color: Color(0xff282886)),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            'Navegar',
-                                            style: TextStyle(
-                                                color: Color(0xff282886)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _goInfoAsignacion(asign),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Text(
-                                            'Abrir',
-                                            style: TextStyle(
-                                                color: Color(0xff282886)),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Icon(Icons.arrow_forward_ios,
-                                              color: Color(0xff282886)),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                asign.domicilio.toString(),
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ),
+                            asign.fechaCita != null
+                                ? Expanded(
+                                    child: Text(
+                                      'Fecha Cita: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(asign.fechaCita.toString()))}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                : Container(),
+                            asign.fechaCita != null
+                                ? Expanded(
+                                    child: Text(
+                                      'Hora Cita: ${DateFormat('HH:mm').format(DateTime.parse(asign.fechaCita.toString()))}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                : Container(),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFFb3b3b4),
+                                      minimumSize: const Size(
+                                        double.infinity,
+                                        30,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () => _navegar(asign),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Icon(
+                                          Icons.map,
+                                          color: Color(0xff282886),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Navegar',
+                                          style: TextStyle(
+                                            color: Color(0xff282886),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFFb3b3b4),
+                                      minimumSize: const Size(
+                                        double.infinity,
+                                        30,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () => _goInfoAsignacion(asign),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Text(
+                                          'Abrir',
+                                          style: TextStyle(
+                                            color: Color(0xff282886),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Color(0xff282886),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  LatLng(lat, long));
+                ),
+                LatLng(lat, long),
+              );
             },
             icon: asign.proyectomodulo == 'Otro' && asign.fechaCita != null
                 ? BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueBlue)
+                    BitmapDescriptor.hueBlue,
+                  )
                 : (asign.codigoCierre == 0)
-                    ? BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueRed)
-                    : BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueOrange)));
+                ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)
+                : BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueOrange,
+                  ),
+          ),
+        );
       }
     }
     latcenter = (latmin + latmax) / 2;
@@ -1958,9 +1989,9 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showMap2 ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showMap2 ------------------------
+  //--------------------------------------------------------
 
   void _showMap2() async {
     if (_asignaciones2.isEmpty) {
@@ -1998,7 +2029,8 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
           longmax = long;
         }
 
-        _markers.add(Marker(
+        _markers.add(
+          Marker(
             markerId: MarkerId(asign.cliente.toString()),
             position: LatLng(lat, long),
             // infoWindow: InfoWindow(
@@ -2011,137 +2043,152 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
               //         element.longitud!.toDouble()),
               //     zoom: 16.0);
               _customInfoWindowController.addInfoWindow!(
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.info),
-                        const SizedBox(
-                          width: 8.0,
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                  child: Text(
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.info),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
                                 asign.proyectomodulo.toString(),
                                 style: const TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold),
-                              )),
-                              Expanded(
-                                  child: Text(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
                                 '${asign.cliente.toString()} - ${asign.nombre.toString()}',
                                 style: const TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold),
-                              )),
-                              Expanded(
-                                  child: Text(asign.domicilio.toString(),
-                                      style: const TextStyle(fontSize: 12))),
-                              asign.fechaCita != null
-                                  ? Expanded(
-                                      child: Text(
-                                          'Fecha Cita: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(asign.fechaCita.toString()))}',
-                                          style: const TextStyle(fontSize: 12)))
-                                  : Container(),
-                              asign.fechaCita != null
-                                  ? Expanded(
-                                      child: Text(
-                                          'Hora Cita: ${DateFormat('HH:mm').format(DateTime.parse(asign.fechaCita.toString()))}',
-                                          style: const TextStyle(fontSize: 12)))
-                                  : Container(),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _navegar(asign),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Icon(Icons.map,
-                                              color: Color(0xff282886)),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            'Navegar',
-                                            style: TextStyle(
-                                                color: Color(0xff282886)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _goInfoAsignacion(asign),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Text(
-                                            'Abrir',
-                                            style: TextStyle(
-                                                color: Color(0xff282886)),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Icon(Icons.arrow_forward_ios,
-                                              color: Color(0xff282886)),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                asign.domicilio.toString(),
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ),
+                            asign.fechaCita != null
+                                ? Expanded(
+                                    child: Text(
+                                      'Fecha Cita: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(asign.fechaCita.toString()))}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                : Container(),
+                            asign.fechaCita != null
+                                ? Expanded(
+                                    child: Text(
+                                      'Hora Cita: ${DateFormat('HH:mm').format(DateTime.parse(asign.fechaCita.toString()))}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  )
+                                : Container(),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFFb3b3b4),
+                                      minimumSize: const Size(
+                                        double.infinity,
+                                        30,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () => _navegar(asign),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Icon(
+                                          Icons.map,
+                                          color: Color(0xff282886),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Navegar',
+                                          style: TextStyle(
+                                            color: Color(0xff282886),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFFb3b3b4),
+                                      minimumSize: const Size(
+                                        double.infinity,
+                                        30,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () => _goInfoAsignacion(asign),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Text(
+                                          'Abrir',
+                                          style: TextStyle(
+                                            color: Color(0xff282886),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Color(0xff282886),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  LatLng(lat, long));
+                ),
+                LatLng(lat, long),
+              );
             },
             icon: asign.proyectomodulo == 'Otro' && asign.fechaCita != null
                 ? BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueBlue)
+                    BitmapDescriptor.hueBlue,
+                  )
                 : (asign.codigoCierre == 0)
-                    ? BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueRed)
-                    : BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueOrange)));
+                ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)
+                : BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueOrange,
+                  ),
+          ),
+        );
       }
     }
     latcenter = (latmin + latmax) / 2;
@@ -2165,40 +2212,39 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
     await _getObras();
   }
 
-//--------------------------------------------------------
-//--------------------- _showInfo ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showInfo ------------------------
+  //--------------------------------------------------------
 
   void _showInfo() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => InfoScreen(
-          user: widget.user,
-        ),
-      ),
+      MaterialPageRoute(builder: (context) => InfoScreen(user: widget.user)),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- isNullOrEmpty --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- isNullOrEmpty --------------------
+  //--------------------------------------------------------
 
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
 
-//--------------------------------------------------------
-//--------------------- _navegar -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _navegar -------------------------
+  //--------------------------------------------------------
 
-  _navegar(e) async {
+  Future<void> _navegar(e) async {
     if (e.grxx == "" ||
         e.gryy == "" ||
         isNullOrEmpty(e.grxx) ||
         isNullOrEmpty(e.gryy)) {
       showMyDialog(
-          'Aviso', "Este cliente no tiene coordenadas cargadas.", 'Aceptar');
+        'Aviso',
+        "Este cliente no tiene coordenadas cargadas.",
+        'Aceptar',
+      );
 
       return;
     }
@@ -2216,30 +2262,31 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
       }
     } else {
       showMyDialog(
-          'Aviso',
-          "Necesita estar conectado a Internet para acceder al mapa",
-          'Aceptar');
+        'Aviso',
+        "Necesita estar conectado a Internet para acceder al mapa",
+        'Aceptar',
+      );
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _orderMethod ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _orderMethod ---------------------
+  //--------------------------------------------------------
 
   void _orderMethod() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            title: const Text('Ordenar por'),
-            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Text('Ordenar por'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
               const Text('Elija Criterio de ordenación'),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff282886),
@@ -2264,9 +2311,7 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff282886),
@@ -2291,46 +2336,42 @@ class AsignacionesScreenState extends State<AsignacionesScreen> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-            ]),
-          );
-        });
+              const SizedBox(height: 10),
+            ],
+          ),
+        );
+      },
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _ordenar -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ordenar -------------------------
+  //--------------------------------------------------------
 
   void _ordenar() {
     if (_ordenarPorCliente) {
       _asignaciones.sort((a, b) {
-        return a.cliente
-            .toString()
-            .toLowerCase()
-            .compareTo(b.cliente.toString().toLowerCase());
+        return a.cliente.toString().toLowerCase().compareTo(
+          b.cliente.toString().toLowerCase(),
+        );
       });
       _asignaciones2.sort((a, b) {
-        return a.cliente
-            .toString()
-            .toLowerCase()
-            .compareTo(b.cliente.toString().toLowerCase());
+        return a.cliente.toString().toLowerCase().compareTo(
+          b.cliente.toString().toLowerCase(),
+        );
       });
     }
 
     if (_ordenarPorFecha) {
       _asignaciones.sort((a, b) {
-        return a.fechaAsignada
-            .toString()
-            .toLowerCase()
-            .compareTo(b.fechaAsignada.toString().toLowerCase());
+        return a.fechaAsignada.toString().toLowerCase().compareTo(
+          b.fechaAsignada.toString().toLowerCase(),
+        );
       });
       _asignaciones2.sort((a, b) {
-        return a.fechaAsignada
-            .toString()
-            .toLowerCase()
-            .compareTo(b.fechaAsignada.toString().toLowerCase());
+        return a.fechaAsignada.toString().toLowerCase().compareTo(
+          b.fechaAsignada.toString().toLowerCase(),
+        );
       });
     }
 

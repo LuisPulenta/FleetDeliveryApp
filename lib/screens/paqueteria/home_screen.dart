@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,8 +14,7 @@ class HomeScreen extends StatefulWidget {
   final Usuario user;
   final WebSesion webSesion;
 
-  const HomeScreen({Key? key, required this.user, required this.webSesion})
-      : super(key: key);
+  const HomeScreen({super.key, required this.user, required this.webSesion});
 
   @override
   HomeScreenState createState() => HomeScreenState();
@@ -23,9 +22,9 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-//--------------------------------------------------------
-//--------------------- Variables ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
 
   TabController? _tabController;
 
@@ -73,30 +72,32 @@ class HomeScreenState extends State<HomeScreen>
   String _textComponent = '';
 
   RutaCab rutaSelected = RutaCab(
-      idRuta: 0,
-      idUser: 0,
-      fechaAlta: '',
-      nombre: '',
-      estado: 0,
-      habilitaCatastro: 0,
-      totalParadas: 0,
-      pendientes: 0);
+    idRuta: 0,
+    idUser: 0,
+    fechaAlta: '',
+    nombre: '',
+    estado: 0,
+    habilitaCatastro: 0,
+    totalParadas: 0,
+    pendientes: 0,
+  );
 
   Usuario _user = Usuario(
-      idUser: 0,
-      codigo: '',
-      apellidonombre: '',
-      usrlogin: '',
-      usrcontrasena: '',
-      habilitadoWeb: 0,
-      vehiculo: '',
-      dominio: '',
-      celular: '',
-      orden: 0,
-      centroDistribucion: 0,
-      dni: '',
-      mail: '',
-      claveEmail: '');
+    idUser: 0,
+    codigo: '',
+    apellidonombre: '',
+    usrlogin: '',
+    usrcontrasena: '',
+    habilitadoWeb: 0,
+    vehiculo: '',
+    dominio: '',
+    celular: '',
+    orden: 0,
+    centroDistribucion: 0,
+    dni: '',
+    mail: '',
+    claveEmail: '',
+  );
 
   ParadaEnvio paradaenvioSelected = ParadaEnvio(
     idParada: 0,
@@ -138,50 +139,52 @@ class HomeScreenState extends State<HomeScreen>
   );
 
   Parada paradaSelected = Parada(
-      idParada: 0,
-      idRuta: 0,
-      idEnvio: 0,
-      tag: 0,
-      secuencia: 0,
-      leyenda: '',
-      latitud: 0,
-      longitud: 0,
-      iconoPropio: '',
-      iDmapa: '',
-      distancia: 0,
-      tiempo: 0,
-      estado: 0,
-      fecha: '',
-      hora: '',
-      idMotivo: 0,
-      notaChofer: '',
-      nuevoOrden: 0,
-      idCabCertificacion: 0,
-      idLiquidacionFletero: 0,
-      turno: '');
+    idParada: 0,
+    idRuta: 0,
+    idEnvio: 0,
+    tag: 0,
+    secuencia: 0,
+    leyenda: '',
+    latitud: 0,
+    longitud: 0,
+    iconoPropio: '',
+    iDmapa: '',
+    distancia: 0,
+    tiempo: 0,
+    estado: 0,
+    fecha: '',
+    hora: '',
+    idMotivo: 0,
+    notaChofer: '',
+    nuevoOrden: 0,
+    idCabCertificacion: 0,
+    idLiquidacionFletero: 0,
+    turno: '',
+  );
 
   Parada paradaSaved = Parada(
-      idParada: 0,
-      idRuta: 0,
-      idEnvio: 0,
-      tag: 0,
-      secuencia: 0,
-      leyenda: '',
-      latitud: 0,
-      longitud: 0,
-      iconoPropio: '',
-      iDmapa: '',
-      distancia: 0,
-      tiempo: 0,
-      estado: 0,
-      fecha: '',
-      hora: '',
-      idMotivo: 0,
-      notaChofer: '',
-      nuevoOrden: 0,
-      idCabCertificacion: 0,
-      idLiquidacionFletero: 0,
-      turno: '');
+    idParada: 0,
+    idRuta: 0,
+    idEnvio: 0,
+    tag: 0,
+    secuencia: 0,
+    leyenda: '',
+    latitud: 0,
+    longitud: 0,
+    iconoPropio: '',
+    iDmapa: '',
+    distancia: 0,
+    tiempo: 0,
+    estado: 0,
+    fecha: '',
+    hora: '',
+    idMotivo: 0,
+    notaChofer: '',
+    nuevoOrden: 0,
+    idCabCertificacion: 0,
+    idLiquidacionFletero: 0,
+    turno: '',
+  );
 
   Envio envioSelected = Envio(
     idEnvio: 0,
@@ -346,32 +349,34 @@ class HomeScreenState extends State<HomeScreen>
   );
 
   Seguimiento seguimientoSaved = Seguimiento(
-      id: 0,
-      idenvio: 0,
-      idetapa: 0,
-      estado: 0,
-      idusuario: 0,
-      fecha: 0,
-      hora: '',
-      observaciones: '',
-      motivo: '',
-      notachofer: '');
+    id: 0,
+    idenvio: 0,
+    idetapa: 0,
+    estado: 0,
+    idusuario: 0,
+    fecha: 0,
+    hora: '',
+    observaciones: '',
+    motivo: '',
+    notachofer: '',
+  );
 
-  Position _positionUser = const Position(
-      longitude: 0,
-      latitude: 0,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0,
-      altitudeAccuracy: 0,
-      headingAccuracy: 0);
+  Position _positionUser = Position(
+    longitude: 0,
+    latitude: 0,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
+  );
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
 
   @override
   void initState() {
@@ -389,9 +394,9 @@ class HomeScreenState extends State<HomeScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -404,14 +409,7 @@ class HomeScreenState extends State<HomeScreen>
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Color(
-                    (0xffdadada),
-                  ),
-                  Color(
-                    (0xffb3b3b4),
-                  ),
-                ],
+                colors: [Color((0xffdadada)), Color((0xffb3b3b4))],
               ),
             ),
             child: TabBarView(
@@ -419,10 +417,9 @@ class HomeScreenState extends State<HomeScreen>
               physics: const AlwaysScrollableScrollPhysics(),
               dragStartBehavior: DragStartBehavior.start,
               children: <Widget>[
-//-------------------------------------------------------------------------
-//-------------------------- 1° TABBAR ------------------------------------
-//-------------------------------------------------------------------------
-
+                //-------------------------------------------------------------------------
+                //-------------------------- 1° TABBAR ------------------------------------
+                //-------------------------------------------------------------------------
                 Column(
                   children: <Widget>[
                     AppBar(
@@ -432,21 +429,24 @@ class HomeScreenState extends State<HomeScreen>
                           children: [
                             const Text(
                               'Sincr:',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
                             ),
                             Switch(
-                                value: _sincronizar,
-                                activeColor: Colors.green,
-                                inactiveThumbColor: Colors.grey,
-                                onChanged: (value) async {
-                                  _sincronizar = value;
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  await prefs.setBool('sincronizar', value);
+                              value: _sincronizar,
+                              activeThumbColor: Colors.green,
+                              inactiveThumbColor: Colors.grey,
+                              onChanged: (value) async {
+                                _sincronizar = value;
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                await prefs.setBool('sincronizar', value);
 
-                                  setState(() {});
-                                }),
+                                setState(() {});
+                              },
+                            ),
                           ],
                         ),
                       ],
@@ -459,10 +459,9 @@ class HomeScreenState extends State<HomeScreen>
                   ],
                 ),
 
-//-------------------------------------------------------------------------
-//-------------------------- 2° TABBAR ------------------------------------
-//-------------------------------------------------------------------------
-
+                //-------------------------------------------------------------------------
+                //-------------------------- 2° TABBAR ------------------------------------
+                //-------------------------------------------------------------------------
                 Column(
                   children: [
                     AppBar(
@@ -479,24 +478,19 @@ class HomeScreenState extends State<HomeScreen>
                               size: 40,
                             ),
                           ),
-                        )
+                        ),
                       ],
                       backgroundColor: const Color(0xff282886),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
                     _showEnviosCount(),
-                    Expanded(
-                      child: _getContent(),
-                    ),
+                    Expanded(child: _getContent()),
                   ],
                 ),
 
-//-------------------------------------------------------------------------
-//-------------------------- 3° TABBAR ------------------------------------
-//-------------------------------------------------------------------------
-
+                //-------------------------------------------------------------------------
+                //-------------------------- 3° TABBAR ------------------------------------
+                //-------------------------------------------------------------------------
                 SingleChildScrollView(
                   child: Column(
                     children: [
@@ -507,223 +501,201 @@ class HomeScreenState extends State<HomeScreen>
                       ),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
-                        child: Column(children: [
-                          Center(
-                            child: Text(
-                              _user.usrlogin.toUpperCase(),
-                              style: const TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Center(
-                            child: Text(
-                              _user.apellidonombre!,
-                              style: const TextStyle(
-                                fontSize: 25,
+                        child: Column(
+                          children: [
+                            Center(
+                              child: Text(
+                                _user.usrlogin.toUpperCase(),
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            children: const [
-                              Text(
-                                'Conectado desde:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                _conectadodesde == ''
-                                    ? ''
-                                    : DateFormat('dd/MM/yyyy HH:mm').format(
-                                        DateTime.parse(_conectadodesde)),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            children: const [
-                              Text(
-                                'Válido hasta:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                _validohasta == ''
-                                    ? ''
-                                    : DateFormat('dd/MM/yyyy HH:mm')
-                                        .format(DateTime.parse(_validohasta)),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            children: const [
-                              Text(
-                                'Ultima actualización de Usuarios:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                _ultimaactualizacion == ''
-                                    ? ''
-                                    : DateFormat('dd/MM/yyyy HH:mm').format(
-                                        DateTime.parse(_ultimaactualizacion)),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            children: const [
-                              Text(
-                                'Versión:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                Constants.version,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              minimumSize: const Size(double.infinity, 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                            Center(
+                              child: Text(
+                                _user.apellidonombre!,
+                                style: const TextStyle(fontSize: 25),
                               ),
                             ),
-                            onPressed: () async {
-                              _password = '';
-                              _result2 = 'no';
-                              await _borrarMedicionesLocales();
-                              // if (_result2 == 'yes') {
-                              //   await _borrarMedicionesLocales();
-                              // }
-                              setState(() {});
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            const SizedBox(height: 15),
+                            Row(
                               children: const [
-                                Icon(Icons.delete),
-                                SizedBox(
-                                  width: 15,
+                                Text(
+                                  'Conectado desde:',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                Text('BORRAR PARADAS LOCALES'),
                               ],
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff282886),
-                              minimumSize: const Size(double.infinity, 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            onPressed: () => _storage(),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.storage),
-                                SizedBox(
-                                  width: 15,
+                            Row(
+                              children: [
+                                Text(
+                                  _conectadodesde == ''
+                                      ? ''
+                                      : DateFormat('dd/MM/yyyy HH:mm').format(
+                                          DateTime.parse(_conectadodesde),
+                                        ),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
-                                Text('DATOS EN BD LOCALES'),
                               ],
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff282886),
-                              minimumSize: const Size(double.infinity, 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            onPressed: () => _contacto(),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            const SizedBox(height: 15),
+                            Row(
                               children: const [
-                                Icon(Icons.keyboard),
-                                SizedBox(
-                                  width: 15,
+                                Text(
+                                  'Válido hasta:',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                Text('CONTACTO KEYPRESS'),
                               ],
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff282886),
-                              minimumSize: const Size(double.infinity, 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            onPressed: () => _cambiarPassword(),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.password),
-                                SizedBox(
-                                  width: 15,
+                            Row(
+                              children: [
+                                Text(
+                                  _validohasta == ''
+                                      ? ''
+                                      : DateFormat(
+                                          'dd/MM/yyyy HH:mm',
+                                        ).format(DateTime.parse(_validohasta)),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
-                                Text('CAMBIAR CONTRASEÑA'),
                               ],
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          ElevatedButton(
+                            const SizedBox(height: 15),
+                            Row(
+                              children: const [
+                                Text(
+                                  'Ultima actualización de Usuarios:',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  _ultimaactualizacion == ''
+                                      ? ''
+                                      : DateFormat('dd/MM/yyyy HH:mm').format(
+                                          DateTime.parse(_ultimaactualizacion),
+                                        ),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            Row(
+                              children: const [
+                                Text(
+                                  'Versión:',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  Constants.version,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                minimumSize: const Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () async {
+                                _password = '';
+                                _result2 = 'no';
+                                await _borrarMedicionesLocales();
+                                // if (_result2 == 'yes') {
+                                //   await _borrarMedicionesLocales();
+                                // }
+                                setState(() {});
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.delete),
+                                  SizedBox(width: 15),
+                                  Text('BORRAR PARADAS LOCALES'),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xff282886),
+                                minimumSize: const Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () => _storage(),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.storage),
+                                  SizedBox(width: 15),
+                                  Text('DATOS EN BD LOCALES'),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xff282886),
+                                minimumSize: const Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () => _contacto(),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.keyboard),
+                                  SizedBox(width: 15),
+                                  Text('CONTACTO KEYPRESS'),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xff282886),
+                                minimumSize: const Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () => _cambiarPassword(),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.password),
+                                  SizedBox(width: 15),
+                                  Text('CAMBIAR CONTRASEÑA'),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xff282886),
                                 minimumSize: const Size(double.infinity, 50),
@@ -746,13 +718,13 @@ class HomeScreenState extends State<HomeScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [
                                   Icon(Icons.exit_to_app),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
+                                  SizedBox(width: 15),
                                   Text('CERRAR SESION'),
                                 ],
-                              )),
-                        ]),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -772,65 +744,52 @@ class HomeScreenState extends State<HomeScreen>
             ? const Color.fromARGB(255, 219, 8, 5)
             : Colors.white,
         child: TabBar(
-            controller: _tabController,
-            indicatorColor: const Color(0xff282886),
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicatorWeight: 5,
-            labelColor: const Color(0xff282886),
-            unselectedLabelColor:
-                paraSincronizar > 0 ? Colors.white : Colors.grey,
-            labelPadding: const EdgeInsets.all(10),
-            tabs: <Widget>[
-              Tab(
-                child: Column(
-                  children: const [
-                    Icon(Icons.local_shipping),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Delivery',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
+          controller: _tabController,
+          indicatorColor: const Color(0xff282886),
+          indicatorSize: TabBarIndicatorSize.tab,
+          indicatorWeight: 5,
+          labelColor: const Color(0xff282886),
+          unselectedLabelColor: paraSincronizar > 0
+              ? Colors.white
+              : Colors.grey,
+          labelPadding: const EdgeInsets.all(10),
+          tabs: <Widget>[
+            Tab(
+              child: Column(
+                children: const [
+                  Icon(Icons.local_shipping),
+                  SizedBox(width: 5),
+                  Text('Delivery', style: TextStyle(fontSize: 14)),
+                ],
               ),
-              Tab(
-                child: Column(
-                  children: const [
-                    Icon(Icons.done_all),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Completas',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
+            ),
+            Tab(
+              child: Column(
+                children: const [
+                  Icon(Icons.done_all),
+                  SizedBox(width: 5),
+                  Text('Completas', style: TextStyle(fontSize: 14)),
+                ],
               ),
-              Tab(
-                child: Column(
-                  children: const [
-                    Icon(Icons.person),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Usuario',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
+            ),
+            Tab(
+              child: Column(
+                children: const [
+                  Icon(Icons.person),
+                  SizedBox(width: 5),
+                  Text('Usuario', style: TextStyle(fontSize: 14)),
+                ],
               ),
-            ]),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _noContent -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _noContent -----------------------
+  //--------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -838,18 +797,15 @@ class HomeScreenState extends State<HomeScreen>
       child: const Center(
         child: Text(
           '',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showRutas -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showRutas -----------------------
+  //--------------------------------------------------------
 
   Widget _showRutas() {
     return ListView(
@@ -875,72 +831,74 @@ class HomeScreenState extends State<HomeScreen>
                             children: [
                               Row(
                                 children: [
-                                  const Text('Fecha: ',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
+                                  const Text(
+                                    'Fecha: ',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Expanded(
                                     child: Text(
-                                        DateFormat('dd/MM/yyyy').format(
-                                            DateTime.parse(e.fechaAlta!)),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                      DateFormat(
+                                        'dd/MM/yyyy',
+                                      ).format(DateTime.parse(e.fechaAlta!)),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               Row(
                                 children: [
-                                  const Text('Nombre: ',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
+                                  const Text(
+                                    'Nombre: ',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Expanded(
-                                    child: Text(e.nombre!,
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                    child: Text(
+                                      e.nombre!,
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               Row(
                                 children: [
-                                  const Text('Ruta N°: ',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
+                                  const Text(
+                                    'Ruta N°: ',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Expanded(
-                                    child: Text(e.idRuta.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                    child: Text(
+                                      e.idRuta.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
                                   ),
                                 ],
                               ),
                               e.habilitaCatastro == 1
-                                  ? const SizedBox(
-                                      height: 5,
-                                    )
+                                  ? const SizedBox(height: 5)
                                   : Container(),
                               e.habilitaCatastro == 1
-                                  ? const Text('Catastro habilitado',
+                                  ? const Text(
+                                      'Catastro habilitado',
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Color.fromARGB(255, 255, 0, 0),
                                         fontWeight: FontWeight.bold,
-                                      ))
+                                      ),
+                                    )
                                   : Container(),
                             ],
                           ),
@@ -961,50 +919,52 @@ class HomeScreenState extends State<HomeScreen>
                               Row(
                                 children: [
                                   e.pendientes == 0
-                                      ? const Text(('COMPLETADA'),
+                                      ? const Text(
+                                          ('COMPLETADA'),
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.green,
                                             fontWeight: FontWeight.bold,
-                                          ))
+                                          ),
+                                        )
                                       : const Text(' '),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               Row(
                                 children: [
-                                  const Text('Paradas: ',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
+                                  const Text(
+                                    'Paradas: ',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Expanded(
-                                    child: Text(e.totalParadas.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                    child: Text(
+                                      e.totalParadas.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               Row(
                                 children: [
-                                  const Text('Pendientes: ',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF781f1e),
-                                        fontWeight: FontWeight.bold,
-                                      )),
+                                  const Text(
+                                    'Pendientes: ',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF781f1e),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Expanded(
-                                    child: Text(e.pendientes.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                    child: Text(
+                                      e.pendientes.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -1030,12 +990,11 @@ class HomeScreenState extends State<HomeScreen>
                         },
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
                     CircleAvatar(
-                      backgroundColor:
-                          _sincronizar ? const Color(0xff282886) : Colors.grey,
+                      backgroundColor: _sincronizar
+                          ? const Color(0xff282886)
+                          : Colors.grey,
                       child: IconButton(
                         icon: const Icon(
                           Icons.keyboard_double_arrow_right,
@@ -1059,17 +1018,17 @@ class HomeScreenState extends State<HomeScreen>
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getContent ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getContent ----------------------
+  //--------------------------------------------------------
 
   Widget _getContent() {
     return _paradasenviosdb.isEmpty ? _noContent2() : _getListView();
   }
 
-//--------------------------------------------------------
-//--------------------- _noContent2 ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _noContent2 ----------------------
+  //--------------------------------------------------------
 
   Widget _noContent2() {
     return Center(
@@ -1077,18 +1036,15 @@ class HomeScreenState extends State<HomeScreen>
         margin: const EdgeInsets.all(20),
         child: const Text(
           'No hay paradas completadas',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getListView ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getListView ---------------------
+  //--------------------------------------------------------
 
   Widget _getListView() {
     paraSincronizar = 0;
@@ -1127,78 +1083,37 @@ class HomeScreenState extends State<HomeScreen>
                           e.enviado == 1
                               ? const Icon(Icons.done_all, color: Colors.green)
                               : e.enviado == 0
-                                  ? const Icon(Icons.done, color: Colors.grey)
-                                  : const Icon(Icons.done, color: Colors.red),
-                          const SizedBox(
-                            width: 15,
-                          ),
+                              ? const Icon(Icons.done, color: Colors.grey)
+                              : const Icon(Icons.done, color: Colors.red),
+                          const SizedBox(width: 15),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const <Widget>[
-                              Text('Ruta N°: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF781f1e),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Text('Parada N°: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF781f1e),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Text('Remito N°: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF781f1e),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(e.idRuta.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  )),
-                              Text(e.idParada.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  )),
-                              Text(e.idEnvio.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  )),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const <Widget>[
-                              Text('Fecha: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF781f1e),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Text('',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF781f1e),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Text('',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF781f1e),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              Text(
+                                'Ruta N°: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF781f1e),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Parada N°: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF781f1e),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Remito N°: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF781f1e),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ],
                           ),
                           Column(
@@ -1206,44 +1121,99 @@ class HomeScreenState extends State<HomeScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                  DateFormat('dd/MM/yyyy')
-                                      .format(DateTime.parse(e.fecha!)),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  )),
-                              const Text('',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF781f1e),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                                e.idRuta.toString(),
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                              Text(
+                                e.idParada.toString(),
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                              Text(
+                                e.idEnvio.toString(),
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 15),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const <Widget>[
+                              Text(
+                                'Fecha: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF781f1e),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF781f1e),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF781f1e),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                DateFormat(
+                                  'dd/MM/yyyy',
+                                ).format(DateTime.parse(e.fecha!)),
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                              const Text(
+                                '',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF781f1e),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               (e.estado == 4)
                                   ? const Text(
                                       'ENTREGADO',
                                       style: TextStyle(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.bold),
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     )
                                   : (e.estado == 10)
-                                      ? const Text(
-                                          'NO ENTREGADO',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      : (e.estado == 7)
-                                          ? const Text(
-                                              'RECHAZADO',
-                                              style: TextStyle(
-                                                  color: Colors.purple,
-                                                  fontWeight: FontWeight.bold),
-                                            )
-                                          : const Text(
-                                              'PENDIENTE',
-                                              style: TextStyle(
-                                                  color: Colors.blue,
-                                                  fontWeight: FontWeight.bold),
-                                            )
+                                  ? const Text(
+                                      'NO ENTREGADO',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  : (e.estado == 7)
+                                  ? const Text(
+                                      'RECHAZADO',
+                                      style: TextStyle(
+                                        color: Colors.purple,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  : const Text(
+                                      'PENDIENTE',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                             ],
                           ),
                         ],
@@ -1259,44 +1229,48 @@ class HomeScreenState extends State<HomeScreen>
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _contacto ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _contacto ------------------------
+  //--------------------------------------------------------
 
   void _contacto() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const ContactoScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ContactoScreen()),
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _storage -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _storage -------------------------
+  //--------------------------------------------------------
 
   void _storage() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const StorageScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const StorageScreen()),
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _cambiarPassword -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _cambiarPassword -----------------
+  //--------------------------------------------------------
 
   void _cambiarPassword() async {
     String? result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ChangePasswordScreen(
-                  user: widget.user,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChangePasswordScreen(user: widget.user),
+      ),
+    );
 
     if (result == 'yes') {
       _logOut();
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _goInfoRuta ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _goInfoRuta ----------------------
+  //--------------------------------------------------------
 
   void _goInfoRuta(RutaCab ruta) async {
     _paradasenviosselected = [];
@@ -1312,18 +1286,20 @@ class HomeScreenState extends State<HomeScreen>
     }
 
     String? result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => RutaInfoScreen(
-                  user: widget.user,
-                  ruta: ruta,
-                  paradas: _paradas,
-                  envios: _envios,
-                  paradasenvios: _paradasenviosselected,
-                  positionUser: _positionUser,
-                  motivos: _motivos,
-                  hayInternet: hayInternet,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => RutaInfoScreen(
+          user: widget.user,
+          ruta: ruta,
+          paradas: _paradas,
+          envios: _envios,
+          paradasenvios: _paradasenviosselected,
+          positionUser: _positionUser,
+          motivos: _motivos,
+          hayInternet: hayInternet,
+        ),
+      ),
+    );
     if (result == 'yes' || result != 'yes') {
       setState(() {
         _textComponent = '';
@@ -1337,9 +1313,9 @@ class HomeScreenState extends State<HomeScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _goInfoRuta2 ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _goInfoRuta2 ------------------------
+  //--------------------------------------------------------
 
   void _goInfoRuta2(RutaCab ruta) async {
     _paradasenviosselected = [];
@@ -1350,18 +1326,20 @@ class HomeScreenState extends State<HomeScreen>
     }
 
     String? result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => RutaInfo2Screen(
-                  user: widget.user,
-                  ruta: ruta,
-                  paradas: _paradas,
-                  envios: _envios,
-                  paradasenvios: _paradasenviosselected,
-                  positionUser: _positionUser,
-                  motivosLista: _motivos,
-                  proveedores: _proveedores,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => RutaInfo2Screen(
+          user: widget.user,
+          ruta: ruta,
+          paradas: _paradas,
+          envios: _envios,
+          paradasenvios: _paradasenviosselected,
+          positionUser: _positionUser,
+          motivosLista: _motivos,
+          proveedores: _proveedores,
+        ),
+      ),
+    );
     if (result == 'yes' || result != 'yes') {
       setState(() {
         _textComponent = 'Actualizando envíos en el Servidor';
@@ -1383,9 +1361,9 @@ class HomeScreenState extends State<HomeScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _getprefs ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getprefs ------------------------
+  //--------------------------------------------------------
 
   void _getprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1394,9 +1372,9 @@ class HomeScreenState extends State<HomeScreen>
     _ultimaactualizacion = prefs.getString('ultimaactualizacion').toString();
   }
 
-//--------------------------------------------------------
-//--------------------- _getPosition ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getPosition ---------------------
+  //--------------------------------------------------------
 
   Future _getPosition() async {
     LocationPermission permission;
@@ -1405,34 +1383,6 @@ class HomeScreenState extends State<HomeScreen>
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                title: const Text('Aviso'),
-                content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const <Widget>[
-                      Text('El permiso de localización está negado.'),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ]),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Ok')),
-                ],
-              );
-            });
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -1441,21 +1391,52 @@ class HomeScreenState extends State<HomeScreen>
               ),
               title: const Text('Aviso'),
               content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text(
-                        'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
+                mainAxisSize: MainAxisSize.min,
+                children: const <Widget>[
+                  Text('El permiso de localización está negado.'),
+                  SizedBox(height: 10),
+                ],
+              ),
               actions: <Widget>[
                 TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Ok'),
+                ),
               ],
             );
-          });
+          },
+        );
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text(
+                  'El permiso de localización está negado permanentemente. No se puede requerir este permiso.',
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       return;
     }
 
@@ -1463,13 +1444,14 @@ class HomeScreenState extends State<HomeScreen>
 
     if (connectivityResult != ConnectivityResult.none) {
       _positionUser = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.high,
+      );
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _logOut --------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _logOut --------------------------
+  //--------------------------------------------------------
 
   void _logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1484,34 +1466,38 @@ class HomeScreenState extends State<HomeScreen>
     if (connectivityResult != ConnectivityResult.none) {
       await ApiHelper.putWebSesion(widget.webSesion.nroConexion);
     } else {
-      double hora = (DateTime.now().hour * 3600 +
+      double hora =
+          (DateTime.now().hour * 3600 +
               DateTime.now().minute * 60 +
               DateTime.now().second +
               DateTime.now().millisecond * 0.001) *
           100;
       WebSesion websesion = WebSesion(
-          nroConexion: widget.webSesion.nroConexion,
-          usuario: widget.webSesion.usuario,
-          iP: widget.webSesion.iP,
-          loginDate: widget.webSesion.loginDate,
-          loginTime: widget.webSesion.loginTime,
-          modulo: widget.webSesion.modulo,
-          logoutDate: DateTime.now().toString(),
-          logoutTime: hora.round(),
-          conectAverage: widget.webSesion.conectAverage,
-          id_ws: widget.webSesion.id_ws,
-          version: widget.webSesion.version);
+        nroConexion: widget.webSesion.nroConexion,
+        usuario: widget.webSesion.usuario,
+        iP: widget.webSesion.iP,
+        loginDate: widget.webSesion.loginDate,
+        loginTime: widget.webSesion.loginTime,
+        modulo: widget.webSesion.modulo,
+        logoutDate: DateTime.now().toString(),
+        logoutTime: hora.round(),
+        conectAverage: widget.webSesion.conectAverage,
+        id_ws: widget.webSesion.id_ws,
+        version: widget.webSesion.version,
+      );
 
       await DBWebSesions.update(websesion);
     }
 
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _getProveedores ------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getProveedores ------------------
+  //--------------------------------------------------------
 
   Future<void> _getProveedores() async {
     setState(() {
@@ -1533,12 +1519,12 @@ class HomeScreenState extends State<HomeScreen>
     //return;
   }
 
-//--------------------------------------------------------
-//--------------------- _getTablaProveedores -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getTablaProveedores -------------
+  //--------------------------------------------------------
 
   void _getTablaProveedores() async {
-    void _insertProveedores() async {
+    void insertProveedores() async {
       if (_proveedoresApi.isNotEmpty) {
         DBProveedores.delete();
         for (var element in _proveedoresApi) {
@@ -1548,7 +1534,7 @@ class HomeScreenState extends State<HomeScreen>
     }
 
     if (_hayInternet) {
-      _insertProveedores();
+      insertProveedores();
     }
     _proveedores = await DBProveedores.proveedores();
 
@@ -1559,9 +1545,9 @@ class HomeScreenState extends State<HomeScreen>
     _getRutas();
   }
 
-//--------------------------------------------------------
-//--------------------- _getRutas ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getRutas ------------------------
+  //--------------------------------------------------------
 
   Future<void> _getRutas() async {
     setState(() {
@@ -1583,13 +1569,13 @@ class HomeScreenState extends State<HomeScreen>
     return;
   }
 
-//--------------------------------------------------------
-//--------------------- _getTablaRutas -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getTablaRutas -------------------
+  //--------------------------------------------------------
 
   void _getTablaRutas() async {
     //..............  _insertRutas ................
-    void _insertRutas() async {
+    void insertRutas() async {
       if (_rutasApi.isNotEmpty) {
         DBRutasCab.delete();
         DBParadas.delete();
@@ -1597,14 +1583,15 @@ class HomeScreenState extends State<HomeScreen>
 
         for (var ruta in _rutasApi) {
           RutaCab rutaCab = RutaCab(
-              idRuta: ruta.idRuta,
-              idUser: ruta.idUser,
-              fechaAlta: ruta.fechaAlta,
-              nombre: ruta.nombre,
-              estado: ruta.estado,
-              habilitaCatastro: ruta.habilitaCatastro,
-              totalParadas: 0,
-              pendientes: 0);
+            idRuta: ruta.idRuta,
+            idUser: ruta.idUser,
+            fechaAlta: ruta.fechaAlta,
+            nombre: ruta.nombre,
+            estado: ruta.estado,
+            habilitaCatastro: ruta.habilitaCatastro,
+            totalParadas: 0,
+            pendientes: 0,
+          );
           DBRutasCab.insertRuta(rutaCab);
 
           if (ruta.paradas!.isNotEmpty) {
@@ -1625,7 +1612,7 @@ class HomeScreenState extends State<HomeScreen>
     }
 
     if (_hayInternet) {
-      _insertRutas();
+      insertRutas();
     }
 
     _rutas = await DBRutasCab.rutas();
@@ -1783,37 +1770,41 @@ class HomeScreenState extends State<HomeScreen>
       //     'Aceptar');
 
       await showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Error'),
-              content: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text(
-                        'No se encontraron Rutas activas para su Usuario. Comuníquese con el Administrador.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Aceptar')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Error'),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text(
+                  'No se encontraron Rutas activas para su Usuario. Comuníquese con el Administrador.',
+                ),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Aceptar'),
+              ),
+            ],
+          );
+        },
+      );
 
       // SharedPreferences prefs = await SharedPreferences.getInstance();
       // await prefs.setBool('usuariosconseguidos', false);
       // SystemNavigator.pop();
 
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
     }
 
     setState(() {
@@ -1823,9 +1814,9 @@ class HomeScreenState extends State<HomeScreen>
     _getMotivos();
   }
 
-//--------------------------------------------------------
-//--------------------- _getMotivos ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getMotivos ----------------------
+  //--------------------------------------------------------
 
   Future<void> _getMotivos() async {
     setState(() {
@@ -1848,21 +1839,22 @@ class HomeScreenState extends State<HomeScreen>
     return;
   }
 
-//--------------------------------------------------------
-//--------------------- _getTablaMotivos -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getTablaMotivos -----------------
+  //--------------------------------------------------------
 
   void _getTablaMotivos() async {
-    void _insertMotivos() async {
+    void insertMotivos() async {
       if (_motivosApi.isNotEmpty) {
         DBMotivos.delete();
         for (var element in _motivosApi) {
           Motivo mot = Motivo(
-              id: element.id,
-              motivo: element.motivo,
-              muestraParaEntregado: element.muestraParaEntregado,
-              exclusivoCliente: element.exclusivoCliente,
-              activo: element.activo);
+            id: element.id,
+            motivo: element.motivo,
+            muestraParaEntregado: element.muestraParaEntregado,
+            exclusivoCliente: element.exclusivoCliente,
+            activo: element.activo,
+          );
 
           DBMotivos.insertMotivo(mot);
         }
@@ -1870,7 +1862,7 @@ class HomeScreenState extends State<HomeScreen>
     }
 
     if (_hayInternet) {
-      _insertMotivos();
+      insertMotivos();
     }
     _motivos = await DBMotivos.motivos();
 
@@ -1883,18 +1875,18 @@ class HomeScreenState extends State<HomeScreen>
     _getParadasEnvios();
   }
 
-//--------------------------------------------------------
-//--------------------- _getParadasEnvios ----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getParadasEnvios ----------------
+  //--------------------------------------------------------
 
   Future<void> _getParadasEnvios() async {
     _getTablaMedicionesCab();
     return;
   }
 
-//--------------------------------------------------------
-//--------------------- _getTablaMedicionesCab -----------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getTablaMedicionesCab -----------
+  //--------------------------------------------------------
 
   void _getTablaMedicionesCab() async {
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
@@ -1906,16 +1898,17 @@ class HomeScreenState extends State<HomeScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _actualizaParadasEnvios ----------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _actualizaParadasEnvios ----------
+  //--------------------------------------------------------
 
   Future<void> _actualizaParadasEnvios() async {
     return Future.delayed(const Duration(seconds: 1), () async {
       _paradasenviosdb = await DBParadasEnvios.paradasenvios();
       for (var paradaenvio in _paradasenviosdb) {
-        if (DateTime.parse(paradaenvio.fecha!)
-                .isBefore(DateTime.now().add(const Duration(days: -7))) &&
+        if (DateTime.parse(
+              paradaenvio.fecha!,
+            ).isBefore(DateTime.now().add(const Duration(days: -7))) &&
             paradaenvio.enviado != 0) {
           DBParadasEnvios.delete(paradaenvio);
         }
@@ -1928,146 +1921,146 @@ class HomeScreenState extends State<HomeScreen>
     });
   }
 
-//--------------------------------------------------------
-//--------------------- _borrarMedicionesLocales ---------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _borrarMedicionesLocales ---------
+  //--------------------------------------------------------
 
-  _borrarMedicionesLocales() async {
+  Future<void> _borrarMedicionesLocales() async {
     await showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return AlertDialog(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const [
+                  Text(
+                    'Atención!!',
+                    style: TextStyle(color: Colors.red, fontSize: 20),
+                  ),
+                ],
+              ),
+              content: SizedBox(
+                height: 170,
+                child: Column(
+                  children: [
                     Text(
-                      'Atención!!',
-                      style: TextStyle(color: Colors.red, fontSize: 20),
+                      'Para borrar las paradas grabadas en forma local de este teléfono para el Usuario  ${widget.user.apellidonombre} debe escribir su contraseña',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    const Text(''),
+                    TextField(
+                      obscureText: !_passwordShow,
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: 'Contraseña...',
+                        labelText: 'Contraseña',
+                        errorText: _passwordShowError ? _passwordError : null,
+                        prefixIcon: const Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: _passwordShow
+                              ? const Icon(Icons.visibility)
+                              : const Icon(Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _passwordShow = !_passwordShow;
+                            });
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        _password = value;
+                      },
                     ),
                   ],
                 ),
-                content: SizedBox(
-                  height: 170,
-                  child: Column(
-                    children: [
-                      Text(
-                        'Para borrar las paradas grabadas en forma local de este teléfono para el Usuario  ${widget.user.apellidonombre} debe escribir su contraseña',
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                      const Text(''),
-                      TextField(
-                        obscureText: !_passwordShow,
-                        decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
-                            hintText: 'Contraseña...',
-                            labelText: 'Contraseña',
-                            errorText:
-                                _passwordShowError ? _passwordError : null,
-                            prefixIcon: const Icon(Icons.lock),
-                            suffixIcon: IconButton(
-                              icon: _passwordShow
-                                  ? const Icon(Icons.visibility)
-                                  : const Icon(Icons.visibility_off),
-                              onPressed: () {
-                                setState(() {
-                                  _passwordShow = !_passwordShow;
-                                });
-                              },
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        onChanged: (value) {
-                          _password = value;
-                        },
-                      ),
+              ),
+              actions: <Widget>[
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (_password.toLowerCase() !=
+                        widget.user.usrcontrasena.toLowerCase()) {
+                      _passwordShowError = true;
+                      _passwordError = 'Contraseña incorrecta';
+                      setState(() {});
+                    } else {
+                      for (var element in _paradasenviosdb) {
+                        DBParadasEnvios.delete(element);
+                      }
+                      _paradasenviosdb = [];
+                      showMyDialog(
+                        'Aviso',
+                        'Las paradas grabadas en forma local en este teléfono para el Usuario  ${widget.user.apellidonombre} han sido eliminadas',
+                        'Aceptar',
+                      );
+
+                      setState(() {});
+                      _result2 = 'yes';
+                      Navigator.pop(context, 'yes');
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.delete),
+                      SizedBox(width: 15),
+                      Text('BORRAR'),
                     ],
                   ),
                 ),
-                actions: <Widget>[
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onPressed: () async {
-                      if (_password.toLowerCase() !=
-                          widget.user.usrcontrasena.toLowerCase()) {
-                        _passwordShowError = true;
-                        _passwordError = 'Contraseña incorrecta';
-                        setState(() {});
-                      } else {
-                        for (var element in _paradasenviosdb) {
-                          DBParadasEnvios.delete(element);
-                        }
-                        _paradasenviosdb = [];
-                        showMyDialog(
-                            'Aviso',
-                            'Las paradas grabadas en forma local en este teléfono para el Usuario  ${widget.user.apellidonombre} han sido eliminadas',
-                            'Aceptar');
-
-                        setState(() {});
-                        _result2 = 'yes';
-                        Navigator.pop(context, 'yes');
-                      }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.delete),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('BORRAR'),
-                      ],
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF9a6a2e),
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
+                  onPressed: () {
+                    _passwordShowError = false;
+                    setState(() {});
+                    Navigator.pop(context);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.cancel),
+                      SizedBox(width: 15),
+                      Text('CANCELAR'),
+                    ],
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF9a6a2e),
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onPressed: () {
-                      _passwordShowError = false;
-                      setState(() {});
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.cancel),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('CANCELAR'),
-                      ],
-                    ),
-                  ),
-                ],
-                shape: Border.all(
-                    color: Colors.red, width: 5, style: BorderStyle.solid),
-                backgroundColor: Colors.white,
-              );
-            },
-          );
-        });
+                ),
+              ],
+              shape: Border.all(
+                color: Colors.red,
+                width: 5,
+                style: BorderStyle.solid,
+              ),
+              backgroundColor: Colors.white,
+            );
+          },
+        );
+      },
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _llenarparadasenvios -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _llenarparadasenvios -------------
+  //--------------------------------------------------------
 
   Future<void> _llenarparadasenvios() async {
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
@@ -2106,17 +2099,18 @@ class HomeScreenState extends State<HomeScreen>
       });
     } else {
       showMyDialog(
-          'Aviso',
-          'No está conectado a Internet para subir los datos al Servidor',
-          'Aceptar');
+        'Aviso',
+        'No está conectado a Internet para subir los datos al Servidor',
+        'Aceptar',
+      );
     }
 
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _putParada -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _putParada -----------------------
+  //--------------------------------------------------------
 
   Future<void> _putParada(ParadaEnvio paradaenvio) async {
     for (var element in _paradas) {
@@ -2154,11 +2148,15 @@ class HomeScreenState extends State<HomeScreen>
       };
 
       Response response = await ApiHelper.put(
-          '/api/Paradas/', paradaSelected.idParada.toString(), requestParada);
+        '/api/Paradas/',
+        paradaSelected.idParada.toString(),
+        requestParada,
+      );
 
       if (response.isSuccess) {
         Response response2 = await ApiHelper.getParadaByIDParada(
-            paradaSelected.idParada.toString());
+          paradaSelected.idParada.toString(),
+        );
         if (response2.isSuccess) {
           //CHEQUEAR SI ESTADO GUARDADO ES IGUAL A ESTADO EN EL CELULAR
           paradaSaved = response2.result;
@@ -2171,9 +2169,9 @@ class HomeScreenState extends State<HomeScreen>
     await _putEnvio(paradaenvio);
   }
 
-//--------------------------------------------------------
-//--------------------- _putEnvio ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _putEnvio ------------------------
+  //--------------------------------------------------------
 
   Future<void> _putEnvio(ParadaEnvio paradaenvio) async {
     for (var element in _envios) {
@@ -2251,8 +2249,9 @@ class HomeScreenState extends State<HomeScreen>
         'hashUnico': envioSelected.hashUnico,
         'bultosPikeados': envioSelected.bultosPikeados,
         'centroDistribucion': envioSelected.centroDistribucion,
-        'fechaUltimaActualizacion':
-            DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'fechaUltimaActualizacion': DateFormat(
+          'yyyy-MM-dd',
+        ).format(DateTime.now()),
         'volumen': envioSelected.volumen,
         'avonZoneNumber': envioSelected.avonZoneNumber,
         'avonSectorNumber': envioSelected.avonSectorNumber,
@@ -2279,11 +2278,15 @@ class HomeScreenState extends State<HomeScreen>
       };
 
       Response response = await ApiHelper.put(
-          '/api/Envios/', envioSelected.idEnvio.toString(), requestEnvio);
+        '/api/Envios/',
+        envioSelected.idEnvio.toString(),
+        requestEnvio,
+      );
 
       if (response.isSuccess) {
-        Response response2 =
-            await ApiHelper.getEnvioByIdEnvio(envioSelected.idEnvio.toString());
+        Response response2 = await ApiHelper.getEnvioByIdEnvio(
+          envioSelected.idEnvio.toString(),
+        );
         if (response2.isSuccess) {
           //CHEQUEAR SI ESTADO GUARDADO ES IGUAL A ESTADO EN EL CELULAR
           envioSaved = response2.result;
@@ -2296,9 +2299,9 @@ class HomeScreenState extends State<HomeScreen>
     await _postSeguimiento(paradaenvio);
   }
 
-//--------------------------------------------------------
-//--------------------- _postSeguimiento -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _postSeguimiento -----------------
+  //--------------------------------------------------------
 
   Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
@@ -2329,7 +2332,8 @@ class HomeScreenState extends State<HomeScreen>
 
       if (response.isSuccess) {
         Response response2 = await ApiHelper.getUltimoSeguimientoByIdEnvio(
-            paradaenvio.idEnvio.toString());
+          paradaenvio.idEnvio.toString(),
+        );
         if (response2.isSuccess) {
           //CHEQUEAR SI FECHA GUARDADA ES IGUAL A FECHA EN EL CELULAR
           seguimientoSaved = response2.result;
@@ -2348,9 +2352,9 @@ class HomeScreenState extends State<HomeScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviado1 -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviado1 -------------------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -2396,11 +2400,11 @@ class HomeScreenState extends State<HomeScreen>
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
   }
 
-//--------------------------------------------------------
-//--------------------- _actualizaRutas ------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _actualizaRutas ------------------
+  //--------------------------------------------------------
 
-  _actualizaRutas() async {
+  Future<void> _actualizaRutas() async {
     //---------------- LLENA CAMPO TOTAL PARADAS  ------------------
     for (RutaCab _ruta in _rutas) {
       totParadas = 0;
@@ -2411,14 +2415,15 @@ class HomeScreenState extends State<HomeScreen>
       }
 
       RutaCab rutaCabAux = RutaCab(
-          idRuta: _ruta.idRuta,
-          idUser: _ruta.idUser,
-          fechaAlta: _ruta.fechaAlta,
-          nombre: _ruta.nombre,
-          estado: _ruta.estado,
-          habilitaCatastro: _ruta.habilitaCatastro,
-          totalParadas: totParadas,
-          pendientes: _ruta.pendientes);
+        idRuta: _ruta.idRuta,
+        idUser: _ruta.idUser,
+        fechaAlta: _ruta.fechaAlta,
+        nombre: _ruta.nombre,
+        estado: _ruta.estado,
+        habilitaCatastro: _ruta.habilitaCatastro,
+        totalParadas: totParadas,
+        pendientes: _ruta.pendientes,
+      );
 
       DBRutasCab.update(rutaCabAux);
     }
@@ -2450,23 +2455,24 @@ class HomeScreenState extends State<HomeScreen>
       }
 
       RutaCab rutaCabAux = RutaCab(
-          idRuta: _ruta.idRuta,
-          idUser: _ruta.idUser,
-          fechaAlta: _ruta.fechaAlta,
-          nombre: _ruta.nombre,
-          estado: _ruta.estado,
-          habilitaCatastro: _ruta.habilitaCatastro,
-          totalParadas: _ruta.totalParadas,
-          pendientes: _ruta.totalParadas! - listas);
+        idRuta: _ruta.idRuta,
+        idUser: _ruta.idUser,
+        fechaAlta: _ruta.fechaAlta,
+        nombre: _ruta.nombre,
+        estado: _ruta.estado,
+        habilitaCatastro: _ruta.habilitaCatastro,
+        totalParadas: _ruta.totalParadas,
+        pendientes: _ruta.totalParadas! - listas,
+      );
 
       DBRutasCab.update(rutaCabAux);
     }
     _rutas = await DBRutasCab.rutas();
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviadoParada1 -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviadoParada1 -------------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviadoParada1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -2517,9 +2523,9 @@ class HomeScreenState extends State<HomeScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviadoEnvio1 --------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviadoEnvio1 --------------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviadoEnvio1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -2570,9 +2576,9 @@ class HomeScreenState extends State<HomeScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviadoSeguimiento1 --------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviadoSeguimiento1 --------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviadoSeguimiento1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -2623,9 +2629,9 @@ class HomeScreenState extends State<HomeScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _showEnviosCount -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showEnviosCount -----------------
+  //--------------------------------------------------------
 
   Widget _showEnviosCount() {
     int sincronizados = 0;
@@ -2640,17 +2646,17 @@ class HomeScreenState extends State<HomeScreen>
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0),
       child: Card(
-          color: Colors.white,
-          margin: const EdgeInsets.all(1),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Container(
-              margin: const EdgeInsets.all(1),
-              padding: const EdgeInsets.all(0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Column(
+        color: Colors.white,
+        margin: const EdgeInsets.all(1),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Container(
+            margin: const EdgeInsets.all(1),
+            padding: const EdgeInsets.all(0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Column(
                     children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2720,11 +2726,13 @@ class HomeScreenState extends State<HomeScreen>
                         ],
                       ),
                     ],
-                  )),
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

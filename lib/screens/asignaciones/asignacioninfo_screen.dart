@@ -3,24 +3,23 @@ import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:share_whatsapp_plus/share_whatsapp_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:whatsapp_share/whatsapp_share.dart';
-//import 'package:whatsapp_share2/whatsapp_share2.dart';
+// import 'package:whatsapp_share/whatsapp_share.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 
 import '../../helpers/helpers.dart';
@@ -37,16 +36,16 @@ class AsignacionInfoScreen extends StatefulWidget {
   final FuncionesApp funcionApp;
   final List<ControlesEquivalencia> controlesEquivalencia;
 
-  const AsignacionInfoScreen(
-      {Key? key,
-      required this.user,
-      required this.asignacion,
-      required this.codigoscierre,
-      required this.codigoscierreAux,
-      required this.positionUser,
-      required this.funcionApp,
-      required this.controlesEquivalencia})
-      : super(key: key);
+  const AsignacionInfoScreen({
+    super.key,
+    required this.user,
+    required this.asignacion,
+    required this.codigoscierre,
+    required this.codigoscierreAux,
+    required this.positionUser,
+    required this.funcionApp,
+    required this.controlesEquivalencia,
+  });
 
   @override
   AsignacionInfoScreenState createState() => AsignacionInfoScreenState();
@@ -54,9 +53,9 @@ class AsignacionInfoScreen extends StatefulWidget {
 
 class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     with SingleTickerProviderStateMixin {
-//--------------------------------------------------------
-//--------------------- Variables ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
 
   String ruta = '';
 
@@ -164,66 +163,67 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
   final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
 
   Asignacion2 _asignacion = Asignacion2(
-      recupidjobcard: '',
-      cliente: '',
-      documento: '',
-      nombre: '',
-      domicilio: '',
-      cp: '',
-      entrecallE1: '',
-      entrecallE2: '',
-      partido: '',
-      localidad: '',
-      telefono: '',
-      grxx: '',
-      gryy: '',
-      estadogaos: '',
-      proyectomodulo: '',
-      userID: 0,
-      causantec: '',
-      subcon: '',
-      fechaAsignada: '',
-      fechacaptura: '',
-      codigoCierre: 0,
-      descripcion: '',
-      cierraenapp: 0,
-      nomostrarapp: 0,
-      novedades: '',
-      provincia: '',
-      reclamoTecnicoID: 0,
-      motivos: '',
-      fechaCita: '',
-      medioCita: '',
-      nroSeriesExtras: '',
-      evento1: '',
-      fechaEvento1: '',
-      evento2: '',
-      fechaEvento2: '',
-      evento3: '',
-      fechaEvento3: '',
-      evento4: '',
-      fechaEvento4: '',
-      observacion: '',
-      telefAlternativo1: '',
-      telefAlternativo2: '',
-      telefAlternativo3: '',
-      telefAlternativo4: '',
-      cantAsign: 0,
-      codigoequivalencia: '',
-      deco1descripcion: '',
-      elegir: 0,
-      observacionCaptura: '',
-      zona: '',
-      modificadoAPP: 0,
-      hsCumplidaTime: '',
-      marcado: 0,
-      emailCliente: '');
+    recupidjobcard: '',
+    cliente: '',
+    documento: '',
+    nombre: '',
+    domicilio: '',
+    cp: '',
+    entrecallE1: '',
+    entrecallE2: '',
+    partido: '',
+    localidad: '',
+    telefono: '',
+    grxx: '',
+    gryy: '',
+    estadogaos: '',
+    proyectomodulo: '',
+    userID: 0,
+    causantec: '',
+    subcon: '',
+    fechaAsignada: '',
+    fechacaptura: '',
+    codigoCierre: 0,
+    descripcion: '',
+    cierraenapp: 0,
+    nomostrarapp: 0,
+    novedades: '',
+    provincia: '',
+    reclamoTecnicoID: 0,
+    motivos: '',
+    fechaCita: '',
+    medioCita: '',
+    nroSeriesExtras: '',
+    evento1: '',
+    fechaEvento1: '',
+    evento2: '',
+    fechaEvento2: '',
+    evento3: '',
+    fechaEvento3: '',
+    evento4: '',
+    fechaEvento4: '',
+    observacion: '',
+    telefAlternativo1: '',
+    telefAlternativo2: '',
+    telefAlternativo3: '',
+    telefAlternativo4: '',
+    cantAsign: 0,
+    codigoequivalencia: '',
+    deco1descripcion: '',
+    elegir: 0,
+    observacionCaptura: '',
+    zona: '',
+    modificadoAPP: 0,
+    hsCumplidaTime: '',
+    marcado: 0,
+    emailCliente: '',
+  );
 
   LatLng _center = const LatLng(0, 0);
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
 
   @override
   void initState() {
@@ -244,15 +244,17 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         : const LatLng(0, 0);
 
     _markers.clear();
-    _markers.add(Marker(
-      markerId: MarkerId(_asignacion.reclamoTecnicoID.toString()),
-      position: _center,
-      infoWindow: InfoWindow(
-        title: _asignacion.nombre.toString(),
-        snippet: _asignacion.domicilio.toString(),
+    _markers.add(
+      Marker(
+        markerId: MarkerId(_asignacion.reclamoTecnicoID.toString()),
+        position: _center,
+        infoWindow: InfoWindow(
+          title: _asignacion.nombre.toString(),
+          snippet: _asignacion.domicilio.toString(),
+        ),
+        icon: BitmapDescriptor.defaultMarker,
       ),
-      icon: BitmapDescriptor.defaultMarker,
-    ));
+    );
 
     for (var control in widget.controlesEquivalencia) {
       if (control.codigoequivalencia == 'Genérico') {
@@ -263,9 +265,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     _getAsigns();
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -278,14 +280,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Color(
-                    (0xffdadada),
-                  ),
-                  Color(
-                    (0xffb3b3b4),
-                  ),
-                ],
+                colors: [Color((0xffdadada)), Color((0xffb3b3b4))],
               ),
             ),
             child: TabBarView(
@@ -293,28 +288,28 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               physics: const AlwaysScrollableScrollPhysics(),
               dragStartBehavior: DragStartBehavior.start,
               children: <Widget>[
-//-------------------------------------------------------------------------
-//-------------------------- 1° TABBAR ------------------------------------
-//-------------------------------------------------------------------------
-
+                //-------------------------------------------------------------------------
+                //-------------------------- 1° TABBAR ------------------------------------
+                //-------------------------------------------------------------------------
                 Container(
                   margin: const EdgeInsets.all(0),
                   child: Column(
                     children: <Widget>[
                       AppBar(
-                        title:
-                            (Text('Asignación ${_asignacion.proyectomodulo}')),
+                        title: (Text(
+                          'Asignación ${_asignacion.proyectomodulo}',
+                        )),
                         centerTitle: true,
                         backgroundColor: const Color(0xff282886),
                       ),
                       Expanded(
-                          flex: widget.funcionApp.habilitaDNI == 1
-                              ? 15
-                              : _asignacion.proyectomodulo == 'Mesh'
-                                  ? 19
-                                  : 7,
-                          child:
-                              SingleChildScrollView(child: _showAsignacion())),
+                        flex: widget.funcionApp.habilitaDNI == 1
+                            ? 15
+                            : _asignacion.proyectomodulo == 'Mesh'
+                            ? 19
+                            : 7,
+                        child: SingleChildScrollView(child: _showAsignacion()),
+                      ),
                       Expanded(
                         flex: widget.funcionApp.habilitaDNI == 1 ? 7 : 6,
                         child: _showAutonumericos(),
@@ -324,10 +319,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   ),
                 ),
 
-//-------------------------------------------------------------------------
-//-------------------------- 2° TABBAR ------------------------------------
-//-------------------------------------------------------------------------
-
+                //-------------------------------------------------------------------------
+                //-------------------------- 2° TABBAR ------------------------------------
+                //-------------------------------------------------------------------------
                 Column(
                   children: [
                     AppBar(
@@ -337,20 +331,15 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     ),
                     Expanded(
                       child: Center(
-                        child: Column(
-                          children: <Widget>[
-                            _showTelefonos(),
-                          ],
-                        ),
+                        child: Column(children: <Widget>[_showTelefonos()]),
                       ),
-                    )
+                    ),
                   ],
                 ),
 
-//-------------------------------------------------------------------------
-//-------------------------- 3° TABBAR ------------------------------------
-//-------------------------------------------------------------------------
-
+                //-------------------------------------------------------------------------
+                //-------------------------- 3° TABBAR ------------------------------------
+                //-------------------------------------------------------------------------
                 Column(
                   children: [
                     AppBar(
@@ -362,160 +351,170 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       child: Container(
                         margin: const EdgeInsets.all(10),
                         child: Center(
-                            child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                const Text('Novedades: ',
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Text(
+                                    'Novedades: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text('${_asignacion.novedades}',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                const Text('N° Series Extras: ',
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '${_asignacion.novedades}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  const Text(
+                                    'N° Series Extras: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text('${_asignacion.nroSeriesExtras}',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                const Text('Cartera: ',
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '${_asignacion.nroSeriesExtras}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  const Text(
+                                    'Cartera: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text('${_asignacion.motivos}',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                const Text('Obs. Cliente: ',
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '${_asignacion.motivos}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  const Text(
+                                    'Obs. Cliente: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xFF0e4888),
                                       fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                  child: Text('${_asignacion.observacion}',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            !_editar
-                                ? ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          const Color.fromARGB(255, 242, 84, 5),
-                                      minimumSize:
-                                          const Size(double.infinity, 60),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '${_asignacion.observacion}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              !_editar
+                                  ? ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color.fromARGB(
+                                          255,
+                                          242,
+                                          84,
+                                          5,
+                                        ),
+                                        minimumSize: const Size(
+                                          double.infinity,
+                                          60,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    onPressed: () {
-                                      _editar = true;
-                                      _observaciones2Controller.text =
-                                          _asignacion.observacion.toString();
-                                      setState(() {});
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(Icons.edit),
-                                        SizedBox(
-                                          width: 2,
-                                        ),
-                                        Text(
-                                          'Editar Observaciones',
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Container(),
-                            _editar
-                                ? TextField(
-                                    style: const TextStyle(
+                                      onPressed: () {
+                                        _editar = true;
+                                        _observaciones2Controller.text =
+                                            _asignacion.observacion.toString();
+                                        setState(() {});
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(Icons.edit),
+                                          SizedBox(width: 2),
+                                          Text(
+                                            'Editar Observaciones',
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(),
+                              _editar
+                                  ? TextField(
+                                      style: const TextStyle(
                                         color: Color.fromARGB(255, 34, 33, 33),
                                         fontSize: 12,
-                                        fontWeight: FontWeight.w300),
-                                    controller: _observaciones2Controller,
-                                    decoration: InputDecoration(
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      hintText: 'Ingresa observaciones...',
-                                      labelText: 'Observaciones',
-                                      errorText: _observaciones2ShowError
-                                          ? _observaciones2Error
-                                          : null,
-                                      prefixIcon: const Icon(Icons.notes),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
+                                        fontWeight: FontWeight.w300,
                                       ),
-                                    ),
-                                    keyboardType: TextInputType.multiline,
-                                    minLines: 1,
-                                    maxLines: 6,
-                                    onChanged: (value) {
-                                      _observaciones2 = value;
-                                    },
-                                  )
-                                : Container(),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            _editar
-                                ? Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: ElevatedButton(
+                                      controller: _observaciones2Controller,
+                                      decoration: InputDecoration(
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        hintText: 'Ingresa observaciones...',
+                                        labelText: 'Observaciones',
+                                        errorText: _observaciones2ShowError
+                                            ? _observaciones2Error
+                                            : null,
+                                        prefixIcon: const Icon(Icons.notes),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                        ),
+                                      ),
+                                      keyboardType: TextInputType.multiline,
+                                      minLines: 1,
+                                      maxLines: 6,
+                                      onChanged: (value) {
+                                        _observaciones2 = value;
+                                      },
+                                    )
+                                  : Container(),
+                              const SizedBox(height: 20),
+                              _editar
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  const Color(0xFF282886),
+                                              backgroundColor: const Color(
+                                                0xFF282886,
+                                              ),
                                               minimumSize: const Size(
-                                                  double.infinity, 60),
+                                                double.infinity,
+                                                60,
+                                              ),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5),
@@ -529,54 +528,59 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                   MainAxisAlignment.center,
                                               children: const [
                                                 Icon(Icons.save),
-                                                SizedBox(
-                                                  width: 20,
+                                                SizedBox(width: 20),
+                                                Text(
+                                                  'Guardar',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                  ),
                                                 ),
-                                                Text('Guardar',
-                                                    style: TextStyle(
-                                                        fontSize: 12)),
                                               ],
-                                            )),
-                                      ),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color(0xffdf281e),
-                                            minimumSize:
-                                                const Size(double.infinity, 60),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
                                             ),
                                           ),
-                                          onPressed: () {
-                                            _editar = false;
-                                            setState(() {});
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: const [
-                                              Icon(Icons.cancel),
-                                              SizedBox(
-                                                width: 20,
+                                        ),
+                                        const SizedBox(width: 15),
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color(
+                                                0xffdf281e,
                                               ),
-                                              Text('Cancelar',
-                                                  style:
-                                                      TextStyle(fontSize: 12)),
-                                            ],
+                                              minimumSize: const Size(
+                                                double.infinity,
+                                                60,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              _editar = false;
+                                              setState(() {});
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(Icons.cancel),
+                                                SizedBox(width: 20),
+                                                Text(
+                                                  'Cancelar',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                : Container(),
-                          ],
-                        )),
+                                      ],
+                                    )
+                                  : Container(),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -588,64 +592,50 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       ),
       bottomNavigationBar: BottomAppBar(
         child: TabBar(
-            controller: _tabController,
-            indicatorColor: const Color(0xff282886),
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicatorWeight: 2,
-            labelColor: const Color(0xff282886),
-            unselectedLabelColor: Colors.grey,
-            labelPadding: const EdgeInsets.fromLTRB(10, 1, 10, 1),
-            tabs: <Widget>[
-              Tab(
-                child: Row(
-                  children: const [
-                    Icon(Icons.local_shipping),
-                    SizedBox(
-                      width: 2,
-                    ),
-                    Text(
-                      'Asignación',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
+          controller: _tabController,
+          indicatorColor: const Color(0xff282886),
+          indicatorSize: TabBarIndicatorSize.tab,
+          indicatorWeight: 2,
+          labelColor: const Color(0xff282886),
+          unselectedLabelColor: Colors.grey,
+          labelPadding: const EdgeInsets.fromLTRB(10, 1, 10, 1),
+          tabs: <Widget>[
+            Tab(
+              child: Row(
+                children: const [
+                  Icon(Icons.local_shipping),
+                  SizedBox(width: 2),
+                  Text('Asignación', style: TextStyle(fontSize: 14)),
+                ],
               ),
-              Tab(
-                child: Row(
-                  children: const [
-                    Icon(Icons.phone),
-                    SizedBox(
-                      width: 2,
-                    ),
-                    Text(
-                      'Teléfonos',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
+            ),
+            Tab(
+              child: Row(
+                children: const [
+                  Icon(Icons.phone),
+                  SizedBox(width: 2),
+                  Text('Teléfonos', style: TextStyle(fontSize: 14)),
+                ],
               ),
-              Tab(
-                child: Row(
-                  children: const [
-                    Icon(Icons.list),
-                    SizedBox(
-                      width: 2,
-                    ),
-                    Text(
-                      'Observ.',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
+            ),
+            Tab(
+              child: Row(
+                children: const [
+                  Icon(Icons.list),
+                  SizedBox(width: 2),
+                  Text('Observ.', style: TextStyle(fontSize: 14)),
+                ],
               ),
-            ]),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showAsignacion ------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showAsignacion ------------------
+  //--------------------------------------------------------
 
   Widget _showAsignacion() {
     return Card(
@@ -672,70 +662,70 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text('Cliente: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Cliente: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 child: Text(
-                                    '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                  '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text('DNI: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'DNI: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 flex: 1,
-                                child: Text(_asignacion.documento.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: Text(
+                                  _asignacion.documento.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                               _asignacion.proyectomodulo == 'Cable'
                                   ? const SizedBox(
                                       width: 30,
-                                      child: Text('OT: ',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      child: Text(
+                                        'OT: ',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     )
                                   : Container(),
                               _asignacion.proyectomodulo == 'Cable'
                                   ? Expanded(
                                       flex: 1,
                                       child: Text(
-                                          _asignacion.recupidjobcard.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
+                                        _asignacion.recupidjobcard.toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     )
                                   : Container(),
                             ],
                           ),
 
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
                               Expanded(
@@ -745,89 +735,94 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                       children: [
                                         const SizedBox(
                                           width: 80,
-                                          child: Text('Dirección: ',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF0e4888),
-                                                fontWeight: FontWeight.bold,
-                                              )),
+                                          child: Text(
+                                            'Dirección: ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
                                         Expanded(
                                           child: Text(
-                                              _asignacion.domicilio.toString(),
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                              )),
+                                            _asignacion.domicilio.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(
-                                      height: 1,
-                                    ),
+                                    const SizedBox(height: 1),
                                     Row(
                                       children: [
                                         const SizedBox(
                                           width: 80,
-                                          child: Text('Entre calles: ',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF0e4888),
-                                                fontWeight: FontWeight.bold,
-                                              )),
+                                          child: Text(
+                                            'Entre calles: ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
                                         Expanded(
                                           child: Text(
-                                              '${_asignacion.entrecallE1.toString()} - ${_asignacion.entrecallE2.toString()}',
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                              )),
+                                            '${_asignacion.entrecallE1.toString()} - ${_asignacion.entrecallE2.toString()}',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(
-                                      height: 1,
-                                    ),
+                                    const SizedBox(height: 1),
                                     Row(
                                       children: [
                                         const SizedBox(
                                           width: 80,
-                                          child: Text('Localidad: ',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF0e4888),
-                                                fontWeight: FontWeight.bold,
-                                              )),
+                                          child: Text(
+                                            'Localidad: ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
                                         Expanded(
                                           child: Text(
-                                              '${_asignacion.localidad.toString()}-${_asignacion.partido.toString()}',
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                              )),
+                                            '${_asignacion.localidad.toString()}-${_asignacion.partido.toString()}',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(
-                                      height: 1,
-                                    ),
+                                    const SizedBox(height: 1),
                                     Row(
                                       children: [
                                         const SizedBox(
                                           width: 80,
-                                          child: Text('Cód. Cierre: ',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF0e4888),
-                                                fontWeight: FontWeight.bold,
-                                              )),
+                                          child: Text(
+                                            'Cód. Cierre: ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
                                         Expanded(
                                           child: Text(
-                                              _asignacion.descripcion
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                              )),
+                                            _asignacion.descripcion.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -844,30 +839,20 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           widget.funcionApp.habilitaDNI == 1
-                              ? const Divider(
-                                  color: Colors.black,
-                                )
+                              ? const Divider(color: Colors.black)
                               : Container(),
                           widget.funcionApp.habilitaDNI == 1
                               ? _showButtonsDNIFirma()
                               : Container(),
-                          const Divider(
-                            color: Colors.black,
-                          ),
+                          const Divider(color: Colors.black),
                           _showButtonsEstados(),
-                          const Divider(
-                            color: Colors.black,
-                          ),
+                          const Divider(color: Colors.black),
                           //_showButtonsGuardarCancelar(),
                           _showCodCierreObservaciones(),
 
-                          const Divider(
-                            color: Colors.black,
-                          ),
+                          const Divider(color: Colors.black),
                         ],
                       ),
                     ),
@@ -881,9 +866,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showButtonsDNIFirma -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showButtonsDNIFirma -------------
+  //--------------------------------------------------------
 
   Widget _showButtonsDNIFirma() {
     return Container(
@@ -894,26 +879,28 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           widget.funcionApp.habilitaDNI == 1
               ? Expanded(
                   child: InkWell(
-                    child: Stack(children: <Widget>[
-                      Container(
-                        child: !_photoChangedDNI
-                            ? const Center(
-                                child: Image(
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          child: !_photoChangedDNI
+                              ? const Center(
+                                  child: Image(
                                     image: AssetImage('assets/dni.png'),
                                     width: 80,
                                     height: 60,
-                                    fit: BoxFit.contain),
-                              )
-                            : Center(
-                                child: Image.file(
-                                  File(_image.path),
-                                  width: 80,
-                                  height: 60,
-                                  fit: BoxFit.contain,
+                                    fit: BoxFit.contain,
+                                  ),
+                                )
+                              : Center(
+                                  child: Image.file(
+                                    File(_image.path),
+                                    width: 80,
+                                    height: 60,
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
-                              ),
-                      ),
-                      Positioned(
+                        ),
+                        Positioned(
                           bottom: 0,
                           left: 125,
                           child: InkWell(
@@ -931,8 +918,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 ),
                               ),
                             ),
-                          )),
-                      Positioned(
+                          ),
+                        ),
+                        Positioned(
                           bottom: 0,
                           left: 0,
                           child: InkWell(
@@ -950,32 +938,34 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 ),
                               ),
                             ),
-                          )),
-                    ]),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               : Container(),
-          const SizedBox(
-            width: 15,
-          ),
+          const SizedBox(width: 15),
           widget.funcionApp.habilitaFirma == 1
               ? Expanded(
                   child: InkWell(
-                    child: Stack(children: <Widget>[
-                      Container(
-                        child: !_signatureChanged
-                            ? const Image(
-                                image: AssetImage('assets/firma.png'),
-                                width: 80,
-                                height: 60,
-                                fit: BoxFit.contain)
-                            : Image.memory(
-                                _signature!.buffer.asUint8List(),
-                                width: 80,
-                                height: 60,
-                              ),
-                      ),
-                      Positioned(
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          child: !_signatureChanged
+                              ? const Image(
+                                  image: AssetImage('assets/firma.png'),
+                                  width: 80,
+                                  height: 60,
+                                  fit: BoxFit.contain,
+                                )
+                              : Image.memory(
+                                  _signature!.buffer.asUint8List(),
+                                  width: 80,
+                                  height: 60,
+                                ),
+                        ),
+                        Positioned(
                           bottom: 0,
                           left: 90,
                           child: InkWell(
@@ -993,8 +983,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 ),
                               ),
                             ),
-                          )),
-                    ]),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               : Container(),
@@ -1003,9 +995,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showButtonContratoFirma ---------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showButtonContratoFirma ---------
+  //--------------------------------------------------------
 
   Widget _showButtonContratoFirma() {
     return Container(
@@ -1016,28 +1008,33 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           const Text('Firma de Contrato:'),
           Expanded(
             child: InkWell(
-              child: Stack(children: <Widget>[
-                Container(
-                  child: !_signatureChanged
-                      ? const Image(
-                          image: AssetImage('assets/firma.png'),
-                          width: 180,
-                          height: 60,
-                          fit: BoxFit.contain)
-                      : Image.memory(
-                          _signature!.buffer.asUint8List(),
-                          width: 80,
-                          height: 60,
-                        ),
-                ),
-                Positioned(
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    child: !_signatureChanged
+                        ? const Image(
+                            image: AssetImage('assets/firma.png'),
+                            width: 180,
+                            height: 60,
+                            fit: BoxFit.contain,
+                          )
+                        : Image.memory(
+                            _signature!.buffer.asUint8List(),
+                            width: 80,
+                            height: 60,
+                          ),
+                  ),
+                  Positioned(
                     bottom: 0,
                     right: 0,
                     child: InkWell(
                       onTap: () async {
                         if (_nroserie.isEmpty) {
-                          showMyDialog('Error', 'Debe ingresar un N° de Serie',
-                              'Aceptar');
+                          showMyDialog(
+                            'Error',
+                            'Debe ingresar un N° de Serie',
+                            'Aceptar',
+                          );
 
                           return;
                         }
@@ -1057,8 +1054,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           ),
                         ),
                       ),
-                    )),
-              ]),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -1066,76 +1065,73 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showButtonsEstados --------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showButtonsEstados --------------
+  //--------------------------------------------------------
 
   Widget _showButtonsEstados() {
     return Column(
       children: [
         Row(
           children: [
-            const Text('Est. Gaos: ',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Color(0xFF0e4888),
-                  fontWeight: FontWeight.bold,
-                )),
+            const Text(
+              'Est. Gaos: ',
+              style: TextStyle(
+                fontSize: 12,
+                color: Color(0xFF0e4888),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Expanded(
               child: Text(
                 estadogaos.toString(),
-                style: const TextStyle(
-                  fontSize: 12,
-                ),
+                style: const TextStyle(fontSize: 12),
               ),
             ),
-            const Text('Cód. Cierre: ',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Color(0xFF0e4888),
-                  fontWeight: FontWeight.bold,
-                )),
+            const Text(
+              'Cód. Cierre: ',
+              style: TextStyle(
+                fontSize: 12,
+                color: Color(0xFF0e4888),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Expanded(
-              child: Text(_asignacion.descripcion.toString(),
-                  style: const TextStyle(
-                    fontSize: 12,
-                  )),
+              child: Text(
+                _asignacion.descripcion.toString(),
+                style: const TextStyle(fontSize: 12),
+              ),
             ),
           ],
         ),
-        const SizedBox(
-          height: 1,
-        ),
+        const SizedBox(height: 1),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Expanded(
               flex: 6,
               child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF282886),
-                    minimumSize: const Size(double.infinity, 40),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF282886),
+                  minimumSize: const Size(double.infinity, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  onPressed: () {
-                    _elegirtodos();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.done),
-                      SizedBox(
-                        width: 3,
-                      ),
-                      Text('Realizado', style: TextStyle(fontSize: 12)),
-                    ],
-                  )),
+                ),
+                onPressed: () {
+                  _elegirtodos();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.done),
+                    SizedBox(width: 3),
+                    Text('Realizado', style: TextStyle(fontSize: 12)),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(
-              width: 3,
-            ),
+            const SizedBox(width: 3),
             Expanded(
               flex: 7,
               child: ElevatedButton(
@@ -1153,17 +1149,13 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Icon(Icons.cancel),
-                    SizedBox(
-                      width: 3,
-                    ),
+                    SizedBox(width: 3),
                     Text('No Realizado', style: TextStyle(fontSize: 12)),
                   ],
                 ),
               ),
             ),
-            const SizedBox(
-              width: 3,
-            ),
+            const SizedBox(width: 3),
             _asignacion.cantAsign! > 1
                 ? Expanded(
                     flex: 6,
@@ -1182,9 +1174,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
                           Icon(Icons.star_half),
-                          SizedBox(
-                            width: 2,
-                          ),
+                          SizedBox(width: 2),
                           Text('Parcial', style: TextStyle(fontSize: 12)),
                         ],
                       ),
@@ -1197,9 +1187,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showCodCierreObservaciones ------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showCodCierreObservaciones ------
+  //--------------------------------------------------------
 
   Widget _showCodCierreObservaciones() {
     return Column(
@@ -1209,7 +1199,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           child: DropdownButtonFormField(
             key: _key,
             isExpanded: true,
-            value: _codigocierre,
+            initialValue: _codigocierre,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -1217,8 +1207,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               hintText: 'Elija Código de Cierre',
               labelText: 'Código de Cierre',
               errorText: _codigocierreShowError ? _codigocierreError : null,
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             items: _getComboCodigosCierre(),
             onChanged: (estadogaos == 'INC' || estadogaos == 'PAR')
@@ -1228,87 +1219,95 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 : null,
           ),
         ),
-        const SizedBox(
-          height: 5,
-        ),
+        const SizedBox(height: 5),
         TextField(
-          style:
-              const TextStyle(fontSize: 14.0, height: 1.0, color: Colors.black),
+          style: const TextStyle(
+            fontSize: 14.0,
+            height: 1.0,
+            color: Colors.black,
+          ),
           controller: _observacionesController,
           decoration: InputDecoration(
-              hintText: 'Ingresa observaciones...',
-              labelText: 'Observaciones',
-              errorText: _observacionesShowError ? _observacionesError : null,
-              suffixIcon: const Icon(Icons.notes),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+            hintText: 'Ingresa observaciones...',
+            labelText: 'Observaciones',
+            errorText: _observacionesShowError ? _observacionesError : null,
+            suffixIcon: const Icon(Icons.notes),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          ),
           onChanged: (value) {
             _observaciones = value;
           },
         ),
-        SizedBox(
-          height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0,
-        ),
+        SizedBox(height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0),
         widget.asignacion.proyectomodulo == 'Mesh'
             ? TextField(
                 style: const TextStyle(
-                    fontSize: 14.0, height: 1.0, color: Colors.black),
+                  fontSize: 14.0,
+                  height: 1.0,
+                  color: Colors.black,
+                ),
                 controller: _recibeController,
                 decoration: InputDecoration(
-                    hintText: 'Nombre de quién recibe...',
-                    labelText: 'Recibe',
-                    errorText: _recibeShowError ? _recibeError : null,
-                    suffixIcon: const Icon(Icons.person),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                  hintText: 'Nombre de quién recibe...',
+                  labelText: 'Recibe',
+                  errorText: _recibeShowError ? _recibeError : null,
+                  suffixIcon: const Icon(Icons.person),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 onChanged: (value) {
                   _recibe = value;
                 },
               )
             : Container(),
-        SizedBox(
-          height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0,
-        ),
+        SizedBox(height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0),
         widget.asignacion.proyectomodulo == 'Mesh'
             ? TextField(
                 style: const TextStyle(
-                    fontSize: 14.0, height: 1.0, color: Colors.black),
+                  fontSize: 14.0,
+                  height: 1.0,
+                  color: Colors.black,
+                ),
                 controller: _dnirecibeController,
                 decoration: InputDecoration(
-                    hintText: 'DNI recibe...',
-                    labelText: 'DNI recibe',
-                    errorText: _dnirecibeShowError ? _dnirecibeError : null,
-                    suffixIcon: const Icon(Icons.pin),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                  hintText: 'DNI recibe...',
+                  labelText: 'DNI recibe',
+                  errorText: _dnirecibeShowError ? _dnirecibeError : null,
+                  suffixIcon: const Icon(Icons.pin),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 onChanged: (value) {
                   _dnirecibe = value;
                 },
               )
             : Container(),
-        SizedBox(
-          height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0,
-        ),
+        SizedBox(height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0),
         widget.asignacion.proyectomodulo == 'Mesh'
             ? TextField(
                 style: const TextStyle(
-                    fontSize: 14.0, height: 1.0, color: Colors.black),
+                  fontSize: 14.0,
+                  height: 1.0,
+                  color: Colors.black,
+                ),
                 controller: _nroserieController,
                 decoration: InputDecoration(
-                    hintText: 'N° Serie...',
-                    labelText: 'N° Serie',
-                    errorText: _nroserieShowError ? _nroserieError : null,
-                    suffixIcon: const Icon(Icons.numbers),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                  hintText: 'N° Serie...',
+                  labelText: 'N° Serie',
+                  errorText: _nroserieShowError ? _nroserieError : null,
+                  suffixIcon: const Icon(Icons.numbers),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 onChanged: (value) {
                   _nroserie = value.toUpperCase();
                 },
               )
             : Container(),
-        SizedBox(
-          height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0,
-        ),
+        SizedBox(height: widget.asignacion.proyectomodulo == 'Mesh' ? 5 : 0),
         widget.asignacion.proyectomodulo == 'Mesh'
             ? _showButtonContratoFirma()
             : Container(),
@@ -1316,9 +1315,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showButtonsGuardarCancelar ------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showButtonsGuardarCancelar ------
+  //--------------------------------------------------------
 
   Widget _showButtonsGuardarCancelar() {
     return Padding(
@@ -1330,30 +1329,27 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             children: <Widget>[
               Expanded(
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF282886),
-                      minimumSize: const Size(double.infinity, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF282886),
+                    minimumSize: const Size(double.infinity, 40),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    onPressed: () {
-                      _guardar();
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.save),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text('Guardar', style: TextStyle(fontSize: 12)),
-                      ],
-                    )),
+                  ),
+                  onPressed: () {
+                    _guardar();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.save),
+                      SizedBox(width: 2),
+                      Text('Guardar', style: TextStyle(fontSize: 10)),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(
-                width: 5,
-              ),
+              const SizedBox(width: 5),
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -1370,23 +1366,23 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Icon(Icons.cancel),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text('Cancelar', style: TextStyle(fontSize: 12)),
+                      SizedBox(width: 2),
+                      Text('Cancelar', style: TextStyle(fontSize: 10)),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 5,
-              ),
+              const SizedBox(width: 5),
               widget.funcionApp.habilitaOtroRecupero == 1
                   ? Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 52, 52, 52),
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            52,
+                            52,
+                            52,
+                          ),
                           minimumSize: const Size(double.infinity, 40),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -1397,11 +1393,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             context,
                             MaterialPageRoute(
                               builder: (context) => OtroRecuperoScreen(
-                                  user: widget.user,
-                                  asignacion: _asignacion,
-                                  idgaos: _asigns[0].idregistro,
-                                  controlesEquivalencia:
-                                      widget.controlesEquivalencia),
+                                user: widget.user,
+                                asignacion: _asignacion,
+                                idgaos: _asigns[0].idregistro,
+                                controlesEquivalencia:
+                                    widget.controlesEquivalencia,
+                              ),
                             ),
                           );
                         },
@@ -1409,13 +1406,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
                             Icon(Icons.star_half),
-                            SizedBox(
-                              width: 2,
-                            ),
-                            Text(
-                              'Otro recup.',
-                              style: TextStyle(fontSize: 12),
-                            ),
+                            SizedBox(width: 2),
+                            Text('Otro recup.', style: TextStyle(fontSize: 10)),
                           ],
                         ),
                       ),
@@ -1428,9 +1420,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showAutonumericos ---------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showAutonumericos ---------------
+  //--------------------------------------------------------
 
   Widget _showAutonumericos() {
     return ListView(
@@ -1440,37 +1432,38 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Card(
-              color: const Color(0xFFbfd4e7),
-              shadowColor: const Color(0xFF0000FF),
-              elevation: 10,
-              margin:
-                  const EdgeInsets.only(left: 5, bottom: 5, right: 5, top: 0),
-              child: InkWell(
-                onTap: () {}, //=> _goHistory(e),
-                child: Container(
-                  margin: const EdgeInsets.all(10),
-                  padding: const EdgeInsets.all(0),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                          child: Column(
+            color: const Color(0xFFbfd4e7),
+            shadowColor: const Color(0xFF0000FF),
+            elevation: 10,
+            margin: const EdgeInsets.only(left: 5, bottom: 5, right: 5, top: 0),
+            child: InkWell(
+              onTap: () {}, //=> _goHistory(e),
+              child: Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
                         children: <Widget>[
                           Row(
                             children: [
                               const SizedBox(
                                 width: 90,
-                                child: Text('Id Gaos: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Id Gaos: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
-                                child: Text(e.idregistro.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: Text(
+                                  e.idregistro.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                               _asigns.length > 1 && estadogaos == 'PAR'
                                   ? Checkbox(
@@ -1479,38 +1472,38 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         for (Asign asign in _asigns) {
                                           if (asign.autonumerico ==
                                               e.autonumerico) {
-                                            asign.elegir =
-                                                value == true ? 1 : 0;
+                                            asign.elegir = value == true
+                                                ? 1
+                                                : 0;
                                           }
                                         }
                                         setState(() {});
-                                      })
+                                      },
+                                    )
                                   : Container(),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
                               const SizedBox(
                                 width: 90,
-                                child: Text('Equipo: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Equipo: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
-                                child: Text(e.decO1.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: Text(
+                                  e.decO1.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
-                              const SizedBox(
-                                height: 1,
-                              ),
+                              const SizedBox(height: 1),
                             ],
                           ),
                           e.smartcard.toString().isNotEmpty
@@ -1518,68 +1511,78 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   children: [
                                     const SizedBox(
                                       width: 90,
-                                      child: Text('Smartcard: ',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      child: Text(
+                                        'Smartcard: ',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                     Expanded(
-                                      child: Text(e.smartcard.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
+                                      child: Text(
+                                        e.smartcard.toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     ),
                                     const SizedBox(
                                       width: 70,
-                                      child: Text('      Dev. : SI',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      child: Text(
+                                        '      Dev. : SI',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                     Checkbox(
-                                        value: e.elegirSI == 1 ? true : false,
-                                        onChanged: (value) {
-                                          for (Asign asign in _asigns) {
-                                            if (asign.autonumerico ==
-                                                e.autonumerico) {
-                                              asign.elegirSI =
-                                                  value == true ? 1 : 0;
-                                              asign.elegirNO =
-                                                  asign.elegirSI == 1 ? 0 : 1;
-                                            }
+                                      value: e.elegirSI == 1 ? true : false,
+                                      onChanged: (value) {
+                                        for (Asign asign in _asigns) {
+                                          if (asign.autonumerico ==
+                                              e.autonumerico) {
+                                            asign.elegirSI = value == true
+                                                ? 1
+                                                : 0;
+                                            asign.elegirNO = asign.elegirSI == 1
+                                                ? 0
+                                                : 1;
                                           }
-                                          setState(() {});
-                                        }),
+                                        }
+                                        setState(() {});
+                                      },
+                                    ),
                                     const SizedBox(
                                       width: 25,
-                                      child: Text('NO',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      child: Text(
+                                        'NO',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                     Checkbox(
-                                        value: e.elegirNO == 1 ? true : false,
-                                        onChanged: (value) {
-                                          for (Asign asign in _asigns) {
-                                            if (asign.autonumerico ==
-                                                e.autonumerico) {
-                                              asign.elegirNO =
-                                                  value == true ? 1 : 0;
-                                              asign.elegirSI =
-                                                  asign.elegirNO == 1 ? 0 : 1;
-                                            }
+                                      value: e.elegirNO == 1 ? true : false,
+                                      onChanged: (value) {
+                                        for (Asign asign in _asigns) {
+                                          if (asign.autonumerico ==
+                                              e.autonumerico) {
+                                            asign.elegirNO = value == true
+                                                ? 1
+                                                : 0;
+                                            asign.elegirSI = asign.elegirNO == 1
+                                                ? 0
+                                                : 1;
                                           }
-                                          setState(() {});
-                                        }),
-                                    const SizedBox(
-                                      height: 1,
+                                        }
+                                        setState(() {});
+                                      },
                                     ),
+                                    const SizedBox(height: 1),
                                   ],
                                 )
                               : Container(),
@@ -1587,100 +1590,109 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                             children: [
                               const SizedBox(
                                 width: 90,
-                                child: Text('Descripción: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Descripción: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 child: e.codigoequivalencia != null
-                                    ? Text(e.codigoequivalencia.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        ))
+                                    ? Text(
+                                        e.codigoequivalencia.toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      )
                                     : const Text(''),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           widget.funcionApp.habilitaCambioModelo == 1
                               ? !(widget.asignacion.proyectomodulo == 'DTV' ||
-                                      widget.asignacion.proyectomodulo ==
-                                          'Cable')
-                                  ? Row(
-                                      children: [
-                                        const SizedBox(
-                                          width: 90,
-                                          child: Text('Conf. Modelo:   ',
+                                        widget.asignacion.proyectomodulo ==
+                                            'Cable')
+                                    ? Row(
+                                        children: [
+                                          const SizedBox(
+                                            width: 90,
+                                            child: Text(
+                                              'Conf. Modelo:   ',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: Color(0xFF0e4888),
                                                 fontWeight: FontWeight.bold,
-                                              )),
-                                        ),
-                                        Expanded(
-                                          child: SizedBox(
-                                            height: 40,
-                                            child: DropdownButtonFormField(
-                                              value: e.marcaModeloId, //_equipo,
-                                              isExpanded: true,
-                                              isDense: true,
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black),
-                                              decoration: InputDecoration(
-                                                fillColor: Colors.white,
-                                                filled: true,
-                                                hintText: 'Elija un Modelo...',
-                                                errorText: _equipoShowError
-                                                    ? _equipoError
-                                                    : null,
                                               ),
-                                              items: _getComboEquipos(),
-                                              onChanged: (value) {
-                                                _equipo = value.toString();
-
-                                                for (Asign asign in _asigns) {
-                                                  if (asign.autonumerico ==
-                                                      e.autonumerico) {
-                                                    asign.marcaModeloId =
-                                                        _equipo;
-                                                  }
-                                                }
-                                              },
                                             ),
                                           ),
-                                        ),
-                                        const Text('        ',
+                                          Expanded(
+                                            child: SizedBox(
+                                              height: 40,
+                                              child: DropdownButtonFormField(
+                                                initialValue:
+                                                    e.marcaModeloId, //_equipo,
+                                                isExpanded: true,
+                                                isDense: true,
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                ),
+                                                decoration: InputDecoration(
+                                                  fillColor: Colors.white,
+                                                  filled: true,
+                                                  hintText:
+                                                      'Elija un Modelo...',
+                                                  errorText: _equipoShowError
+                                                      ? _equipoError
+                                                      : null,
+                                                ),
+                                                items: _getComboEquipos(),
+                                                onChanged: (value) {
+                                                  _equipo = value.toString();
+
+                                                  for (Asign asign in _asigns) {
+                                                    if (asign.autonumerico ==
+                                                        e.autonumerico) {
+                                                      asign.marcaModeloId =
+                                                          _equipo;
+                                                    }
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          const Text(
+                                            '        ',
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: Color(0xFF0e4888),
                                               fontWeight: FontWeight.bold,
-                                            )),
-                                      ],
-                                    )
-                                  : Row(
-                                      children: [
-                                        const Text('Modelo:            ',
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Row(
+                                        children: [
+                                          const Text(
+                                            'Modelo:            ',
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: Color(0xFF0e4888),
                                               fontWeight: FontWeight.bold,
-                                            )),
-                                        Text(e.modelo.toString(),
+                                            ),
+                                          ),
+                                          Text(
+                                            e.modelo.toString(),
                                             style: const TextStyle(
                                               fontSize: 12,
-                                            )),
-                                      ],
-                                    )
+                                            ),
+                                          ),
+                                        ],
+                                      )
                               : Container(),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          const SizedBox(height: 10),
                           widget.funcionApp.serieObligatoria == 1 ||
                                   (e.proyectomodulo == 'Cable' &&
                                       e.motivos.toString().contains('VDSL'))
@@ -1688,288 +1700,348 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   children: [
                                     const SizedBox(
                                       width: 90,
-                                      child: Text('Mac/Serie: ',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      child: Text(
+                                        'Mac/Serie: ',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                     Expanded(
                                       flex: 7,
-                                      child: Text(e.estadO3.toString(),
-                                          style: const TextStyle(fontSize: 12)),
+                                      child: Text(
+                                        e.estadO3.toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
+                                    const SizedBox(width: 5),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFF282886),
+                                        backgroundColor: const Color(
+                                          0xFF282886,
+                                        ),
                                         minimumSize: const Size(50, 40),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
                                         ),
                                       ),
                                       onPressed: () {
                                         showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              _macserieController.text = '';
-                                              return Center(
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    AlertDialog(
-                                                      backgroundColor:
-                                                          Colors.grey[300],
-                                                      title: const Text(
-                                                          'Ingrese o escanee el código'),
-                                                      content: Column(
-                                                        children: [
-                                                          TextField(
-                                                            autofocus: true,
-                                                            controller:
-                                                                _macserieController,
-                                                            decoration: InputDecoration(
-                                                                fillColor:
-                                                                    Colors
-                                                                        .white,
-                                                                filled: true,
-                                                                hintText: '',
-                                                                labelText: '',
-                                                                errorText:
-                                                                    _macserieShowError
-                                                                        ? _macserieError
-                                                                        : null,
-                                                                prefixIcon:
-                                                                    const Icon(
-                                                                        Icons
-                                                                            .tag),
-                                                                border: OutlineInputBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10))),
-                                                            onChanged:
-                                                                (value) {},
-                                                          ),
-                                                          const SizedBox(
-                                                              height: 10),
-                                                          ElevatedButton(
-                                                              style:
-                                                                  ElevatedButton
-                                                                      .styleFrom(
-                                                                backgroundColor:
-                                                                    const Color(
-                                                                        0xFF282886),
-                                                                minimumSize:
-                                                                    const Size(
-                                                                        50, 50),
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5),
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            _macserieController.text = '';
+                                            return Center(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  AlertDialog(
+                                                    backgroundColor:
+                                                        Colors.grey[300],
+                                                    title: const Text(
+                                                      'Ingrese o escanee el código',
+                                                    ),
+                                                    content: Column(
+                                                      children: [
+                                                        TextField(
+                                                          autofocus: true,
+                                                          controller:
+                                                              _macserieController,
+                                                          decoration: InputDecoration(
+                                                            fillColor:
+                                                                Colors.white,
+                                                            filled: true,
+                                                            hintText: '',
+                                                            labelText: '',
+                                                            errorText:
+                                                                _macserieShowError
+                                                                ? _macserieError
+                                                                : null,
+                                                            prefixIcon:
+                                                                const Icon(
+                                                                  Icons.tag,
                                                                 ),
-                                                              ),
-                                                              onPressed:
-                                                                  () async {
-                                                                String
-                                                                    barcodeScanRes;
-                                                                try {
-                                                                  barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-                                                                      '#3D8BEF',
-                                                                      'Cancelar',
-                                                                      false,
-                                                                      ScanMode
-                                                                          .DEFAULT);
-                                                                  //print(barcodeScanRes);
-                                                                } on PlatformException {
-                                                                  barcodeScanRes =
-                                                                      'Error';
-                                                                }
-                                                                // if (!mounted) return;
-                                                                if (barcodeScanRes ==
-                                                                    '-1') {
-                                                                  return;
-                                                                }
-                                                                _macserieController
-                                                                        .text =
-                                                                    barcodeScanRes;
-                                                              },
-                                                              child: const Icon(
-                                                                  Icons
-                                                                      .qr_code_2)),
-                                                        ],
-                                                      ),
-                                                      actions: [
-                                                        Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child:
-                                                                  ElevatedButton(
-                                                                      style: ElevatedButton
-                                                                          .styleFrom(
-                                                                        backgroundColor:
-                                                                            const Color(0xFF120E43),
-                                                                        minimumSize: const Size(
-                                                                            double.infinity,
-                                                                            50),
-                                                                        shape:
-                                                                            RoundedRectangleBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(5),
-                                                                        ),
-                                                                      ),
-                                                                      onPressed:
-                                                                          () {
-                                                                        if (_macserieController.text.length <
-                                                                            6) {
-                                                                          showDialog(
-                                                                              context: context,
-                                                                              builder: (context) {
-                                                                                return AlertDialog(
-                                                                                  shape: RoundedRectangleBorder(
-                                                                                    borderRadius: BorderRadius.circular(10),
-                                                                                  ),
-                                                                                  title: const Text('Aviso'),
-                                                                                  content: Column(mainAxisSize: MainAxisSize.min, children: const <Widget>[
-                                                                                    Text('El código debe tener al menos 6 caracteres.'),
-                                                                                    SizedBox(
-                                                                                      height: 10,
-                                                                                    ),
-                                                                                  ]),
-                                                                                  actions: <Widget>[
-                                                                                    TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Ok')),
-                                                                                  ],
-                                                                                );
-                                                                              });
-
-                                                                          return;
-                                                                        }
-
-                                                                        for (Asign asign
-                                                                            in _asigns) {
-                                                                          if (asign.autonumerico ==
-                                                                              e.autonumerico) {
-                                                                            asign.estadO3 =
-                                                                                _macserieController.text.toUpperCase();
-                                                                            asign.elegir =
-                                                                                1;
-                                                                          }
-                                                                        }
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                        setState(
-                                                                            () {});
-                                                                      },
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceAround,
-                                                                        children: const [
-                                                                          Icon(Icons
-                                                                              .save),
-                                                                          Text(
-                                                                              'Aceptar'),
-                                                                        ],
-                                                                      )),
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            Expanded(
-                                                              child:
-                                                                  ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  backgroundColor:
-                                                                      const Color(
-                                                                          0xFFB4161B),
-                                                                  minimumSize:
-                                                                      const Size(
-                                                                          double
-                                                                              .infinity,
-                                                                          50),
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(5),
+                                                            border: OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    10,
                                                                   ),
-                                                                ),
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceAround,
-                                                                  children: const [
-                                                                    Icon(Icons
-                                                                        .cancel),
-                                                                    Text(
-                                                                        'Cancelar'),
-                                                                  ],
-                                                                ),
-                                                              ),
                                                             ),
-                                                          ],
+                                                          ),
+                                                          onChanged: (value) {},
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        ElevatedButton(
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor:
+                                                                const Color(
+                                                                  0xFF282886,
+                                                                ),
+                                                            minimumSize:
+                                                                const Size(
+                                                                  50,
+                                                                  50,
+                                                                ),
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    5,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                          onPressed: () async {
+                                                            String
+                                                            barcodeScanRes =
+                                                                '-1';
+                                                            try {
+                                                              String?
+                                                              barcodeScanResAux =
+                                                                  await Navigator.of(
+                                                                    context,
+                                                                  ).push<
+                                                                    String
+                                                                  >(
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (
+                                                                            context,
+                                                                          ) =>
+                                                                              const BarCodeReader(),
+                                                                    ),
+                                                                  );
+                                                              barcodeScanRes =
+                                                                  barcodeScanResAux ??
+                                                                  '-1';
+                                                            } on PlatformException {
+                                                              barcodeScanRes =
+                                                                  'Error';
+                                                            }
+                                                            // if (!mounted) return;
+                                                            if (barcodeScanRes ==
+                                                                '-1') {
+                                                              return;
+                                                            }
+                                                            _macserieController
+                                                                    .text =
+                                                                barcodeScanRes;
+                                                          },
+                                                          child: const Icon(
+                                                            Icons.qr_code_2,
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                            barrierDismissible: false);
+                                                    actions: [
+                                                      Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: ElevatedButton(
+                                                              style: ElevatedButton.styleFrom(
+                                                                backgroundColor:
+                                                                    const Color(
+                                                                      0xFF120E43,
+                                                                    ),
+                                                                minimumSize:
+                                                                    const Size(
+                                                                      double
+                                                                          .infinity,
+                                                                      50,
+                                                                    ),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                        5,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                if (_macserieController
+                                                                        .text
+                                                                        .length <
+                                                                    6) {
+                                                                  showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder: (context) {
+                                                                      return AlertDialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                            10,
+                                                                          ),
+                                                                        ),
+                                                                        title: const Text(
+                                                                          'Aviso',
+                                                                        ),
+                                                                        content: Column(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.min,
+                                                                          children:
+                                                                              const <
+                                                                                Widget
+                                                                              >[
+                                                                                Text(
+                                                                                  'El código debe tener al menos 6 caracteres.',
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  height: 10,
+                                                                                ),
+                                                                              ],
+                                                                        ),
+                                                                        actions:
+                                                                            <
+                                                                              Widget
+                                                                            >[
+                                                                              TextButton(
+                                                                                onPressed: () => Navigator.of(
+                                                                                  context,
+                                                                                ).pop(),
+                                                                                child: const Text(
+                                                                                  'Ok',
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                      );
+                                                                    },
+                                                                  );
+
+                                                                  return;
+                                                                }
+
+                                                                for (Asign asign
+                                                                    in _asigns) {
+                                                                  if (asign
+                                                                          .autonumerico ==
+                                                                      e.autonumerico) {
+                                                                    asign.estadO3 =
+                                                                        _macserieController
+                                                                            .text
+                                                                            .toUpperCase();
+                                                                    asign.elegir =
+                                                                        1;
+                                                                  }
+                                                                }
+                                                                Navigator.pop(
+                                                                  context,
+                                                                );
+                                                                setState(() {});
+                                                              },
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                children: const [
+                                                                  Icon(
+                                                                    Icons.save,
+                                                                  ),
+                                                                  Text(
+                                                                    'Aceptar',
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Expanded(
+                                                            child: ElevatedButton(
+                                                              style: ElevatedButton.styleFrom(
+                                                                backgroundColor:
+                                                                    const Color(
+                                                                      0xFFB4161B,
+                                                                    ),
+                                                                minimumSize:
+                                                                    const Size(
+                                                                      double
+                                                                          .infinity,
+                                                                      50,
+                                                                    ),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                        5,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                  context,
+                                                                );
+                                                              },
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                children: const [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .cancel,
+                                                                  ),
+                                                                  Text(
+                                                                    'Cancelar',
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          barrierDismissible: false,
+                                        );
                                       },
                                       child: const Icon(Icons.qr_code_2),
                                     ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
+                                    const SizedBox(width: 5),
                                     ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xffdf281e),
-                                          minimumSize: const Size(50, 40),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(
+                                          0xffdf281e,
+                                        ),
+                                        minimumSize: const Size(50, 40),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
                                           ),
                                         ),
-                                        onPressed: () {
-                                          for (Asign asign in _asigns) {
-                                            if (asign.autonumerico ==
-                                                e.autonumerico) {
-                                              asign.estadO3 = '';
-                                            }
+                                      ),
+                                      onPressed: () {
+                                        for (Asign asign in _asigns) {
+                                          if (asign.autonumerico ==
+                                              e.autonumerico) {
+                                            asign.estadO3 = '';
                                           }
-                                          setState(() {});
-                                        },
-                                        child: const Icon(Icons.cancel)),
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: const Icon(Icons.cancel),
+                                    ),
                                   ],
                                 )
                               : Container(),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
                               const SizedBox(
                                 width: 90,
-                                child: Text('Obs. Captura: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Obs. Captura: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 child: e.observacionCaptura != null
@@ -1977,71 +2049,73 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                         e.observacionCaptura
                                             .toString()
                                             .substring(
-                                                0,
-                                                e.observacionCaptura!.length >
-                                                        90
-                                                    ? 90
-                                                    : e.observacionCaptura!
-                                                        .length),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        ))
+                                              0,
+                                              e.observacionCaptura!.length > 90
+                                                  ? 90
+                                                  : e
+                                                        .observacionCaptura!
+                                                        .length,
+                                            ),
+                                        style: const TextStyle(fontSize: 12),
+                                      )
                                     : const Text(''),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                         ],
-                      )),
-                    ],
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-              )),
+              ),
+            ),
+          ),
         );
       }).toList(),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getComboCodigosCierre -----------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getComboCodigosCierre -----------
+  //--------------------------------------------------------
 
   List<DropdownMenuItem<int>> _getComboCodigosCierre() {
     List<DropdownMenuItem<int>> list = [];
-    list.add(const DropdownMenuItem(
-      value: -1,
-      child: Text('Elija Código de Cierre.'),
-    ));
+    list.add(
+      const DropdownMenuItem(value: -1, child: Text('Elija Código de Cierre.')),
+    );
 
     for (var codigocierre in __codigoscierre) {
-      list.add(DropdownMenuItem(
-        value: codigocierre.codigoCierre,
-        child: Text(codigocierre.descripcion.toString()),
-      ));
+      list.add(
+        DropdownMenuItem(
+          value: codigocierre.codigoCierre,
+          child: Text(codigocierre.descripcion.toString()),
+        ),
+      );
     }
 
     return list;
   }
 
-//--------------------------------------------------------
-//--------------------- _takePicture ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _takePicture ---------------------
+  //--------------------------------------------------------
 
   void _takePicture() async {
     WidgetsFlutterBinding.ensureInitialized();
     final cameras = await availableCameras();
     var firstCamera = cameras.first;
     var response1 = await showAlertDialog(
-        context: context,
-        title: 'Seleccionar cámara',
-        message: '¿Qué cámara desea utilizar?',
-        actions: <AlertDialogAction>[
-          const AlertDialogAction(key: 'no', label: 'Trasera'),
-          const AlertDialogAction(key: 'yes', label: 'Delantera'),
-          const AlertDialogAction(key: 'cancel', label: 'Cancelar'),
-        ]);
+      context: context,
+      title: 'Seleccionar cámara',
+      message: '¿Qué cámara desea utilizar?',
+      actions: <AlertDialogAction>[
+        const AlertDialogAction(key: 'no', label: 'Trasera'),
+        const AlertDialogAction(key: 'yes', label: 'Delantera'),
+        const AlertDialogAction(key: 'cancel', label: 'Cancelar'),
+      ],
+    );
     if (response1 == 'yes') {
       firstCamera = cameras.first;
     }
@@ -2051,11 +2125,11 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     if (response1 != 'cancel') {
       Response? response = await Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => TakePictureScreen(
-                    camera: firstCamera,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => TakePictureScreen(camera: firstCamera),
+        ),
+      );
       if (response != null) {
         setState(() {
           _photoChangedDNI = true;
@@ -2065,13 +2139,15 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _takeSignature -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _takeSignature -------------------
+  //--------------------------------------------------------
 
   void _takeSignature() async {
     Response? response = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const FirmaScreen()));
+      context,
+      MaterialPageRoute(builder: (context) => const FirmaScreen()),
+    );
     if (response != null) {
       setState(() {
         _signatureChanged = true;
@@ -2080,16 +2156,20 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _takeContractSignature -----------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _takeContractSignature -----------
+  //--------------------------------------------------------
 
   void _takeContractSignature() async {
     Response? response = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ContratoFirmaScreen(
-                asignacion: widget.asignacion, nroserie: _nroserie)));
+      context,
+      MaterialPageRoute(
+        builder: (context) => ContratoFirmaScreen(
+          asignacion: widget.asignacion,
+          nroserie: _nroserie,
+        ),
+      ),
+    );
     if (response != null) {
       setState(() {
         _signatureChanged = true;
@@ -2098,9 +2178,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _getAsigns -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getAsigns -----------------------
+  //--------------------------------------------------------
 
   Future<void> _getAsigns() async {
     setState(() {});
@@ -2110,7 +2190,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
       showMyDialog(
-          'Error', 'Verifica que estés conectado a Internet', 'Aceptar');
+        'Error',
+        'Verifica que estés conectado a Internet',
+        'Aceptar',
+      );
       return;
     }
     bandera = false;
@@ -2172,9 +2255,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _getEquiposExtras ----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getEquiposExtras ----------------
+  //--------------------------------------------------------
 
   Future<void> _getEquiposExtras() async {
     setState(() {});
@@ -2184,7 +2267,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
       showMyDialog(
-          'Error', 'Verifica que estés conectado a Internet', 'Aceptar');
+        'Error',
+        'Verifica que estés conectado a Internet',
+        'Aceptar',
+      );
       return;
     }
     bandera = false;
@@ -2192,9 +2278,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     Response response = Response(isSuccess: false);
     do {
       response = await ApiHelper.getEquiposExtra(
-          widget.asignacion.cliente.toString(),
-          widget.user.idUser,
-          widget.asignacion.proyectomodulo.toString());
+        widget.asignacion.cliente.toString(),
+        widget.user.idUser,
+        widget.asignacion.proyectomodulo.toString(),
+      );
       if (response.isSuccess) {
         bandera = true;
         _equiposExtra = response.result;
@@ -2209,9 +2296,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _showTelefonos -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showTelefonos -------------------
+  //--------------------------------------------------------
 
   Widget _showTelefonos() {
     return Card(
@@ -2236,163 +2323,169 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                         children: [
                           Row(
                             children: [
-                              const Text('Mail: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Expanded(
-                                child: Text(widget.user.mail!,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                              const Text(
+                                'Mail: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Text('Clave: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Expanded(
-                                child: Text(widget.user.claveEmail!,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Text('Mail Cliente: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Expanded(
-                                child: Text(_asignacion.emailCliente!,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Text('Cliente: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
                               Expanded(
                                 child: Text(
-                                    '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                  widget.user.mail!,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
-                          ),
-                          const SizedBox(
-                            height: 1,
                           ),
                           Row(
                             children: [
-                              const Text('DNI: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                'Clave: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
-                                child: Text(_asignacion.documento.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: Text(
+                                  widget.user.claveEmail!,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
-                          ),
-                          const SizedBox(
-                            height: 1,
                           ),
                           Row(
                             children: [
-                              const Text('Dirección: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                'Mail Cliente: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
-                                child: Text(_asignacion.domicilio.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: Text(
+                                  _asignacion.emailCliente!,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
-                          ),
-                          const SizedBox(
-                            height: 1,
                           ),
                           Row(
                             children: [
-                              const Text('Localidad: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                'Cliente: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
-                                child: Text(_asignacion.localidad.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: Text(
+                                  '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
-                              const Text('Provincia: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                'DNI: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
-                                child: Text(_asignacion.provincia.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: Text(
+                                  _asignacion.documento.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const Divider(
-                            color: Colors.black,
+                          const SizedBox(height: 1),
+                          Row(
+                            children: [
+                              const Text(
+                                'Dirección: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  _asignacion.domicilio.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
                           ),
+                          const SizedBox(height: 1),
+                          Row(
+                            children: [
+                              const Text(
+                                'Localidad: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  _asignacion.localidad.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 1),
+                          Row(
+                            children: [
+                              const Text(
+                                'Provincia: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  _asignacion.provincia.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(color: Colors.black),
                           _asignacion.hayTelefono
                               ? Row(
                                   children: [
-                                    const Text('Teléfono: ',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        )),
+                                    const Text(
+                                      'Teléfono: ',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF0e4888),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     Expanded(
-                                      child:
-                                          Text(_asignacion.telefono.toString(),
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                              )),
+                                      child: Text(
+                                        _asignacion.telefono.toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     ),
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
@@ -2406,8 +2499,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             color: Colors.white,
                                           ),
                                           onPressed: () => _sendMessage(
-                                              _asignacion.telefono.toString(),
-                                              'ws'),
+                                            _asignacion.telefono.toString(),
+                                            'ws',
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -2425,7 +2519,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             _asignacion.telefono.toString() !=
                                                 'XXX') {
                                           launch(
-                                              'tel://${_asignacion.telefono.toString()}');
+                                            'tel://${_asignacion.telefono.toString()}',
+                                          );
                                         }
                                       },
                                     ),
@@ -2433,26 +2528,25 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 )
                               : Container(),
                           _asignacion.hayTelefono
-                              ? const Divider(
-                                  color: Colors.black,
-                                )
+                              ? const Divider(color: Colors.black)
                               : Container(),
                           _asignacion.hayTelefAlternativo1
                               ? Row(
                                   children: [
-                                    const Text('Tel. Alt. 1: ',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        )),
+                                    const Text(
+                                      'Tel. Alt. 1: ',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF0e4888),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     Expanded(
                                       child: Text(
-                                          _asignacion.telefAlternativo1
-                                              .toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
+                                        _asignacion.telefAlternativo1
+                                            .toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     ),
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
@@ -2466,9 +2560,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             color: Colors.white,
                                           ),
                                           onPressed: () => _sendMessage(
-                                              _asignacion.telefAlternativo1
-                                                  .toString(),
-                                              'ws'),
+                                            _asignacion.telefAlternativo1
+                                                .toString(),
+                                            'ws',
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -2489,7 +2584,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                     .toString() !=
                                                 'XXX') {
                                           launch(
-                                              'tel://${_asignacion.telefAlternativo1.toString()}');
+                                            'tel://${_asignacion.telefAlternativo1.toString()}',
+                                          );
                                         }
                                       },
                                     ),
@@ -2497,26 +2593,25 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 )
                               : Container(),
                           _asignacion.hayTelefAlternativo1
-                              ? const Divider(
-                                  color: Colors.black,
-                                )
+                              ? const Divider(color: Colors.black)
                               : Container(),
                           _asignacion.hayTelefAlternativo2
                               ? Row(
                                   children: [
-                                    const Text('Tel. Alt. 2: ',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        )),
+                                    const Text(
+                                      'Tel. Alt. 2: ',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF0e4888),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     Expanded(
                                       child: Text(
-                                          _asignacion.telefAlternativo2
-                                              .toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
+                                        _asignacion.telefAlternativo2
+                                            .toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     ),
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
@@ -2530,9 +2625,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             color: Colors.white,
                                           ),
                                           onPressed: () => _sendMessage(
-                                              _asignacion.telefAlternativo2
-                                                  .toString(),
-                                              'ws'),
+                                            _asignacion.telefAlternativo2
+                                                .toString(),
+                                            'ws',
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -2553,7 +2649,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                     .toString() !=
                                                 'XXX') {
                                           launch(
-                                              'tel://${_asignacion.telefAlternativo2.toString()}');
+                                            'tel://${_asignacion.telefAlternativo2.toString()}',
+                                          );
                                         }
                                       },
                                     ),
@@ -2561,26 +2658,25 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 )
                               : Container(),
                           _asignacion.hayTelefAlternativo2
-                              ? const Divider(
-                                  color: Colors.black,
-                                )
+                              ? const Divider(color: Colors.black)
                               : Container(),
                           _asignacion.hayTelefAlternativo3
                               ? Row(
                                   children: [
-                                    const Text('Tel. Alt. 3: ',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        )),
+                                    const Text(
+                                      'Tel. Alt. 3: ',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF0e4888),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     Expanded(
                                       child: Text(
-                                          _asignacion.telefAlternativo3
-                                              .toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
+                                        _asignacion.telefAlternativo3
+                                            .toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     ),
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
@@ -2594,9 +2690,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             color: Colors.white,
                                           ),
                                           onPressed: () => _sendMessage(
-                                              _asignacion.telefAlternativo3
-                                                  .toString(),
-                                              'ws'),
+                                            _asignacion.telefAlternativo3
+                                                .toString(),
+                                            'ws',
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -2617,7 +2714,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                     .toString() !=
                                                 'XXX') {
                                           launch(
-                                              'tel://${_asignacion.telefAlternativo3.toString()}');
+                                            'tel://${_asignacion.telefAlternativo3.toString()}',
+                                          );
                                         }
                                       },
                                     ),
@@ -2625,26 +2723,25 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 )
                               : Container(),
                           _asignacion.hayTelefAlternativo3
-                              ? const Divider(
-                                  color: Colors.black,
-                                )
+                              ? const Divider(color: Colors.black)
                               : Container(),
                           _asignacion.hayTelefAlternativo4
                               ? Row(
                                   children: [
-                                    const Text('Tel. Alt. 4: ',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        )),
+                                    const Text(
+                                      'Tel. Alt. 4: ',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF0e4888),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     Expanded(
                                       child: Text(
-                                          _asignacion.telefAlternativo4
-                                              .toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
+                                        _asignacion.telefAlternativo4
+                                            .toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     ),
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
@@ -2658,9 +2755,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                             color: Colors.white,
                                           ),
                                           onPressed: () => _sendMessage(
-                                              _asignacion.telefAlternativo4
-                                                  .toString(),
-                                              'ws'),
+                                            _asignacion.telefAlternativo4
+                                                .toString(),
+                                            'ws',
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -2681,7 +2779,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                                     .toString() !=
                                                 'XXX') {
                                           launch(
-                                              'tel://${_asignacion.telefAlternativo4.toString()}');
+                                            'tel://${_asignacion.telefAlternativo4.toString()}',
+                                          );
                                         }
                                       },
                                     ),
@@ -2689,14 +2788,15 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 )
                               : Container(),
                           _asignacion.hayTelefAlternativo4
-                              ? const Divider(
-                                  color: Colors.black,
-                                )
+                              ? const Divider(color: Colors.black)
                               : Container(),
-                          const Text('Envío del Mensaje por Mail',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
+                          const Text(
+                            'Envío del Mensaje por Mail',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           // Column(
                           //   children: [
                           //     Row(
@@ -2727,40 +2827,50 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                           // ),
                           Row(
                             children: [
-                              const Text('Mail Cliente: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                'Mail Cliente: ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
-                                child: !EmailValidator.validate(
-                                        _asignacion.emailCliente!)
+                                child:
+                                    !EmailValidator.validate(
+                                      _asignacion.emailCliente!,
+                                    )
                                     ? const Text(
                                         'El cliente no tiene cargado un mail válido para poder recibir correos',
                                         style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold))
-                                    : Text(_asignacion.emailCliente!,
-                                        style: const TextStyle(
+                                          color: Colors.red,
                                           fontSize: 12,
-                                        )),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    : Text(
+                                        _asignacion.emailCliente!,
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                               ),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Container(
                                   height: 40,
                                   width: 40,
-                                  color: (EmailValidator.validate(
-                                          _asignacion.emailCliente!))
+                                  color:
+                                      (EmailValidator.validate(
+                                        _asignacion.emailCliente!,
+                                      ))
                                       ? Colors.green
                                       : Colors.grey,
                                   child: IconButton(
                                     icon: const Icon(Icons.alternate_email),
                                     color: Colors.white,
-                                    onPressed: (EmailValidator.validate(
-                                            _asignacion.emailCliente!))
+                                    onPressed:
+                                        (EmailValidator.validate(
+                                          _asignacion.emailCliente!,
+                                        ))
                                         ? () {
                                             _sendMessage('', 'mail');
                                           }
@@ -2783,39 +2893,47 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _navegar -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _navegar -------------------------
+  //--------------------------------------------------------
 
-  _navegar(Asignacion2 asignacion) async {
+  Future<void> _navegar(Asignacion2 asignacion) async {
     if (asignacion.grxx == '0' ||
         asignacion.gryy == '0' ||
         isNullOrEmpty(asignacion.grxx) ||
         isNullOrEmpty(asignacion.gryy)) {
       showMyDialog(
-          'Error', 'Esta asignación no tiene coordenadas cargadas.', 'Aceptar');
+        'Error',
+        'Esta asignación no tiene coordenadas cargadas.',
+        'Aceptar',
+      );
 
       return;
     }
 
-    _center =
-        LatLng(double.parse(_asignacion.grxx!), double.parse(asignacion.gryy!));
+    _center = LatLng(
+      double.parse(_asignacion.grxx!),
+      double.parse(asignacion.gryy!),
+    );
     _markers.clear();
-    _markers.add(Marker(
-      markerId: MarkerId(asignacion.reclamoTecnicoID.toString()),
-      position: _center,
-      infoWindow: InfoWindow(
-        title: asignacion.nombre.toString(),
-        snippet: asignacion.domicilio.toString(),
+    _markers.add(
+      Marker(
+        markerId: MarkerId(asignacion.reclamoTecnicoID.toString()),
+        position: _center,
+        infoWindow: InfoWindow(
+          title: asignacion.nombre.toString(),
+          snippet: asignacion.domicilio.toString(),
+        ),
+        icon: BitmapDescriptor.defaultMarker,
       ),
-      icon: BitmapDescriptor.defaultMarker,
-    ));
+    );
 
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
       var uri = Uri.parse(
-          'google.navigation:q=${double.parse(asignacion.grxx!)},${double.parse(asignacion.gryy!)}&mode=d');
+        'google.navigation:q=${double.parse(asignacion.grxx!)},${double.parse(asignacion.gryy!)}&mode=d',
+      );
       if (await canLaunch(uri.toString())) {
         await launch(uri.toString());
       } else {
@@ -2823,23 +2941,24 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
     } else {
       showMyDialog(
-          'Aviso',
-          'Necesita estar conectado a Internet para acceder al mapa',
-          'Aceptar');
+        'Aviso',
+        'Necesita estar conectado a Internet para acceder al mapa',
+        'Aceptar',
+      );
     }
   }
 
-//--------------------------------------------------------
-//--------------------- isNullOrEmpty --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- isNullOrEmpty --------------------
+  //--------------------------------------------------------
 
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
 
-//--------------------------------------------------------
-//--------------------- _elegirtodos ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _elegirtodos ---------------------
+  //--------------------------------------------------------
 
   void _elegirtodos() {
     estadogaos = 'EJB';
@@ -2854,9 +2973,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _deselegirtodos ------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _deselegirtodos ------------------
+  //--------------------------------------------------------
 
   void _deselegirtodos() {
     estadogaos = 'INC';
@@ -2868,9 +2987,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _elegiralgunos -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _elegiralgunos -------------------
+  //--------------------------------------------------------
 
   void _elegiralgunos() {
     estadogaos = 'PAR';
@@ -2882,42 +3001,47 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _guardar ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _guardar ------------------------
+  //--------------------------------------------------------
 
-//-------------------------- Verifica que no sea PEN --------------------------
+  //-------------------------- Verifica que no sea PEN --------------------------
   void _guardar() async {
     if (estadogaos == 'PEN') {
-      showMyDialog('Error', 'El Estado sigue "PEN". No tiene sentido guardar.',
-          'Aceptar');
+      showMyDialog(
+        'Error',
+        'El Estado sigue "PEN". No tiene sentido guardar.',
+        'Aceptar',
+      );
 
       return;
     }
 
-//---------------- Verifica que si es INC tenga Código de Cierre --------------
+    //---------------- Verifica que si es INC tenga Código de Cierre --------------
 
     if (estadogaos == 'INC' && _codigocierre == -1) {
       showMyDialog(
-          'Error',
-          'Si la Orden tiene un Estado "INC", hay que cargar el Código Cierre.',
-          'Aceptar');
+        'Error',
+        'Si la Orden tiene un Estado "INC", hay que cargar el Código Cierre.',
+        'Aceptar',
+      );
 
       return;
     }
 
-//---------------- Verifica que si es PAR tenga Código de Cierre --------------
+    //---------------- Verifica que si es PAR tenga Código de Cierre --------------
 
     if (estadogaos == 'PAR' && _codigocierre == -1) {
       showMyDialog(
-          'Error',
-          'Si la Orden tiene un Estado "PAR", hay que cargar el Código Cierre.',
-          'Aceptar');
+        'Error',
+        'Si la Orden tiene un Estado "PAR", hay que cargar el Código Cierre.',
+        'Aceptar',
+      );
 
       return;
     }
 
-//---------------- Verifica que si es PAR haya elegidos y no elegidos -------
+    //---------------- Verifica que si es PAR haya elegidos y no elegidos -------
 
     if (estadogaos == 'PAR') {
       int elegidos = 0;
@@ -2932,24 +3056,26 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
       if (elegidos == 0) {
         showMyDialog(
-            'Error',
-            'La Orden tiene un Estado "PAR" pero NO HA ELEGIDO ninguna asignación, ',
-            'Aceptar');
+          'Error',
+          'La Orden tiene un Estado "PAR" pero NO HA ELEGIDO ninguna asignación, ',
+          'Aceptar',
+        );
 
         return;
       }
 
       if (noelegidos == 0) {
         showMyDialog(
-            'Error',
-            'La Orden tiene un Estado "PAR" pero HA ELEGIDO TODAS las asignaciones, ',
-            'Aceptar');
+          'Error',
+          'La Orden tiene un Estado "PAR" pero HA ELEGIDO TODAS las asignaciones, ',
+          'Aceptar',
+        );
 
         return;
       }
     }
 
-//---------------- Verifica que haya Foto del DNI --------------
+    //---------------- Verifica que haya Foto del DNI --------------
 
     if (widget.funcionApp.habilitaDNI == 1 &&
         _photoChangedDNI == false &&
@@ -2959,7 +3085,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       return;
     }
 
-//---------------- Verifica que haya Firma --------------
+    //---------------- Verifica que haya Firma --------------
 
     if (widget.funcionApp.habilitaFirma == 1 &&
         _signatureChanged == false &&
@@ -2969,7 +3095,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       return;
     }
 
-//---------------- Verifica que estén cargados los Mac/Serie ------------------
+    //---------------- Verifica que estén cargados los Mac/Serie ------------------
 
     if (widget.funcionApp.serieObligatoria == 1 ||
         (_asignacion.proyectomodulo == 'Cable' &&
@@ -2983,28 +3109,29 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                 asign.elegir == 1))) {
           band = true;
           showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  title: const Text('Aviso'),
-                  content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const <Widget>[
-                        Text('Mac/Serie debe tener al menos 6 caracteres.'),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ]),
-                  actions: <Widget>[
-                    TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Ok')),
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                title: const Text('Aviso'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('Mac/Serie debe tener al menos 6 caracteres.'),
+                    SizedBox(height: 10),
                   ],
-                );
-              });
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok'),
+                  ),
+                ],
+              );
+            },
+          );
         }
         setState(() {});
         if (band) {
@@ -3013,7 +3140,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
     }
 
-//-------- Verifica para DTV que se haya elegido SI o NO para la Smartcard ----
+    //-------- Verifica para DTV que se haya elegido SI o NO para la Smartcard ----
 
     if (_asignacion.proyectomodulo == 'DTV') {
       for (Asign asign in _asigns) {
@@ -3029,29 +3156,29 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     asign.smartcard != '')) {
           band = true;
           showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  title: const Text('Aviso'),
-                  content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const <Widget>[
-                        Text(
-                            'Debe seleccionar si se devuelve o no la Smartcard.'),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ]),
-                  actions: <Widget>[
-                    TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Ok')),
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                title: const Text('Aviso'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const <Widget>[
+                    Text('Debe seleccionar si se devuelve o no la Smartcard.'),
+                    SizedBox(height: 10),
                   ],
-                );
-              });
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Ok'),
+                  ),
+                ],
+              );
+            },
+          );
         }
         setState(() {});
         if (band) {
@@ -3060,11 +3187,11 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
     }
 
-//---------------- Trae Equipos Extras  --------------
+    //---------------- Trae Equipos Extras  --------------
 
     _getEquiposExtras();
 
-//---------------- Pregunta si se envía recibo (sólo en DTV) --------------
+    //---------------- Pregunta si se envía recibo (sólo en DTV) --------------
     _mensajeRecibo = '';
     if ((widget.asignacion.proyectomodulo == 'DTV' ||
             widget.asignacion.proyectomodulo == 'Tasa' ||
@@ -3074,113 +3201,106 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
             widget.asignacion.proyectomodulo == 'TLC') &&
         estadogaos != 'INC') {
       await showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text(''),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('Seleccione una opción',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onPressed: () async {
-                    _enviarRecibo = 0;
-                    Navigator.of(context).pop();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.cancel),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('No enviar Comprobante'),
-                    ],
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text(''),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text(
+                  'Seleccione una opción',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onPressed: () async {
-                    _enviarRecibo = 1;
-                    Navigator.of(context).pop();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.chat),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Enviar Comprobante como Texto'),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onPressed: () async {
-                    _enviarRecibo = 2;
-                    Navigator.of(context).pop();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.picture_as_pdf),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Enviar Comprobante PDF'),
-                    ],
-                  ),
-                ),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                onPressed: () async {
+                  _enviarRecibo = 0;
+                  Navigator.of(context).pop();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.cancel),
+                    SizedBox(width: 15),
+                    Text('No enviar Comprobante'),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                onPressed: () async {
+                  _enviarRecibo = 1;
+                  Navigator.of(context).pop();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.chat),
+                    SizedBox(width: 15),
+                    Text('Enviar Comprobante como Texto'),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                onPressed: () async {
+                  _enviarRecibo = 2;
+                  Navigator.of(context).pop();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.picture_as_pdf),
+                    SizedBox(width: 15),
+                    Text('Enviar Comprobante PDF'),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      );
     }
 
-//---------------- Establece valores para grabar -----------------------------
+    //---------------- Establece valores para grabar -----------------------------
 
-//----- Fecha -----
+    //----- Fecha -----
     DateTime fechaYa = DateTime.now();
     int hora = (fechaYa.hour * 3600 + fechaYa.minute * 60 + fechaYa.second);
 
-//----- Código de Cierre y Descripción elegido y final-----
+    //----- Código de Cierre y Descripción elegido y final-----
 
     for (CodigoCierre cod in widget.codigoscierreAux) {
       if (cod.codigoCierre.toString() == _codigocierre.toString()) {
@@ -3191,7 +3311,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
     }
 
-//----- EstadoGaos y Código de Cierre -----
+    //----- EstadoGaos y Código de Cierre -----
 
     String evento1 = '';
     for (Asign asign in _asigns) {
@@ -3216,14 +3336,16 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       }
 
       if (asign.estadogaos == 'EJB') {
-        String mm = (asign.proyectomodulo.toString() == 'DTV' ||
+        String mm =
+            (asign.proyectomodulo.toString() == 'DTV' ||
                 asign.proyectomodulo.toString() == 'Cable' ||
                 asign.proyectomodulo.toString() == 'Prisma' ||
                 asign.proyectomodulo.toString() == 'SuperC' ||
                 asign.proyectomodulo.toString() == 'TLC')
-            ? asign.decO1.toString() //campo deco1 de la base.
+            ? asign.decO1
+                  .toString() //campo deco1 de la base.
             : asign.estadO3
-                .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
+                  .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
         _mensajeRecibo = '${_mensajeRecibo}Equipo: $mm\n';
       }
 
@@ -3341,18 +3463,19 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         'elegir': asign.elegirSI == 1
             ? 1
             : asign.elegirNO == 1
-                ? 0
-                : null,
+            ? 0
+            : null,
 
         //----------------- Campos que cambian el valor -----------------
         'estadogaos': asign.estadogaos,
-        'estadO3': (asign.decO1 == 'SinDatos' ||
+        'estadO3':
+            (asign.decO1 == 'SinDatos' ||
                 asign.decO1 == '' ||
                 asign.decO1 == 'xxx')
             ? asign.estadO3
             : widget.funcionApp.serieObligatoria == 1
-                ? asign.estadO3
-                : asign.decO1, //Mac Serie
+            ? asign.estadO3
+            : asign.decO1, //Mac Serie
         'marcaModeloId': asign.marcaModeloId != 'Elija un Modelo...'
             ? asign.marcaModeloId
             : asign.decO1,
@@ -3378,7 +3501,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       };
 
       Response response = await ApiHelper.put(
-          '/api/AsignacionesOTs/', asign.idregistro.toString(), request);
+        '/api/AsignacionesOTs/',
+        asign.idregistro.toString(),
+        request,
+      );
 
       if (!response.isSuccess) {
         showMyDialog('Aviso', response.message, 'Aceptar');
@@ -3396,14 +3522,14 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
       for (var cc in widget.codigoscierreAux) {
         if (cc.codigoCierre == asign.codigoCierre) {
-          _codCier =
-              cc.equivalenciaWS != null ? cc.equivalenciaWS.toString() : '';
+          _codCier = cc.equivalenciaWS != null
+              ? cc.equivalenciaWS.toString()
+              : '';
         }
       }
 
       Map<String, dynamic> requestAsigHisto = {
         //----------------- Campos que mantienen el valor -----------------
-
         'IDHISTO': _nroReg,
         'PROYMODULO': asign.proyectomodulo,
         'FECHA': fechaYa.toString(),
@@ -3423,7 +3549,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       };
 
       Response responseAsigHisto = await ApiHelper.post(
-          '/api/AsignacionesOTs/PostAsigHistorico', requestAsigHisto);
+        '/api/AsignacionesOTs/PostAsigHistorico',
+        requestAsigHisto,
+      );
 
       if (!responseAsigHisto.isSuccess) {
         showMyDialog('Error', responseAsigHisto.message, 'Aceptar');
@@ -3467,19 +3595,8 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       empresa = 'DirecTV';
     }
 
-    message = 'Recibimos del cliente ' +
-        _asignacion.nombre.toString() +
-        ' - ' +
-        _asignacion.domicilio.toString() +
-        ' los equipos detallados a continuación: ' +
-        '\n' +
-        _mensajeRecibo +
-        '\n' +
-        'Atentamente' +
-        '\n' +
-        widget.user.apellidonombre.toString() +
-        ' - Empresa Fleet al servicio de ' +
-        empresa;
+    message =
+        'Recibimos del cliente ${_asignacion.nombre} - ${_asignacion.domicilio} los equipos detallados a continuación: \n$_mensajeRecibo\nAtentamente\n${widget.user.apellidonombre} - Empresa Fleet al servicio de $empresa';
 
     setState(() {});
     Navigator.pop(context, 'Yes');
@@ -3492,12 +3609,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _guardar2 ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _guardar2 ------------------------
+  //--------------------------------------------------------
 
   void _guardar2() async {
-//---------------- Establece valores para grabar -----------------------------
+    //---------------- Establece valores para grabar -----------------------------
 
     for (Asign asign in _asigns) {
       Map<String, dynamic> request = {
@@ -3627,7 +3744,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
       };
 
       Response response = await ApiHelper.put(
-          '/api/AsignacionesOTs/', asign.idregistro.toString(), request);
+        '/api/AsignacionesOTs/',
+        asign.idregistro.toString(),
+        request,
+      );
 
       if (!response.isSuccess) {
         showMyDialog('Aviso', response.message, 'Aceptar');
@@ -3639,9 +3759,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _showMap ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showMap ------------------------
+  //--------------------------------------------------------
 
   void _showMap(Asignacion2 asignacion) async {
     _markers.clear();
@@ -3650,7 +3770,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     if (lat == 0 || long == 0 || isNullOrEmpty(lat) || isNullOrEmpty(long)) {
       showMyDialog(
-          'Aviso', 'Esta asignación no tiene coordenadas cargadas.', 'Aceptar');
+        'Aviso',
+        'Esta asignación no tiene coordenadas cargadas.',
+        'Aceptar',
+      );
 
       return;
     }
@@ -3662,74 +3785,78 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
           position: LatLng(lat, long),
           onTap: () {
             _customInfoWindowController.addInfoWindow!(
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  width: 300,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.info),
-                      const SizedBox(
-                        width: 8.0,
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                child: Text(
+              Container(
+                padding: const EdgeInsets.all(5),
+                width: 300,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.info),
+                    const SizedBox(width: 8.0),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
                               '${asignacion.cliente.toString()} - ${asignacion.nombre.toString()}',
                               style: const TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            )),
-                            Expanded(
-                                child: Text(asignacion.domicilio.toString(),
-                                    style: const TextStyle(fontSize: 12))),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFFb3b3b4),
-                                      minimumSize:
-                                          const Size(double.infinity, 30),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              asignacion.domicilio.toString(),
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFb3b3b4),
+                                    minimumSize: const Size(
+                                      double.infinity,
+                                      30,
                                     ),
-                                    onPressed: () => _navegar(asignacion),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(Icons.map,
-                                            color: Color(0xff282886)),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          'Navegar',
-                                          style: TextStyle(
-                                              color: Color(0xff282886)),
-                                        ),
-                                      ],
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
                                   ),
+                                  onPressed: () => _navegar(asignacion),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(Icons.map, color: Color(0xff282886)),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Navegar',
+                                        style: TextStyle(
+                                          color: Color(0xff282886),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                LatLng(lat, long));
+              ),
+              LatLng(lat, long),
+            );
           },
           icon: BitmapDescriptor.defaultMarker,
         ),
@@ -3749,47 +3876,48 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getComboEquipos -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getComboEquipos -----------------
+  //--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboEquipos() {
     List<DropdownMenuItem<String>> list = [];
-    list.add(const DropdownMenuItem(
-      value: 'Elija un Modelo...',
-      child: Text('Elija un Modelo...'),
-    ));
+    list.add(
+      const DropdownMenuItem(
+        value: 'Elija un Modelo...',
+        child: Text('Elija un Modelo...'),
+      ),
+    );
 
     for (var control in widget.controlesEquivalencia) {
-      list.add(DropdownMenuItem(
-        value: control.decO1.toString(),
-        child: Text(control.descripcion.toString()),
-      ));
+      list.add(
+        DropdownMenuItem(
+          value: control.decO1.toString(),
+          child: Text(control.descripcion.toString()),
+        ),
+      );
     }
 
     return list;
   }
 
-//--------------------------------------------------------
-//--------------------- _getComboCuandos -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getComboCuandos -----------------
+  //--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboCuandos() {
     List<DropdownMenuItem<String>> list = [];
 
     for (var cuando in cuandos) {
-      list.add(DropdownMenuItem(
-        value: cuando,
-        child: Text(cuando),
-      ));
+      list.add(DropdownMenuItem(value: cuando, child: Text(cuando)));
     }
 
     return list;
   }
 
-//--------------------------------------------------------
-//--------------------- _selectPicture -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _selectPicture -------------------
+  //--------------------------------------------------------
 
   void _selectPicture() async {
     final ImagePicker picker = ImagePicker();
@@ -3802,9 +3930,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _sendMessage ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _sendMessage ---------------------
+  //--------------------------------------------------------
 
   void _sendMessage(String number, String metodo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -3863,233 +3991,230 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     String palabraEquipo = _asignacion.cantAsign == 1 ? 'equipo' : 'equipos';
 
     if (empresa == 'Telecentro') {
-      palabraEquipo =
-          _asignacion.cantAsign == 1 ? 'control remoto' : 'controles remotos';
+      palabraEquipo = _asignacion.cantAsign == 1
+          ? 'control remoto'
+          : 'controles remotos';
     }
 
     await showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return AlertDialog(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Text(
-                      'Mensaje a enviar',
-                      style: TextStyle(color: Colors.green, fontSize: 20),
-                    ),
-                  ],
-                ),
-                content: SingleChildScrollView(
-                  child: SizedBox(
-                    height: 380,
-                    child: Column(
-                      children: [
-                        DropdownButtonFormField(
-                          key: _key,
-                          isExpanded: true,
-                          value: cuando,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintMaxLines: 2,
-                            labelText: 'Cuándo...',
-                            errorText: _codigocierreShowError
-                                ? _codigocierreError
-                                : null,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                          items: _getComboCuandos(),
-                          onChanged: (value) {
-                            cuando = value.toString();
-
-                            prefs.setString('cuando', cuando);
-                            setState(() {});
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1 de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.',
-                            style: const TextStyle(
-                                color: Colors.blue, fontSize: 12)),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Divider(
-                          color: Colors.black,
-                        ),
-                        metodo == 'ws'
-                            ? const Text(
-                                'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
-                                style: TextStyle(fontSize: 14),
-                              )
-                            : Container(),
-                        const Text(''),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        metodo == 'ws'
-                            ? TextField(
-                                controller: phoneController,
-                                decoration: InputDecoration(
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    hintText: 'Teléfono...',
-                                    labelText: 'Teléfono',
-                                    //errorText:_passwordShowError ? _passwordError : null,
-                                    prefixIcon: const Icon(Icons.phone),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))),
-                                onChanged: (value) {
-                                  number2 = value;
-                                },
-                              )
-                            : Container(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        metodo == 'ws'
-                            ? Expanded(
-                                flex: 1,
-                                child: ElevatedButton(
-                                    child: const Text('+549'),
-                                    onPressed: () async {
-                                      phoneController.text =
-                                          '549${phoneController.text}';
-                                    }),
-                              )
-                            : Container(),
-                      ],
-                    ),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const [
+                  Text(
+                    'Mensaje a enviar',
+                    style: TextStyle(color: Colors.green, fontSize: 20),
                   ),
-                ),
-                actions: <Widget>[
-                  Row(
+                ],
+              ),
+              content: SingleChildScrollView(
+                child: SizedBox(
+                  height: 380,
+                  child: Column(
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            return;
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.cancel),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text('Cancelar'),
-                            ],
+                      DropdownButtonFormField(
+                        key: _key,
+                        isExpanded: true,
+                        initialValue: cuando,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintMaxLines: 2,
+                          labelText: 'Cuándo...',
+                          errorText: _codigocierreShowError
+                              ? _codigocierreError
+                              : null,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                        items: _getComboCuandos(),
+                        onChanged: (value) {
+                          cuando = value.toString();
 
-                      //------------ Botón para enviar por WhatsApp ------------
+                          prefs.setString('cuando', cuando);
+                          setState(() {});
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1 de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.',
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Divider(color: Colors.black),
+                      metodo == 'ws'
+                          ? const Text(
+                              'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
+                              style: TextStyle(fontSize: 14),
+                            )
+                          : Container(),
+                      const Text(''),
+                      const SizedBox(height: 10),
+                      metodo == 'ws'
+                          ? TextField(
+                              controller: phoneController,
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                filled: true,
+                                hintText: 'Teléfono...',
+                                labelText: 'Teléfono',
+                                //errorText:_passwordShowError ? _passwordError : null,
+                                prefixIcon: const Icon(Icons.phone),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                number2 = value;
+                              },
+                            )
+                          : Container(),
+                      const SizedBox(height: 10),
                       metodo == 'ws'
                           ? Expanded(
                               flex: 1,
                               child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  minimumSize: const Size(double.infinity, 50),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
                                 onPressed: () async {
-                                  final link = WhatsAppUnilink(
-                                    phoneNumber: number2,
-                                    //***** MENSAJE DE CONTACTO *****
-                                    text:
-                                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.',
-                                  );
-                                  await launch('$link');
+                                  phoneController.text =
+                                      '549${phoneController.text}';
                                 },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.insert_comment),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text('Continuar'),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Container(),
-
-                      //------------ Botón para enviar por Mail ------------
-                      metodo == 'mail'
-                          ? Expanded(
-                              flex: 1,
-                              child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  minimumSize: const Size(double.infinity, 50),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
+                                  backgroundColor: Colors
+                                      .blue, // Cambia el color de fondo aquí
                                 ),
-                                onPressed: () async {
-                                  final body =
-                                      'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.';
-
-                                  final url =
-                                      'mailto:${_asignacion.emailCliente}?subject=Mensaje de la empresa Fleet al servicio de $empresa&body=$body';
-
-                                  await launch(url);
-
-                                  Navigator.pop(context);
-                                  return;
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.insert_comment),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text('-> Mail'),
-                                  ],
-                                ),
+                                child: const Text('+549'),
                               ),
                             )
                           : Container(),
                     ],
                   ),
-                ],
-                shape: Border.all(
-                    color: Colors.green, width: 5, style: BorderStyle.solid),
-                backgroundColor: Colors.white,
-              );
-            },
-          );
-        });
+                ),
+              ),
+              actions: <Widget>[
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          return;
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.cancel),
+                            SizedBox(width: 15),
+                            Text('Cancelar'),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+
+                    //------------ Botón para enviar por WhatsApp ------------
+                    metodo == 'ws'
+                        ? Expanded(
+                            flex: 1,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                minimumSize: const Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () async {
+                                final link = WhatsAppUnilink(
+                                  phoneNumber: number2,
+                                  //***** MENSAJE DE CONTACTO *****
+                                  text:
+                                      'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.',
+                                );
+                                await launch('$link');
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.insert_comment),
+                                  SizedBox(width: 15),
+                                  Text('Continuar'),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Container(),
+
+                    //------------ Botón para enviar por Mail ------------
+                    metodo == 'mail'
+                        ? Expanded(
+                            flex: 1,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                minimumSize: const Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () async {
+                                final body =
+                                    'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.';
+
+                                final url =
+                                    'mailto:${_asignacion.emailCliente}?subject=Mensaje de la empresa Fleet al servicio de $empresa&body=$body';
+
+                                await launch(url);
+
+                                Navigator.pop(context);
+                                return;
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.insert_comment),
+                                  SizedBox(width: 15),
+                                  Text('-> Mail'),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
+              ],
+              shape: Border.all(
+                color: Colors.green,
+                width: 5,
+                style: BorderStyle.solid,
+              ),
+              backgroundColor: Colors.white,
+            );
+          },
+        );
+      },
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _sendMessage2 --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _sendMessage2 --------------------
+  //--------------------------------------------------------
 
   void _sendMessage2(String message) async {
     String number2 = '';
@@ -4097,162 +4222,157 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     phoneController.text = '';
 
     await showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return AlertDialog(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Text(
-                      'Atención!!',
-                      style: TextStyle(color: Colors.green, fontSize: 20),
-                    ),
-                  ],
-                ),
-                content: SingleChildScrollView(
-                  child: SizedBox(
-                    height: 250,
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        const Text(''),
-                        DropdownButtonFormField(
-                          value: _telefono,
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
-                            hintText: 'Elija un Teléfono...',
-                            labelText: 'Teléfono',
-                            errorText:
-                                _telefonoShowError ? _telefonoError : null,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                          items: _getComboTelefonos(),
-                          onChanged: (value) {
-                            _telefono = value.toString();
-                            number2 = value.toString();
-                            phoneController.text = number2;
-                            setState(() {});
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextField(
-                          controller: phoneController,
-                          //enabled: false,
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
-                            hintText: 'Teléfono seleccionado...',
-                            labelText: 'Teléfono seleccionado',
-                            //errorText:_passwordShowError ? _passwordError : null,
-                            prefixIcon: const Icon(Icons.phone),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            number2 = value;
-                            //_phoneController.text = _number2;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: ElevatedButton(
-                              child: const Text('+549'),
-                              onPressed: () async {
-                                if (number2.length > 1) {
-                                  number2 = '549$number2';
-                                  phoneController.text =
-                                      '549${phoneController.text}';
-                                  setState(() {});
-                                }
-                              }),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                actions: <Widget>[
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onPressed: number2 != ''
-                        ? () async {
-                            final link = WhatsAppUnilink(
-                              phoneNumber: number2,
-                              text: message,
-                            );
-                            await launch('$link');
-                            Navigator.of(context).pop();
-                          }
-                        : null,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.insert_comment),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Continuar'),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      return;
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.cancel),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Cancelar'),
-                      ],
-                    ),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const [
+                  Text(
+                    'Atención!!',
+                    style: TextStyle(color: Colors.green, fontSize: 20),
                   ),
                 ],
-                shape: Border.all(
-                    color: Colors.green, width: 5, style: BorderStyle.solid),
-                backgroundColor: Colors.white,
-              );
-            },
-          );
-        });
+              ),
+              content: SingleChildScrollView(
+                child: SizedBox(
+                  height: 250,
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      const Text(''),
+                      DropdownButtonFormField(
+                        initialValue: _telefono,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Elija un Teléfono...',
+                          labelText: 'Teléfono',
+                          errorText: _telefonoShowError ? _telefonoError : null,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        items: _getComboTelefonos(),
+                        onChanged: (value) {
+                          _telefono = value.toString();
+                          number2 = value.toString();
+                          phoneController.text = number2;
+                          setState(() {});
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: phoneController,
+                        //enabled: false,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Teléfono seleccionado...',
+                          labelText: 'Teléfono seleccionado',
+                          //errorText:_passwordShowError ? _passwordError : null,
+                          prefixIcon: const Icon(Icons.phone),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          number2 = value;
+                          //_phoneController.text = _number2;
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                          child: const Text('+549'),
+                          onPressed: () async {
+                            if (number2.length > 1) {
+                              number2 = '549$number2';
+                              phoneController.text =
+                                  '549${phoneController.text}';
+                              setState(() {});
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: number2 != ''
+                      ? () async {
+                          final link = WhatsAppUnilink(
+                            phoneNumber: number2,
+                            text: message,
+                          );
+                          await launch('$link');
+                          Navigator.of(context).pop();
+                        }
+                      : null,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.insert_comment),
+                      SizedBox(width: 15),
+                      Text('Continuar'),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    return;
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.cancel),
+                      SizedBox(width: 15),
+                      Text('Cancelar'),
+                    ],
+                  ),
+                ),
+              ],
+              shape: Border.all(
+                color: Colors.green,
+                width: 5,
+                style: BorderStyle.solid,
+              ),
+              backgroundColor: Colors.white,
+            );
+          },
+        );
+      },
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _sendMessage3 --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _sendMessage3 --------------------
+  //--------------------------------------------------------
 
   void _sendMessage3(String message) async {
     String number2 = '';
@@ -4261,100 +4381,103 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     _existeChat = false;
 
     await showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return AlertDialog(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Text(
-                      'Atención!!',
-                      style: TextStyle(color: Colors.green, fontSize: 20),
-                    ),
-                  ],
-                ),
-                content: SingleChildScrollView(
-                  child: SizedBox(
-                    height: 250,
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        const Text(''),
-                        DropdownButtonFormField(
-                          value: _telefono,
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
-                            hintText: 'Elija un Teléfono...',
-                            labelText: 'Teléfono',
-                            errorText:
-                                _telefonoShowError ? _telefonoError : null,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const [
+                  Text(
+                    'Atención!!',
+                    style: TextStyle(color: Colors.green, fontSize: 20),
+                  ),
+                ],
+              ),
+              content: SingleChildScrollView(
+                child: SizedBox(
+                  height: 250,
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      const Text(''),
+                      DropdownButtonFormField(
+                        initialValue: _telefono,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Elija un Teléfono...',
+                          labelText: 'Teléfono',
+                          errorText: _telefonoShowError ? _telefonoError : null,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          items: _getComboTelefonos(),
-                          onChanged: (value) {
-                            _telefono = value.toString();
-                            number2 = value.toString();
-                            phoneController.text = number2;
-                            setState(() {});
+                        ),
+                        items: _getComboTelefonos(),
+                        onChanged: (value) {
+                          _telefono = value.toString();
+                          number2 = value.toString();
+                          phoneController.text = number2;
+                          setState(() {});
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: phoneController,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Teléfono seleccionado...',
+                          labelText: 'Teléfono seleccionado',
+                          //errorText:_passwordShowError ? _passwordError : null,
+                          prefixIcon: const Icon(Icons.phone),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          number2 = value;
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (number2.length > 1) {
+                              number2 = '549$number2';
+                              phoneController.text =
+                                  '549${phoneController.text}';
+                              setState(() {});
+                            }
                           },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Colors.blue, // Cambia el color de fondo aquí
+                          ),
+                          child: const Text('+549'),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextField(
-                          controller: phoneController,
-                          decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
-                              hintText: 'Teléfono seleccionado...',
-                              labelText: 'Teléfono seleccionado',
-                              //errorText:_passwordShowError ? _passwordError : null,
-                              prefixIcon: const Icon(Icons.phone),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10))),
-                          onChanged: (value) {
-                            number2 = value;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: ElevatedButton(
-                              child: const Text('+549'),
-                              onPressed: () async {
-                                if (number2.length > 1) {
-                                  number2 = '549$number2';
-                                  phoneController.text =
-                                      '549${phoneController.text}';
-                                  setState(() {});
-                                }
-                              }),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                actions: <Widget>[
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
+              ),
+              actions: <Widget>[
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    onPressed: number2 != ''
-                        ? _existeChat == false
+                  ),
+                  onPressed: number2 != ''
+                      ? _existeChat == false
                             ? () async {
                                 number2.substring(0, 3) != '549'
                                     ? number2 = '549$number2'
@@ -4365,87 +4488,83 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                 return;
                               }
                             : null
-                        : null,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.insert_comment),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Crear Chat'),
-                      ],
+                      : null,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.insert_comment),
+                      SizedBox(width: 15),
+                      Text('Crear Chat'),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
+                  onPressed: _existeChat
+                      ? () async {
+                          await _createPDF(
+                            number2.replaceAll(' ', ''),
+                            message,
+                          );
+                          Navigator.pop(context);
+                          return;
+                        }
+                      : null,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.picture_as_pdf),
+                      SizedBox(width: 15),
+                      Text('Enviar PDF'),
+                    ],
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onPressed: _existeChat
-                        ? () async {
-                            await _createPDF(
-                                number2.replaceAll(' ', ''), message);
-                            Navigator.pop(context);
-                            return;
-                          }
-                        : null,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.picture_as_pdf),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Enviar PDF'),
-                      ],
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
+                  onPressed: () {
+                    Navigator.pop(context);
+                    return;
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.cancel),
+                      SizedBox(width: 15),
+                      Text('Cancelar'),
+                    ],
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      return;
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.cancel),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Cancelar'),
-                      ],
-                    ),
-                  ),
-                ],
-                shape: Border.all(
-                    color: Colors.green, width: 5, style: BorderStyle.solid),
-                backgroundColor: Colors.white,
-              );
-            },
-          );
-        });
+                ),
+              ],
+              shape: Border.all(
+                color: Colors.green,
+                width: 5,
+                style: BorderStyle.solid,
+              ),
+              backgroundColor: Colors.white,
+            );
+          },
+        );
+      },
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _createPDF -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _createPDF -----------------------
+  //--------------------------------------------------------
 
   Future<void> _createPDF(String number, String message) async {
     //Create a new PDF document
@@ -4460,12 +4579,14 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     PdfGrid grid6 = PdfGrid();
 
     PdfGridStyle style10 = PdfGridStyle(
-        font: PdfStandardFont(PdfFontFamily.helvetica, 10),
-        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+      font: PdfStandardFont(PdfFontFamily.helvetica, 10),
+      cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2),
+    );
 
     PdfGridStyle style12 = PdfGridStyle(
-        font: PdfStandardFont(PdfFontFamily.helvetica, 12),
-        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+      font: PdfStandardFont(PdfFontFamily.helvetica, 12),
+      cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2),
+    );
 
     grid.style = style10;
     grid2.style = style10;
@@ -4547,23 +4668,25 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     //header2.height = 35;
 
     header.cells[1].style = PdfGridCellStyle(
-        font: PdfStandardFont(PdfFontFamily.helvetica, 12),
-        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+      font: PdfStandardFont(PdfFontFamily.helvetica, 12),
+      cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2),
+    );
 
     header.cells[0].value = '';
     header.cells[1].value = 'Formulario de Recepción de Equipos';
 
     String? ot = widget.asignacion.proyectomodulo != 'TLC'
         ? (widget.asignacion.reclamoTecnicoID != null &&
-                widget.asignacion.reclamoTecnicoID != '')
-            ? widget.asignacion.reclamoTecnicoID.toString()
-            : ''
+                  widget.asignacion.reclamoTecnicoID != '')
+              ? widget.asignacion.reclamoTecnicoID.toString()
+              : ''
         : (widget.asignacion.documento != null &&
-                widget.asignacion.documento != '')
-            ? widget.asignacion.documento
-            : '';
+              widget.asignacion.documento != '')
+        ? widget.asignacion.documento
+        : '';
 
-    header.cells[2].value = '''
+    header.cells[2].value =
+        '''
     N° de Cuenta: 
     ${widget.asignacion.cliente}
     OT: $ot
@@ -4592,7 +4715,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     grid.draw(page: document.pages[0], bounds: const Rect.fromLTWH(0, 0, 0, 0));
     grid2.draw(
-        page: document.pages[0], bounds: const Rect.fromLTWH(0, 85, 0, 0));
+      page: document.pages[0],
+      bounds: const Rect.fromLTWH(0, 85, 0, 0),
+    );
 
     header3.cells[0].value = 'Datos del Equipo';
 
@@ -4605,16 +4730,19 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     int contador = 0;
     for (Asign asign in _asigns) {
       if (asign.estadogaos == 'EJB') {
-        String modelo =
-            asign.marcaModeloId != null ? asign.marcaModeloId.toString() : '';
-        String serie = (asign.proyectomodulo.toString() == 'DTV' ||
+        String modelo = asign.marcaModeloId != null
+            ? asign.marcaModeloId.toString()
+            : '';
+        String serie =
+            (asign.proyectomodulo.toString() == 'DTV' ||
                 asign.proyectomodulo.toString() == 'Cable' ||
                 asign.proyectomodulo.toString() == 'Prisma' ||
                 asign.proyectomodulo.toString() == 'SuperC' ||
                 asign.proyectomodulo.toString() == 'TLC')
-            ? asign.decO1.toString() //campo deco1 de la base.
+            ? asign.decO1
+                  .toString() //campo deco1 de la base.
             : asign.estadO3
-                .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
+                  .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
 
         PdfGridRow row = grid4.rows.add();
         row.cells[0].value = modelo;
@@ -4627,8 +4755,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     //------------- AGREGA EQUIPOS EXTRAS ----------------
 
     for (AsignacionesOtsEquiposExtra equipoExtra in _equiposExtra) {
-      String modelo =
-          equipoExtra.coddeco1 != null ? equipoExtra.coddeco1.toString() : '';
+      String modelo = equipoExtra.coddeco1 != null
+          ? equipoExtra.coddeco1.toString()
+          : '';
       String serie = equipoExtra.nroserieextra != null
           ? '${equipoExtra.nroserieextra.toString()} (Equipo extra)'
           : '';
@@ -4651,40 +4780,55 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     header6.cells[3].value = widget.user.apellidonombre;
 
     grid3.draw(
-        page: document.pages[0], bounds: const Rect.fromLTWH(0, 143, 0, 0));
+      page: document.pages[0],
+      bounds: const Rect.fromLTWH(0, 143, 0, 0),
+    );
 
     grid4.draw(
-        page: document.pages[0], bounds: const Rect.fromLTWH(0, 162, 0, 0));
+      page: document.pages[0],
+      bounds: const Rect.fromLTWH(0, 162, 0, 0),
+    );
 
     grid5.draw(
-        page: document.pages[0],
-        bounds: Rect.fromLTWH(0, 181 + contador * 19, 0, 0));
+      page: document.pages[0],
+      bounds: Rect.fromLTWH(0, 181 + contador * 19, 0, 0),
+    );
 
     grid6.draw(
-        page: document.pages[0],
-        bounds: Rect.fromLTWH(0, 220 + (contador) * 19, 0, 0));
-
-    page.graphics.drawImage(PdfBitmap(await _readImageData('logo2.png')),
-        const Rect.fromLTWH(15, 10, 120, 35));
+      page: document.pages[0],
+      bounds: Rect.fromLTWH(0, 220 + (contador) * 19, 0, 0),
+    );
 
     page.graphics.drawImage(
-        PdfBitmap(await _readImageData(
-            '${widget.asignacion.proyectomodulo.toString().toLowerCase()}.png')),
-        const Rect.fromLTWH(380, 10, 120, 35));
+      PdfBitmap(await _readImageData('logo2.png')),
+      const Rect.fromLTWH(15, 10, 120, 35),
+    );
+
+    page.graphics.drawImage(
+      PdfBitmap(
+        await _readImageData(
+          '${widget.asignacion.proyectomodulo.toString().toLowerCase()}.png',
+        ),
+      ),
+      const Rect.fromLTWH(380, 10, 120, 35),
+    );
 
     //Graba a PDF
-    List<int> bytes = document.save();
+    List<int> bytes = await document.save();
     document.dispose();
 
     await _saveAndLaunchFile(bytes, 'Comprobante.pdf', number);
   }
 
-//--------------------------------------------------------
-//--------------------- _saveAndLaunchFile ---------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _saveAndLaunchFile ---------------
+  //--------------------------------------------------------
 
   Future<void> _saveAndLaunchFile(
-      List<int> bytes, String fileName, String number) async {
+    List<int> bytes,
+    String fileName,
+    String number,
+  ) async {
     await initRecorder();
 
     final path = (await getExternalStorageDirectory())!.path;
@@ -4700,17 +4844,25 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     //OpenFile.open(ruta);
 
     if (file.path.isNotEmpty) {
-      await WhatsappShare.shareFile(
-          phone: number,
-          text: 'Se adjunta Comprobante',
-          filePath: [file.path],
-          package: Package.whatsapp);
+      XFile xFile = XFile(ruta);
+      await shareWhatsappPlus.share(
+        text: 'Se adjunta Comprobante',
+        phone: number,
+        file: xFile,
+      );
+
+      // await WhatsappShare.shareFile(
+      //   phone: number,
+      //   text: 'Se adjunta Comprobante',
+      //   filePath: [file.path],
+      //   package: Package.whatsapp,
+      // );
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _creaChat ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _creaChat ------------------------
+  //--------------------------------------------------------
 
   Future<void> _creaChat(String number) async {
     _existeChat = true;
@@ -4722,18 +4874,18 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     await launch('$link');
   }
 
-//--------------------------------------------------------
-//--------------------- _readImageData -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _readImageData -------------------
+  //--------------------------------------------------------
 
   Future<Uint8List> _readImageData(String name) async {
     final data = await rootBundle.load('images/$name');
     return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
   }
 
-//--------------------------------------------------------
-//--------------------- requestPermission ----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- requestPermission ----------------
+  //--------------------------------------------------------
 
   Future<bool> requestPermission() async {
     bool storagePermission = await Permission.storage.isGranted;
@@ -4745,13 +4897,15 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
 
     if (!mediaPermission) {
-      mediaPermission =
-          await Permission.accessMediaLocation.request().isGranted;
+      mediaPermission = await Permission.accessMediaLocation
+          .request()
+          .isGranted;
     }
 
     if (!manageExternal) {
-      manageExternal =
-          await Permission.manageExternalStorage.request().isGranted;
+      manageExternal = await Permission.manageExternalStorage
+          .request()
+          .isGranted;
     }
 
     bool isPermissionGranted =
@@ -4764,9 +4918,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- initRecorder ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initRecorder ---------------------
+  //--------------------------------------------------------
 
   Future initRecorder() async {
     bool permission = await requestPermission();
@@ -4794,9 +4948,9 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _getComboTelefonos ---------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getComboTelefonos ---------------
+  //--------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboTelefonos() {
     List<String> telefonos = [];
@@ -4825,16 +4979,15 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
     telefonos = set.toList();
 
     List<DropdownMenuItem<String>> list = [];
-    list.add(const DropdownMenuItem(
-      value: 'Elija un Teléfono...',
-      child: Text('Elija un Teléfono...'),
-    ));
+    list.add(
+      const DropdownMenuItem(
+        value: 'Elija un Teléfono...',
+        child: Text('Elija un Teléfono...'),
+      ),
+    );
 
     for (var telefono in telefonos) {
-      list.add(DropdownMenuItem(
-        value: telefono,
-        child: Text(telefono),
-      ));
+      list.add(DropdownMenuItem(value: telefono, child: Text(telefono)));
     }
     return list;
   }

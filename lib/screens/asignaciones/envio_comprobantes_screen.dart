@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_const
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
@@ -10,82 +10,80 @@ import 'package:intl/intl.dart';
 
 class EnvioComprobantesScreen extends StatefulWidget {
   final Usuario user;
-  const EnvioComprobantesScreen({
-    Key? key,
-    required this.user,
-  }) : super(key: key);
+  const EnvioComprobantesScreen({super.key, required this.user});
 
   @override
   EnvioComprobantesScreenState createState() => EnvioComprobantesScreenState();
 }
 
 class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
-//--------------------------------------------------------------
-//------------------------- Variables --------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- Variables --------------------------
+  //--------------------------------------------------------------
 
   bool _showLoader = false;
   List<Asignacion2> _asignaciones = [];
   List<Asignacion2> _asignaciones2 = [];
   Asignacion2 asignacionSelected = Asignacion2(
-      recupidjobcard: '',
-      cliente: '',
-      documento: '',
-      nombre: '',
-      domicilio: '',
-      cp: '',
-      entrecallE1: '',
-      entrecallE2: '',
-      partido: '',
-      localidad: '',
-      telefono: '',
-      grxx: '',
-      gryy: '',
-      estadogaos: '',
-      proyectomodulo: '',
-      userID: 0,
-      causantec: '',
-      subcon: '',
-      fechaAsignada: '',
-      fechacaptura: '',
-      codigoCierre: 0,
-      descripcion: '',
-      cierraenapp: 0,
-      nomostrarapp: 0,
-      novedades: '',
-      provincia: '',
-      reclamoTecnicoID: 0,
-      motivos: '',
-      fechaCita: '',
-      medioCita: '',
-      nroSeriesExtras: '',
-      evento1: '',
-      fechaEvento1: '',
-      evento2: '',
-      fechaEvento2: '',
-      evento3: '',
-      fechaEvento3: '',
-      evento4: '',
-      fechaEvento4: '',
-      observacion: '',
-      telefAlternativo1: '',
-      telefAlternativo2: '',
-      telefAlternativo3: '',
-      telefAlternativo4: '',
-      cantAsign: 0,
-      codigoequivalencia: '',
-      deco1descripcion: '',
-      elegir: 0,
-      observacionCaptura: '',
-      zona: '',
-      modificadoAPP: 0,
-      hsCumplidaTime: '',
-      marcado: 0,
-      emailCliente: '');
+    recupidjobcard: '',
+    cliente: '',
+    documento: '',
+    nombre: '',
+    domicilio: '',
+    cp: '',
+    entrecallE1: '',
+    entrecallE2: '',
+    partido: '',
+    localidad: '',
+    telefono: '',
+    grxx: '',
+    gryy: '',
+    estadogaos: '',
+    proyectomodulo: '',
+    userID: 0,
+    causantec: '',
+    subcon: '',
+    fechaAsignada: '',
+    fechacaptura: '',
+    codigoCierre: 0,
+    descripcion: '',
+    cierraenapp: 0,
+    nomostrarapp: 0,
+    novedades: '',
+    provincia: '',
+    reclamoTecnicoID: 0,
+    motivos: '',
+    fechaCita: '',
+    medioCita: '',
+    nroSeriesExtras: '',
+    evento1: '',
+    fechaEvento1: '',
+    evento2: '',
+    fechaEvento2: '',
+    evento3: '',
+    fechaEvento3: '',
+    evento4: '',
+    fechaEvento4: '',
+    observacion: '',
+    telefAlternativo1: '',
+    telefAlternativo2: '',
+    telefAlternativo3: '',
+    telefAlternativo4: '',
+    cantAsign: 0,
+    codigoequivalencia: '',
+    deco1descripcion: '',
+    elegir: 0,
+    observacionCaptura: '',
+    zona: '',
+    modificadoAPP: 0,
+    hsCumplidaTime: '',
+    marcado: 0,
+    emailCliente: '',
+  );
 
-//--------------------------------------------------------------
-//------------------------- initState --------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- initState --------------------------
+  //--------------------------------------------------------------
 
   @override
   void initState() {
@@ -93,9 +91,9 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
     _getAsignaciones();
   }
 
-//--------------------------------------------------------------
-//------------------------- Pantalla ---------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- Pantalla ---------------------------
+  //--------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -110,32 +108,28 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
         color: const Color(0xFFC7C7C8),
         child: Center(
           child: _showLoader
-              ? const LoaderComponent(
-                  text: 'Cargando ASIGNACIONES.',
-                )
+              ? const LoaderComponent(text: 'Cargando ASIGNACIONES.')
               : _getContent(),
         ),
       ),
     );
   }
 
-//--------------------------------------------------------------
-//------------------------- _getContent ------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _getContent ------------------------
+  //--------------------------------------------------------------
 
   Widget _getContent() {
     return Column(
       children: <Widget>[
-        Expanded(
-          child: _asignaciones2.isEmpty ? _noContent() : _getListView(),
-        )
+        Expanded(child: _asignaciones2.isEmpty ? _noContent() : _getListView()),
       ],
     );
   }
 
-//--------------------------------------------------------------
-//------------------------- _noContent -------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _noContent -------------------------
+  //--------------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -149,9 +143,9 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
     );
   }
 
-//--------------------------------------------------------------
-//------------------------- _getListView -----------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _getListView -----------------------
+  //--------------------------------------------------------------
 
   Widget _getListView() {
     return RefreshIndicator(
@@ -187,145 +181,156 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Proyecto: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.bold,
-                                            )),
-                                      ),
-                                      Expanded(
-                                        child: Text(e.proyectomodulo.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.red,
-                                            )),
-                                      ),
-                                      const SizedBox(
-                                        width: 80,
-                                        child: Text("Hora Cump.: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
-                                      ),
-                                      Text(
-                                          DateFormat('HH:mm').format(
-                                              DateTime.parse(
-                                                  e.hsCumplidaTime.toString())),
-                                          style: const TextStyle(fontSize: 12)),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 80,
-                                        child: Text("Cliente: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Proyecto: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
                                         child: Text(
-                                            '${e.cliente.toString()} - ${e.nombre.toString()}',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                          e.proyectomodulo.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 80,
+                                        child: Text(
+                                          "Hora Cump.: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        DateFormat('HH:mm').format(
+                                          DateTime.parse(
+                                            e.hsCumplidaTime.toString(),
+                                          ),
+                                        ),
+                                        style: const TextStyle(fontSize: 12),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("DNI: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Cliente: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          '${e.cliente.toString()} - ${e.nombre.toString()}',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 1),
+                                  Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 80,
+                                        child: Text(
+                                          "DNI: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
                                         flex: 1,
-                                        child: Text(e.documento.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        child: Text(
+                                          e.documento.toString(),
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                       e.proyectomodulo == 'Cable'
                                           ? const SizedBox(
                                               width: 30,
-                                              child: const Text("OT: ",
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color:
-                                                        const Color(0xFF0e4888),
-                                                    fontWeight: FontWeight.bold,
-                                                  )),
+                                              child: const Text(
+                                                "OT: ",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: const Color(
+                                                    0xFF0e4888,
+                                                  ),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             )
                                           : Container(),
                                       e.proyectomodulo == 'Cable'
                                           ? Expanded(
                                               flex: 1,
                                               child: Text(
-                                                  e.recupidjobcard.toString(),
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                  )),
+                                                e.recupidjobcard.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              ),
                                             )
                                           : Container(),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Dirección: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Dirección: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
-                                        child: Text(e.domicilio.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        child: Text(
+                                          e.domicilio.toString(),
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Entre calles: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Entre calles: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
-                                        child: (e.entrecallE1
-                                                        .toString()
-                                                        .length >
+                                        child:
+                                            (e.entrecallE1.toString().length >
                                                     1 &&
                                                 e.entrecallE2
                                                         .toString()
@@ -335,69 +340,69 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
                                                 '${e.entrecallE1.toString()} y ${e.entrecallE2.toString()}',
                                                 style: const TextStyle(
                                                   fontSize: 12,
-                                                ))
+                                                ),
+                                              )
                                             : const Text(""),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Localidad: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Localidad: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
                                         child: Text(
-                                            'CP: ${e.cp.toString()} - ${e.localidad.toString()} - ${e.partido.toString()}',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                          'CP: ${e.cp.toString()} - ${e.localidad.toString()} - ${e.partido.toString()}',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Teléfono: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Teléfono: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
-                                        child: Text(e.telefono.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        child: Text(
+                                          e.telefono.toString(),
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 1,
-                                  ),
+                                  const SizedBox(height: 1),
                                   Row(
                                     children: [
                                       const SizedBox(
                                         width: 80,
-                                        child: Text("Cant. Eq.: ",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            )),
+                                        child: Text(
+                                          "Cant. Eq.: ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF0e4888),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
                                         child: Text(
@@ -431,9 +436,9 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
     );
   }
 
-//--------------------------------------------------------------
-//------------------------- _getAsignaciones -------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _getAsignaciones -------------------
+  //--------------------------------------------------------------
 
   Future<void> _getAsignaciones() async {
     setState(() {
@@ -447,7 +452,10 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -465,7 +473,7 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
     _asignaciones2 = [];
 
     //Guardo en _asignaciones2 solamente las asignaciones de Proyectos que llevan Comprobantes
-    _asignaciones.forEach((asignacion) {
+    for (var asignacion in _asignaciones) {
       if (asignacion.proyectomodulo == 'DTV' ||
           asignacion.proyectomodulo == 'Cable' ||
           asignacion.proyectomodulo == 'Tasa' ||
@@ -474,13 +482,12 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
           asignacion.proyectomodulo == 'TLC') {
         _asignaciones2.add(asignacion);
       }
-    });
+    }
 
     _asignaciones2.sort((b, a) {
-      return a.hsCumplidaTime
-          .toString()
-          .toLowerCase()
-          .compareTo(b.hsCumplidaTime.toString().toLowerCase());
+      return a.hsCumplidaTime.toString().toLowerCase().compareTo(
+        b.hsCumplidaTime.toString().toLowerCase(),
+      );
     });
 
     setState(() {
@@ -488,23 +495,23 @@ class EnvioComprobantesScreenState extends State<EnvioComprobantesScreen> {
     });
   }
 
-//--------------------------------------------------------------
-//------------------------- _goInfoAsignacion ------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _goInfoAsignacion ------------------
+  //--------------------------------------------------------------
 
   void _goInfoAsignacion(Asignacion2 asignacion) async {
     await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => EnvioComprobanteScreen(
-                  user: widget.user,
-                  asignacion: asignacion,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            EnvioComprobanteScreen(user: widget.user, asignacion: asignacion),
+      ),
+    );
   }
 
-//--------------------------------------------------------------
-//------------------------- isNullOrEmpty ----------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- isNullOrEmpty ----------------------
+  //--------------------------------------------------------------
 
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||

@@ -1,20 +1,20 @@
-import 'package:connectivity/connectivity.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:ui' as ui;
-import 'dart:typed_data';
 
 class RutaInfoScreen extends StatefulWidget {
   final Usuario user;
@@ -26,26 +26,26 @@ class RutaInfoScreen extends StatefulWidget {
   final List<Motivo> motivos;
   final bool hayInternet;
 
-  const RutaInfoScreen(
-      {Key? key,
-      required this.user,
-      required this.ruta,
-      required this.paradas,
-      required this.envios,
-      required this.paradasenvios,
-      required this.positionUser,
-      required this.motivos,
-      required this.hayInternet})
-      : super(key: key);
+  const RutaInfoScreen({
+    super.key,
+    required this.user,
+    required this.ruta,
+    required this.paradas,
+    required this.envios,
+    required this.paradasenvios,
+    required this.positionUser,
+    required this.motivos,
+    required this.hayInternet,
+  });
 
   @override
   RutaInfoScreenState createState() => RutaInfoScreenState();
 }
 
 class RutaInfoScreenState extends State<RutaInfoScreen> {
-//--------------------------------------------------------
-//--------------------- Variables ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -64,17 +64,18 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
   bool _todas = true;
   bool _sincronizar = true;
 
-  Position _positionUser = const Position(
-      longitude: 0,
-      latitude: 0,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0,
-      altitudeAccuracy: 0,
-      headingAccuracy: 0);
+  Position _positionUser = Position(
+    longitude: 0,
+    latitude: 0,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
+  );
 
   LatLng _center = const LatLng(0, 0);
   final Set<Marker> _markers = {};
@@ -157,50 +158,52 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
   );
 
   Parada paradaSelected = Parada(
-      idParada: 0,
-      idRuta: 0,
-      idEnvio: 0,
-      tag: 0,
-      secuencia: 0,
-      leyenda: '',
-      latitud: 0,
-      longitud: 0,
-      iconoPropio: '',
-      iDmapa: '',
-      distancia: 0,
-      tiempo: 0,
-      estado: 0,
-      fecha: '',
-      hora: '',
-      idMotivo: 0,
-      notaChofer: '',
-      nuevoOrden: 0,
-      idCabCertificacion: 0,
-      idLiquidacionFletero: 0,
-      turno: '');
+    idParada: 0,
+    idRuta: 0,
+    idEnvio: 0,
+    tag: 0,
+    secuencia: 0,
+    leyenda: '',
+    latitud: 0,
+    longitud: 0,
+    iconoPropio: '',
+    iDmapa: '',
+    distancia: 0,
+    tiempo: 0,
+    estado: 0,
+    fecha: '',
+    hora: '',
+    idMotivo: 0,
+    notaChofer: '',
+    nuevoOrden: 0,
+    idCabCertificacion: 0,
+    idLiquidacionFletero: 0,
+    turno: '',
+  );
 
   Parada paradaSaved = Parada(
-      idParada: 0,
-      idRuta: 0,
-      idEnvio: 0,
-      tag: 0,
-      secuencia: 0,
-      leyenda: '',
-      latitud: 0,
-      longitud: 0,
-      iconoPropio: '',
-      iDmapa: '',
-      distancia: 0,
-      tiempo: 0,
-      estado: 0,
-      fecha: '',
-      hora: '',
-      idMotivo: 0,
-      notaChofer: '',
-      nuevoOrden: 0,
-      idCabCertificacion: 0,
-      idLiquidacionFletero: 0,
-      turno: '');
+    idParada: 0,
+    idRuta: 0,
+    idEnvio: 0,
+    tag: 0,
+    secuencia: 0,
+    leyenda: '',
+    latitud: 0,
+    longitud: 0,
+    iconoPropio: '',
+    iDmapa: '',
+    distancia: 0,
+    tiempo: 0,
+    estado: 0,
+    fecha: '',
+    hora: '',
+    idMotivo: 0,
+    notaChofer: '',
+    nuevoOrden: 0,
+    idCabCertificacion: 0,
+    idLiquidacionFletero: 0,
+    turno: '',
+  );
 
   Envio envioSelected = Envio(
     idEnvio: 0,
@@ -365,16 +368,17 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
   );
 
   Seguimiento seguimientoSaved = Seguimiento(
-      id: 0,
-      idenvio: 0,
-      idetapa: 0,
-      estado: 0,
-      idusuario: 0,
-      fecha: 0,
-      hora: '',
-      observaciones: '',
-      motivo: '',
-      notachofer: '');
+    id: 0,
+    idenvio: 0,
+    idetapa: 0,
+    estado: 0,
+    idusuario: 0,
+    fecha: 0,
+    hora: '',
+    observaciones: '',
+    motivo: '',
+    notachofer: '',
+  );
 
   List<ParadaEnvio> _paradasenvios = [];
   List<ParadaEnvio> _paradasenviosfiltered = [];
@@ -382,9 +386,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
 
   int _nroReg = 0;
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
 
   @override
   void initState() {
@@ -393,9 +397,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -413,14 +417,15 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 14),
               ),
               Switch(
-                  value: _todas,
-                  activeColor: Colors.green,
-                  inactiveThumbColor: Colors.grey,
-                  onChanged: (value) {
-                    _todas = value;
-                    _llenarparadasenvios();
-                    setState(() {});
-                  }),
+                value: _todas,
+                activeThumbColor: Colors.green,
+                inactiveThumbColor: Colors.grey,
+                onChanged: (value) {
+                  _todas = value;
+                  _llenarparadasenvios();
+                  setState(() {});
+                },
+              ),
             ],
           ),
         ],
@@ -438,45 +443,41 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
             child: _isFiltered
                 ? IconButton(
                     onPressed: _removeFilter,
-                    icon: const Icon(Icons.filter_none))
+                    icon: const Icon(Icons.filter_none),
+                  )
                 : IconButton(
-                    onPressed: _showFilter, icon: const Icon(Icons.filter_alt)),
+                    onPressed: _showFilter,
+                    icon: const Icon(Icons.filter_alt),
+                  ),
           ),
-          const SizedBox(
-            width: 20,
-          ),
+          const SizedBox(width: 20),
           FloatingActionButton(
             heroTag: "2",
             onPressed: () => _navegartodos(),
             backgroundColor: const Color(0xff282886),
-            child: const Icon(
-              Icons.map,
-              size: 30,
-            ),
+            child: const Icon(Icons.map, size: 30),
           ),
         ],
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getContent ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getContent ----------------------
+  //--------------------------------------------------------
 
   Widget _getContent() {
     return Column(
       children: <Widget>[
         _showParadasCount(),
-        Expanded(
-          child: widget.paradas.isEmpty ? _noContent() : _getListView(),
-        )
+        Expanded(child: widget.paradas.isEmpty ? _noContent() : _getListView()),
       ],
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showParadasCount ----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showParadasCount ----------------
+  //--------------------------------------------------------
 
   Widget _showParadasCount() {
     int pendientes = 0;
@@ -492,32 +493,38 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
       height: 40,
       child: Row(
         children: [
-          const Text("Cantidad de Paradas: ",
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xff282886),
-                fontWeight: FontWeight.bold,
-              )),
-          Text(_paradasenviosfiltered.length.toString(),
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xff282886),
-                fontWeight: FontWeight.bold,
-              )),
-          Text((' (Pendientes: $pendientes)'),
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xff282886),
-                fontWeight: FontWeight.bold,
-              )),
+          const Text(
+            "Cantidad de Paradas: ",
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xff282886),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            _paradasenviosfiltered.length.toString(),
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xff282886),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            (' (Pendientes: $pendientes)'),
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xff282886),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _noContent -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _noContent -----------------------
+  //--------------------------------------------------------
 
   Widget _noContent() {
     return Container(
@@ -531,9 +538,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getListView ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getListView ---------------------
+  //--------------------------------------------------------
 
   Widget _getListView() {
     return RefreshIndicator(
@@ -567,48 +574,55 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                                   Row(
                                     children: [
                                       Expanded(
-                                        child: Text(e.secuencia.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 24,
-                                                color: Color(0xffbc2b51),
-                                                fontWeight: FontWeight.bold)),
+                                        child: Text(
+                                          e.secuencia.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 24,
+                                            color: Color(0xffbc2b51),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       Expanded(
-                                        child: Text(e.proveedor.toString(),
-                                            style: const TextStyle(
-                                                color: Color(0xff282886),
-                                                fontWeight: FontWeight.bold)),
+                                        child: Text(
+                                          e.proveedor.toString(),
+                                          style: const TextStyle(
+                                            color: Color(0xff282886),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                       (e.estado == 4)
                                           ? const Text(
                                               "ENTREGADO",
                                               style: TextStyle(
-                                                  color: Colors.green,
-                                                  fontWeight: FontWeight.bold),
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             )
                                           : (e.estado == 10)
-                                              ? const Text(
-                                                  "NO ENTREGADO",
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              : (e.estado == 7)
-                                                  ? const Text(
-                                                      "RECHAZADO",
-                                                      style: TextStyle(
-                                                          color: Colors.purple,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  : const Text(
-                                                      "PENDIENTE",
-                                                      style: TextStyle(
-                                                          color: Colors.blue,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
+                                          ? const Text(
+                                              "NO ENTREGADO",
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          : (e.estado == 7)
+                                          ? const Text(
+                                              "RECHAZADO",
+                                              style: TextStyle(
+                                                color: Colors.purple,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          : const Text(
+                                              "PENDIENTE",
+                                              style: TextStyle(
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                     ],
                                   ),
                                   // const SizedBox(
@@ -631,41 +645,44 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                                   //     ),
                                   //   ],
                                   // ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
+                                  const SizedBox(height: 5),
                                   Row(
                                     children: [
-                                      const Text("Nombre: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF781f1e),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      const Text(
+                                        "Nombre: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF781f1e),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                       Expanded(
-                                        child: Text(e.titular.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold)),
+                                        child: Text(
+                                          e.titular.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
+                                  const SizedBox(height: 5),
                                   Row(
                                     children: [
-                                      const Text("Dirección: ",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF781f1e),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      const Text(
+                                        "Dirección: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF781f1e),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                       Expanded(
-                                        child: Text(e.leyenda.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                        child: Text(
+                                          e.leyenda.toString(),
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -675,10 +692,13 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                                         width: 135,
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color(0xFFb3b3b4),
-                                            minimumSize:
-                                                const Size(double.infinity, 30),
+                                            backgroundColor: const Color(
+                                              0xFFb3b3b4,
+                                            ),
+                                            minimumSize: const Size(
+                                              double.infinity,
+                                              30,
+                                            ),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(5),
@@ -689,36 +709,39 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: const [
-                                              Icon(Icons.map,
-                                                  color: Color(0xff282886)),
-                                              SizedBox(
-                                                width: 20,
+                                              Icon(
+                                                Icons.map,
+                                                color: Color(0xff282886),
                                               ),
+                                              SizedBox(width: 20),
                                               Text(
                                                 'Navegar',
                                                 style: TextStyle(
-                                                    color: Color(0xff282886)),
+                                                  color: Color(0xff282886),
+                                                ),
                                               ),
                                             ],
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
+                                      const SizedBox(width: 10),
                                       widget.ruta.habilitaCatastro == 1
                                           ? SizedBox(
                                               width: 135,
                                               child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color(0xFFb3b3b4),
+                                                  backgroundColor: const Color(
+                                                    0xFFb3b3b4,
+                                                  ),
                                                   minimumSize: const Size(
-                                                      double.infinity, 30),
+                                                    double.infinity,
+                                                    30,
+                                                  ),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            5),
+                                                          5,
+                                                        ),
                                                   ),
                                                 ),
                                                 onPressed: widget.hayInternet
@@ -726,7 +749,8 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                                                         _ponerCatastroEnCero();
                                                         var existeCatastro =
                                                             await _existeCatastro(
-                                                                e);
+                                                              e,
+                                                            );
                                                         if (!existeCatastro) {
                                                           if (e.catastro == 0) {
                                                             _ponerCatastroEnCero();
@@ -743,35 +767,38 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    Icon(Icons.my_location,
-                                                        color: widget
-                                                                .hayInternet
-                                                            ? Color(0xff282886)
-                                                            : const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                116,
-                                                                116,
-                                                                139)),
-                                                    const SizedBox(
-                                                      width: 20,
+                                                    Icon(
+                                                      Icons.my_location,
+                                                      color: widget.hayInternet
+                                                          ? Color(0xff282886)
+                                                          : const Color.fromARGB(
+                                                              255,
+                                                              116,
+                                                              116,
+                                                              139,
+                                                            ),
                                                     ),
+                                                    const SizedBox(width: 20),
                                                     widget.hayInternet
                                                         ? const Text(
                                                             'Catastro',
                                                             style: TextStyle(
-                                                                color: Color(
-                                                                    0xff282886)),
+                                                              color: Color(
+                                                                0xff282886,
+                                                              ),
+                                                            ),
                                                           )
                                                         : const Text(
                                                             'Catastro',
                                                             style: TextStyle(
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        116,
-                                                                        116,
-                                                                        139)),
+                                                              color:
+                                                                  Color.fromARGB(
+                                                                    255,
+                                                                    116,
+                                                                    116,
+                                                                    139,
+                                                                  ),
+                                                            ),
                                                           ),
                                                   ],
                                                 ),
@@ -786,63 +813,67 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                                             Row(
                                               children: [
                                                 const Text(
-                                                    "Dirección Catastro: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF781f1e),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                                Expanded(
-                                                  child: Text(
-                                                      e.domicilioCatastro
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                        fontSize: 12,
-                                                      )),
+                                                  "Dirección Catastro: ",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF781f1e),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Text("Latitud Catastro: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF781f1e),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
                                                 Expanded(
                                                   child: Text(
-                                                      e.latitudCatastro != null
-                                                          ? e.latitudCatastro
-                                                              .toString()
-                                                          : "",
-                                                      style: const TextStyle(
-                                                        fontSize: 12,
-                                                      )),
+                                                    e.domicilioCatastro
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                             Row(
                                               children: [
                                                 const Text(
-                                                    "Longitud Catastro: ",
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFF781f1e),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
+                                                  "Latitud Catastro: ",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF781f1e),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                                 Expanded(
                                                   child: Text(
-                                                      e.longitudCatastro != null
-                                                          ? e.longitudCatastro
+                                                    e.latitudCatastro != null
+                                                        ? e.latitudCatastro
                                                               .toString()
-                                                          : "",
-                                                      style: const TextStyle(
-                                                        fontSize: 12,
-                                                      )),
+                                                        : "",
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  "Longitud Catastro: ",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF781f1e),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    e.longitudCatastro != null
+                                                        ? e.longitudCatastro
+                                                              .toString()
+                                                        : "",
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -851,18 +882,20 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                                                 Expanded(
                                                   flex: 3,
                                                   child: ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
+                                                    style: ElevatedButton.styleFrom(
                                                       backgroundColor:
                                                           const Color(
-                                                              0xFFb3b3b4),
+                                                            0xFFb3b3b4,
+                                                          ),
                                                       minimumSize: const Size(
-                                                          double.infinity, 30),
-                                                      shape:
-                                                          RoundedRectangleBorder(
+                                                        double.infinity,
+                                                        30,
+                                                      ),
+                                                      shape: RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
+                                                            BorderRadius.circular(
+                                                              5,
+                                                            ),
                                                       ),
                                                     ),
                                                     onPressed: () async {
@@ -883,46 +916,50 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                                                           MainAxisAlignment
                                                               .center,
                                                       children: const [
-                                                        Icon(Icons.my_location,
-                                                            color: Color(
-                                                                0xff282886)),
-                                                        SizedBox(
-                                                          width: 5,
+                                                        Icon(
+                                                          Icons.my_location,
+                                                          color: Color(
+                                                            0xff282886,
+                                                          ),
                                                         ),
+                                                        SizedBox(width: 5),
                                                         Text(
                                                           'Obtener Domic.',
                                                           style: TextStyle(
-                                                              color: Color(
-                                                                  0xff282886)),
+                                                            color: Color(
+                                                              0xff282886,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
+                                                const SizedBox(width: 10),
                                                 Expanded(
                                                   flex: 2,
                                                   child: ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
+                                                    style: ElevatedButton.styleFrom(
                                                       backgroundColor:
                                                           const Color(
-                                                              0xFFb3b3b4),
+                                                            0xFFb3b3b4,
+                                                          ),
                                                       minimumSize: const Size(
-                                                          double.infinity, 30),
-                                                      shape:
-                                                          RoundedRectangleBorder(
+                                                        double.infinity,
+                                                        30,
+                                                      ),
+                                                      shape: RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
+                                                            BorderRadius.circular(
+                                                              5,
+                                                            ),
                                                       ),
                                                     ),
                                                     onPressed: () async {
-                                                      var _position =
+                                                      var position =
                                                           await _guardarCatastro(
-                                                              e);
+                                                            e,
+                                                          );
                                                       var a = 1;
                                                     },
                                                     child: Row(
@@ -930,24 +967,27 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
                                                           MainAxisAlignment
                                                               .center,
                                                       children: const [
-                                                        Icon(Icons.save,
-                                                            color: Color(
-                                                                0xff282886)),
-                                                        SizedBox(
-                                                          width: 5,
+                                                        Icon(
+                                                          Icons.save,
+                                                          color: Color(
+                                                            0xff282886,
+                                                          ),
                                                         ),
+                                                        SizedBox(width: 5),
                                                         Text(
                                                           'Guardar',
                                                           style: TextStyle(
-                                                              color: Color(
-                                                                  0xff282886)),
+                                                            color: Color(
+                                                              0xff282886,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
                                                 ),
                                               ],
-                                            )
+                                            ),
                                           ],
                                         )
                                       : Container(),
@@ -970,30 +1010,34 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _goInfoParada --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _goInfoParada --------------------
+  //--------------------------------------------------------
 
   Future<void> _goInfoParada(ParadaEnvio e) async {
     if (e.titular == null || e.titular!.isEmpty) {
       showMyDialog(
-          'Aviso',
-          "Ruta con datos incongruentes. Chequee estados de pedidos. Esta parada no tiene el Nombre del Cliente. Pruebe a volver a sincronizar/traer Rutas nuevamente.",
-          'Aceptar');
+        'Aviso',
+        "Ruta con datos incongruentes. Chequee estados de pedidos. Esta parada no tiene el Nombre del Cliente. Pruebe a volver a sincronizar/traer Rutas nuevamente.",
+        'Aceptar',
+      );
 
       return;
     }
 
     var result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ParadaInfoScreen(
-                user: widget.user,
-                paradaenvio: e,
-                positionUser: widget.positionUser,
-                motivos: widget.motivos,
-                paradas: widget.paradas,
-                envios: widget.envios)));
+      context,
+      MaterialPageRoute(
+        builder: (context) => ParadaInfoScreen(
+          user: widget.user,
+          paradaenvio: e,
+          positionUser: widget.positionUser,
+          motivos: widget.motivos,
+          paradas: widget.paradas,
+          envios: widget.envios,
+        ),
+      ),
+    );
     if (result == 'yes' || result != 'yes') {
       await _llenarparadasenvios();
     }
@@ -1002,38 +1046,44 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _navegar -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _navegar -------------------------
+  //--------------------------------------------------------
 
-  _navegar(e) async {
+  Future<void> _navegar(e) async {
     if (e.latitud == 0 ||
         e.longitud == 0 ||
         isNullOrEmpty(e.latitud) ||
         isNullOrEmpty(e.longitud)) {
       showMyDialog(
-          'Aviso', "Esta parada no tiene coordenadas cargadas.", 'Aceptar');
+        'Aviso',
+        "Esta parada no tiene coordenadas cargadas.",
+        'Aceptar',
+      );
 
       return;
     }
 
     _center = LatLng(e.latitud!.toDouble(), e.longitud!.toDouble());
     _markers.clear();
-    _markers.add(Marker(
-      markerId: MarkerId(e.secuencia.toString()),
-      position: _center,
-      infoWindow: InfoWindow(
-        title: e.titular.toString(),
-        snippet: e.domicilio.toString(),
+    _markers.add(
+      Marker(
+        markerId: MarkerId(e.secuencia.toString()),
+        position: _center,
+        infoWindow: InfoWindow(
+          title: e.titular.toString(),
+          snippet: e.domicilio.toString(),
+        ),
+        icon: BitmapDescriptor.defaultMarker,
       ),
-      icon: BitmapDescriptor.defaultMarker,
-    ));
+    );
 
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult != ConnectivityResult.none) {
       var uri = Uri.parse(
-          "google.navigation:q=${e.latitud!.toDouble()},${e.longitud!.toDouble()}&mode=d");
+        "google.navigation:q=${e.latitud!.toDouble()},${e.longitud!.toDouble()}&mode=d",
+      );
       if (await canLaunch(uri.toString())) {
         await launch(uri.toString());
       } else {
@@ -1041,17 +1091,18 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
       }
     } else {
       showMyDialog(
-          'Aviso!',
-          "Necesita estar conectado a Internet para acceder al mapa",
-          "Aceptar");
+        'Aviso!',
+        "Necesita estar conectado a Internet para acceder al mapa",
+        "Aceptar",
+      );
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _navegartodos --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _navegartodos --------------------
+  //--------------------------------------------------------
 
-  _navegartodos() async {
+  Future<void> _navegartodos() async {
     _markers.clear();
 
     Uint8List markerIcon = await getBytesFromCanvas(1, 20, 20, 3);
@@ -1062,26 +1113,31 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
           Marker(
             markerId: MarkerId(element.secuencia.toString()),
             position: LatLng(
-                element.latitud!.toDouble(), element.longitud!.toDouble()),
+              element.latitud!.toDouble(),
+              element.longitud!.toDouble(),
+            ),
+
             // infoWindow: InfoWindow(
             //   title: element.titular.toString(),
             //   snippet: element.domicilio.toString(),
             // ),
-
             icon: (element.estado == 3)
                 ? BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueBlue)
+                    BitmapDescriptor.hueBlue,
+                  )
                 : (element.estado == 4)
-                    ? BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueGreen)
-                    : (element.estado == 10)
-                        ? BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueRed)
-                        : (element.estado == 7)
-                            ? BitmapDescriptor.defaultMarkerWithHue(
-                                BitmapDescriptor.hueViolet)
-                            : BitmapDescriptor.defaultMarkerWithHue(
-                                BitmapDescriptor.hueBlue),
+                ? BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueGreen,
+                  )
+                : (element.estado == 10)
+                ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)
+                : (element.estado == 7)
+                ? BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueViolet,
+                  )
+                : BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueBlue,
+                  ),
           ),
         );
       }
@@ -1090,12 +1146,18 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     for (ParadaEnvio element in _paradasenvios) {
       if (!isNullOrEmpty(element.latitud) && !isNullOrEmpty(element.longitud)) {
         markerIcon = await getBytesFromCanvas(
-            element.secuencia!.toInt(), 100, 100, element.estado!.toInt());
+          element.secuencia!.toInt(),
+          100,
+          100,
+          element.estado!.toInt(),
+        );
         _markers.add(
           Marker(
             markerId: MarkerId(element.secuencia.toString()),
             position: LatLng(
-                element.latitud!.toDouble(), element.longitud!.toDouble()),
+              element.latitud!.toDouble(),
+              element.longitud!.toDouble(),
+            ),
             // infoWindow: InfoWindow(
             //   title: element.titular.toString(),
             //   snippet: element.domicilio.toString(),
@@ -1106,128 +1168,136 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
               //         element.longitud!.toDouble()),
               //     zoom: 16.0);
               _customInfoWindowController.addInfoWindow!(
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: (element.estado == 3)
-                              ? const Color(0xff3933f2)
-                              : (element.estado == 4)
-                                  ? const Color(0xff31eb2f)
-                                  : (element.estado == 10)
-                                      ? const Color(0xffe9353a)
-                                      : (element.estado == 7)
-                                          ? const Color(0xff8a36e4)
-                                          : const Color(0xff3933f2),
-                          child: Text(
-                            element.secuencia.toString(),
-                            style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: (element.estado == 3)
+                            ? const Color(0xff3933f2)
+                            : (element.estado == 4)
+                            ? const Color(0xff31eb2f)
+                            : (element.estado == 10)
+                            ? const Color(0xffe9353a)
+                            : (element.estado == 7)
+                            ? const Color(0xff8a36e4)
+                            : const Color(0xff3933f2),
+                        child: Text(
+                          element.secuencia.toString(),
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
-                        const SizedBox(
-                          width: 8.0,
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                  child: Text(
+                      ),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
                                 element.titular.toString(),
                                 style: const TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold),
-                              )),
-                              Expanded(
-                                  child: Text(element.domicilio.toString(),
-                                      style: const TextStyle(fontSize: 12))),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _navegar(element),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Icon(Icons.map,
-                                              color: Color(0xff282886)),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            'Navegar',
-                                            style: TextStyle(
-                                                color: Color(0xff282886)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFb3b3b4),
-                                        minimumSize:
-                                            const Size(double.infinity, 30),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      onPressed: () => _goInfoParada(element),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Text(
-                                            'Abrir',
-                                            style: TextStyle(
-                                                color: Color(0xff282886)),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Icon(Icons.arrow_forward_ios,
-                                              color: Color(0xff282886)),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                element.domicilio.toString(),
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFFb3b3b4),
+                                      minimumSize: const Size(
+                                        double.infinity,
+                                        30,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () => _navegar(element),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Icon(
+                                          Icons.map,
+                                          color: Color(0xff282886),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Navegar',
+                                          style: TextStyle(
+                                            color: Color(0xff282886),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFFb3b3b4),
+                                      minimumSize: const Size(
+                                        double.infinity,
+                                        30,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    onPressed: () => _goInfoParada(element),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Text(
+                                          'Abrir',
+                                          style: TextStyle(
+                                            color: Color(0xff282886),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Color(0xff282886),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  LatLng(element.latitud!.toDouble(),
-                      element.longitud!.toDouble()));
+                ),
+                LatLng(
+                  element.latitud!.toDouble(),
+                  element.longitud!.toDouble(),
+                ),
+              );
             },
             icon: BitmapDescriptor.fromBytes(markerIcon),
           ),
@@ -1262,15 +1332,16 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
       );
     } else {
       showMyDialog(
-          'Aviso!',
-          "Necesita estar conectado a Internet para acceder al mapa",
-          'Aceptar');
+        'Aviso!',
+        "Necesita estar conectado a Internet para acceder al mapa",
+        'Aceptar',
+      );
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _llenarparadasenvios -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _llenarparadasenvios -------------
+  //--------------------------------------------------------
 
   Future<void> _llenarparadasenvios() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1289,8 +1360,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     _paradasenviosdb = await DBParadasEnvios.paradasenvios();
 
     for (var paradaenvio in _paradasenviosdb) {
-      if (DateTime.parse(paradaenvio.fecha!)
-              .isBefore(DateTime.now().add(const Duration(days: -7))) &&
+      if (DateTime.parse(
+            paradaenvio.fecha!,
+          ).isBefore(DateTime.now().add(const Duration(days: -7))) &&
           paradaenvio.enviado != 0) {
         DBParadasEnvios.delete(paradaenvio);
       }
@@ -1350,9 +1422,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _putParada -----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _putParada -----------------------
+  //--------------------------------------------------------
 
   Future<void> _putParada(ParadaEnvio paradaenvio) async {
     for (var element in widget.paradas) {
@@ -1390,11 +1462,15 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
       };
 
       Response response = await ApiHelper.put(
-          '/api/Paradas/', paradaSelected.idParada.toString(), requestParada);
+        '/api/Paradas/',
+        paradaSelected.idParada.toString(),
+        requestParada,
+      );
 
       if (response.isSuccess) {
         Response response2 = await ApiHelper.getParadaByIDParada(
-            paradaSelected.idParada.toString());
+          paradaSelected.idParada.toString(),
+        );
         if (response2.isSuccess) {
           //CHEQUEAR SI ESTADO GUARDADO ES IGUAL A ESTADO EN EL CELULAR
           paradaSaved = response2.result;
@@ -1407,9 +1483,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     await _putEnvio(paradaenvio);
   }
 
-//--------------------------------------------------------
-//--------------------- _putEnvio ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _putEnvio ------------------------
+  //--------------------------------------------------------
 
   Future<void> _putEnvio(ParadaEnvio paradaenvio) async {
     for (var element in widget.envios) {
@@ -1487,8 +1563,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
         'hashUnico': envioSelected.hashUnico,
         'bultosPikeados': envioSelected.bultosPikeados,
         'centroDistribucion': envioSelected.centroDistribucion,
-        'fechaUltimaActualizacion':
-            DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'fechaUltimaActualizacion': DateFormat(
+          'yyyy-MM-dd',
+        ).format(DateTime.now()),
         'volumen': envioSelected.volumen,
         'avonZoneNumber': envioSelected.avonZoneNumber,
         'avonSectorNumber': envioSelected.avonSectorNumber,
@@ -1515,10 +1592,14 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
       };
 
       Response response = await ApiHelper.put(
-          '/api/Envios/', envioSelected.idEnvio.toString(), requestEnvio);
+        '/api/Envios/',
+        envioSelected.idEnvio.toString(),
+        requestEnvio,
+      );
       if (response.isSuccess) {
-        Response response2 =
-            await ApiHelper.getEnvioByIdEnvio(envioSelected.idEnvio.toString());
+        Response response2 = await ApiHelper.getEnvioByIdEnvio(
+          envioSelected.idEnvio.toString(),
+        );
         if (response2.isSuccess) {
           //CHEQUEAR SI ESTADO GUARDADO ES IGUAL A ESTADO EN EL CELULAR
           envioSaved = response2.result;
@@ -1531,9 +1612,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     await _postSeguimiento(paradaenvio);
   }
 
-//--------------------------------------------------------
-//--------------------- _postSeguimiento -----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _postSeguimiento -----------------
+  //--------------------------------------------------------
 
   Future<void> _postSeguimiento(ParadaEnvio paradaenvio) async {
     int fec = DateTime.now().difference(DateTime(2022, 01, 01)).inDays + 80723;
@@ -1564,7 +1645,8 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
 
       if (response.isSuccess) {
         Response response2 = await ApiHelper.getUltimoSeguimientoByIdEnvio(
-            paradaenvio.idEnvio.toString());
+          paradaenvio.idEnvio.toString(),
+        );
         if (response2.isSuccess) {
           seguimientoSaved = response2.result;
           if (seguimientoSaved.fecha == fec) {
@@ -1582,9 +1664,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviado1 -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviado1 -------------------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviado1(ParadaEnvio paradaenvio) async {
     _puso1 = false;
@@ -1639,34 +1721,40 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     } while (_puso1 == false);
   }
 
-//--------------------------------------------------------
-//--------------------- isNullOrEmpty --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- isNullOrEmpty --------------------
+  //--------------------------------------------------------
 
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
 
-//--------------------------------------------------------
-//--------------------- getBytesFromAsset ----------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- getBytesFromAsset ----------------
+  //--------------------------------------------------------
 
   Future<Uint8List> getBytesFromAsset({String? path, int? width}) async {
     ByteData? data = await rootBundle.load(path.toString());
-    ui.Codec? codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
+    ui.Codec? codec = await ui.instantiateImageCodec(
+      data.buffer.asUint8List(),
+      targetWidth: width,
+    );
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-        .buffer
-        .asUint8List();
+    return (await fi.image.toByteData(
+      format: ui.ImageByteFormat.png,
+    ))!.buffer.asUint8List();
   }
 
-//--------------------------------------------------------
-//--------------------- getBytesFromCanvas ---------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- getBytesFromCanvas ---------------
+  //--------------------------------------------------------
 
   Future<Uint8List> getBytesFromCanvas(
-      int customNum, int width, int height, int estado) async {
+    int customNum,
+    int width,
+    int height,
+    int estado,
+  ) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
@@ -1683,22 +1771,28 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     painter.text = TextSpan(
       text: customNum.toString(), // your custom number here
       style: const TextStyle(
-          fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.bold),
+        fontSize: 28.0,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
     );
 
     painter.layout();
     painter.paint(
-        canvas,
-        Offset((width * 0.5) - painter.width * 0.5,
-            (height * .5) - painter.height * 0.5));
+      canvas,
+      Offset(
+        (width * 0.5) - painter.width * 0.5,
+        (height * .5) - painter.height * 0.5,
+      ),
+    );
     final img = await pictureRecorder.endRecording().toImage(width, height);
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
     return data!.buffer.asUint8List();
   }
 
-//--------------------------------------------------------
-//--------------------- _getPosition ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getPosition ---------------------
+  //--------------------------------------------------------
 
   Future _getPosition() async {
     LocationPermission permission;
@@ -1708,34 +1802,6 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                title: const Text('Aviso'),
-                content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const <Widget>[
-                      Text('El permiso de localización está negado.'),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ]),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Ok')),
-                ],
-              );
-            });
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -1744,26 +1810,58 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
               ),
               title: const Text('Aviso'),
               content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text(
-                        'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
+                mainAxisSize: MainAxisSize.min,
+                children: const <Widget>[
+                  Text('El permiso de localización está negado.'),
+                  SizedBox(height: 10),
+                ],
+              ),
               actions: <Widget>[
                 TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Ok'),
+                ),
               ],
             );
-          });
+          },
+        );
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text(
+                  'El permiso de localización está negado permanentemente. No se puede requerir este permiso.',
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       return;
     }
 
     _positionUser = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+    );
   }
 
   Future _getPosition2() async {
@@ -1774,34 +1872,6 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                title: const Text('Aviso'),
-                content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const <Widget>[
-                      Text('El permiso de localización está negado.'),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ]),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Ok')),
-                ],
-              );
-            });
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -1810,26 +1880,58 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
               ),
               title: const Text('Aviso'),
               content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text(
-                        'El permiso de localización está negado permanentemente. No se puede requerir este permiso.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
+                mainAxisSize: MainAxisSize.min,
+                children: const <Widget>[
+                  Text('El permiso de localización está negado.'),
+                  SizedBox(height: 10),
+                ],
+              ),
               actions: <Widget>[
                 TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Ok'),
+                ),
               ],
             );
-          });
+          },
+        );
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text(
+                  'El permiso de localización está negado permanentemente. No se puede requerir este permiso.',
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       return;
     }
 
     _positionUser = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+    );
     latitud = _positionUser.latitude.toString().isNotEmpty
         ? _positionUser.latitude
         : 0;
@@ -1838,14 +1940,16 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
         : 0;
 
     List<Placemark> placemarks = await placemarkFromCoordinates(
-        _positionUser.latitude, _positionUser.longitude);
+      _positionUser.latitude,
+      _positionUser.longitude,
+    );
     direccion = "${placemarks[0].street} - ${placemarks[0].locality}";
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviadoParada1 -------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviadoParada1 -------------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviadoParada1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -1896,9 +2000,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviadoEnvio1 --------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviadoEnvio1 --------------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviadoEnvio1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -1949,9 +2053,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _ponerEnviadoSeguimiento1 --------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _ponerEnviadoSeguimiento1 --------
+  //--------------------------------------------------------
 
   Future<void> _ponerEnviadoSeguimiento1(ParadaEnvio paradaenvio) async {
     ParadaEnvio paradaenvionueva = ParadaEnvio(
@@ -2002,9 +2106,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _removeFilter --------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _removeFilter --------------------
+  //--------------------------------------------------------
 
   void _removeFilter() {
     setState(() {
@@ -2015,61 +2119,68 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     _filter();
   }
 
-//--------------------------------------------------------
-//--------------------- _showFilter ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showFilter ----------------------
+  //--------------------------------------------------------
 
   void _showFilter() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            title: const Text('Filtrar Paradas'),
-            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Text('Filtrar Paradas'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
               const Text('Escriba texto a buscar en Nombre o Dirección'),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               TextField(
                 autofocus: true,
                 decoration: InputDecoration(
-                    hintText: 'Criterio de búsqueda...',
-                    labelText: 'Buscar',
-                    suffixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                  hintText: 'Criterio de búsqueda...',
+                  labelText: 'Buscar',
+                  suffixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 onChanged: (value) {
                   _search = value;
                 },
               ),
-            ]),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancelar')),
-              TextButton(
-                  onPressed: () => _filter(), child: const Text('Filtrar')),
             ],
-          );
-        });
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () => _filter(),
+              child: const Text('Filtrar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- _filter --------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _filter --------------------------
+  //--------------------------------------------------------
 
-  _filter() {
+  void _filter() {
     if (_search.isEmpty) {
       return;
     }
     List<ParadaEnvio> filteredList = [];
     for (var paradasenvio in _paradasenvios) {
-      if (paradasenvio.domicilio!
-              .toLowerCase()
-              .contains(_search.toLowerCase()) ||
+      if (paradasenvio.domicilio!.toLowerCase().contains(
+            _search.toLowerCase(),
+          ) ||
           paradasenvio.titular!.toLowerCase().contains(_search.toLowerCase())) {
         filteredList.add(paradasenvio);
       }
@@ -2083,27 +2194,29 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     Navigator.of(context).pop();
   }
 
-//--------------------------------------------------------
-//--------------- _ponerCatastroEnCero -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------- _ponerCatastroEnCero -------------------
+  //--------------------------------------------------------
 
-  _ponerCatastroEnCero() {
-    _paradasenviosfiltered.forEach((element) {
+  void _ponerCatastroEnCero() {
+    for (var element in _paradasenviosfiltered) {
       element.catastro = 0;
       element.latitudCatastro = null;
       element.longitudCatastro = null;
       element.domicilioCatastro = '';
-    });
+    }
     setState(() {});
   }
 
-//--------------------------------------------------------
-//--------------- _guardarCatastro -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------- _guardarCatastro -------------------
+  //--------------------------------------------------------
 
   Future<bool> _existeCatastro(ParadaEnvio paradaEnvio) async {
     Response response = await ApiHelper.getDestinosGeoCoding(
-        paradaEnvio.dni!, paradaEnvio.idproveedor.toString());
+      paradaEnvio.dni!,
+      paradaEnvio.idproveedor.toString(),
+    );
 
     if (!response.isSuccess) {
       showMyDialog('Error', response.message, 'Aceptar');
@@ -2112,96 +2225,100 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
 
     if (response.result) {
       showMyDialog(
-          'Error',
-          'El Cliente ${paradaEnvio.titular} ya tiene Catastro registrado para el Proveedor ${paradaEnvio.proveedor}',
-          "Ok");
+        'Error',
+        'El Cliente ${paradaEnvio.titular} ya tiene Catastro registrado para el Proveedor ${paradaEnvio.proveedor}',
+        "Ok",
+      );
 
       return true;
     }
     return false;
   }
 
-//--------------------------------------------------------
-//--------------- _guardarCatastro -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------- _guardarCatastro -------------------
+  //--------------------------------------------------------
 
-  _guardarCatastro(ParadaEnvio paradaEnvio) async {
+  Future<void> _guardarCatastro(ParadaEnvio paradaEnvio) async {
     if (paradaEnvio.titular == "" || paradaEnvio.titular == null) {
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('El Cliente no tiene Nombre cargado'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('El Cliente no tiene Nombre cargado'),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       return;
     }
     if (paradaEnvio.dni == "" || paradaEnvio.dni == null) {
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('El Cliente no tiene DNI cargado'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('El Cliente no tiene DNI cargado'),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       return;
     }
     if (paradaEnvio.domicilioCatastro == "") {
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('El Cliente no tiene Domicilio de Catastro'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('El Cliente no tiene Domicilio de Catastro'),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       return;
     }
     if (paradaEnvio.latitudCatastro == "" ||
@@ -2211,28 +2328,29 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
         paradaEnvio.longitudCatastro == 0 ||
         paradaEnvio.longitudCatastro == null) {
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('El Cliente no tiene Coordenadas de Catastro'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('El Cliente no tiene Coordenadas de Catastro'),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       return;
     }
 
@@ -2251,8 +2369,10 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
       'DomicilioHere': "",
       'IDProveedor': paradaEnvio.idproveedor,
     };
-    Response response2 =
-        await ApiHelper.post('/api/DestinosGeoCoding/', request);
+    Response response2 = await ApiHelper.post(
+      '/api/DestinosGeoCoding/',
+      request,
+    );
 
     if (!response2.isSuccess) {
       showMyDialog('Error', response2.message, "Aceptar");
@@ -2261,8 +2381,9 @@ class RutaInfoScreenState extends State<RutaInfoScreen> {
     }
 
     showMyDialog(
-        'Aviso',
-        'Catastro para el Cliente ${paradaEnvio.titular} en el proveedor ${paradaEnvio.proveedor} guardado con éxito!',
-        "Ok");
+      'Aviso',
+      'Catastro para el Cliente ${paradaEnvio.titular} en el proveedor ${paradaEnvio.proveedor} guardado con éxito!',
+      "Ok",
+    );
   }
 }

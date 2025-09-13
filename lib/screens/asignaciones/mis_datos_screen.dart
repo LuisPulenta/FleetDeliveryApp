@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:camera/camera.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
 import 'package:fleetdeliveryapp/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MisDatosScreen extends StatefulWidget {
@@ -22,9 +23,9 @@ class MisDatosScreen extends StatefulWidget {
 }
 
 class _MisDatosScreenState extends State<MisDatosScreen> {
-//-----------------------------------------------------------------------------
-//---------------------------- Variables --------------------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //---------------------------- Variables --------------------------------------
+  //-----------------------------------------------------------------------------
 
   bool _showLoader = false;
 
@@ -92,9 +93,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
   bool _companiaShowError = false;
   final TextEditingController _companiaController = TextEditingController();
 
-//-----------------------------------------------------------------------------
-//--------------------------- initState ---------------------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //--------------------------- initState ---------------------------------------
+  //-----------------------------------------------------------------------------
 
   @override
   void initState() {
@@ -102,9 +103,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     _getMisDatos();
   }
 
-//-----------------------------------------------------------------------------
-//---------------------------- Pantalla ---------------------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //---------------------------- Pantalla ---------------------------------------
+  //-----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,42 +120,46 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
           SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(
-                  height: 5,
+                const SizedBox(height: 5),
+                const Text(
+                  'DNI Frente',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const Text('DNI Frente',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
                 _showDNIFrente(),
-                const Divider(
-                  color: Colors.black,
+                const Divider(color: Colors.black),
+                const Text(
+                  'DNI Dorso',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const Text('DNI Dorso',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
                 _showDNIDorso(),
-                const Divider(
-                  color: Colors.black,
+                const Divider(color: Colors.black),
+                const Text(
+                  'Carnet de Conducir',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const Text('Carnet de Conducir',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
                 _showCarnetConducir(),
                 _showFechaCarnetConducir(),
-                const Divider(
-                  color: Colors.black,
+                const Divider(color: Colors.black),
+                const Text(
+                  'Vehículo',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const Text('Vehículo',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
                 Row(
                   children: [
                     Expanded(flex: 3, child: _showNumcha()),
@@ -162,48 +167,55 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                   ],
                 ),
                 _showMarca(),
-                const SizedBox(
-                  height: 10,
+                const SizedBox(height: 10),
+                const Text(
+                  'VTV:',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const Text('VTV:',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold)),
                 _showVTV(),
                 _showFechaVencVTV(),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: SwitchListTile.adaptive(
-                      title: const Text(
-                        "Tiene GNC:",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                    title: const Text(
+                      "Tiene GNC:",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
-                      activeColor: const Color(0xFF282886),
-                      value: _gas,
-                      onChanged: (value) {
-                        _gas = value;
-                        setState(() {});
-                      }),
+                    ),
+                    activeColor: const Color(0xFF282886),
+                    value: _gas,
+                    onChanged: (value) {
+                      _gas = value;
+                      setState(() {});
+                    },
+                  ),
                 ),
                 _showFechaVencObleaGNC(),
-                const Text('Oblea Gas:',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold)),
-                _showObleaGas(),
-                const Divider(
-                  color: Colors.black,
+                const Text(
+                  'Oblea Gas:',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const Text('Seguro Vehículo',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
+                _showObleaGas(),
+                const Divider(color: Colors.black),
+                const Text(
+                  'Seguro Vehículo',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 Row(
                   children: [
                     Expanded(flex: 1, child: _showCompania()),
@@ -218,39 +230,38 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                     child: Row(
                       children: [
                         ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(80, 50),
-                              backgroundColor: base64imagePoliza != ''
-                                  ? Colors.red
-                                  : const Color(0xFF282886),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(80, 50),
+                            backgroundColor: base64imagePoliza != ''
+                                ? Colors.red
+                                : const Color(0xFF282886),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            onPressed: () {
-                              if (base64imagePoliza != '') {
-                                base64imagePoliza = '';
-                                namePdfPoliza = '';
-                                setState(() {});
-                              } else {
-                                _loadPdf(1);
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                const Icon(Icons.picture_as_pdf),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Text((base64imagePoliza == '')
+                          ),
+                          onPressed: () {
+                            if (base64imagePoliza != '') {
+                              base64imagePoliza = '';
+                              namePdfPoliza = '';
+                              setState(() {});
+                            } else {
+                              _loadPdf(1);
+                            }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const Icon(Icons.picture_as_pdf),
+                              const SizedBox(width: 15),
+                              Text(
+                                (base64imagePoliza == '')
                                     ? 'Cargar Póliza'
-                                    : 'Borrar'),
-                              ],
-                            )),
-                        const SizedBox(
-                          width: 15,
+                                    : 'Borrar',
+                              ),
+                            ],
+                          ),
                         ),
+                        const SizedBox(width: 15),
                         Text(namePdfPoliza),
                         editMode &&
                                 _misDatos.linkPolizaSeguro.length > 1 &&
@@ -258,17 +269,24 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                             ? Expanded(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 200, 14, 241),
-                                    minimumSize:
-                                        const Size(double.infinity, 50),
+                                    backgroundColor: Color.fromARGB(
+                                      255,
+                                      200,
+                                      14,
+                                      241,
+                                    ),
+                                    minimumSize: const Size(
+                                      double.infinity,
+                                      50,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                   ),
                                   onPressed: () async {
                                     if (!await launch(
-                                        _misDatos.linkPolizaSeguroFullPath)) {
+                                      _misDatos.linkPolizaSeguroFullPath,
+                                    )) {
                                       throw 'No se puede conectar al Servidor';
                                     }
                                   },
@@ -282,19 +300,20 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                   ),
                                 ),
                               )
-                            : Container()
+                            : Container(),
                       ],
                     ),
                   ),
                 ),
-                const Divider(
-                  color: Colors.black,
+                const Divider(color: Colors.black),
+                const Text(
+                  'Cédula',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const Text('Cédula',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
                 SizedBox(
                   width: double.infinity,
                   child: Padding(
@@ -302,39 +321,38 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                     child: Row(
                       children: [
                         ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(80, 50),
-                              backgroundColor: base64imageCedula != ''
-                                  ? Colors.red
-                                  : const Color(0xFF282886),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(80, 50),
+                            backgroundColor: base64imageCedula != ''
+                                ? Colors.red
+                                : const Color(0xFF282886),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            onPressed: () {
-                              if (base64imageCedula != '') {
-                                base64imageCedula = '';
-                                namePdfCedula = '';
-                                setState(() {});
-                              } else {
-                                _loadPdf(2);
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                const Icon(Icons.picture_as_pdf),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Text((base64imageCedula == '')
+                          ),
+                          onPressed: () {
+                            if (base64imageCedula != '') {
+                              base64imageCedula = '';
+                              namePdfCedula = '';
+                              setState(() {});
+                            } else {
+                              _loadPdf(2);
+                            }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const Icon(Icons.picture_as_pdf),
+                              const SizedBox(width: 15),
+                              Text(
+                                (base64imageCedula == '')
                                     ? 'Cargar Cédula'
-                                    : 'Borrar'),
-                              ],
-                            )),
-                        const SizedBox(
-                          width: 15,
+                                    : 'Borrar',
+                              ),
+                            ],
+                          ),
                         ),
+                        const SizedBox(width: 15),
                         Text(namePdfCedula),
                         editMode &&
                                 _misDatos.linkCedula.length > 1 &&
@@ -342,17 +360,24 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                             ? Expanded(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 200, 14, 241),
-                                    minimumSize:
-                                        const Size(double.infinity, 50),
+                                    backgroundColor: Color.fromARGB(
+                                      255,
+                                      200,
+                                      14,
+                                      241,
+                                    ),
+                                    minimumSize: const Size(
+                                      double.infinity,
+                                      50,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                   ),
                                   onPressed: () async {
                                     if (!await launch(
-                                        _misDatos.linkCedulaFullPath)) {
+                                      _misDatos.linkCedulaFullPath,
+                                    )) {
                                       throw 'No se puede conectar al Servidor';
                                     }
                                   },
@@ -366,19 +391,20 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                   ),
                                 ),
                               )
-                            : Container()
+                            : Container(),
                       ],
                     ),
                   ),
                 ),
-                const Divider(
-                  color: Colors.black,
+                const Divider(color: Colors.black),
+                const Text(
+                  'Antecedentes',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const Text('Antecedentes',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
                 SizedBox(
                   width: double.infinity,
                   child: Padding(
@@ -386,39 +412,38 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                     child: Row(
                       children: [
                         ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(80, 50),
-                              backgroundColor: base64imageAntecedentes != ''
-                                  ? Colors.red
-                                  : const Color(0xFF282886),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(80, 50),
+                            backgroundColor: base64imageAntecedentes != ''
+                                ? Colors.red
+                                : const Color(0xFF282886),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            onPressed: () {
-                              if (base64imageAntecedentes != '') {
-                                base64imageAntecedentes = '';
-                                namePdfAntecedentes = '';
-                                setState(() {});
-                              } else {
-                                _loadPdf(3);
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                const Icon(Icons.picture_as_pdf),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Text((base64imageAntecedentes == '')
+                          ),
+                          onPressed: () {
+                            if (base64imageAntecedentes != '') {
+                              base64imageAntecedentes = '';
+                              namePdfAntecedentes = '';
+                              setState(() {});
+                            } else {
+                              _loadPdf(3);
+                            }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const Icon(Icons.picture_as_pdf),
+                              const SizedBox(width: 15),
+                              Text(
+                                (base64imageAntecedentes == '')
                                     ? 'Cargar Anteced.'
-                                    : 'Borrar'),
-                              ],
-                            )),
-                        const SizedBox(
-                          width: 15,
+                                    : 'Borrar',
+                              ),
+                            ],
+                          ),
                         ),
+                        const SizedBox(width: 15),
                         Text(namePdfAntecedentes),
                         editMode &&
                                 _misDatos.linkAntecedentes.length > 1 &&
@@ -426,17 +451,24 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                             ? Expanded(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 200, 14, 241),
-                                    minimumSize:
-                                        const Size(double.infinity, 50),
+                                    backgroundColor: Color.fromARGB(
+                                      255,
+                                      200,
+                                      14,
+                                      241,
+                                    ),
+                                    minimumSize: const Size(
+                                      double.infinity,
+                                      50,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                   ),
                                   onPressed: () async {
                                     if (!await launch(
-                                        _misDatos.linkAntecedentesFullPath)) {
+                                      _misDatos.linkAntecedentesFullPath,
+                                    )) {
                                       throw 'No se puede conectar al Servidor';
                                     }
                                   },
@@ -450,34 +482,28 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                                   ),
                                 ),
                               )
-                            : Container()
+                            : Container(),
                       ],
                     ),
                   ),
                 ),
-                const Divider(
-                  color: Colors.black,
-                ),
+                const Divider(color: Colors.black),
                 _showButtonGuardar(),
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 15),
               ],
             ),
           ),
           _showLoader
-              ? const LoaderComponent(
-                  text: 'Por favor espere...',
-                )
+              ? const LoaderComponent(text: 'Por favor espere...')
               : Container(),
         ],
       ),
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showDNIFrente ----------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showDNIFrente ----------------------------
+  //-----------------------------------------------------------------
 
   Widget _showDNIFrente() {
     return Container(
@@ -487,29 +513,35 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              child: Stack(children: <Widget>[
-                Container(
-                  child: !_photoChangedDNIFrente
-                      ? Center(
-                          child: !editMode
-                              ? const Image(
-                                  image: AssetImage('assets/dni.png'),
-                                  width: 200,
-                                  height: 160,
-                                  fit: BoxFit.contain)
-                              : Image.network(_misDatos.dniFrenteFullPath,
-                                  width: 200, height: 160, fit: BoxFit.contain),
-                        )
-                      : Center(
-                          child: Image.file(
-                            File(_imageDNIFrente.path),
-                            width: 200,
-                            height: 160,
-                            fit: BoxFit.contain,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    child: !_photoChangedDNIFrente
+                        ? Center(
+                            child: !editMode
+                                ? const Image(
+                                    image: AssetImage('assets/dni.png'),
+                                    width: 200,
+                                    height: 160,
+                                    fit: BoxFit.contain,
+                                  )
+                                : Image.network(
+                                    _misDatos.dniFrenteFullPath,
+                                    width: 200,
+                                    height: 160,
+                                    fit: BoxFit.contain,
+                                  ),
+                          )
+                        : Center(
+                            child: Image.file(
+                              File(_imageDNIFrente.path),
+                              width: 200,
+                              height: 160,
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ),
-                ),
-                Positioned(
+                  ),
+                  Positioned(
                     bottom: 60,
                     right: 20,
                     child: InkWell(
@@ -530,8 +562,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                       ),
-                    )),
-                Positioned(
+                    ),
+                  ),
+                  Positioned(
                     bottom: 60,
                     left: 20,
                     child: InkWell(
@@ -552,8 +585,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                       ),
-                    )),
-              ]),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -561,9 +596,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showDNIDorso -----------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showDNIDorso -----------------------------
+  //-----------------------------------------------------------------
 
   Widget _showDNIDorso() {
     return Container(
@@ -573,29 +608,35 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              child: Stack(children: <Widget>[
-                Container(
-                  child: !_photoChangedDNIDorso
-                      ? Center(
-                          child: !editMode
-                              ? const Image(
-                                  image: AssetImage('assets/dni.png'),
-                                  width: 200,
-                                  height: 160,
-                                  fit: BoxFit.contain)
-                              : Image.network(_misDatos.dniDorsoFullPath,
-                                  width: 200, height: 160, fit: BoxFit.contain),
-                        )
-                      : Center(
-                          child: Image.file(
-                            File(_imageDNIDorso.path),
-                            width: 200,
-                            height: 160,
-                            fit: BoxFit.contain,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    child: !_photoChangedDNIDorso
+                        ? Center(
+                            child: !editMode
+                                ? const Image(
+                                    image: AssetImage('assets/dni.png'),
+                                    width: 200,
+                                    height: 160,
+                                    fit: BoxFit.contain,
+                                  )
+                                : Image.network(
+                                    _misDatos.dniDorsoFullPath,
+                                    width: 200,
+                                    height: 160,
+                                    fit: BoxFit.contain,
+                                  ),
+                          )
+                        : Center(
+                            child: Image.file(
+                              File(_imageDNIDorso.path),
+                              width: 200,
+                              height: 160,
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ),
-                ),
-                Positioned(
+                  ),
+                  Positioned(
                     bottom: 60,
                     right: 20,
                     child: InkWell(
@@ -616,8 +657,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                       ),
-                    )),
-                Positioned(
+                    ),
+                  ),
+                  Positioned(
                     bottom: 60,
                     left: 20,
                     child: InkWell(
@@ -638,8 +680,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                       ),
-                    )),
-              ]),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -647,9 +691,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showCarnetConducir -----------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showCarnetConducir -----------------------
+  //-----------------------------------------------------------------
 
   Widget _showCarnetConducir() {
     return Container(
@@ -659,29 +703,35 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              child: Stack(children: <Widget>[
-                Container(
-                  child: !_photoChangedCarnetConducir
-                      ? Center(
-                          child: !editMode
-                              ? const Image(
-                                  image: AssetImage('assets/dni.png'),
-                                  width: 200,
-                                  height: 160,
-                                  fit: BoxFit.contain)
-                              : Image.network(_misDatos.carnetConducirFullPath,
-                                  width: 200, height: 160, fit: BoxFit.contain),
-                        )
-                      : Center(
-                          child: Image.file(
-                            File(_imageCarnetConducir.path),
-                            width: 200,
-                            height: 160,
-                            fit: BoxFit.contain,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    child: !_photoChangedCarnetConducir
+                        ? Center(
+                            child: !editMode
+                                ? const Image(
+                                    image: AssetImage('assets/dni.png'),
+                                    width: 200,
+                                    height: 160,
+                                    fit: BoxFit.contain,
+                                  )
+                                : Image.network(
+                                    _misDatos.carnetConducirFullPath,
+                                    width: 200,
+                                    height: 160,
+                                    fit: BoxFit.contain,
+                                  ),
+                          )
+                        : Center(
+                            child: Image.file(
+                              File(_imageCarnetConducir.path),
+                              width: 200,
+                              height: 160,
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ),
-                ),
-                Positioned(
+                  ),
+                  Positioned(
                     bottom: 60,
                     right: 20,
                     child: InkWell(
@@ -702,8 +752,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                       ),
-                    )),
-                Positioned(
+                    ),
+                  ),
+                  Positioned(
                     bottom: 60,
                     left: 20,
                     child: InkWell(
@@ -724,8 +775,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                       ),
-                    )),
-              ]),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -733,9 +786,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showVTV ----------------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showVTV ----------------------------------
+  //-----------------------------------------------------------------
 
   Widget _showVTV() {
     return Container(
@@ -745,29 +798,35 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              child: Stack(children: <Widget>[
-                Container(
-                  child: !_photoChangedVTV
-                      ? Center(
-                          child: !editMode
-                              ? const Image(
-                                  image: AssetImage('assets/noimage.png'),
-                                  width: 200,
-                                  height: 160,
-                                  fit: BoxFit.contain)
-                              : Image.network(_misDatos.linkVtvFullPath,
-                                  width: 200, height: 160, fit: BoxFit.contain),
-                        )
-                      : Center(
-                          child: Image.file(
-                            File(_imageVTV.path),
-                            width: 200,
-                            height: 160,
-                            fit: BoxFit.contain,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    child: !_photoChangedVTV
+                        ? Center(
+                            child: !editMode
+                                ? const Image(
+                                    image: AssetImage('assets/noimage.png'),
+                                    width: 200,
+                                    height: 160,
+                                    fit: BoxFit.contain,
+                                  )
+                                : Image.network(
+                                    _misDatos.linkVtvFullPath,
+                                    width: 200,
+                                    height: 160,
+                                    fit: BoxFit.contain,
+                                  ),
+                          )
+                        : Center(
+                            child: Image.file(
+                              File(_imageVTV.path),
+                              width: 200,
+                              height: 160,
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ),
-                ),
-                Positioned(
+                  ),
+                  Positioned(
                     bottom: 60,
                     right: 20,
                     child: InkWell(
@@ -788,8 +847,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                       ),
-                    )),
-                Positioned(
+                    ),
+                  ),
+                  Positioned(
                     bottom: 60,
                     left: 20,
                     child: InkWell(
@@ -810,8 +870,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                       ),
-                    )),
-              ]),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -819,9 +881,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showObleaGas -----------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showObleaGas -----------------------------
+  //-----------------------------------------------------------------
 
   Widget _showObleaGas() {
     return Container(
@@ -831,29 +893,35 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-              child: Stack(children: <Widget>[
-                Container(
-                  child: !_photoChangedObleaGas
-                      ? Center(
-                          child: !editMode
-                              ? const Image(
-                                  image: AssetImage('assets/noimage.png'),
-                                  width: 200,
-                                  height: 160,
-                                  fit: BoxFit.contain)
-                              : Image.network(_misDatos.linkObleaGasFullPath,
-                                  width: 200, height: 160, fit: BoxFit.contain),
-                        )
-                      : Center(
-                          child: Image.file(
-                            File(_imageObleaGas.path),
-                            width: 200,
-                            height: 160,
-                            fit: BoxFit.contain,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    child: !_photoChangedObleaGas
+                        ? Center(
+                            child: !editMode
+                                ? const Image(
+                                    image: AssetImage('assets/noimage.png'),
+                                    width: 200,
+                                    height: 160,
+                                    fit: BoxFit.contain,
+                                  )
+                                : Image.network(
+                                    _misDatos.linkObleaGasFullPath,
+                                    width: 200,
+                                    height: 160,
+                                    fit: BoxFit.contain,
+                                  ),
+                          )
+                        : Center(
+                            child: Image.file(
+                              File(_imageObleaGas.path),
+                              width: 200,
+                              height: 160,
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ),
-                ),
-                Positioned(
+                  ),
+                  Positioned(
                     bottom: 60,
                     right: 20,
                     child: InkWell(
@@ -874,8 +942,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                       ),
-                    )),
-                Positioned(
+                    ),
+                  ),
+                  Positioned(
                     bottom: 60,
                     left: 20,
                     child: InkWell(
@@ -896,8 +965,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                           ),
                         ),
                       ),
-                    )),
-              ]),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -905,9 +976,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showNumcha -------------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showNumcha -------------------------------
+  //-----------------------------------------------------------------
 
   Widget _showNumcha() {
     return Container(
@@ -915,14 +986,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       child: TextField(
         controller: _numchaController,
         decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: 'Patente',
-            labelText: 'Patente',
-            errorText: _numchaShowError ? _numchaError : null,
-            suffixIcon: const Icon(Icons.abc),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          fillColor: Colors.white,
+          filled: true,
+          hintText: 'Patente',
+          labelText: 'Patente',
+          errorText: _numchaShowError ? _numchaError : null,
+          suffixIcon: const Icon(Icons.abc),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
         onChanged: (value) {
           _numcha = value;
         },
@@ -930,9 +1001,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showCompania -----------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showCompania -----------------------------
+  //-----------------------------------------------------------------
 
   Widget _showCompania() {
     return Container(
@@ -940,14 +1011,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       child: TextField(
         controller: _companiaController,
         decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: 'Compañía',
-            labelText: 'Compañía',
-            errorText: _companiaShowError ? _companiaError : null,
-            suffixIcon: const Icon(Icons.abc),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          fillColor: Colors.white,
+          filled: true,
+          hintText: 'Compañía',
+          labelText: 'Compañía',
+          errorText: _companiaShowError ? _companiaError : null,
+          suffixIcon: const Icon(Icons.abc),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
         onChanged: (value) {
           _compania = value;
         },
@@ -955,9 +1026,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showNroPoliza ----------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showNroPoliza ----------------------------
+  //-----------------------------------------------------------------
 
   Widget _showNroPoliza() {
     return Container(
@@ -965,14 +1036,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       child: TextField(
         controller: _numpolizaseguroController,
         decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: 'N° Póliza',
-            labelText: 'N° Póliza',
-            errorText: _numpolizaseguroShowError ? _numpolizaseguroError : null,
-            suffixIcon: const Icon(Icons.numbers),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          fillColor: Colors.white,
+          filled: true,
+          hintText: 'N° Póliza',
+          labelText: 'N° Póliza',
+          errorText: _numpolizaseguroShowError ? _numpolizaseguroError : null,
+          suffixIcon: const Icon(Icons.numbers),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
         onChanged: (value) {
           _numpolizaseguro = value;
         },
@@ -980,9 +1051,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showModelo -------------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showModelo -------------------------------
+  //-----------------------------------------------------------------
 
   Widget _showModelo() {
     return Container(
@@ -991,14 +1062,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         controller: _modeloController,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: 'Modelo',
-            labelText: 'Modelo',
-            errorText: _modeloShowError ? _modeloError : null,
-            suffixIcon: const Icon(Icons.numbers),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          fillColor: Colors.white,
+          filled: true,
+          hintText: 'Modelo',
+          labelText: 'Modelo',
+          errorText: _modeloShowError ? _modeloError : null,
+          suffixIcon: const Icon(Icons.numbers),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
         onChanged: (value) {
           _modelo = value;
         },
@@ -1006,9 +1077,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showMarca --------------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showMarca --------------------------------
+  //-----------------------------------------------------------------
 
   Widget _showMarca() {
     return Container(
@@ -1017,14 +1088,14 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         controller: _marcaController,
         maxLines: 2,
         decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: 'Marca',
-            labelText: 'Marca',
-            errorText: _marcaShowError ? _marcaError : null,
-            suffixIcon: const Icon(Icons.notes),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          fillColor: Colors.white,
+          filled: true,
+          hintText: 'Marca',
+          labelText: 'Marca',
+          errorText: _marcaShowError ? _marcaError : null,
+          suffixIcon: const Icon(Icons.notes),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
         onChanged: (value) {
           _marca = value;
         },
@@ -1032,23 +1103,24 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------
-//--------------------- _takePicture ------------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _takePicture ------------------------------
+  //-----------------------------------------------------------------
 
   void _takePicture() async {
     WidgetsFlutterBinding.ensureInitialized();
     final cameras = await availableCameras();
     var firstCamera = cameras.first;
     var response1 = await showAlertDialog(
-        context: context,
-        title: 'Seleccionar cámara',
-        message: '¿Qué cámara desea utilizar?',
-        actions: <AlertDialogAction>[
-          const AlertDialogAction(key: 'no', label: 'Trasera'),
-          const AlertDialogAction(key: 'yes', label: 'Delantera'),
-          const AlertDialogAction(key: 'cancel', label: 'Cancelar'),
-        ]);
+      context: context,
+      title: 'Seleccionar cámara',
+      message: '¿Qué cámara desea utilizar?',
+      actions: <AlertDialogAction>[
+        const AlertDialogAction(key: 'no', label: 'Trasera'),
+        const AlertDialogAction(key: 'yes', label: 'Delantera'),
+        const AlertDialogAction(key: 'cancel', label: 'Cancelar'),
+      ],
+    );
     if (response1 == 'yes') {
       firstCamera = cameras.first;
     }
@@ -1058,11 +1130,11 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
 
     if (response1 != 'cancel') {
       Response? response = await Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => TakePictureScreen(
-                    camera: firstCamera,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => TakePictureScreen(camera: firstCamera),
+        ),
+      );
       if (response != null) {
         setState(() {
           if (cualFoto == 1) {
@@ -1091,9 +1163,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     }
   }
 
-//-----------------------------------------------------------------
-//--------------------- _selectPicture ----------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _selectPicture ----------------------------
+  //-----------------------------------------------------------------
 
   void _selectPicture() async {
     final ImagePicker _picker = ImagePicker();
@@ -1125,9 +1197,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     }
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showFechaCarnetConducir ------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showFechaCarnetConducir ------------------
+  //-----------------------------------------------------------------
 
   Widget _showFechaCarnetConducir() {
     return Container(
@@ -1135,18 +1207,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       child: Column(
         children: [
           Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Row(
-                  children: const [],
-                ),
-              ),
-            ],
+            children: [Expanded(flex: 2, child: Row(children: const []))],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Row(
             children: [
               Expanded(
@@ -1160,7 +1223,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                       child: const Text(
                         'Fecha Venc. Carnet:',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     Expanded(
@@ -1177,9 +1242,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
@@ -1193,9 +1256,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         onPressed: () => fechaVencCarnet(),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.calendar_month),
-                          ],
+                          children: const [Icon(Icons.calendar_month)],
                         ),
                       ),
                     ),
@@ -1219,9 +1280,15 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+      ),
       lastDate: DateTime(
-          DateTime.now().year + 5, DateTime.now().month, DateTime.now().day),
+        DateTime.now().year + 5,
+        DateTime.now().month,
+        DateTime.now().day,
+      ),
     );
     if (selected != null && selected != fechaVencCarnetConducir) {
       setState(() {
@@ -1230,9 +1297,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     }
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showFechaVencVTV -------------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showFechaVencVTV -------------------------
+  //-----------------------------------------------------------------
 
   Widget _showFechaVencVTV() {
     return Container(
@@ -1240,18 +1307,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       child: Column(
         children: [
           Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Row(
-                  children: const [],
-                ),
-              ),
-            ],
+            children: [Expanded(flex: 2, child: Row(children: const []))],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Row(
             children: [
               Expanded(
@@ -1265,7 +1323,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                       child: const Text(
                         'Fecha Venc. VTV:',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     Expanded(
@@ -1282,9 +1342,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
@@ -1298,9 +1356,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         onPressed: () => fechaVVTV(),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.calendar_month),
-                          ],
+                          children: const [Icon(Icons.calendar_month)],
                         ),
                       ),
                     ),
@@ -1324,9 +1380,15 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+      ),
       lastDate: DateTime(
-          DateTime.now().year + 5, DateTime.now().month, DateTime.now().day),
+        DateTime.now().year + 5,
+        DateTime.now().month,
+        DateTime.now().day,
+      ),
     );
     if (selected != null && selected != fechaVencVTV) {
       setState(() {
@@ -1335,9 +1397,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     }
   }
 
-//-----------------------------------------------------------------
-//--------------------- _showFechaVencObleaGNC --------------------
-//-----------------------------------------------------------------
+  //-----------------------------------------------------------------
+  //--------------------- _showFechaVencObleaGNC --------------------
+  //-----------------------------------------------------------------
 
   Widget _showFechaVencObleaGNC() {
     return Container(
@@ -1345,18 +1407,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       child: Column(
         children: [
           Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Row(
-                  children: const [],
-                ),
-              ),
-            ],
+            children: [Expanded(flex: 2, child: Row(children: const []))],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Row(
             children: [
               Expanded(
@@ -1372,7 +1425,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         child: const Text(
                           'Fecha Venc. Oblea:',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.black),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
@@ -1390,9 +1445,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
@@ -1406,9 +1459,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         onPressed: () => fechaVGNC(),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.calendar_month),
-                          ],
+                          children: const [Icon(Icons.calendar_month)],
                         ),
                       ),
                     ),
@@ -1432,9 +1483,15 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+      ),
       lastDate: DateTime(
-          DateTime.now().year + 5, DateTime.now().month, DateTime.now().day),
+        DateTime.now().year + 5,
+        DateTime.now().month,
+        DateTime.now().day,
+      ),
     );
     if (selected != null && selected != fechaVencObleaGNC) {
       setState(() {
@@ -1443,9 +1500,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     }
   }
 
-//----------------------------------------------------------
-//--------------------- _showFechaVencSeguro ---------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _showFechaVencSeguro ---------------
+  //----------------------------------------------------------
 
   Widget _showFechaVencSeguro() {
     return Container(
@@ -1453,18 +1510,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       child: Column(
         children: [
           Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Row(
-                  children: const [],
-                ),
-              ),
-            ],
+            children: [Expanded(flex: 2, child: Row(children: const []))],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Row(
             children: [
               Expanded(
@@ -1480,7 +1528,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         child: const Text(
                           'Fecha Venc. Seguro:',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.black),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
@@ -1498,9 +1548,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
@@ -1514,9 +1562,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                         onPressed: () => fechaSeguro(),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.calendar_month),
-                          ],
+                          children: const [Icon(Icons.calendar_month)],
                         ),
                       ),
                     ),
@@ -1540,9 +1586,15 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+      ),
       lastDate: DateTime(
-          DateTime.now().year + 5, DateTime.now().month, DateTime.now().day),
+        DateTime.now().year + 5,
+        DateTime.now().month,
+        DateTime.now().day,
+      ),
     );
     if (selected != null && selected != fechaVencPoliza) {
       setState(() {
@@ -1551,9 +1603,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     }
   }
 
-//----------------------------------------------------------
-//--------------------- _showButtonGuardar -----------------
-//----------------------------------------------------------
+  //----------------------------------------------------------
+  //--------------------- _showButtonGuardar -----------------
+  //----------------------------------------------------------
 
   Widget _showButtonGuardar() {
     return Container(
@@ -1575,9 +1627,7 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   Icon(Icons.save),
-                  SizedBox(
-                    width: 20,
-                  ),
+                  SizedBox(width: 20),
                   Text('Guardar'),
                 ],
               ),
@@ -1588,9 +1638,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     );
   }
 
-//-----------------------------------------------------------------------------
-//-------------------------------- _save --------------------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //-------------------------------- _save --------------------------------------
+  //-----------------------------------------------------------------------------
 
   _save() {
     if (!validateFields()) {
@@ -1600,9 +1650,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     _addRecord();
   }
 
-//-----------------------------------------------------------------------------
-//-------------------------------- validateFields -----------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //-------------------------------- validateFields -----------------------------
+  //-----------------------------------------------------------------------------
 
   bool validateFields() {
     bool isValid = true;
@@ -1610,82 +1660,85 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     if (!_photoChangedDNIFrente && !editMode) {
       isValid = false;
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('Debe cargar Frente del DNI'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('Debe cargar Frente del DNI'),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
     }
 
     if (!_photoChangedDNIDorso && !editMode) {
       isValid = false;
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('Debe cargar Dorso del DNI'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('Debe cargar Dorso del DNI'),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
     }
 
     if (!_photoChangedCarnetConducir && !editMode) {
       isValid = false;
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('Debe cargar Carnet de Conducir'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('Debe cargar Carnet de Conducir'),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
     }
 
     if (_numcha == "") {
@@ -1762,114 +1815,118 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     if (fechaVencCarnetConducir == null) {
       isValid = false;
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso!'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text(
-                        'Debe ingresar Fecha de Vencimiento del Carnet de Conducir.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso!'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text(
+                  'Debe ingresar Fecha de Vencimiento del Carnet de Conducir.',
+                ),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       setState(() {});
     }
 
     if (fechaVencVTV == null) {
       isValid = false;
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso!'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('Debe ingresar Fecha de Vencimiento del VTV.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso!'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('Debe ingresar Fecha de Vencimiento del VTV.'),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       setState(() {});
     }
 
     if (fechaVencObleaGNC == null && _gas) {
       isValid = false;
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso!'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text(
-                        'Debe ingresar Fecha de Vencimiento de la Oblea de GNC.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso!'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('Debe ingresar Fecha de Vencimiento de la Oblea de GNC.'),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       setState(() {});
     }
 
     if (fechaVencPoliza == null) {
       isValid = false;
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              title: const Text('Aviso!'),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    Text('Debe ingresar Fecha de Vencimiento del Seguro.'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ]),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Ok')),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text('Aviso!'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const <Widget>[
+                Text('Debe ingresar Fecha de Vencimiento del Seguro.'),
+                SizedBox(height: 10),
               ],
-            );
-          });
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
       setState(() {});
     }
 
@@ -1894,7 +1951,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -1918,8 +1978,8 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     }
 
     if (_photoChangedCarnetConducir) {
-      List<int> imageBytesCarnetConducir =
-          await _imageCarnetConducir.readAsBytes();
+      List<int> imageBytesCarnetConducir = await _imageCarnetConducir
+          .readAsBytes();
       base64imageCarnetConducir = base64Encode(imageBytesCarnetConducir);
     }
 
@@ -1959,15 +2019,17 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
       'Marca': _marca,
       'FechaVencVTV': fechaVencVTV.toString(),
       'Gas': _gas ? "SI" : "NO",
-      'FechaObleaGas':
-          fechaVencObleaGNC != null ? fechaVencObleaGNC.toString() : '',
+      'FechaObleaGas': fechaVencObleaGNC != null
+          ? fechaVencObleaGNC.toString()
+          : '',
       'UltimaActualizacion': ahora,
       'DNIFrenteImageArray': base64imageDNIFrente,
       'DNIDorsoImageArray': base64imageDNIDorso,
       'CarnetConducirImageArray': base64imageCarnetConducir,
       'NroPolizaSeguro': _numpolizaseguro,
-      'FechaVencPoliza':
-          fechaVencPoliza != null ? fechaVencPoliza.toString() : '',
+      'FechaVencPoliza': fechaVencPoliza != null
+          ? fechaVencPoliza.toString()
+          : '',
       'Compania': _compania,
       'LinkVtvImageArray': base64imageVTV,
       'LinkObleaGasImageArray': base64imageObleaGas,
@@ -1977,8 +2039,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     };
 
     if (editMode == false) {
-      Response response =
-          await ApiHelper.post('/api/SubContratistasUsrVehiculos', request);
+      Response response = await ApiHelper.post(
+        '/api/SubContratistasUsrVehiculos',
+        request,
+      );
 
       setState(() {
         _showLoader = false;
@@ -1992,9 +2056,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
 
     if (editMode == true) {
       Response response = await ApiHelper.put(
-          '/api/SubContratistasUsrVehiculos/',
-          _misDatos.id.toString(),
-          request);
+        '/api/SubContratistasUsrVehiculos/',
+        _misDatos.id.toString(),
+        request,
+      );
 
       setState(() {
         _showLoader = false;
@@ -2009,9 +2074,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     Navigator.pop(context, 'yes');
   }
 
-//----------------------------------------------------------------------------
-//--------------------------- _getMisDatos -----------------------------------
-//----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+  //--------------------------- _getMisDatos -----------------------------------
+  //----------------------------------------------------------------------------
 
   Future<void> _getMisDatos() async {
     setState(() {
@@ -2025,7 +2090,10 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -2052,9 +2120,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     }
   }
 
-//-----------------------------------------------------------------------------
-//-------------------- _loadFields --------------------------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //-------------------- _loadFields --------------------------------------------
+  //-----------------------------------------------------------------------------
 
   void _loadFields() async {
     _numcha = _misDatos.dominio;
@@ -2084,9 +2152,9 @@ class _MisDatosScreenState extends State<MisDatosScreen> {
     setState(() {});
   }
 
-//-----------------------------------------------------------------------
-//-------------------- _loadPdf -----------------------------------------
-//-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
+  //-------------------- _loadPdf -----------------------------------------
+  //-----------------------------------------------------------------------
 
   Future<void> _loadPdf(int opcion) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

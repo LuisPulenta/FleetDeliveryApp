@@ -1,4 +1,5 @@
 export 'package:fleetdeliveryapp/helpers/api_helper.dart';
+export 'package:fleetdeliveryapp/helpers/bar_code_reader.dart';
 export 'package:fleetdeliveryapp/helpers/constants.dart';
 export 'package:fleetdeliveryapp/helpers/dbenvios_helper.dart';
 export 'package:fleetdeliveryapp/helpers/dbmotivos_helper.dart';

@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:share_whatsapp_plus/share_whatsapp_plus.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:whatsapp_share/whatsapp_share.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 
 import '../../helpers/helpers.dart';
@@ -21,10 +21,10 @@ class EnvioComprobanteScreen extends StatefulWidget {
   final Asignacion2 asignacion;
 
   const EnvioComprobanteScreen({
-    Key? key,
+    super.key,
     required this.user,
     required this.asignacion,
-  }) : super(key: key);
+  });
 
   @override
   EnvioComprobanteScreenState createState() => EnvioComprobanteScreenState();
@@ -32,9 +32,9 @@ class EnvioComprobanteScreen extends StatefulWidget {
 
 class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     with SingleTickerProviderStateMixin {
-//--------------------------------------------------------------
-//------------------------- Variables --------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- Variables --------------------------
+  //--------------------------------------------------------------
 
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -49,16 +49,17 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
   List<FuncionesApp> _funcionesApp = [];
   FuncionesApp _funcionApp = FuncionesApp(
-      proyectomodulo: '',
-      habilitaFoto: 0,
-      habilitaDNI: 0,
-      habilitaEstadisticas: 0,
-      habilitaFirma: 0,
-      serieObligatoria: 0,
-      codigoFinal: 0,
-      habilitaOtroRecupero: 0,
-      habilitaCambioModelo: 0,
-      habilitaVerPdf: 0);
+    proyectomodulo: '',
+    habilitaFoto: 0,
+    habilitaDNI: 0,
+    habilitaEstadisticas: 0,
+    habilitaFirma: 0,
+    serieObligatoria: 0,
+    codigoFinal: 0,
+    habilitaOtroRecupero: 0,
+    habilitaCambioModelo: 0,
+    habilitaVerPdf: 0,
+  );
 
   final List<String> cuandos = [
     'esta semana',
@@ -92,64 +93,65 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
   final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
 
   Asignacion2 _asignacion = Asignacion2(
-      recupidjobcard: '',
-      cliente: '',
-      documento: '',
-      nombre: '',
-      domicilio: '',
-      cp: '',
-      entrecallE1: '',
-      entrecallE2: '',
-      partido: '',
-      localidad: '',
-      telefono: '',
-      grxx: '',
-      gryy: '',
-      estadogaos: '',
-      proyectomodulo: '',
-      userID: 0,
-      causantec: '',
-      subcon: '',
-      fechaAsignada: '',
-      fechacaptura: '',
-      codigoCierre: 0,
-      descripcion: '',
-      cierraenapp: 0,
-      nomostrarapp: 0,
-      novedades: '',
-      provincia: '',
-      reclamoTecnicoID: 0,
-      motivos: '',
-      fechaCita: '',
-      medioCita: '',
-      nroSeriesExtras: '',
-      evento1: '',
-      fechaEvento1: '',
-      evento2: '',
-      fechaEvento2: '',
-      evento3: '',
-      fechaEvento3: '',
-      evento4: '',
-      fechaEvento4: '',
-      observacion: '',
-      telefAlternativo1: '',
-      telefAlternativo2: '',
-      telefAlternativo3: '',
-      telefAlternativo4: '',
-      cantAsign: 0,
-      codigoequivalencia: '',
-      deco1descripcion: '',
-      elegir: 0,
-      observacionCaptura: '',
-      zona: '',
-      modificadoAPP: 0,
-      hsCumplidaTime: '',
-      marcado: 0,
-      emailCliente: '');
+    recupidjobcard: '',
+    cliente: '',
+    documento: '',
+    nombre: '',
+    domicilio: '',
+    cp: '',
+    entrecallE1: '',
+    entrecallE2: '',
+    partido: '',
+    localidad: '',
+    telefono: '',
+    grxx: '',
+    gryy: '',
+    estadogaos: '',
+    proyectomodulo: '',
+    userID: 0,
+    causantec: '',
+    subcon: '',
+    fechaAsignada: '',
+    fechacaptura: '',
+    codigoCierre: 0,
+    descripcion: '',
+    cierraenapp: 0,
+    nomostrarapp: 0,
+    novedades: '',
+    provincia: '',
+    reclamoTecnicoID: 0,
+    motivos: '',
+    fechaCita: '',
+    medioCita: '',
+    nroSeriesExtras: '',
+    evento1: '',
+    fechaEvento1: '',
+    evento2: '',
+    fechaEvento2: '',
+    evento3: '',
+    fechaEvento3: '',
+    evento4: '',
+    fechaEvento4: '',
+    observacion: '',
+    telefAlternativo1: '',
+    telefAlternativo2: '',
+    telefAlternativo3: '',
+    telefAlternativo4: '',
+    cantAsign: 0,
+    codigoequivalencia: '',
+    deco1descripcion: '',
+    elegir: 0,
+    observacionCaptura: '',
+    zona: '',
+    modificadoAPP: 0,
+    hsCumplidaTime: '',
+    marcado: 0,
+    emailCliente: '',
+  );
 
-//--------------------------------------------------------------
-//------------------------- initState --------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- initState --------------------------
+  //--------------------------------------------------------------
 
   @override
   void initState() {
@@ -158,9 +160,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     _getAsigns();
   }
 
-//--------------------------------------------------------------
-//------------------------- Pantalla ---------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- Pantalla ---------------------------
+  //--------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -173,14 +175,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Color(
-                    (0xffdadada),
-                  ),
-                  Color(
-                    (0xffb3b3b4),
-                  ),
-                ],
+                colors: [Color((0xffdadada)), Color((0xffb3b3b4))],
               ),
             ),
             child: Column(
@@ -194,9 +189,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                   child: Center(
                     child: Column(
                       children: <Widget>[
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         _showAsignacion(),
                         const Spacer(),
                         Padding(
@@ -212,8 +205,8 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             onPressed: () async {
                               String message = '';
 
-                              String empresa =
-                                  _asignacion.proyectomodulo.toString();
+                              String empresa = _asignacion.proyectomodulo
+                                  .toString();
                               if (empresa == 'Otro' || empresa == 'TLC') {
                                 empresa = 'Telecentro';
                               }
@@ -239,33 +232,22 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               }
 
                               for (Asign asign in _asigns) {
-                                String mm = (asign.proyectomodulo.toString() ==
-                                            'DTV' ||
+                                String mm =
+                                    (asign.proyectomodulo.toString() == 'DTV' ||
                                         asign.proyectomodulo.toString() ==
                                             'Cable' ||
                                         asign.proyectomodulo.toString() ==
                                             'TLC')
                                     ? asign.decO1
-                                        .toString() //campo deco1 de la base.
+                                          .toString() //campo deco1 de la base.
                                     : asign.estadO3
-                                        .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
+                                          .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
                                 _mensajeRecibo =
                                     '${_mensajeRecibo}Equipo: $mm\n';
                               }
 
-                              message = 'Recibimos del cliente ' +
-                                  _asignacion.nombre.toString() +
-                                  ' - ' +
-                                  _asignacion.domicilio.toString() +
-                                  ' los equipos detallados a continuación: ' +
-                                  '\n' +
-                                  _mensajeRecibo +
-                                  '\n' +
-                                  'Atentamente' +
-                                  '\n' +
-                                  widget.user.apellidonombre.toString() +
-                                  ' - Empresa Fleet al servicio de ' +
-                                  empresa;
+                              message =
+                                  'Recibimos del cliente ${_asignacion.nombre} - ${_asignacion.domicilio} los equipos detallados a continuación: \n$_mensajeRecibo\nAtentamente\n${widget.user.apellidonombre} - Empresa Fleet al servicio de $empresa';
 
                               //_sendMessage2(message);
 
@@ -276,193 +258,190 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               phoneController.text = '';
 
                               await showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return StatefulBuilder(
-                                      builder: (context, setState) {
-                                        return AlertDialog(
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: const [
-                                              Text(
-                                                'Atención!!',
-                                                style: TextStyle(
-                                                    color: Colors.green,
-                                                    fontSize: 20),
-                                              ),
-                                            ],
-                                          ),
-                                          content: SingleChildScrollView(
-                                            child: SizedBox(
-                                              height: 250,
-                                              child: Column(
-                                                children: [
-                                                  const Text(
-                                                    'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                  ),
-                                                  const Text(''),
-                                                  DropdownButtonFormField(
-                                                    value: _telefono,
-                                                    decoration: InputDecoration(
-                                                      fillColor: Colors.white,
-                                                      filled: true,
-                                                      hintText:
-                                                          'Elija un Teléfono...',
-                                                      labelText: 'Teléfono',
-                                                      errorText:
-                                                          _telefonoShowError
-                                                              ? _telefonoError
-                                                              : null,
-                                                      border:
-                                                          OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                    ),
-                                                    items: _getComboTelefonos(),
-                                                    onChanged: (value) {
-                                                      _telefono =
-                                                          value.toString();
-                                                      number2 =
-                                                          value.toString();
-                                                      phoneController.text =
-                                                          number2;
-                                                      setState(() {});
-                                                    },
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  TextField(
-                                                    controller: phoneController,
-                                                    //enabled: false,
-                                                    decoration: InputDecoration(
-                                                      fillColor: Colors.white,
-                                                      filled: true,
-                                                      hintText:
-                                                          'Teléfono seleccionado...',
-                                                      labelText:
-                                                          'Teléfono seleccionado',
-                                                      //errorText:_passwordShowError ? _passwordError : null,
-                                                      prefixIcon: const Icon(
-                                                          Icons.phone),
-                                                      border:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
-                                                    ),
-                                                    onChanged: (value) {
-                                                      number2 = value;
-                                                      //_phoneController.text = _number2;
-                                                    },
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: ElevatedButton(
-                                                        child:
-                                                            const Text('+549'),
-                                                        onPressed: () async {
-                                                          if (number2.length >
-                                                              1) {
-                                                            number2 =
-                                                                '549$number2';
-                                                            phoneController
-                                                                    .text =
-                                                                '549${phoneController.text}';
-                                                            setState(() {});
-                                                          }
-                                                        }),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          actions: <Widget>[
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.green,
-                                                minimumSize: const Size(
-                                                    double.infinity, 50),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                              ),
-                                              onPressed: number2 != ''
-                                                  ? () async {
-                                                      final link =
-                                                          WhatsAppUnilink(
-                                                        phoneNumber: number2,
-                                                        text: message,
-                                                      );
-                                                      await launch('$link');
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    }
-                                                  : null,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(Icons.insert_comment),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text('Continuar'),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.red,
-                                                minimumSize: const Size(
-                                                    double.infinity, 50),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                return;
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(Icons.cancel),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text('Cancelar'),
-                                                ],
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return StatefulBuilder(
+                                    builder: (context, setState) {
+                                      return AlertDialog(
+                                        title: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: const [
+                                            Text(
+                                              'Atención!!',
+                                              style: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 20,
                                               ),
                                             ),
                                           ],
-                                          shape: Border.all(
-                                              color: Colors.green,
-                                              width: 5,
-                                              style: BorderStyle.solid),
-                                          backgroundColor: Colors.white,
-                                        );
-                                      },
-                                    );
-                                  });
+                                        ),
+                                        content: SingleChildScrollView(
+                                          child: SizedBox(
+                                            height: 250,
+                                            child: Column(
+                                              children: [
+                                                const Text(
+                                                  'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                const Text(''),
+                                                DropdownButtonFormField(
+                                                  initialValue: _telefono,
+                                                  decoration: InputDecoration(
+                                                    fillColor: Colors.white,
+                                                    filled: true,
+                                                    hintText:
+                                                        'Elija un Teléfono...',
+                                                    labelText: 'Teléfono',
+                                                    errorText:
+                                                        _telefonoShowError
+                                                        ? _telefonoError
+                                                        : null,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            10,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  items: _getComboTelefonos(),
+                                                  onChanged: (value) {
+                                                    _telefono = value
+                                                        .toString();
+                                                    number2 = value.toString();
+                                                    phoneController.text =
+                                                        number2;
+                                                    setState(() {});
+                                                  },
+                                                ),
+                                                const SizedBox(height: 10),
+                                                TextField(
+                                                  controller: phoneController,
+                                                  //enabled: false,
+                                                  decoration: InputDecoration(
+                                                    fillColor: Colors.white,
+                                                    filled: true,
+                                                    hintText:
+                                                        'Teléfono seleccionado...',
+                                                    labelText:
+                                                        'Teléfono seleccionado',
+                                                    //errorText:_passwordShowError ? _passwordError : null,
+                                                    prefixIcon: const Icon(
+                                                      Icons.phone,
+                                                    ),
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            10,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    number2 = value;
+                                                    //_phoneController.text = _number2;
+                                                  },
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: ElevatedButton(
+                                                    onPressed: () async {
+                                                      if (number2.length > 1) {
+                                                        number2 = '549$number2';
+                                                        phoneController.text =
+                                                            '549${phoneController.text}';
+                                                        setState(() {});
+                                                      }
+                                                    },
+                                                    style: ElevatedButton.styleFrom(
+                                                      backgroundColor: Colors
+                                                          .blue, // Cambia el color de fondo aquí
+                                                    ),
+                                                    child: const Text('+549'),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.green,
+                                              minimumSize: const Size(
+                                                double.infinity,
+                                                50,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                            ),
+                                            onPressed: number2 != ''
+                                                ? () async {
+                                                    final link =
+                                                        WhatsAppUnilink(
+                                                          phoneNumber: number2,
+                                                          text: message,
+                                                        );
+                                                    await launch('$link');
+                                                    Navigator.of(context).pop();
+                                                    Navigator.of(context).pop();
+                                                  }
+                                                : null,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(Icons.insert_comment),
+                                                SizedBox(width: 15),
+                                                Text('Continuar'),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.red,
+                                              minimumSize: const Size(
+                                                double.infinity,
+                                                50,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              return;
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(Icons.cancel),
+                                                SizedBox(width: 15),
+                                                Text('Cancelar'),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                        shape: Border.all(
+                                          color: Colors.green,
+                                          width: 5,
+                                          style: BorderStyle.solid,
+                                        ),
+                                        backgroundColor: Colors.white,
+                                      );
+                                    },
+                                  );
+                                },
+                              );
 
                               //------------------------------------------------
                             },
@@ -470,17 +449,13 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
                                 Icon(Icons.chat),
-                                SizedBox(
-                                  width: 15,
-                                ),
+                                SizedBox(width: 15),
                                 Text('Enviar Comprobante como Texto'),
                               ],
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 15,
-                        ),
+                        const SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: ElevatedButton(
@@ -498,8 +473,8 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
                               String message = '';
 
-                              String empresa =
-                                  _asignacion.proyectomodulo.toString();
+                              String empresa = _asignacion.proyectomodulo
+                                  .toString();
                               if (empresa == 'Otro' || empresa == 'TLC') {
                                 empresa = 'Telecentro';
                               }
@@ -524,8 +499,8 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               }
 
                               for (Asign asign in _asigns) {
-                                String mm = (asign.proyectomodulo.toString() ==
-                                            'DTV' ||
+                                String mm =
+                                    (asign.proyectomodulo.toString() == 'DTV' ||
                                         asign.proyectomodulo.toString() ==
                                             'Cable' ||
                                         asign.proyectomodulo.toString() ==
@@ -535,322 +510,318 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                         asign.proyectomodulo.toString() ==
                                             'TLC')
                                     ? asign.decO1
-                                        .toString() //campo deco1 de la base.
+                                          .toString() //campo deco1 de la base.
                                     : asign.estadO3
-                                        .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
+                                          .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
                                 _mensajeRecibo =
                                     '${_mensajeRecibo}Equipo: $mm\n';
                               }
 
-                              message = 'Recibimos del cliente ' +
-                                  _asignacion.nombre.toString() +
-                                  ' - ' +
-                                  _asignacion.domicilio.toString() +
-                                  ' los equipos detallados a continuación: ' +
-                                  '\n' +
-                                  _mensajeRecibo +
-                                  '\n' +
-                                  'Atentamente' +
-                                  '\n' +
-                                  widget.user.apellidonombre.toString() +
-                                  ' - Empresa Fleet al servicio de ' +
-                                  empresa;
+                              message =
+                                  'Recibimos del cliente ${_asignacion.nombre} - ${_asignacion.domicilio} los equipos detallados a continuación: \n$_mensajeRecibo\nAtentamente\n${widget.user.apellidonombre} - Empresa Fleet al servicio de $empresa';
                               TextEditingController phoneController =
                                   TextEditingController();
                               phoneController.text = '';
                               _existeChat = false;
 
                               await showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return StatefulBuilder(
-                                      builder: (context, setState) {
-                                        return AlertDialog(
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: const [
-                                              Text(
-                                                'Atención!!',
-                                                style: TextStyle(
-                                                    color: Colors.green,
-                                                    fontSize: 20),
-                                              ),
-                                            ],
-                                          ),
-                                          content: SingleChildScrollView(
-                                            child: SizedBox(
-                                              height: 250,
-                                              child: Column(
-                                                children: [
-                                                  const Text(
-                                                    'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                  ),
-                                                  const Text(''),
-                                                  DropdownButtonFormField(
-                                                    value: _telefono,
-                                                    decoration: InputDecoration(
-                                                      fillColor: Colors.white,
-                                                      filled: true,
-                                                      hintText:
-                                                          'Elija un Teléfono...',
-                                                      labelText: 'Teléfono',
-                                                      errorText:
-                                                          _telefonoShowError
-                                                              ? _telefonoError
-                                                              : null,
-                                                      border:
-                                                          OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                    ),
-                                                    items: _getComboTelefonos(),
-                                                    onChanged: (value) {
-                                                      _telefono =
-                                                          value.toString();
-                                                      number2 =
-                                                          value.toString();
-                                                      phoneController.text =
-                                                          number2;
-                                                      setState(() {});
-                                                    },
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  TextField(
-                                                    controller: phoneController,
-                                                    decoration: InputDecoration(
-                                                        fillColor: Colors.white,
-                                                        filled: true,
-                                                        hintText:
-                                                            'Teléfono seleccionado...',
-                                                        labelText:
-                                                            'Teléfono seleccionado',
-                                                        //errorText:_passwordShowError ? _passwordError : null,
-                                                        prefixIcon: const Icon(
-                                                            Icons.phone),
-                                                        border: OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10))),
-                                                    onChanged: (value) {
-                                                      number2 = value;
-                                                    },
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: ElevatedButton(
-                                                        child:
-                                                            const Text('+549'),
-                                                        onPressed: () async {
-                                                          if (number2.length >
-                                                              1) {
-                                                            number2 =
-                                                                '549$number2';
-                                                            phoneController
-                                                                    .text =
-                                                                '549${phoneController.text}';
-                                                            setState(() {});
-                                                          }
-                                                        }),
-                                                  ),
-                                                ],
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return StatefulBuilder(
+                                    builder: (context, setState) {
+                                      return AlertDialog(
+                                        title: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: const [
+                                            Text(
+                                              'Atención!!',
+                                              style: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 20,
                                               ),
                                             ),
+                                          ],
+                                        ),
+                                        content: SingleChildScrollView(
+                                          child: SizedBox(
+                                            height: 250,
+                                            child: Column(
+                                              children: [
+                                                const Text(
+                                                  'Verifique si el N° de teléfono tiene el formato correcto para WhatsApp',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                const Text(''),
+                                                DropdownButtonFormField(
+                                                  initialValue: _telefono,
+                                                  decoration: InputDecoration(
+                                                    fillColor: Colors.white,
+                                                    filled: true,
+                                                    hintText:
+                                                        'Elija un Teléfono...',
+                                                    labelText: 'Teléfono',
+                                                    errorText:
+                                                        _telefonoShowError
+                                                        ? _telefonoError
+                                                        : null,
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            10,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  items: _getComboTelefonos(),
+                                                  onChanged: (value) {
+                                                    _telefono = value
+                                                        .toString();
+                                                    number2 = value.toString();
+                                                    phoneController.text =
+                                                        number2;
+                                                    setState(() {});
+                                                  },
+                                                ),
+                                                const SizedBox(height: 10),
+                                                TextField(
+                                                  controller: phoneController,
+                                                  decoration: InputDecoration(
+                                                    fillColor: Colors.white,
+                                                    filled: true,
+                                                    hintText:
+                                                        'Teléfono seleccionado...',
+                                                    labelText:
+                                                        'Teléfono seleccionado',
+                                                    //errorText:_passwordShowError ? _passwordError : null,
+                                                    prefixIcon: const Icon(
+                                                      Icons.phone,
+                                                    ),
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            10,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    number2 = value;
+                                                  },
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: ElevatedButton(
+                                                    onPressed: () async {
+                                                      if (number2.length > 1) {
+                                                        number2 = '549$number2';
+                                                        phoneController.text =
+                                                            '549${phoneController.text}';
+                                                        setState(() {});
+                                                      }
+                                                    },
+                                                    style: ElevatedButton.styleFrom(
+                                                      backgroundColor: Colors
+                                                          .blue, // Cambia el color de fondo aquí
+                                                    ),
+                                                    child: const Text('+549'),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                          actions: <Widget>[
-                                            _funcionApp.habilitaVerPdf == 1
-                                                ? Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 0.0),
-                                                    child: ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        minimumSize: const Size(
-                                                            double.infinity,
-                                                            50),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
+                                        ),
+                                        actions: <Widget>[
+                                          _funcionApp.habilitaVerPdf == 1
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 0.0,
                                                       ),
-                                                      onPressed: number2 != ''
-                                                          ? _existeChat == false
+                                                  child: ElevatedButton(
+                                                    style: ElevatedButton.styleFrom(
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      minimumSize: const Size(
+                                                        double.infinity,
+                                                        50,
+                                                      ),
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              5,
+                                                            ),
+                                                      ),
+                                                    ),
+                                                    onPressed: number2 != ''
+                                                        ? _existeChat == false
                                                               ? () async {
                                                                   number2.substring(
-                                                                              0,
-                                                                              3) !=
+                                                                            0,
+                                                                            3,
+                                                                          ) !=
                                                                           '549'
                                                                       ? number2 =
-                                                                          '549$number2'
+                                                                            '549$number2'
                                                                       : number2 =
-                                                                          number2;
+                                                                            number2;
 
                                                                   verPDF = true;
                                                                   //Navigator.pop(context);
                                                                   _createPDF(
-                                                                      number2,
-                                                                      message);
+                                                                    number2,
+                                                                    message,
+                                                                  );
 
                                                                   setState(
-                                                                      () {});
+                                                                    () {},
+                                                                  );
                                                                   return;
                                                                 }
                                                               : null
-                                                          : null,
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: const [
-                                                          Icon(Icons
-                                                              .picture_as_pdf),
-                                                          SizedBox(
-                                                            width: 15,
-                                                          ),
-                                                          Text('Ver PDF'),
-                                                        ],
-                                                      ),
+                                                        : null,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: const [
+                                                        Icon(
+                                                          Icons.picture_as_pdf,
+                                                        ),
+                                                        SizedBox(width: 15),
+                                                        Text('Ver PDF'),
+                                                      ],
                                                     ),
-                                                  )
-                                                : Container(),
-                                            _funcionApp.habilitaVerPdf == 1
-                                                ? const SizedBox(
-                                                    height: 15,
-                                                  )
-                                                : Container(),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.green,
-                                                minimumSize: const Size(
-                                                    double.infinity, 50),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
+                                                  ),
+                                                )
+                                              : Container(),
+                                          _funcionApp.habilitaVerPdf == 1
+                                              ? const SizedBox(height: 15)
+                                              : Container(),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.green,
+                                              minimumSize: const Size(
+                                                double.infinity,
+                                                50,
                                               ),
-                                              onPressed: number2 != ''
-                                                  ? _existeChat == false
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                            ),
+                                            onPressed: number2 != ''
+                                                ? _existeChat == false
                                                       ? () async {
                                                           number2.substring(
-                                                                      0, 3) !=
+                                                                    0,
+                                                                    3,
+                                                                  ) !=
                                                                   '549'
                                                               ? number2 =
-                                                                  '549$number2'
+                                                                    '549$number2'
                                                               : number2 =
-                                                                  number2;
+                                                                    number2;
 
                                                           await _creaChat(
-                                                              number2
-                                                                  .replaceAll(
-                                                                      ' ', ''));
+                                                            number2.replaceAll(
+                                                              ' ',
+                                                              '',
+                                                            ),
+                                                          );
                                                           setState(() {});
                                                           return;
                                                         }
                                                       : null
-                                                  : null,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(Icons.insert_comment),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text('Crear Chat'),
-                                                ],
+                                                : null,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(Icons.insert_comment),
+                                                SizedBox(width: 15),
+                                                Text('Crear Chat'),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.blue,
+                                              minimumSize: const Size(
+                                                double.infinity,
+                                                50,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
                                               ),
                                             ),
-                                            const SizedBox(
-                                              height: 10,
+                                            onPressed: _existeChat
+                                                ? () async {
+                                                    verPDF = false;
+                                                    await _createPDF(
+                                                      number2.replaceAll(
+                                                        ' ',
+                                                        '',
+                                                      ),
+                                                      message,
+                                                    );
+                                                    Navigator.pop(context);
+                                                    return;
+                                                  }
+                                                : null,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(Icons.picture_as_pdf),
+                                                SizedBox(width: 15),
+                                                Text('Enviar PDF'),
+                                              ],
                                             ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.blue,
-                                                minimumSize: const Size(
-                                                    double.infinity, 50),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.red,
+                                              minimumSize: const Size(
+                                                double.infinity,
+                                                50,
                                               ),
-                                              onPressed: _existeChat
-                                                  ? () async {
-                                                      verPDF = false;
-                                                      await _createPDF(
-                                                          number2.replaceAll(
-                                                              ' ', ''),
-                                                          message);
-                                                      Navigator.pop(context);
-                                                      return;
-                                                    }
-                                                  : null,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(Icons.picture_as_pdf),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text('Enviar PDF'),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.red,
-                                                minimumSize: const Size(
-                                                    double.infinity, 50),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                return;
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(Icons.cancel),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text('Cancelar'),
-                                                ],
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
                                               ),
                                             ),
-                                          ],
-                                          shape: Border.all(
-                                              color: Colors.green,
-                                              width: 5,
-                                              style: BorderStyle.solid),
-                                          backgroundColor: Colors.white,
-                                        );
-                                      },
-                                    );
-                                  });
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              return;
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(Icons.cancel),
+                                                SizedBox(width: 15),
+                                                Text('Cancelar'),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                        shape: Border.all(
+                                          color: Colors.green,
+                                          width: 5,
+                                          style: BorderStyle.solid,
+                                        ),
+                                        backgroundColor: Colors.white,
+                                      );
+                                    },
+                                  );
+                                },
+                              );
 
                               Navigator.of(context).pop();
                             },
@@ -858,21 +829,17 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
                                 Icon(Icons.picture_as_pdf),
-                                SizedBox(
-                                  width: 15,
-                                ),
+                                SizedBox(width: 15),
                                 Text('Enviar Comprobante PDF'),
                               ],
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -881,9 +848,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     );
   }
 
-//--------------------------------------------------------------
-//------------------------- _creaChat --------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _creaChat --------------------------
+  //--------------------------------------------------------------
 
   Future<void> _creaChat(String number) async {
     _existeChat = true;
@@ -895,9 +862,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     await launch('$link');
   }
 
-//--------------------------------------------------------------
-//------------------------- _createPDF -------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _createPDF -------------------------
+  //--------------------------------------------------------------
 
   Future<void> _createPDF(String number, String message) async {
     //Create a new PDF document
@@ -912,12 +879,14 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     PdfGrid grid6 = PdfGrid();
 
     PdfGridStyle style10 = PdfGridStyle(
-        font: PdfStandardFont(PdfFontFamily.helvetica, 10),
-        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+      font: PdfStandardFont(PdfFontFamily.helvetica, 10),
+      cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2),
+    );
 
     PdfGridStyle style12 = PdfGridStyle(
-        font: PdfStandardFont(PdfFontFamily.helvetica, 12),
-        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+      font: PdfStandardFont(PdfFontFamily.helvetica, 12),
+      cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2),
+    );
 
     grid.style = style10;
     grid2.style = style10;
@@ -999,23 +968,25 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     //header2.height = 35;
 
     header.cells[1].style = PdfGridCellStyle(
-        font: PdfStandardFont(PdfFontFamily.helvetica, 12),
-        cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2));
+      font: PdfStandardFont(PdfFontFamily.helvetica, 12),
+      cellPadding: PdfPaddings(left: 5, right: 2, top: 2, bottom: 2),
+    );
 
     header.cells[0].value = '';
     header.cells[1].value = 'Formulario de Recepción de Equipos';
 
     String? ot = widget.asignacion.proyectomodulo != 'TLC'
         ? (widget.asignacion.reclamoTecnicoID != null &&
-                widget.asignacion.reclamoTecnicoID != '')
-            ? widget.asignacion.reclamoTecnicoID.toString()
-            : ''
+                  widget.asignacion.reclamoTecnicoID != '')
+              ? widget.asignacion.reclamoTecnicoID.toString()
+              : ''
         : (widget.asignacion.documento != null &&
-                widget.asignacion.documento != '')
-            ? widget.asignacion.documento
-            : '';
+              widget.asignacion.documento != '')
+        ? widget.asignacion.documento
+        : '';
 
-    header.cells[2].value = '''
+    header.cells[2].value =
+        '''
     N° de Cuenta: 
     ${widget.asignacion.cliente}
     OT: $ot
@@ -1044,7 +1015,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
     grid.draw(page: document.pages[0], bounds: const Rect.fromLTWH(0, 0, 0, 0));
     grid2.draw(
-        page: document.pages[0], bounds: const Rect.fromLTWH(0, 85, 0, 0));
+      page: document.pages[0],
+      bounds: const Rect.fromLTWH(0, 85, 0, 0),
+    );
 
     header3.cells[0].value = 'Datos del Equipo';
 
@@ -1057,14 +1030,17 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     int contador = 0;
     for (Asign asign in _asigns) {
       if (asign.estadogaos == 'EJB') {
-        String modelo =
-            asign.marcaModeloId != null ? asign.marcaModeloId.toString() : '';
-        String serie = (asign.proyectomodulo.toString() == 'DTV' ||
+        String modelo = asign.marcaModeloId != null
+            ? asign.marcaModeloId.toString()
+            : '';
+        String serie =
+            (asign.proyectomodulo.toString() == 'DTV' ||
                 asign.proyectomodulo.toString() == 'Cable' ||
                 asign.proyectomodulo.toString() == 'TLC')
-            ? asign.decO1.toString() //campo deco1 de la base.
+            ? asign.decO1
+                  .toString() //campo deco1 de la base.
             : asign.estadO3
-                .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
+                  .toString(); //campo estado03 de base, proviene del app porque escanea un codigo
 
         PdfGridRow row = grid4.rows.add();
         row.cells[0].value = modelo;
@@ -1077,8 +1053,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     //*********** AGREGA EQUIPOS EXTRAS************
 
     for (AsignacionesOtsEquiposExtra equipoExtra in _equiposExtra) {
-      String modelo =
-          equipoExtra.coddeco1 != null ? equipoExtra.coddeco1.toString() : '';
+      String modelo = equipoExtra.coddeco1 != null
+          ? equipoExtra.coddeco1.toString()
+          : '';
       String serie = equipoExtra.nroserieextra != null
           ? '${equipoExtra.nroserieextra.toString()} (Equipo extra)'
           : '';
@@ -1101,49 +1078,64 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     header6.cells[3].value = widget.user.apellidonombre;
 
     grid3.draw(
-        page: document.pages[0], bounds: const Rect.fromLTWH(0, 143, 0, 0));
+      page: document.pages[0],
+      bounds: const Rect.fromLTWH(0, 143, 0, 0),
+    );
 
     grid4.draw(
-        page: document.pages[0], bounds: const Rect.fromLTWH(0, 162, 0, 0));
+      page: document.pages[0],
+      bounds: const Rect.fromLTWH(0, 162, 0, 0),
+    );
 
     grid5.draw(
-        page: document.pages[0],
-        bounds: Rect.fromLTWH(0, 181 + contador * 19, 0, 0));
+      page: document.pages[0],
+      bounds: Rect.fromLTWH(0, 181 + contador * 19, 0, 0),
+    );
 
     grid6.draw(
-        page: document.pages[0],
-        bounds: Rect.fromLTWH(0, 220 + (contador) * 19, 0, 0));
-
-    page.graphics.drawImage(PdfBitmap(await _readImageData('logo2.png')),
-        const Rect.fromLTWH(15, 10, 120, 35));
+      page: document.pages[0],
+      bounds: Rect.fromLTWH(0, 220 + (contador) * 19, 0, 0),
+    );
 
     page.graphics.drawImage(
-        PdfBitmap(await _readImageData(
-            '${widget.asignacion.proyectomodulo.toString().toLowerCase()}.png')),
-        const Rect.fromLTWH(380, 10, 120, 35));
+      PdfBitmap(await _readImageData('logo2.png')),
+      const Rect.fromLTWH(15, 10, 120, 35),
+    );
+
+    page.graphics.drawImage(
+      PdfBitmap(
+        await _readImageData(
+          '${widget.asignacion.proyectomodulo.toString().toLowerCase()}.png',
+        ),
+      ),
+      const Rect.fromLTWH(380, 10, 120, 35),
+    );
 
     //Graba a PDF
-    List<int> bytes = document.save();
+    List<int> bytes = await document.save();
     document.dispose();
 
     await _saveAndLaunchFile(bytes, 'Comprobante.pdf', number);
   }
 
-//--------------------------------------------------------------
-//------------------------- _readImageData ---------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _readImageData ---------------------
+  //--------------------------------------------------------------
 
   Future<Uint8List> _readImageData(String name) async {
     final data = await rootBundle.load('images/$name');
     return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
   }
 
-//--------------------------------------------------------------
-//------------------------- _saveAndLaunchFile -----------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _saveAndLaunchFile -----------------
+  //--------------------------------------------------------------
 
   Future<void> _saveAndLaunchFile(
-      List<int> bytes, String fileName, String number) async {
+    List<int> bytes,
+    String fileName,
+    String number,
+  ) async {
     await initRecorder();
 
     final path = (await getExternalStorageDirectory())!.path;
@@ -1156,40 +1148,42 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
 
     Uint8List bytes2 = Uint8List.fromList(bytes);
 
-    //OpenFile.open(ruta);
-
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (context) => PdfScreen(
-    //               ruta: ruta,
-    //             )));
-
     if (file.path.isNotEmpty && verPDF == false) {
-      await WhatsappShare.shareFile(
-          phone: number,
-          text: 'Se adjunta Comprobante',
-          filePath: [file.path],
-          package: Package.whatsapp);
+      XFile xFile = XFile(file.path);
+
+      await shareWhatsappPlus.share(
+        text: 'Se adjunta Comprobante',
+        phone: number,
+        file: xFile,
+      );
+
+      // await WhatsappShare.shareFile(
+      //   phone: number,
+      //   text: 'Se adjunta Comprobante',
+      //   filePath: [file.path],
+      //   package: Package.whatsapp,
+      // );
     } else if (file.path.isNotEmpty && verPDF == true) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => PdfScreen(
-                    phone: number,
-                    ruta: ruta,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => PdfScreen(phone: number, ruta: ruta),
+        ),
+      );
     } else {
-      showMyDialog('Error', 'Ha ocurrido un error al generar el documento PDF',
-          'Aceptar');
+      showMyDialog(
+        'Error',
+        'Ha ocurrido un error al generar el documento PDF',
+        'Aceptar',
+      );
 
       return;
     }
   }
 
-//--------------------------------------------------------------
-//------------------------- initRecorder -----------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- initRecorder -----------------------
+  //--------------------------------------------------------------
 
   Future initRecorder() async {
     bool permission = await requestPermission();
@@ -1217,9 +1211,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     }
   }
 
-//--------------------------------------------------------------
-//------------------------- requestPermission ------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- requestPermission ------------------
+  //--------------------------------------------------------------
 
   Future<bool> requestPermission() async {
     bool storagePermission = await Permission.storage.isGranted;
@@ -1231,13 +1225,15 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     }
 
     if (!mediaPermission) {
-      mediaPermission =
-          await Permission.accessMediaLocation.request().isGranted;
+      mediaPermission = await Permission.accessMediaLocation
+          .request()
+          .isGranted;
     }
 
     if (!manageExternal) {
-      manageExternal =
-          await Permission.manageExternalStorage.request().isGranted;
+      manageExternal = await Permission.manageExternalStorage
+          .request()
+          .isGranted;
     }
 
     bool isPermissionGranted =
@@ -1250,9 +1246,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     }
   }
 
-//--------------------------------------------------------------
-//------------------------- _getAsigns -------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _getAsigns -------------------------
+  //--------------------------------------------------------------
 
   Future<void> _getAsigns() async {
     setState(() {});
@@ -1262,7 +1258,10 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
       showMyDialog(
-          'Error', 'Verifica que estés conectado a Internet', 'Aceptar');
+        'Error',
+        'Verifica que estés conectado a Internet',
+        'Aceptar',
+      );
       return;
     }
     bandera = false;
@@ -1270,7 +1269,7 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     Map<String, dynamic> request1 = {
       'reclamoTecnicoID': _asignacion.reclamoTecnicoID,
       'userID': _asignacion.userID,
-      'cliente': _asignacion.cliente
+      'cliente': _asignacion.cliente,
     };
 
     Response response = Response(isSuccess: false);
@@ -1296,9 +1295,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     _getEquiposExtras();
   }
 
-//--------------------------------------------------------------
-//------------------------- _getEquiposExtras ------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _getEquiposExtras ------------------
+  //--------------------------------------------------------------
 
   Future<void> _getEquiposExtras() async {
     setState(() {});
@@ -1308,7 +1307,10 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     if (connectivityResult == ConnectivityResult.none) {
       setState(() {});
       showMyDialog(
-          'Error', 'Verifica que estés conectado a Internet', 'Aceptar');
+        'Error',
+        'Verifica que estés conectado a Internet',
+        'Aceptar',
+      );
       return;
     }
     bandera = false;
@@ -1316,9 +1318,10 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     Response response = Response(isSuccess: false);
     do {
       response = await ApiHelper.getEquiposExtra(
-          widget.asignacion.cliente.toString(),
-          widget.user.idUser,
-          widget.asignacion.proyectomodulo.toString());
+        widget.asignacion.cliente.toString(),
+        widget.user.idUser,
+        widget.asignacion.proyectomodulo.toString(),
+      );
       if (response.isSuccess) {
         bandera = true;
         _equiposExtra = response.result;
@@ -1335,9 +1338,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     _getFuncionApp();
   }
 
-//--------------------------------------------------------------
-//------------------------- _showAsignacion --------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _showAsignacion --------------------
+  //--------------------------------------------------------------
 
   Widget _showAsignacion() {
     return Card(
@@ -1363,143 +1366,152 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text('Proyecto: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ),
-                              Expanded(
-                                child: Text('${_asignacion.proyectomodulo}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.red,
-                                    )),
-                              ),
-                              const SizedBox(
-                                width: 80,
-                                child: Text('Hora Cump.: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ),
-                              Text(
-                                  DateFormat('HH:mm').format(DateTime.parse(
-                                      _asignacion.hsCumplidaTime.toString())),
-                                  style: const TextStyle(fontSize: 12)),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 1,
-                          ),
-                          Row(
-                            children: [
-                              const SizedBox(
-                                width: 80,
-                                child: Text('Cliente: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Proyecto: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 child: Text(
-                                    '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                  '${_asignacion.proyectomodulo}',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 80,
+                                child: Text(
+                                  'Hora Cump.: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                DateFormat('HH:mm').format(
+                                  DateTime.parse(
+                                    _asignacion.hsCumplidaTime.toString(),
+                                  ),
+                                ),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text('DNI: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Cliente: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  '${_asignacion.cliente.toString()} - ${_asignacion.nombre.toString()}',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 1),
+                          Row(
+                            children: [
+                              const SizedBox(
+                                width: 80,
+                                child: Text(
+                                  'DNI: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 flex: 1,
-                                child: Text(_asignacion.documento.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: Text(
+                                  _asignacion.documento.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                               _asignacion.proyectomodulo == 'Cable'
                                   ? const SizedBox(
                                       width: 30,
-                                      child: Text('OT: ',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF0e4888),
-                                            fontWeight: FontWeight.bold,
-                                          )),
+                                      child: Text(
+                                        'OT: ',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF0e4888),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     )
                                   : Container(),
                               _asignacion.proyectomodulo == 'Cable'
                                   ? Expanded(
                                       flex: 1,
                                       child: Text(
-                                          _asignacion.recupidjobcard.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          )),
+                                        _asignacion.recupidjobcard.toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     )
                                   : Container(),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text('Dirección: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Dirección: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
-                                child: Text(_asignacion.domicilio.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: Text(
+                                  _asignacion.domicilio.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text('Entre calles: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Entre calles: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
-                                child: (_asignacion.entrecallE1
-                                                .toString()
-                                                .length >
+                                child:
+                                    (_asignacion.entrecallE1.toString().length >
                                             1 &&
                                         _asignacion.entrecallE2
                                                 .toString()
@@ -1507,71 +1519,69 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
                                             1)
                                     ? Text(
                                         '${_asignacion.entrecallE1.toString()} y ${_asignacion.entrecallE2.toString()}',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        ))
+                                        style: const TextStyle(fontSize: 12),
+                                      )
                                     : const Text(''),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text('Localidad: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Localidad: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 child: Text(
-                                    'CP: ${_asignacion.cp.toString()} - ${_asignacion.localidad.toString()} - ${_asignacion.partido.toString()}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                  'CP: ${_asignacion.cp.toString()} - ${_asignacion.localidad.toString()} - ${_asignacion.partido.toString()}',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text('Teléfono: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Teléfono: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
-                                child: Text(_asignacion.telefono.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                child: Text(
+                                  _asignacion.telefono.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
                               const SizedBox(
                                 width: 80,
-                                child: Text('Cant. Eq.: ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF0e4888),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                child: Text(
+                                  'Cant. Eq.: ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF0e4888),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 child: Text(
@@ -1600,9 +1610,9 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     );
   }
 
-//------------------------------------------------------------
-//------------------------- _getComboTelefonos ---------------
-//------------------------------------------------------------
+  //------------------------------------------------------------
+  //------------------------- _getComboTelefonos ---------------
+  //------------------------------------------------------------
 
   List<DropdownMenuItem<String>> _getComboTelefonos() {
     List<String> telefonos = [];
@@ -1631,23 +1641,22 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
     telefonos = set.toList();
 
     List<DropdownMenuItem<String>> list = [];
-    list.add(const DropdownMenuItem(
-      value: 'Elija un Teléfono...',
-      child: Text('Elija un Teléfono...'),
-    ));
+    list.add(
+      const DropdownMenuItem(
+        value: 'Elija un Teléfono...',
+        child: Text('Elija un Teléfono...'),
+      ),
+    );
 
     for (var telefono in telefonos) {
-      list.add(DropdownMenuItem(
-        value: telefono,
-        child: Text(telefono),
-      ));
+      list.add(DropdownMenuItem(value: telefono, child: Text(telefono)));
     }
     return list;
   }
 
-//--------------------------------------------------------
-//--------------------- _getFuncionApp ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getFuncionApp ------------------------
+  //--------------------------------------------------------
 
   Future<void> _getFuncionApp() async {
     setState(() {
@@ -1661,15 +1670,19 @@ class EnvioComprobanteScreenState extends State<EnvioComprobanteScreen>
         _showLoader = false;
       });
       showMyDialog(
-          'Error', 'Verifica que estés conectado a Internet', 'Aceptar');
+        'Error',
+        'Verifica que estés conectado a Internet',
+        'Aceptar',
+      );
       return;
     }
 
     Response response = Response(isSuccess: false);
 
     Response response3 = Response(isSuccess: false);
-    response3 =
-        await ApiHelper.getFuncionesApp(widget.asignacion.proyectomodulo!);
+    response3 = await ApiHelper.getFuncionesApp(
+      widget.asignacion.proyectomodulo!,
+    );
 
     if (!response3.isSuccess) {
       showMyDialog('Error', response.message, 'Aceptar');

@@ -1,4 +1,6 @@
-import 'package:connectivity/connectivity.dart';
+import 'dart:math';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
@@ -8,17 +10,16 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:math';
 
 class AsignacionesTodasMapScreen extends StatefulWidget {
   final Usuario user;
   final Position positionUser;
 
   const AsignacionesTodasMapScreen({
-    Key? key,
+    super.key,
     required this.user,
     required this.positionUser,
-  }) : super(key: key);
+  });
 
   @override
   AsignacionesTodasMapScreenState createState() =>
@@ -27,9 +28,9 @@ class AsignacionesTodasMapScreen extends StatefulWidget {
 
 class AsignacionesTodasMapScreenState
     extends State<AsignacionesTodasMapScreen> {
-//--------------------------------------------------------------
-//------------------------- Variables --------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- Variables --------------------------
+  //--------------------------------------------------------------
 
   List<Asignacion2> _asignaciones = [];
   List<Asignacion2> _asignaciones2 = [];
@@ -40,51 +41,56 @@ class AsignacionesTodasMapScreenState
   double latitud = 0;
   double longitud = 0;
   bool _showLoader = false;
-  Set<Marker> _markers = {};
+  final Set<Marker> _markers = {};
   MapType _defaultMapType = MapType.normal;
   String direccion = '';
-  Position position = const Position(
-      longitude: 0,
-      latitude: 0,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0,
-      altitudeAccuracy: 0,
-      headingAccuracy: 0);
-  CameraPosition _initialPosition =
-      const CameraPosition(target: LatLng(31, 64), zoom: 16.0);
+  Position position = Position(
+    longitude: 0,
+    latitude: 0,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
+  );
+  CameraPosition _initialPosition = const CameraPosition(
+    target: LatLng(31, 64),
+    zoom: 16.0,
+  );
 
-//--------------------------------------------------------------
-//------------------------- initState --------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- initState --------------------------
+  //--------------------------------------------------------------
   @override
   void initState() {
     super.initState();
     _getObras();
 
-    LatLng initPos =
-        LatLng(widget.positionUser.latitude, widget.positionUser.longitude);
+    LatLng initPos = LatLng(
+      widget.positionUser.latitude,
+      widget.positionUser.longitude,
+    );
 
     _initialPosition = CameraPosition(target: initPos, zoom: 13.0);
 
     ubicOk = true;
   }
 
-//--------------------------------------------------------------
-//------------------------- dispose ----------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- dispose ----------------------------
+  //--------------------------------------------------------------
   @override
   void dispose() {
     _customInfoWindowController.dispose();
     super.dispose();
   }
 
-//--------------------------------------------------------------
-//------------------------- Pantalla ---------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- Pantalla ---------------------------
+  //--------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -96,39 +102,42 @@ class AsignacionesTodasMapScreenState
       body: Stack(
         children: [
           ubicOk == true
-              ? Stack(children: <Widget>[
-                  GoogleMap(
-                    onTap: (position) {
-                      _customInfoWindowController.hideInfoWindow!();
-                    },
-                    myLocationEnabled: true,
-                    initialCameraPosition: _initialPosition,
-                    markers: _markers,
-                    mapType: _defaultMapType,
-                    onMapCreated: (GoogleMapController controller) async {
-                      _customInfoWindowController.googleMapController =
-                          controller;
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 80, right: 10),
-                    alignment: Alignment.topRight,
-                    child: Column(children: <Widget>[
-                      FloatingActionButton(
-                          elevation: 5,
-                          backgroundColor: const Color(0xfff4ab04),
-                          onPressed: () {
-                            _changeMapType();
-                          },
-                          child: const Icon(Icons.layers)),
-                    ]),
-                  ),
-                ])
+              ? Stack(
+                  children: <Widget>[
+                    GoogleMap(
+                      onTap: (position) {
+                        _customInfoWindowController.hideInfoWindow!();
+                      },
+                      myLocationEnabled: true,
+                      initialCameraPosition: _initialPosition,
+                      markers: _markers,
+                      mapType: _defaultMapType,
+                      onMapCreated: (GoogleMapController controller) async {
+                        _customInfoWindowController.googleMapController =
+                            controller;
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 80, right: 10),
+                      alignment: Alignment.topRight,
+                      child: Column(
+                        children: <Widget>[
+                          FloatingActionButton(
+                            elevation: 5,
+                            backgroundColor: const Color(0xfff4ab04),
+                            onPressed: () {
+                              _changeMapType();
+                            },
+                            child: const Icon(Icons.layers),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
               : Container(),
           _showLoader
-              ? const LoaderComponent(
-                  text: 'Por favor espere...',
-                )
+              ? const LoaderComponent(text: 'Por favor espere...')
               : Container(),
           CustomInfoWindow(
             controller: _customInfoWindowController,
@@ -141,22 +150,22 @@ class AsignacionesTodasMapScreenState
     );
   }
 
-//--------------------------------------------------------------
-//------------------------- _changeMapType ---------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _changeMapType ---------------------
+  //--------------------------------------------------------------
 
   void _changeMapType() {
     _defaultMapType = _defaultMapType == MapType.normal
         ? MapType.satellite
         : _defaultMapType == MapType.satellite
-            ? MapType.hybrid
-            : MapType.normal;
+        ? MapType.hybrid
+        : MapType.normal;
     setState(() {});
   }
 
-//--------------------------------------------------------------
-//------------------------- _getObras --------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _getObras --------------------------
+  //--------------------------------------------------------------
 
   Future<void> _getObras() async {
     setState(() {
@@ -170,7 +179,10 @@ class AsignacionesTodasMapScreenState
         _showLoader = false;
       });
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -193,9 +205,9 @@ class AsignacionesTodasMapScreenState
     _showMap();
   }
 
-//--------------------------------------------------------------
-//------------------------- _showMap ---------------------------
-//--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //------------------------- _showMap ---------------------------
+  //--------------------------------------------------------------
 
   void _showMap() {
     if (_asignaciones2.isEmpty) {
@@ -234,154 +246,179 @@ class AsignacionesTodasMapScreenState
         dist = (distancia * 100).floorToDouble() / 100;
 
         if (distancia <= 20) {
-          _markers.add(Marker(
+          _markers.add(
+            Marker(
               markerId: MarkerId(asign.reclamoTecnicoID.toString()),
               position: LatLng(lat, long),
               onTap: () {
                 _customInfoWindowController.addInfoWindow!(
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      width: 300,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.info),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                    child: Text(
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.info),
+                        const SizedBox(width: 8.0),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
                                   asign.proyectomodulo.toString(),
                                   style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                                Expanded(
-                                    child: Text(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
                                   '${asign.cliente.toString()} - ${asign.nombre.toString()}',
                                   style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                                Expanded(
-                                    child: Text(asign.domicilio.toString(),
-                                        style: const TextStyle(fontSize: 10))),
-                                Expanded(
-                                    child: Text("Distancia: $dist km",
-                                        style: const TextStyle(fontSize: 12))),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFFb3b3b4),
-                                          minimumSize:
-                                              const Size(double.infinity, 30),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                        ),
-                                        onPressed: () => _navegar(asign),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: const [
-                                            Icon(Icons.map,
-                                                color: Color(0xff282886)),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              'Navegar',
-                                              style: TextStyle(
-                                                  color: Color(0xff282886)),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFFb3b3b4),
-                                          minimumSize:
-                                              const Size(double.infinity, 30),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                        ),
-                                        onPressed: () =>
-                                            _goInfoAsignacion(asign),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: const [
-                                            Text(
-                                              'Abrir',
-                                              style: TextStyle(
-                                                  color: Color(0xff282886)),
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Icon(Icons.arrow_forward_ios,
-                                                color: Color(0xff282886)),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  asign.domicilio.toString(),
+                                  style: const TextStyle(fontSize: 10),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  "Distancia: $dist km",
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(
+                                          0xFFb3b3b4,
+                                        ),
+                                        minimumSize: const Size(
+                                          double.infinity,
+                                          30,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () => _navegar(asign),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(
+                                            Icons.map,
+                                            color: Color(0xff282886),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            'Navegar',
+                                            style: TextStyle(
+                                              color: Color(0xff282886),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(
+                                          0xFFb3b3b4,
+                                        ),
+                                        minimumSize: const Size(
+                                          double.infinity,
+                                          30,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () => _goInfoAsignacion(asign),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Text(
+                                            'Abrir',
+                                            style: TextStyle(
+                                              color: Color(0xff282886),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Color(0xff282886),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    LatLng(lat, long));
+                  ),
+                  LatLng(lat, long),
+                );
               },
               //Coloresa de los pines según la empresa
               icon: (asign.proyectomodulo == 'Cable')
                   ? BitmapDescriptor.defaultMarkerWithHue(
-                      BitmapDescriptor.hueRed)
+                      BitmapDescriptor.hueRed,
+                    )
                   : (asign.proyectomodulo == 'DTV')
-                      ? BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueBlue)
-                      : (asign.proyectomodulo == 'Otro')
-                          ? BitmapDescriptor.defaultMarkerWithHue(
-                              BitmapDescriptor.hueCyan)
-                          : (asign.proyectomodulo == 'Prisma')
-                              ? BitmapDescriptor.defaultMarkerWithHue(
-                                  BitmapDescriptor.hueViolet)
-                              : (asign.proyectomodulo == 'Tasa')
-                                  ? BitmapDescriptor.defaultMarkerWithHue(
-                                      BitmapDescriptor.hueMagenta)
-                                  : (asign.proyectomodulo == 'Teco')
-                                      ? BitmapDescriptor.defaultMarkerWithHue(
-                                          BitmapDescriptor.hueOrange)
-                                      : (asign.proyectomodulo == 'SuperC')
-                                          ? BitmapDescriptor
-                                              .defaultMarkerWithHue(
-                                                  BitmapDescriptor.hueAzure)
-                                          : BitmapDescriptor
-                                              .defaultMarkerWithHue(
-                                                  BitmapDescriptor.hueRose)));
+                  ? BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueBlue,
+                    )
+                  : (asign.proyectomodulo == 'Otro')
+                  ? BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueCyan,
+                    )
+                  : (asign.proyectomodulo == 'Prisma')
+                  ? BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueViolet,
+                    )
+                  : (asign.proyectomodulo == 'Tasa')
+                  ? BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueMagenta,
+                    )
+                  : (asign.proyectomodulo == 'Teco')
+                  ? BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueOrange,
+                    )
+                  : (asign.proyectomodulo == 'SuperC')
+                  ? BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueAzure,
+                    )
+                  : BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueRose,
+                    ),
+            ),
+          );
         }
       }
     }
@@ -389,17 +426,20 @@ class AsignacionesTodasMapScreenState
     // longcenter = (longmin + longmax) / 2;
   }
 
-//-------------------------------------------------------------------
-//-------------------------- _navegar -------------------------------
-//-------------------------------------------------------------------
+  //-------------------------------------------------------------------
+  //-------------------------- _navegar -------------------------------
+  //-------------------------------------------------------------------
 
-  _navegar(e) async {
+  Future<void> _navegar(e) async {
     if (e.grxx == "" ||
         e.gryy == "" ||
         isNullOrEmpty(e.grxx) ||
         isNullOrEmpty(e.gryy)) {
       showMyDialog(
-          'Aviso', "Este cliente no tiene coordenadas cargadas.", 'Aceptar');
+        'Aviso',
+        "Este cliente no tiene coordenadas cargadas.",
+        'Aceptar',
+      );
       return;
     }
 
@@ -416,23 +456,24 @@ class AsignacionesTodasMapScreenState
       }
     } else {
       showMyDialog(
-          'Aviso',
-          "Necesita estar conectado a Internet para acceder al mapa",
-          'Aceptar');
+        'Aviso',
+        "Necesita estar conectado a Internet para acceder al mapa",
+        'Aceptar',
+      );
     }
   }
 
-//------------------------------------------------------------------
-//-------------------------- isNullOrEmpty -------------------------
-//------------------------------------------------------------------
+  //------------------------------------------------------------------
+  //-------------------------- isNullOrEmpty -------------------------
+  //------------------------------------------------------------------
 
   bool isNullOrEmpty(dynamic obj) =>
       obj == null ||
       ((obj is String || obj is List || obj is Map) && obj.isEmpty);
 
-//---------------------------------------------------
-//----------------- _distanciaMarker ----------------
-//---------------------------------------------------
+  //---------------------------------------------------
+  //----------------- _distanciaMarker ----------------
+  //---------------------------------------------------
 
   double _distanciaMarker(Asignacion2 asign, Position positionUser) {
     double latitud1 = double.parse(asign.grxx!);
@@ -446,24 +487,25 @@ class AsignacionesTodasMapScreenState
     latitud1 = _toRadians(latitud1);
     latitud2 = _toRadians(latitud2);
 
-    double a = pow(sin(dLat / 2), 2) +
+    double a =
+        pow(sin(dLat / 2), 2) +
         pow(sin(dLon / 2), 2) * cos(latitud1) * cos(latitud2);
     double c = 2 * asin(sqrt(a));
 
     return R * c;
   }
 
-//---------------------------------------------
-//----------------- _toRadians ----------------
-//---------------------------------------------
+  //---------------------------------------------
+  //----------------- _toRadians ----------------
+  //---------------------------------------------
 
   static double _toRadians(double degree) {
     return degree * pi / 180;
   }
 
-//---------------------------------------------
-//----------------- _goInfoAsignacion ----------------
-//---------------------------------------------
+  //---------------------------------------------
+  //----------------- _goInfoAsignacion ----------------
+  //---------------------------------------------
 
   void _goInfoAsignacion(Asignacion2 asignacion) async {
     await Navigator.push(

@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fleetdeliveryapp/components/loader_component.dart';
 import 'package:fleetdeliveryapp/helpers/helpers.dart';
 import 'package:fleetdeliveryapp/models/models.dart';
@@ -8,18 +8,20 @@ class AgendarCitaScreen extends StatefulWidget {
   final Usuario user;
   final Asignacion2 asignacion;
 
-  const AgendarCitaScreen(
-      {Key? key, required this.user, required this.asignacion})
-      : super(key: key);
+  const AgendarCitaScreen({
+    super.key,
+    required this.user,
+    required this.asignacion,
+  });
 
   @override
   AgendarCitaScreenState createState() => AgendarCitaScreenState();
 }
 
 class AgendarCitaScreenState extends State<AgendarCitaScreen> {
-//--------------------------------------------------------
-//--------------------- Variables ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
 
   List medios = ["Teléfono", "WhatsApp", "SMS", "Visita directa"];
   String _opseleccionada = "Teléfono";
@@ -29,20 +31,21 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
   bool bandera = false;
   List<Asign> _asigns = [];
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
 
   @override
   void initState() {
     super.initState();
     selectedDate = selectedDate.add(
-        Duration(hours: -selectedTime.hour, minutes: -selectedTime.minute));
+      Duration(hours: -selectedTime.hour, minutes: -selectedTime.minute),
+    );
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -58,25 +61,22 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
             padding: const EdgeInsets.all(5),
             color: const Color(0xFFC7C7C8),
             child: Column(
-              children: <Widget>[
-                _showAsignacion(),
-                _getDateAndTime(context),
-              ],
+              children: <Widget>[_showAsignacion(), _getDateAndTime(context)],
             ),
           ),
           Center(
             child: _showLoader
                 ? const LoaderComponent(text: 'Guardando CITA.')
                 : Container(),
-          )
+          ),
         ],
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showAsignacion ------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showAsignacion ------------------
+  //--------------------------------------------------------
 
   Widget _showAsignacion() {
     return Card(
@@ -100,174 +100,155 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
                         children: [
                           Row(
                             children: [
-                              const Text("Cliente: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                "Cliente: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
                                 child: Text(
-                                    '${widget.asignacion.cliente.toString()} - ${widget.asignacion.nombre.toString()}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                  '${widget.asignacion.cliente.toString()} - ${widget.asignacion.nombre.toString()}',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
-                              const Text("Rec.Téc.: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                "Rec.Téc.: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
                                 child: Text(
-                                    widget.asignacion.reclamoTecnicoID
-                                        .toString(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    )),
+                                  widget.asignacion.reclamoTecnicoID.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
-                              const Text("Dirección: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                "Dirección: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
-                                child:
-                                    Text(widget.asignacion.domicilio.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                child: Text(
+                                  widget.asignacion.domicilio.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
-                              const Text("Localidad: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                "Localidad: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
-                                child:
-                                    Text(widget.asignacion.localidad.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                child: Text(
+                                  widget.asignacion.localidad.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
-                              const Text("Provincia: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                "Provincia: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
-                                child:
-                                    Text(widget.asignacion.provincia.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                child: Text(
+                                  widget.asignacion.provincia.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 1,
-                          ),
+                          const SizedBox(height: 1),
                           Row(
                             children: [
-                              const Text("Teléfono: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                "Teléfono: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
-                                child:
-                                    Text(widget.asignacion.telefono.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        )),
+                                child: Text(
+                                  widget.asignacion.telefono.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 3,
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                            height: 2,
-                          ),
-                          const SizedBox(
-                            height: 3,
-                          ),
+                          const SizedBox(height: 3),
+                          const Divider(color: Colors.black, height: 2),
+                          const SizedBox(height: 3),
                           Row(
                             children: [
-                              const Text("Est. Gaos: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                "Est. Gaos: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Expanded(
                                 child: Text(
                                   widget.asignacion.estadogaos.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  ),
+                                  style: const TextStyle(fontSize: 12),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 5,
+                              const SizedBox(width: 5),
+                              const Text(
+                                "Cód. Cierre: ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF0e4888),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              const Text("Cód. Cierre: ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  )),
                               Expanded(
                                 child: Text(
                                   widget.asignacion.codigoCierre.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  ),
+                                  style: const TextStyle(fontSize: 12),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 3,
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                            height: 2,
-                          ),
+                          const SizedBox(height: 3),
+                          const Divider(color: Colors.black, height: 2),
                         ],
                       ),
                     ),
@@ -281,9 +262,9 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _getDateAndTime ------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getDateAndTime ------------------
+  //--------------------------------------------------------
 
   Widget _getDateAndTime(context) {
     return Card(
@@ -306,21 +287,13 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
                     Expanded(
                       child: Column(
                         children: [
-                          const SizedBox(
-                            height: 23,
-                          ),
+                          const SizedBox(height: 23),
                           _showMedioCita(),
-                          const SizedBox(
-                            height: 20,
-                          ),
+                          const SizedBox(height: 20),
                           _getFecha(context),
-                          const SizedBox(
-                            height: 50,
-                          ),
+                          const SizedBox(height: 50),
                           _showButtons(context),
-                          const SizedBox(
-                            height: 20,
-                          ),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
@@ -334,25 +307,24 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _showMedioCita -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showMedioCita -------------------
+  //--------------------------------------------------------
 
   Widget _showMedioCita() {
     return Row(
       children: <Widget>[
         const Icon(Icons.fact_check),
-        const SizedBox(
-          width: 20,
-        ),
+        const SizedBox(width: 20),
         Expanded(
           child: DropdownButtonFormField(
-            value: _opseleccionada,
+            initialValue: _opseleccionada,
             decoration: InputDecoration(
               hintText: 'Seleccione un medio de cita...',
               labelText: 'Medio de cita',
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             items: getOptionsDropDown(),
             onChanged: (value) {
@@ -361,14 +333,14 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
               });
             },
           ),
-        )
+        ),
       ],
     );
   }
 
-//--------------------------------------------------------
-//--------------------- getOptionsDropDown ---------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- getOptionsDropDown ---------------
+  //--------------------------------------------------------
 
   List<DropdownMenuItem<String>> getOptionsDropDown() {
     List<DropdownMenuItem<String>> list = [];
@@ -378,24 +350,20 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
     return list;
   }
 
-//--------------------------------------------------------
-//--------------------- _getFecha ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _getFecha ------------------------
+  //--------------------------------------------------------
 
   Widget _getFecha(context) {
     return Stack(
       children: <Widget>[
-        Container(
-          height: 80,
-        ),
+        Container(height: 80),
         Positioned(
           bottom: 0,
           child: Row(
             children: [
               const Icon(Icons.calendar_today),
-              const SizedBox(
-                width: 20,
-              ),
+              const SizedBox(width: 20),
               Container(
                 width: 110,
                 height: 50,
@@ -412,19 +380,16 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
                       },
                       child: InkWell(
                         child: Text(
-                            "    ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}"),
+                          "    ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}",
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                width: 40,
-              ),
+              const SizedBox(width: 40),
               const Icon(Icons.schedule),
-              const SizedBox(
-                width: 20,
-              ),
+              const SizedBox(width: 20),
               Container(
                 width: 110,
                 height: 50,
@@ -441,7 +406,8 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
                       },
                       child: InkWell(
                         child: Text(
-                            "        ${selectedTime.hour}:${selectedTime.minute}"),
+                          "        ${selectedTime.hour}:${selectedTime.minute}",
+                        ),
                       ),
                     ),
                   ],
@@ -454,29 +420,25 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
           left: 50,
           bottom: 40,
           child: Container(
-              color: Colors.white,
-              child: const Text(
-                ' Fecha Cita: ',
-                style: TextStyle(fontSize: 12),
-              )),
+            color: Colors.white,
+            child: const Text(' Fecha Cita: ', style: TextStyle(fontSize: 12)),
+          ),
         ),
         Positioned(
           left: 244,
           bottom: 40,
           child: Container(
-              color: Colors.white,
-              child: const Text(
-                ' Hora Cita: ',
-                style: TextStyle(fontSize: 12),
-              )),
-        )
+            color: Colors.white,
+            child: const Text(' Hora Cita: ', style: TextStyle(fontSize: 12)),
+          ),
+        ),
       ],
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _selectDate ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _selectDate ----------------------
+  //--------------------------------------------------------
 
   void _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
@@ -492,9 +454,9 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _selectTime ----------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _selectTime ----------------------
+  //--------------------------------------------------------
 
   void _selectTime(BuildContext context) async {
     final TimeOfDay? selected = await showTimePicker(
@@ -508,9 +470,9 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
     }
   }
 
-//--------------------------------------------------------
-//--------------------- _showButtons ---------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _showButtons ---------------------
+  //--------------------------------------------------------
 
   Widget _showButtons(context) {
     return Container(
@@ -534,9 +496,7 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Icon(Icons.save),
-                      SizedBox(
-                        width: 20,
-                      ),
+                      SizedBox(width: 20),
                       Text('Guardar'),
                     ],
                   ),
@@ -559,9 +519,7 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Icon(Icons.cancel),
-                      SizedBox(
-                        width: 20,
-                      ),
+                      SizedBox(width: 20),
                       Text('Cancelar'),
                     ],
                   ),
@@ -574,16 +532,19 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _save ----------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _save ----------------------------
+  //--------------------------------------------------------
 
   void _save(Asignacion2 asignacion, context) async {
     var connectivityResult = await Connectivity().checkConnectivity();
 
     if (connectivityResult == ConnectivityResult.none) {
       showMyDialog(
-          'Error', "Verifica que estés conectado a Internet", 'Aceptar');
+        'Error',
+        "Verifica que estés conectado a Internet",
+        'Aceptar',
+      );
       return;
     }
 
@@ -593,7 +554,7 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
       'reclamoTecnicoID': asignacion.reclamoTecnicoID,
       'userID': asignacion.userID,
       'cliente': asignacion.cliente,
-      'domicilio': asignacion.domicilio
+      'domicilio': asignacion.domicilio,
     };
 
     do {
@@ -619,13 +580,15 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
         'evento3': asignacion.evento2,
         'evento4': asignacion.evento3,
         'fechaCita': selectedDate
-            .add(Duration(
-                hours: selectedTime.hour, minutes: selectedTime.minute))
+            .add(
+              Duration(hours: selectedTime.hour, minutes: selectedTime.minute),
+            )
             .toString(),
         'fechacumplida': _asign.fechacumplida ?? '',
         'fechaEvento1': selectedDate
-            .add(Duration(
-                hours: selectedTime.hour, minutes: selectedTime.minute))
+            .add(
+              Duration(hours: selectedTime.hour, minutes: selectedTime.minute),
+            )
             .toString(),
         'fechaEvento2': asignacion.fechaEvento1 ?? '',
         'fechaEvento3': asignacion.fechaEvento2 ?? '',
@@ -641,7 +604,10 @@ class AgendarCitaScreenState extends State<AgendarCitaScreen> {
       };
 
       Response response = await ApiHelper.put(
-          '/api/AsignacionesOTs/', _asign.idregistro.toString(), request2);
+        '/api/AsignacionesOTs/',
+        _asign.idregistro.toString(),
+        request2,
+      );
 
       if (!response.isSuccess) {
         showMyDialog('Aviso', response.message, 'Aceptar');

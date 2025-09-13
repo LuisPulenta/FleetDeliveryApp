@@ -12,23 +12,23 @@ class ParadaMapScreen extends StatefulWidget {
   final Set<Marker> markers;
   final CustomInfoWindowController customInfoWindowController;
 
-  const ParadaMapScreen(
-      {Key? key,
-      required this.user,
-      required this.positionUser,
-      required this.paradaenvio,
-      required this.markers,
-      required this.customInfoWindowController})
-      : super(key: key);
+  const ParadaMapScreen({
+    super.key,
+    required this.user,
+    required this.positionUser,
+    required this.paradaenvio,
+    required this.markers,
+    required this.customInfoWindowController,
+  });
 
   @override
   ParadaMapScreenState createState() => ParadaMapScreenState();
 }
 
 class ParadaMapScreenState extends State<ParadaMapScreen> {
-//--------------------------------------------------------
-//--------------------- Variables ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Variables ------------------------
+  //--------------------------------------------------------
 
   bool ubicOk = false;
   double latitud = 0;
@@ -37,35 +37,44 @@ class ParadaMapScreenState extends State<ParadaMapScreen> {
   Set<Marker> _markers = {};
   MapType _defaultMapType = MapType.normal;
   String direccion = '';
-  Position position = const Position(
-      longitude: 0,
-      latitude: 0,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0,
-      altitudeAccuracy: 0,
-      headingAccuracy: 0);
-  CameraPosition _initialPosition =
-      const CameraPosition(target: LatLng(31, 64), zoom: 16.0);
+  Position position = Position(
+    longitude: 0,
+    latitude: 0,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
+  );
+  CameraPosition _initialPosition = const CameraPosition(
+    target: LatLng(31, 64),
+    zoom: 16.0,
+  );
 
-//--------------------------------------------------------
-//--------------------- initState ------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- initState ------------------------
+  //--------------------------------------------------------
   @override
   void initState() {
     super.initState();
     _initialPosition = (widget.markers.length == 1)
         ? CameraPosition(
-            target: LatLng(widget.paradaenvio.latitud!.toDouble(),
-                widget.paradaenvio.longitud!.toDouble()),
-            zoom: 16.0)
+            target: LatLng(
+              widget.paradaenvio.latitud!.toDouble(),
+              widget.paradaenvio.longitud!.toDouble(),
+            ),
+            zoom: 16.0,
+          )
         : CameraPosition(
-            target: LatLng(widget.paradaenvio.latitud!.toDouble(),
-                widget.paradaenvio.longitud!.toDouble()),
-            zoom: 12.0);
+            target: LatLng(
+              widget.paradaenvio.latitud!.toDouble(),
+              widget.paradaenvio.longitud!.toDouble(),
+            ),
+            zoom: 12.0,
+          );
     ubicOk = true;
     _markers = widget.markers;
   }
@@ -76,9 +85,9 @@ class ParadaMapScreenState extends State<ParadaMapScreen> {
     super.dispose();
   }
 
-//--------------------------------------------------------
-//--------------------- Pantalla -------------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- Pantalla -------------------------
+  //--------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -92,68 +101,71 @@ class ParadaMapScreenState extends State<ParadaMapScreen> {
       body: Stack(
         children: [
           ubicOk == true
-              ? Stack(children: <Widget>[
-                  GoogleMap(
-                    onTap: (position) {
-                      widget.customInfoWindowController.hideInfoWindow!();
-                    },
-                    myLocationEnabled: true,
-                    initialCameraPosition: _initialPosition,
-                    markers: _markers,
-                    mapType: _defaultMapType,
-                    onMapCreated: (GoogleMapController controller) async {
-                      widget.customInfoWindowController.googleMapController =
-                          controller;
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 80, right: 10),
-                    alignment: Alignment.topRight,
-                    child: Column(children: <Widget>[
-                      FloatingActionButton(
-                          elevation: 5,
-                          backgroundColor: const Color(0xfff4ab04),
-                          onPressed: () {
-                            _changeMapType();
-                          },
-                          child: const Icon(Icons.layers)),
-                    ]),
-                  ),
-                  // Center(
-                  //   child: Icon(
-                  //     Icons.location_on,
-                  //     color: Colors.red,
-                  //     size: 50,
-                  //   ),
-                  // ),
-                  CustomInfoWindow(
-                    controller: widget.customInfoWindowController,
-                    height: 140,
-                    width: 300,
-                    offset: 100,
-                  ),
-                ])
+              ? Stack(
+                  children: <Widget>[
+                    GoogleMap(
+                      onTap: (position) {
+                        widget.customInfoWindowController.hideInfoWindow!();
+                      },
+                      myLocationEnabled: true,
+                      initialCameraPosition: _initialPosition,
+                      markers: _markers,
+                      mapType: _defaultMapType,
+                      onMapCreated: (GoogleMapController controller) async {
+                        widget.customInfoWindowController.googleMapController =
+                            controller;
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 80, right: 10),
+                      alignment: Alignment.topRight,
+                      child: Column(
+                        children: <Widget>[
+                          FloatingActionButton(
+                            elevation: 5,
+                            backgroundColor: const Color(0xfff4ab04),
+                            onPressed: () {
+                              _changeMapType();
+                            },
+                            child: const Icon(Icons.layers),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Center(
+                    //   child: Icon(
+                    //     Icons.location_on,
+                    //     color: Colors.red,
+                    //     size: 50,
+                    //   ),
+                    // ),
+                    CustomInfoWindow(
+                      controller: widget.customInfoWindowController,
+                      height: 140,
+                      width: 300,
+                      offset: 100,
+                    ),
+                  ],
+                )
               : Container(),
           _showLoader
-              ? const LoaderComponent(
-                  text: 'Por favor espere...',
-                )
+              ? const LoaderComponent(text: 'Por favor espere...')
               : Container(),
         ],
       ),
     );
   }
 
-//--------------------------------------------------------
-//--------------------- _changeMapType -------------------
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  //--------------------- _changeMapType -------------------
+  //--------------------------------------------------------
 
   void _changeMapType() {
     _defaultMapType = _defaultMapType == MapType.normal
         ? MapType.satellite
         : _defaultMapType == MapType.satellite
-            ? MapType.hybrid
-            : MapType.normal;
+        ? MapType.hybrid
+        : MapType.normal;
     setState(() {});
   }
 }
