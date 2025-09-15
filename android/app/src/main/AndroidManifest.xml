@@ -3,6 +3,13 @@
         android:label="Fleet Delivery App"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+          <meta-data android:name="com.google.android.maps.v2.API_KEY" 
+         android:exported="true"
+               android:value="AIzaSyAtxvXVhbzV9OTwZh8UxVsW2A58WYf-Btc" 
+
+
+               />
+               
         <activity
             android:name=".MainActivity"
             android:exported="true"
