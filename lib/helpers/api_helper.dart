@@ -42,7 +42,6 @@ class ApiHelper {
         'accept': 'application/json',
       },
     );
-
     var body = response.body;
 
     if (response.statusCode >= 400) {
