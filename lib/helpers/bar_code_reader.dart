@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
+
 class BarCodeReader extends StatefulWidget {
-  const BarCodeReader({Key? key}) : super(key: key);
+  const BarCodeReader({super.key});
 
   @override
   State<StatefulWidget> createState() => _BarCodeReaderState();
@@ -122,12 +123,6 @@ class _BarCodeReaderState extends State<BarCodeReader> {
 
   //------------------------------------------------------------------------
   Widget _buildQrView(BuildContext context) {
-    var scanArea =
-        (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
-
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
@@ -136,7 +131,7 @@ class _BarCodeReaderState extends State<BarCodeReader> {
         borderRadius: 10,
         borderLength: 30,
         borderWidth: 10,
-        cutOutSize: scanArea,
+        cutOutSize: MediaQuery.of(context).size.width * 0.9,
       ),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );

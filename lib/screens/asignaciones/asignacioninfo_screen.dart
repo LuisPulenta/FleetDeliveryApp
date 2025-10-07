@@ -3262,7 +3262,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   children: const [
                     Icon(Icons.chat),
                     SizedBox(width: 15),
-                    Text('Enviar Comprobante como Texto'),
+                    Text('Enviar Comprob. como Texto'),
                   ],
                 ),
               ),
