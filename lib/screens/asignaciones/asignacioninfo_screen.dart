@@ -3950,7 +3950,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
     String empresa = _asignacion.proyectomodulo.toString();
 
-    if (empresa == 'Otro') {
+    if (empresa == 'Otro' || empresa == 'Teco') {
       men1 = 'la entrega';
       men2 = 'entregarlo';
     }

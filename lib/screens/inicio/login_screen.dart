@@ -475,7 +475,7 @@ class LoginScreenState extends State<LoginScreen> {
 
     var connectivityResult = await Connectivity().checkConnectivity();
 
-    if (connectivityResult != ConnectivityResult.none) {
+    if (!connectivityResult.contains(ConnectivityResult.none)) {
       _webSesionsdb = await DBWebSesions.webSesions();
 
       for (var _webSesion in _webSesionsdb) {
