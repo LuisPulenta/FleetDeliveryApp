@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../helpers/api_helper.dart';
 import '../../helpers/dbwebsesions_helper.dart';
@@ -350,6 +351,46 @@ class Home2ScreenState extends State<Home2Screen> {
                 );
               },
             ),
+
+            const Divider(color: Color(0xff0e4888), height: 1),
+            Row(
+              children: [
+                Expanded(
+                  child: ExpansionTile(
+                    collapsedIconColor: Color(0xff0e4888),
+                    iconColor: Color(0xff0e4888),
+                    leading: const Icon(Icons.info, color: Color(0xff0e4888)),
+                    title: const Text(
+                      'Acerca de',
+                      style: TextStyle(fontSize: 15, color: Color(0xff0e4888)),
+                    ),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.privacy_tip,
+                            color: Color(0xff0e4888),
+                          ),
+                          tileColor: const Color(0xff8c8c94),
+                          title: const Text(
+                            'Política de Privacidad',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xff0e4888),
+                            ),
+                          ),
+                          onTap: () {
+                            _launchURL();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
             const Divider(color: Color(0xff0e4888), height: 1),
             ListTile(
               leading: const Icon(Icons.logout, color: Color(0xff0e4888)),
@@ -366,6 +407,13 @@ class Home2ScreenState extends State<Home2Screen> {
         ),
       ),
     );
+  }
+
+  //----------------------- _launchURL -------------------------------
+  void _launchURL() async {
+    if (!await launch('https://www.keypress.com.ar/privacidad.html')) {
+      throw 'No se puede conectar a la Web Política de Privacidad';
+    }
   }
 
   //--------------------------------------------------------

@@ -1112,6 +1112,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               flex: 6,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   backgroundColor: const Color(0xFF282886),
                   minimumSize: const Size(double.infinity, 40),
                   shape: RoundedRectangleBorder(
@@ -1136,6 +1137,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
               flex: 7,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   backgroundColor: const Color(0xffdf281e),
                   minimumSize: const Size(double.infinity, 40),
                   shape: RoundedRectangleBorder(
@@ -1161,6 +1163,10 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                     flex: 6,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 5,
+                        ),
                         backgroundColor: const Color.fromARGB(255, 52, 52, 52),
                         minimumSize: const Size(double.infinity, 40),
                         shape: RoundedRectangleBorder(

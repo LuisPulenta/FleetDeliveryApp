@@ -65,11 +65,11 @@ class LoginScreenState extends State<LoginScreen> {
 
   List<WebSesion> _webSesionsdb = [];
 
-  String _email = '';
-  String _password = '';
+  // String _email = '';
+  // String _password = '';
 
-  // String _email = 'TEST';
-  // String _password = '123456';
+  String _email = 'TEST';
+  String _password = '123456';
 
   // String _email = 'jona';
   // String _password = '123456';
@@ -330,11 +330,12 @@ class LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
                             Text(
-                              '   Nueva versión disponible   ',
+                              'Nueva versión disponible',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
+                                color: Colors.red,
+                                fontSize: 18,
                                 decoration: TextDecoration.underline,
+                                decorationColor: Colors.red,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -384,15 +385,14 @@ class LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    if (_modulo.nroVersion != '' && _modulo.nroVersion != Constants.version) {
-      showMyDialog(
-        'Atención!',
-        'Debe instalar la nueva versión disponible en Google Play para poder continuar.',
-        'Aceptar',
-      );
-
-      return;
-    }
+    // if (_modulo.nroVersion != '' && _modulo.nroVersion != Constants.version) {
+    //   showMyDialog(
+    //     'Atención!',
+    //     'Hay una nueva versión disponible en Google Play. Le recomendamos actualice la aplicación.',
+    //     'Aceptar',
+    //   );
+    //   return;
+    // }
 
     setState(() {
       _passwordShow = false;
