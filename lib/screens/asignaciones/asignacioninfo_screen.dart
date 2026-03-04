@@ -123,6 +123,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
 
   List<CodigoCierre> __codigoscierre = [];
   bool _photoChangedDNI = false;
+
   bool _signatureChanged = false;
   late XFile _image;
 
@@ -1451,624 +1452,722 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                   children: <Widget>[
                     Expanded(
                       child: Column(
-                        children: <Widget>[
+                        children: [
                           Row(
                             children: [
-                              const SizedBox(
-                                width: 90,
-                                child: Text(
-                                  'Id Gaos: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
                               Expanded(
-                                child: Text(
-                                  e.idregistro.toString(),
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              ),
-                              _asigns.length > 1 && estadogaos == 'PAR'
-                                  ? Checkbox(
-                                      value: e.elegir == 1 ? true : false,
-                                      onChanged: (value) {
-                                        for (Asign asign in _asigns) {
-                                          if (asign.autonumerico ==
-                                              e.autonumerico) {
-                                            asign.elegir = value == true
-                                                ? 1
-                                                : 0;
-                                          }
-                                        }
-                                        setState(() {});
-                                      },
-                                    )
-                                  : Container(),
-                            ],
-                          ),
-                          const SizedBox(height: 1),
-                          Row(
-                            children: [
-                              const SizedBox(
-                                width: 90,
-                                child: Text(
-                                  'Equipo: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  e.decO1.toString(),
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              ),
-                              const SizedBox(height: 1),
-                            ],
-                          ),
-                          e.smartcard.toString().isNotEmpty
-                              ? Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 90,
-                                      child: Text(
-                                        'Smartcard: ',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        e.smartcard.toString(),
-                                        style: const TextStyle(fontSize: 12),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 70,
-                                      child: Text(
-                                        '      Dev. : SI',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Checkbox(
-                                      value: e.elegirSI == 1 ? true : false,
-                                      onChanged: (value) {
-                                        for (Asign asign in _asigns) {
-                                          if (asign.autonumerico ==
-                                              e.autonumerico) {
-                                            asign.elegirSI = value == true
-                                                ? 1
-                                                : 0;
-                                            asign.elegirNO = asign.elegirSI == 1
-                                                ? 0
-                                                : 1;
-                                          }
-                                        }
-                                        setState(() {});
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      width: 25,
-                                      child: Text(
-                                        'NO',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Checkbox(
-                                      value: e.elegirNO == 1 ? true : false,
-                                      onChanged: (value) {
-                                        for (Asign asign in _asigns) {
-                                          if (asign.autonumerico ==
-                                              e.autonumerico) {
-                                            asign.elegirNO = value == true
-                                                ? 1
-                                                : 0;
-                                            asign.elegirSI = asign.elegirNO == 1
-                                                ? 0
-                                                : 1;
-                                          }
-                                        }
-                                        setState(() {});
-                                      },
-                                    ),
-                                    const SizedBox(height: 1),
-                                  ],
-                                )
-                              : Container(),
-                          Row(
-                            children: [
-                              const SizedBox(
-                                width: 90,
-                                child: Text(
-                                  'Descripción: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: e.codigoequivalencia != null
-                                    ? Text(
-                                        e.codigoequivalencia.toString(),
-                                        style: const TextStyle(fontSize: 12),
-                                      )
-                                    : const Text(''),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 1),
-                          widget.funcionApp.habilitaCambioModelo == 1
-                              ? !(widget.asignacion.proyectomodulo == 'DTV' ||
-                                        widget.asignacion.proyectomodulo ==
-                                            'Cable')
-                                    ? Row(
-                                        children: [
-                                          const SizedBox(
-                                            width: 90,
-                                            child: Text(
-                                              'Conf. Modelo:   ',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF0e4888),
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: SizedBox(
-                                              height: 40,
-                                              child: DropdownButtonFormField(
-                                                initialValue:
-                                                    e.marcaModeloId, //_equipo,
-                                                isExpanded: true,
-                                                isDense: true,
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                ),
-                                                decoration: InputDecoration(
-                                                  fillColor: Colors.white,
-                                                  filled: true,
-                                                  hintText:
-                                                      'Elija un Modelo...',
-                                                  errorText: _equipoShowError
-                                                      ? _equipoError
-                                                      : null,
-                                                ),
-                                                items: _getComboEquipos(),
-                                                onChanged: (value) {
-                                                  _equipo = value.toString();
-
-                                                  for (Asign asign in _asigns) {
-                                                    if (asign.autonumerico ==
-                                                        e.autonumerico) {
-                                                      asign.marcaModeloId =
-                                                          _equipo;
-                                                    }
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                          const Text(
-                                            '        ',
+                                flex: 1,
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 90,
+                                          child: Text(
+                                            'Id Gaos: ',
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: Color(0xFF0e4888),
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        ],
-                                      )
-                                    : Row(
-                                        children: [
-                                          const Text(
-                                            'Modelo:            ',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF0e4888),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            e.modelo.toString(),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            e.idregistro.toString(),
                                             style: const TextStyle(
                                               fontSize: 12,
                                             ),
                                           ),
-                                        ],
-                                      )
-                              : Container(),
-                          const SizedBox(height: 10),
-                          widget.funcionApp.serieObligatoria == 1 ||
-                                  (e.proyectomodulo == 'Cable' &&
-                                      e.motivos.toString().contains('VDSL'))
-                              ? Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 90,
-                                      child: Text(
-                                        'Mac/Serie: ',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF0e4888),
-                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ),
+                                        _asigns.length > 1 &&
+                                                estadogaos == 'PAR'
+                                            ? Checkbox(
+                                                value: e.elegir == 1
+                                                    ? true
+                                                    : false,
+                                                onChanged: (value) {
+                                                  for (Asign asign in _asigns) {
+                                                    if (asign.autonumerico ==
+                                                        e.autonumerico) {
+                                                      asign.elegir =
+                                                          value == true ? 1 : 0;
+                                                    }
+                                                  }
+                                                  setState(() {});
+                                                },
+                                              )
+                                            : Container(),
+                                      ],
                                     ),
-                                    Expanded(
-                                      flex: 7,
-                                      child: Text(
-                                        e.estadO3.toString(),
-                                        style: const TextStyle(fontSize: 12),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(
-                                          0xFF282886,
-                                        ),
-                                        minimumSize: const Size(50, 40),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            5,
+                                    const SizedBox(height: 1),
+                                    Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 90,
+                                          child: Text(
+                                            'Equipo: ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            _macserieController.text = '';
-                                            return Center(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  AlertDialog(
-                                                    backgroundColor:
-                                                        Colors.grey[300],
-                                                    title: const Text(
-                                                      'Ingrese o escanee el código',
+                                        Expanded(
+                                          child: Text(
+                                            e.decO1.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 1),
+                                      ],
+                                    ),
+                                    e.smartcard.toString().isNotEmpty
+                                        ? Row(
+                                            children: [
+                                              const SizedBox(
+                                                width: 90,
+                                                child: Text(
+                                                  'Smartcard: ',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF0e4888),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  e.smartcard.toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 70,
+                                                child: Text(
+                                                  '      Dev. : SI',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF0e4888),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Checkbox(
+                                                value: e.elegirSI == 1
+                                                    ? true
+                                                    : false,
+                                                onChanged: (value) {
+                                                  for (Asign asign in _asigns) {
+                                                    if (asign.autonumerico ==
+                                                        e.autonumerico) {
+                                                      asign.elegirSI =
+                                                          value == true ? 1 : 0;
+                                                      asign.elegirNO =
+                                                          asign.elegirSI == 1
+                                                          ? 0
+                                                          : 1;
+                                                    }
+                                                  }
+                                                  setState(() {});
+                                                },
+                                              ),
+                                              const SizedBox(
+                                                width: 25,
+                                                child: Text(
+                                                  'NO',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF0e4888),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Checkbox(
+                                                value: e.elegirNO == 1
+                                                    ? true
+                                                    : false,
+                                                onChanged: (value) {
+                                                  for (Asign asign in _asigns) {
+                                                    if (asign.autonumerico ==
+                                                        e.autonumerico) {
+                                                      asign.elegirNO =
+                                                          value == true ? 1 : 0;
+                                                      asign.elegirSI =
+                                                          asign.elegirNO == 1
+                                                          ? 0
+                                                          : 1;
+                                                    }
+                                                  }
+                                                  setState(() {});
+                                                },
+                                              ),
+                                              const SizedBox(height: 1),
+                                            ],
+                                          )
+                                        : Container(),
+                                    Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 90,
+                                          child: Text(
+                                            'Descripción: ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: e.codigoequivalencia != null
+                                              ? Text(
+                                                  e.codigoequivalencia
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                  ),
+                                                )
+                                              : const Text(''),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 1),
+                                    widget.funcionApp.habilitaCambioModelo == 1
+                                        ? !(widget.asignacion.proyectomodulo ==
+                                                      'DTV' ||
+                                                  widget
+                                                          .asignacion
+                                                          .proyectomodulo ==
+                                                      'Cable')
+                                              ? Row(
+                                                  children: [
+                                                    const SizedBox(
+                                                      width: 90,
+                                                      child: Text(
+                                                        'Conf. Modelo:   ',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Color(
+                                                            0xFF0e4888,
+                                                          ),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    content: Column(
-                                                      children: [
-                                                        TextField(
-                                                          autofocus: true,
-                                                          controller:
-                                                              _macserieController,
+                                                    Expanded(
+                                                      child: SizedBox(
+                                                        height: 40,
+                                                        child: DropdownButtonFormField(
+                                                          initialValue: e
+                                                              .marcaModeloId, //_equipo,
+                                                          isExpanded: true,
+                                                          isDense: true,
+                                                          style:
+                                                              const TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
                                                           decoration: InputDecoration(
                                                             fillColor:
                                                                 Colors.white,
                                                             filled: true,
-                                                            hintText: '',
-                                                            labelText: '',
+                                                            hintText:
+                                                                'Elija un Modelo...',
                                                             errorText:
-                                                                _macserieShowError
-                                                                ? _macserieError
+                                                                _equipoShowError
+                                                                ? _equipoError
                                                                 : null,
-                                                            prefixIcon:
-                                                                const Icon(
-                                                                  Icons.tag,
-                                                                ),
-                                                            border: OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    10,
-                                                                  ),
-                                                            ),
                                                           ),
-                                                          onChanged: (value) {},
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        ElevatedButton(
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor:
-                                                                const Color(
-                                                                  0xFF282886,
-                                                                ),
-                                                            minimumSize:
-                                                                const Size(
-                                                                  50,
-                                                                  50,
-                                                                ),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    5,
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                          onPressed: () async {
-                                                            String
-                                                            barcodeScanRes =
-                                                                '-1';
-                                                            try {
-                                                              String?
-                                                              barcodeScanResAux =
-                                                                  await Navigator.of(
-                                                                    context,
-                                                                  ).push<
-                                                                    String
-                                                                  >(
-                                                                    MaterialPageRoute(
-                                                                      builder:
-                                                                          (
-                                                                            context,
-                                                                          ) =>
-                                                                              const BarCodeReader(),
-                                                                    ),
-                                                                  );
-                                                              barcodeScanRes =
-                                                                  barcodeScanResAux ??
-                                                                  '-1';
-                                                            } on PlatformException {
-                                                              barcodeScanRes =
-                                                                  'Error';
+                                                          items:
+                                                              _getComboEquipos(),
+                                                          onChanged: (value) {
+                                                            _equipo = value
+                                                                .toString();
+
+                                                            for (Asign asign
+                                                                in _asigns) {
+                                                              if (asign
+                                                                      .autonumerico ==
+                                                                  e.autonumerico) {
+                                                                asign.marcaModeloId =
+                                                                    _equipo;
+                                                              }
                                                             }
-                                                            // if (!mounted) return;
-                                                            if (barcodeScanRes ==
-                                                                '-1') {
-                                                              return;
-                                                            }
-                                                            _macserieController
-                                                                    .text =
-                                                                barcodeScanRes;
                                                           },
-                                                          child: const Icon(
-                                                            Icons.qr_code_2,
-                                                          ),
                                                         ),
-                                                      ],
+                                                      ),
                                                     ),
-                                                    actions: [
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: ElevatedButton(
-                                                              style: ElevatedButton.styleFrom(
-                                                                backgroundColor:
-                                                                    const Color(
-                                                                      0xFF120E43,
-                                                                    ),
-                                                                minimumSize:
-                                                                    const Size(
-                                                                      double
-                                                                          .infinity,
-                                                                      50,
-                                                                    ),
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius.circular(
-                                                                        5,
-                                                                      ),
-                                                                ),
+                                                    const Text(
+                                                      '        ',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Color(
+                                                          0xFF0e4888,
+                                                        ),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              : Row(
+                                                  children: [
+                                                    const Text(
+                                                      'Modelo:            ',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Color(
+                                                          0xFF0e4888,
+                                                        ),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      e.modelo.toString(),
+                                                      style: const TextStyle(
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                        : Container(),
+                                    const SizedBox(height: 10),
+                                    widget.funcionApp.serieObligatoria == 1 ||
+                                            (e.proyectomodulo == 'Cable' &&
+                                                e.motivos.toString().contains(
+                                                  'VDSL',
+                                                ))
+                                        ? Row(
+                                            children: [
+                                              const SizedBox(
+                                                width: 90,
+                                                child: Text(
+                                                  'Mac/Serie: ',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF0e4888),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 7,
+                                                child: Text(
+                                                  e.estadO3.toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 5),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: const Color(
+                                                    0xFF282886,
+                                                  ),
+                                                  minimumSize: const Size(
+                                                    50,
+                                                    40,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          5,
+                                                        ),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      _macserieController.text =
+                                                          '';
+                                                      return Center(
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            AlertDialog(
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .grey[300],
+                                                              title: const Text(
+                                                                'Ingrese o escanee el código',
                                                               ),
-                                                              onPressed: () {
-                                                                if (_macserieController
-                                                                        .text
-                                                                        .length <
-                                                                    6) {
-                                                                  showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder: (context) {
-                                                                      return AlertDialog(
-                                                                        shape: RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.circular(
-                                                                            10,
+                                                              content: Column(
+                                                                children: [
+                                                                  TextField(
+                                                                    autofocus:
+                                                                        true,
+                                                                    controller:
+                                                                        _macserieController,
+                                                                    decoration: InputDecoration(
+                                                                      fillColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      filled:
+                                                                          true,
+                                                                      hintText:
+                                                                          '',
+                                                                      labelText:
+                                                                          '',
+                                                                      errorText:
+                                                                          _macserieShowError
+                                                                          ? _macserieError
+                                                                          : null,
+                                                                      prefixIcon:
+                                                                          const Icon(
+                                                                            Icons.tag,
+                                                                          ),
+                                                                      border: OutlineInputBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                              10,
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                    onChanged:
+                                                                        (
+                                                                          value,
+                                                                        ) {},
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  ElevatedButton(
+                                                                    style: ElevatedButton.styleFrom(
+                                                                      backgroundColor:
+                                                                          const Color(
+                                                                            0xFF282886,
+                                                                          ),
+                                                                      minimumSize:
+                                                                          const Size(
+                                                                            50,
+                                                                            50,
+                                                                          ),
+                                                                      shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                              5,
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                    onPressed: () async {
+                                                                      String
+                                                                      barcodeScanRes =
+                                                                          '-1';
+                                                                      try {
+                                                                        String?
+                                                                        barcodeScanResAux =
+                                                                            await Navigator.of(
+                                                                              context,
+                                                                            ).push<
+                                                                              String
+                                                                            >(
+                                                                              MaterialPageRoute(
+                                                                                builder:
+                                                                                    (
+                                                                                      context,
+                                                                                    ) => const BarCodeReader(),
+                                                                              ),
+                                                                            );
+                                                                        barcodeScanRes =
+                                                                            barcodeScanResAux ??
+                                                                            '-1';
+                                                                      } on PlatformException {
+                                                                        barcodeScanRes =
+                                                                            'Error';
+                                                                      }
+                                                                      // if (!mounted) return;
+                                                                      if (barcodeScanRes ==
+                                                                          '-1') {
+                                                                        return;
+                                                                      }
+                                                                      _macserieController
+                                                                              .text =
+                                                                          barcodeScanRes;
+                                                                    },
+                                                                    child: const Icon(
+                                                                      Icons
+                                                                          .qr_code_2,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              actions: [
+                                                                Row(
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child: ElevatedButton(
+                                                                        style: ElevatedButton.styleFrom(
+                                                                          backgroundColor: const Color(
+                                                                            0xFF120E43,
+                                                                          ),
+                                                                          minimumSize: const Size(
+                                                                            double.infinity,
+                                                                            50,
+                                                                          ),
+                                                                          shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                              5,
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                        title: const Text(
-                                                                          'Aviso',
-                                                                        ),
-                                                                        content: Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.min,
-                                                                          children:
-                                                                              const <
-                                                                                Widget
-                                                                              >[
-                                                                                Text(
-                                                                                  'El código debe tener al menos 6 caracteres.',
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  height: 10,
-                                                                                ),
-                                                                              ],
-                                                                        ),
-                                                                        actions:
-                                                                            <
-                                                                              Widget
-                                                                            >[
-                                                                              TextButton(
-                                                                                onPressed: () => Navigator.of(
-                                                                                  context,
-                                                                                ).pop(),
-                                                                                child: const Text(
-                                                                                  'Ok',
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                      );
-                                                                    },
-                                                                  );
+                                                                        onPressed: () {
+                                                                          if (_macserieController.text.length <
+                                                                              6) {
+                                                                            showDialog(
+                                                                              context: context,
+                                                                              builder:
+                                                                                  (
+                                                                                    context,
+                                                                                  ) {
+                                                                                    return AlertDialog(
+                                                                                      shape: RoundedRectangleBorder(
+                                                                                        borderRadius: BorderRadius.circular(
+                                                                                          10,
+                                                                                        ),
+                                                                                      ),
+                                                                                      title: const Text(
+                                                                                        'Aviso',
+                                                                                      ),
+                                                                                      content: Column(
+                                                                                        mainAxisSize: MainAxisSize.min,
+                                                                                        children:
+                                                                                            const <
+                                                                                              Widget
+                                                                                            >[
+                                                                                              Text(
+                                                                                                'El código debe tener al menos 6 caracteres.',
+                                                                                              ),
+                                                                                              SizedBox(
+                                                                                                height: 10,
+                                                                                              ),
+                                                                                            ],
+                                                                                      ),
+                                                                                      actions:
+                                                                                          <
+                                                                                            Widget
+                                                                                          >[
+                                                                                            TextButton(
+                                                                                              onPressed: () => Navigator.of(
+                                                                                                context,
+                                                                                              ).pop(),
+                                                                                              child: const Text(
+                                                                                                'Ok',
+                                                                                              ),
+                                                                                            ),
+                                                                                          ],
+                                                                                    );
+                                                                                  },
+                                                                            );
 
-                                                                  return;
-                                                                }
+                                                                            return;
+                                                                          }
 
-                                                                for (Asign asign
-                                                                    in _asigns) {
-                                                                  if (asign
-                                                                          .autonumerico ==
-                                                                      e.autonumerico) {
-                                                                    asign.estadO3 =
-                                                                        _macserieController
-                                                                            .text
-                                                                            .toUpperCase();
-                                                                    asign.elegir =
-                                                                        1;
-                                                                  }
-                                                                }
-                                                                Navigator.pop(
-                                                                  context,
-                                                                );
-                                                                setState(() {});
-                                                              },
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceAround,
-                                                                children: const [
-                                                                  Icon(
-                                                                    Icons.save,
-                                                                  ),
-                                                                  Text(
-                                                                    'Aceptar',
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          Expanded(
-                                                            child: ElevatedButton(
-                                                              style: ElevatedButton.styleFrom(
-                                                                backgroundColor:
-                                                                    const Color(
-                                                                      0xFFB4161B,
-                                                                    ),
-                                                                minimumSize:
-                                                                    const Size(
-                                                                      double
-                                                                          .infinity,
-                                                                      50,
-                                                                    ),
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius.circular(
-                                                                        5,
+                                                                          for (Asign
+                                                                              asign
+                                                                              in _asigns) {
+                                                                            if (asign.autonumerico ==
+                                                                                e.autonumerico) {
+                                                                              asign.estadO3 = _macserieController.text.toUpperCase();
+                                                                              asign.elegir = 1;
+                                                                            }
+                                                                          }
+                                                                          Navigator.pop(
+                                                                            context,
+                                                                          );
+                                                                          setState(
+                                                                            () {},
+                                                                          );
+                                                                        },
+                                                                        child: Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceAround,
+                                                                          children: const [
+                                                                            Icon(
+                                                                              Icons.save,
+                                                                            ),
+                                                                            Text(
+                                                                              'Aceptar',
+                                                                            ),
+                                                                          ],
+                                                                        ),
                                                                       ),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Expanded(
+                                                                      child: ElevatedButton(
+                                                                        style: ElevatedButton.styleFrom(
+                                                                          backgroundColor: const Color(
+                                                                            0xFFB4161B,
+                                                                          ),
+                                                                          minimumSize: const Size(
+                                                                            double.infinity,
+                                                                            50,
+                                                                          ),
+                                                                          shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                              5,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        onPressed: () {
+                                                                          Navigator.pop(
+                                                                            context,
+                                                                          );
+                                                                        },
+                                                                        child: Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceAround,
+                                                                          children: const [
+                                                                            Icon(
+                                                                              Icons.cancel,
+                                                                            ),
+                                                                            Text(
+                                                                              'Cancelar',
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                              ),
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                  context,
-                                                                );
-                                                              },
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceAround,
-                                                                children: const [
-                                                                  Icon(
-                                                                    Icons
-                                                                        .cancel,
-                                                                  ),
-                                                                  Text(
-                                                                    'Cancelar',
-                                                                  ),
-                                                                ],
-                                                              ),
+                                                              ],
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                    barrierDismissible: false,
+                                                  );
+                                                },
+                                                child: const Icon(
+                                                  Icons.qr_code_2,
+                                                ),
                                               ),
-                                            );
-                                          },
-                                          barrierDismissible: false,
-                                        );
-                                      },
-                                      child: const Icon(Icons.qr_code_2),
-                                    ),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(
-                                          0xffdf281e,
-                                        ),
-                                        minimumSize: const Size(50, 40),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            5,
+                                              const SizedBox(width: 5),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: const Color(
+                                                    0xffdf281e,
+                                                  ),
+                                                  minimumSize: const Size(
+                                                    50,
+                                                    40,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          5,
+                                                        ),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  for (Asign asign in _asigns) {
+                                                    if (asign.autonumerico ==
+                                                        e.autonumerico) {
+                                                      asign.estadO3 = '';
+                                                    }
+                                                  }
+                                                  setState(() {});
+                                                },
+                                                child: const Icon(Icons.cancel),
+                                              ),
+                                            ],
+                                          )
+                                        : Container(),
+                                    const SizedBox(height: 1),
+                                    Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 90,
+                                          child: Text(
+                                            'Obs. Captura: ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF0e4888),
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      onPressed: () {
-                                        for (Asign asign in _asigns) {
-                                          if (asign.autonumerico ==
-                                              e.autonumerico) {
-                                            asign.estadO3 = '';
-                                          }
-                                        }
-                                        setState(() {});
-                                      },
-                                      child: const Icon(Icons.cancel),
+                                        Expanded(
+                                          child: e.observacionCaptura != null
+                                              ? Text(
+                                                  e.observacionCaptura
+                                                      .toString()
+                                                      .substring(
+                                                        0,
+                                                        e.observacionCaptura!.length >
+                                                                90
+                                                            ? 90
+                                                            : e
+                                                                  .observacionCaptura!
+                                                                  .length,
+                                                      ),
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                  ),
+                                                )
+                                              : const Text(''),
+                                        ),
+                                      ],
                                     ),
+
+                                    const SizedBox(height: 1),
                                   ],
-                                )
-                              : Container(),
-                          const SizedBox(height: 1),
-                          Row(
-                            children: [
-                              const SizedBox(
-                                width: 90,
-                                child: Text(
-                                  'Obs. Captura: ',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF0e4888),
-                                    fontWeight: FontWeight.bold,
-                                  ),
                                 ),
                               ),
-                              Expanded(
-                                child: e.observacionCaptura != null
-                                    ? Text(
-                                        e.observacionCaptura
-                                            .toString()
-                                            .substring(
-                                              0,
-                                              e.observacionCaptura!.length > 90
-                                                  ? 90
-                                                  : e
-                                                        .observacionCaptura!
-                                                        .length,
+
+                              e.proyectomodulo == 'Cable'
+                                  ? Center(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            width: 140,
+                                            child: IconButton(
+                                              onPressed: () => _takePicture2(e),
+                                              icon: Icon(
+                                                Icons.camera_alt,
+                                                size: 50,
+                                              ),
                                             ),
-                                        style: const TextStyle(fontSize: 12),
-                                      )
-                                    : const Text(''),
-                              ),
+                                          ),
+                                          Container(
+                                            child: !e.imagePhotoChanged
+                                                ? Container()
+                                                : Center(
+                                                    child: e.imagePhoto != null
+                                                        ? Image.file(
+                                                            File(
+                                                              e
+                                                                  .imagePhoto!
+                                                                  .path,
+                                                            ),
+                                                            width: 80,
+                                                            height: 60,
+                                                            fit: BoxFit.contain,
+                                                          )
+                                                        : Container(),
+                                                  ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(),
                             ],
                           ),
-                          const SizedBox(height: 1),
                         ],
                       ),
                     ),
@@ -2140,6 +2239,47 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         setState(() {
           _photoChangedDNI = true;
           _image = response.result;
+        });
+      }
+    }
+  }
+
+  //--------------------------------------------------------
+  //--------------------- _takePicture2 ---------------------
+  //--------------------------------------------------------
+
+  void _takePicture2(Asign asign) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final cameras = await availableCameras();
+    var firstCamera = cameras.first;
+    var response1 = await showAlertDialog(
+      context: context,
+      title: 'Seleccionar cámara',
+      message: '¿Qué cámara desea utilizar?',
+      actions: <AlertDialogAction>[
+        const AlertDialogAction(key: 'no', label: 'Trasera'),
+        const AlertDialogAction(key: 'yes', label: 'Delantera'),
+        const AlertDialogAction(key: 'cancel', label: 'Cancelar'),
+      ],
+    );
+    if (response1 == 'yes') {
+      firstCamera = cameras.first;
+    }
+    if (response1 == 'no') {
+      firstCamera = cameras.last;
+    }
+
+    if (response1 != 'cancel') {
+      Response? response = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TakePictureScreen(camera: firstCamera),
+        ),
+      );
+      if (response != null) {
+        setState(() {
+          asign.imagePhotoChanged = true;
+          asign.imagePhoto = response.result;
         });
       }
     }
@@ -3367,6 +3507,12 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         base64imageFirma = base64Encode(imageBytesFirma);
       }
 
+      String base64imagePhoto = '';
+      if (asign.imagePhotoChanged) {
+        List<int> imageBytesPhoto = await asign.imagePhoto!.readAsBytes();
+        base64imagePhoto = base64Encode(imageBytesPhoto);
+      }
+
       Map<String, dynamic> request = {
         //----------------- Campos que mantienen el valor -----------------
         'idregistro': asign.idregistro,
@@ -3504,6 +3650,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
         'hsCumplidaTime': fechaYa.toString(),
         'imageArrayDni': base64imageDNI,
         'imageArrayFirma': base64imageFirma,
+        'imageArrayPhoto': base64imagePhoto,
       };
 
       Response response = await ApiHelper.put(
