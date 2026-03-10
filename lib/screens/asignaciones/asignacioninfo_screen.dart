@@ -4196,7 +4196,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1 de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.',
+                        'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1 de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio} - ${_asignacion.localidad} . ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.',
                         style: const TextStyle(
                           color: Colors.blue,
                           fontSize: 12,
@@ -4298,7 +4298,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                                   phoneNumber: number2,
                                   //***** MENSAJE DE CONTACTO *****
                                   text:
-                                      'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.',
+                                      'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio} - ${_asignacion.localidad}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.',
                                 );
                                 await launch('$link');
                               },
@@ -4328,7 +4328,7 @@ class AsignacionInfoScreenState extends State<AsignacionInfoScreen>
                               ),
                               onPressed: () async {
                                 final body =
-                                    'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.';
+                                    'Hola mi nombre es ${widget.user.apellidonombre} de la Empresa Fleet al servicio de $empresa. Le escribo para hacer $men1  de  ${_asignacion.cantAsign} $palabraEquipo a nombre de ${_asignacion.nombre}, Nº de Cliente ${_asignacion.cliente} en el domicilio ${_asignacion.domicilio} - ${_asignacion.localidad}. ¿Podrìamos coordinar para $men2 $cuando?. Muchas gracias.';
 
                                 final url =
                                     'mailto:${_asignacion.emailCliente}?subject=Mensaje de la empresa Fleet al servicio de $empresa&body=$body';
